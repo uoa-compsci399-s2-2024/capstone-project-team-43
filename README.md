@@ -2,3 +2,4 @@
 
 Isabella (Back-end)
 Jenny (Design, Front-end)
+Jade (Front-end)

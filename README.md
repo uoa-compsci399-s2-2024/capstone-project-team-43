@@ -5,5 +5,5 @@
 - Jenny (Design, Front-end)
 - Melissa (Front-end)
 - Jade (Front-end)
+- Aleks (Fullstack)
 - Eyal (Back-end)
-

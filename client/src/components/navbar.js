@@ -7,7 +7,7 @@ const navbar = () =>{
             <a href="#">Cornerstone</a>
             <ul>
                 <li>
-                    <a href="/pages/projects">project</a>
+                    <a href="/pages/projects-admin">project</a>
                 </li>
                 <li>
                     <a href="/pages/login">login</a>

@@ -116,12 +116,12 @@ h1{
 
 .projects #head{
   text-align: center;
-  width: 100vw;
   background-color:#2979FF;
   height: 7vh;
   color: white;
   display: flex;
   flex-direction:column;
+  justify-content: center;
 }
 
 #sorting{

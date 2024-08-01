@@ -1,5 +1,5 @@
-//import logo from './logo.svg';
-//import './App.css';
+
+import './App.css';
 
 
 //import ReactDOM from "react-dom/client";
@@ -7,6 +7,7 @@ import React from "react";
 import { Routes, Route, Link} from "react-router-dom";
 import Login from "./pages/login";
 import Cornerstone from "./pages/projects-admin";
+import ProjectProposalForm from "./pages/project-proposal";
 
 import Navbar from "./components/navbar";
 
@@ -17,10 +18,10 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/pages/projects-admin' Component={Cornerstone} />
-        <Route path='/pages/login' Component={Login} />
+        <Route path='/' Component={Login} />
+        <Route path='/pages/project-proposal' Component={ProjectProposalForm} />
       </Routes>
 
-      <Login />
 
     </div>
   );

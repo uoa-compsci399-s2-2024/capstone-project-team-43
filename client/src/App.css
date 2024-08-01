@@ -53,12 +53,12 @@ h1{
   margin-left: 25%;
 }
 
-input[type=text], select{
+.login-form input, select{
   border: 1px, solid, black;
 
 }
 
-input[type=text]{
+.login-form input{
   width: 50%;
   padding: 4px;
   margin-top: 8px;
@@ -136,3 +136,80 @@ input[type=text]{
   width: 33.5%;
 }
 
+
+/**           PROJECT PROPOSAL FORM             **/
+
+
+
+.proposal-left{
+  background-color: #2979FF;
+  width: 50%;
+  display: flex;
+  float: left;
+  height: 100vh;
+}
+
+.proposal-right{
+  background-color: white;
+  width: 50%;
+  float: right;
+  height: 100vh;
+  
+}
+
+h1{
+  text-align: left;
+  margin-top: 3%;
+  padding-left: 5%;
+}
+
+.propForm1{
+
+  margin-left: 5%;
+
+}
+
+
+input[type=text], select{
+  border: 1px, solid, black;
+  
+
+}
+
+input[type=text]{
+  width: 50%;
+  padding: 4px;
+  margin-top: 8px;
+  
+}
+
+
+#four{
+  display: none;
+}
+
+#eight{
+  display: none;
+}
+
+#eleven{
+  display: none;
+}
+
+#buttons{
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10%;
+  padding-right: 10%;
+  margin-bottom: 15%;
+  margin-top: auto;
+ 
+}
+
+#button{
+  border-radius: 6px;
+  padding: 8px;
+  width: 2rem;
+  text-align: center;
+}

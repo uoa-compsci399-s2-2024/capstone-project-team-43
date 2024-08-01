@@ -18,7 +18,7 @@ const Login = () => {
                 <input type="text" placeholder="Email Address*"/>
             </label>
             <label>
-                <input type="text" placeholder="Password*"/>
+                <input type="password" placeholder="Password*"/>
             </label>
             <button type="submit">
             SIGN IN

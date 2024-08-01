@@ -1,3 +1,5 @@
+
+
 /**           NAV BAR            **/
 
 .navbar{
@@ -7,9 +9,10 @@
   justify-content: space-between;
   color: white;
   align-items: center;
-  gap:2rem;
+  /*gap:2rem;*/
   padding: 0 1rem;
-  height: 17px;
+  height: 15vh;
+
 }
 
 .navbar ul{
@@ -114,7 +117,11 @@ h1{
 .projects #head{
   text-align: center;
   width: 100vw;
-  background-color: lightcoral;
+  background-color:#2979FF;
+  height: 7vh;
+  color: white;
+  display: flex;
+  flex-direction:column;
 }
 
 #sorting{
@@ -124,16 +131,17 @@ h1{
 }
 
 #sorting #left{
-  background-color: beige;
   width: 33.5%;
+  border-color: black;
+  border-right: solid 1px;
 }
 #sorting #center{
-  background-color:bisque;
   width: 33%;
 }
 #sorting #right{
-  background-color:antiquewhite;
   width: 33.5%;
+  border-left: solid 1px;
+  border-color: black;
 }
 
 

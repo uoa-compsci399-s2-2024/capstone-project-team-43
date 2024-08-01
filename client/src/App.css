@@ -38,6 +38,12 @@
   height: 100vh;
 }
 
+.login hr{
+  width: 30vw;
+  color: black;
+  margin-left: 23%;
+}
+
 .login-right{
   background-color: white;
   width: 50%;
@@ -64,11 +70,11 @@
 .login-form input{
   padding: 4px;
   margin-top: 8px;
-  width: 20vw;
+  width: 25vw;
 }
 
 .login-form input[type=text]{
-  width: 20vw;
+  width: 25vw;
   padding: 4px;
   margin-top: 8px;
   
@@ -76,13 +82,13 @@
 
 .login-form label{
   text-align: center;
-  margin-left: 10%;
+  margin-left: 2%;
 }
 
 .login button[type=new]{
   float:center;
-  width: 21vw;
-  margin-left: 32%;
+  width: 25.85vw;
+  margin-left: 27.5%;
   background-color:#003998;
   border-radius: 3px;
   padding: 4px;
@@ -93,7 +99,7 @@
 }
 
 .login button[type=submit]{
-  width: 21vw;
+  width: 25.85vw;
   float:center;
   background-color:#2979FF;
   border-radius: 3px;
@@ -102,11 +108,11 @@
   transition-duration: 0.4s;
   border: 2px solid #2979FF;
   color: white;
-  margin-left: 9.5%;
+  margin-left: 2%;
 }
 
 .login button:hover{
-  width: 21vw;
+  width: 25.85vw;
   float:center;
   background-color: white;
   color: black;

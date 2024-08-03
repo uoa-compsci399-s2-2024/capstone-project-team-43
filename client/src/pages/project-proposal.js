@@ -97,33 +97,33 @@ const projectProposal = () => {
                     <input type="text" placeholder="Enter your answer"/>
                 </label>
                 <label>
-                <br />9.Desired team skills <br />
+                <br />9. Desired team skills <br />
                     <input type="text" placeholder="Enter your answer"/>
                 </label>
                 <label>
-                <br />10.Available resources <br />
+                <br />10. Available resources <br />
                     <input type="text" placeholder="Enter your answer"/>
                 </label>
                 </div>
                 
                 <div id="eleven">
                 <label>
-                11.Future consideration <br />
+                11. Future consideration <br />
                     <input type="text" placeholder="Enter your answer"/>
                 </label>
                 <label>
-                <br />12.Meeting attendance:* <br />
+                <br />12. Meeting attendance:* <br />
                     <input type="text" placeholder="Enter your answer"/>
                 </label>
                 <label>
-                <br />13.Final presentation attendance:* <br />
+                <br />13. Final presentation attendance:* <br />
                     <input type="text" placeholder="Enter your answer"/>
                 </label>
                 </div>
 
                 </form>
                 <br /><br />
-
+                <div id = "button-container">
                 <div id="buttons">
                 <button onClick={show123} id="button">1</button>
                 <button onClick={show123} id="button">2</button>
@@ -138,6 +138,7 @@ const projectProposal = () => {
                 <button onClick={show111213} id="button">11</button>
                 <button onClick={show111213} id="button">12</button>
                 <button onClick={show111213} id="button">13</button>
+                </div>
                 </div>
 
 

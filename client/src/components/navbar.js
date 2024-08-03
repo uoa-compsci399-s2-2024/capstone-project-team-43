@@ -15,6 +15,9 @@ const navbar = () =>{
                 <li>
                     <a href="/pages/project-proposal">Project Proposal</a>
                 </li>
+                <li>
+                    <a href="/pages/project-preferences">Project Preferences</a>
+                </li>
             </ul>
             
         </nav>

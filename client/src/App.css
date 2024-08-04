@@ -77,6 +77,8 @@
   width: 25vw;
   padding: 4px;
   margin-top: 8px;
+  border: 1px, solid, black;
+  margin-left: 0;
   
 }
 
@@ -255,11 +257,58 @@ input[type=text]{
   height: 150vh;
 }
 
+.projectPreferences h2{
+  color: white;
+  margin-left: 3vw;
+  position: relative;
+}
+
 .preferenceProjects{
   background-color: white;
-  width: 50vw;
-  height: 50vh;
-  position: relative;
+  width: 83%;
+  height: 60%;
+  position:absolute;
   display: flex;
   margin: 0;
+  margin-top: 10vh;
+  margin-left: 3vw;
+  border-radius: 10px;
+}
+
+.projectPreferences #sidebuttons{
+  width: 10%;
+  height: 10%;
+  margin-left:89%;
+  margin-top: 4%;
+  position: absolute;
+}
+
+.projectPreferences #sidebuttons button:hover{
+  float:center;
+  background-color: lightgray;
+  color: black;
+  
+}
+
+.projectPreferences #sidebuttons button{
+  border-radius: 10px;
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: 0.5px solid gray;
+  border-bottom: 2px solid grey;
+  background-color: white;
+}
+
+.projectPreferences button{
+  border-radius: 10px;
+  padding: 8px;
+  width: 10%;
+  height: 10%;
+  text-align: center;
+  border: 0.5px solid gray;
+  border-bottom: 2px solid grey;
+  background-color: white;
+  position: absolute;
 }

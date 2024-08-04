@@ -275,13 +275,7 @@ input[type=text]{
   border-radius: 10px;
 }
 
-.projectPreferences #sidebuttons{
-  width: 10%;
-  height: 10%;
-  margin-left:89%;
-  margin-top: 4%;
-  position: absolute;
-}
+
 
 .projectPreferences #sidebuttons button:hover{
   float:center;
@@ -299,6 +293,7 @@ input[type=text]{
   border: 0.5px solid gray;
   border-bottom: 2px solid grey;
   background-color: white;
+  margin-top: 10px;
 }
 
 .projectPreferences button{

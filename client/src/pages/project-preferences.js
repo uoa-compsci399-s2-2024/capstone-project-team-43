@@ -8,9 +8,8 @@ const ProjectPreferences = ()=>{
             <br></br>
             <div className="preferenceProjects">
             </div>
-            <div id="sidebuttons">
+            {/*<div id="sidebuttons">
                 <button>1</button>
-                <br></br><br></br><br></br>
                 <button>2</button>
                 <br></br><br></br><br></br>
                 <button>3</button>
@@ -18,7 +17,7 @@ const ProjectPreferences = ()=>{
                 <button>4</button>
                 <br></br><br></br><br></br>
                 <button>5</button>
-            </div>
+            </div>*/}
             {/*<button>Submit</button>*/}
         </div>
     );

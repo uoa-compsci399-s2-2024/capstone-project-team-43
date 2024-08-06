@@ -143,7 +143,7 @@ h1{
 
 .proposal-left{
   background-color: #2979FF;
-  width: 50%;
+  width: 20%;
   display: flex;
   float: left;
   height: 100vh;
@@ -151,7 +151,7 @@ h1{
 
 .proposal-right{
   background-color: white;
-  width: 50%;
+  width: 80%;
   float: right;
   height: 100vh;
   
@@ -171,8 +171,8 @@ h1{
 
 
 input[type=text], select{
-  border: 1px, solid, black;
-  
+  border: 2px, solid, #003998;
+  border-radius: 3px;
 
 }
 
@@ -183,33 +183,56 @@ input[type=text]{
   
 }
 
+input[type=radio], select{
 
-#four{
+  height: 14px;
+  width: 14px;
+  background-color: orange;
+  border-radius: 10%;
+}
+
+#info{
+  display: block;
+}
+#one, #four, #eight, #eleven{
   display: none;
 }
 
-#eight{
-  display: none;
-}
-
-#eleven{
-  display: none;
-}
 
 #buttons{
-  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   padding-left: 10%;
   padding-right: 10%;
-  margin-bottom: 15%;
   margin-top: auto;
+  background-color: #EAEAEA;
+
  
 }
 
 #button{
+  background-color: white;
   border-radius: 6px;
   padding: 8px;
   width: 2rem;
   text-align: center;
+}
+
+
+#nextButton{
+  border-radius: 3px;
+  padding: 8px;
+  width: 5rem;
+  text-align: center;
+  background-color:#003998;
+  transition-duration: 0.4s;
+  border: 2px solid #003998;
+  color: white;
+  float:right;
+  margin-right: 15%;
+}
+
+#nextButton:hover{
+  background-color: white;
+  color: black;
 }

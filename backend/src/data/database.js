@@ -38,7 +38,7 @@ async function initializeDatabase() {
     console.error('Error when checking for database: ', err.message);
   } finally {
 
-    //if there is a connection, release it
+    //If there is a connection, release it
     if (connection) connection.release();
   }
 }
@@ -53,7 +53,8 @@ async function createDatabase() {
     await connection.query(`CREATE DATABASE ${DBName};`);
 
     console.log(`Database ${DBName} created successfully.`);
-    // Optionally, you might want to switch to the new database and create tables
+
+    //Selects the newly created database
     await connection.query(`USE ${DBName};`);
 
                 // Creates tables and placeholder data
@@ -98,6 +99,7 @@ async function createDatabase() {
                 INSERT INTO project (title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num) 
                 VALUES ('cornerstone','An amazing web solution!','0', NULL, NULL, '2024-08-01 13:35:00','2025 Sem 1','accepted','3','43');`;
 
+                //runs query, if query fails, returns error
                 try {
                 await connection.query(createTablesQuery);
                 console.log('Tables/Data inserted successfully');
@@ -108,8 +110,8 @@ async function createDatabase() {
   } catch (err) {
     console.error('Error creating database: ', err.message);
   } finally {
-    
-    //if there is a connection, release it
+
+    //If there is a connection, release it
     if (connection) connection.release();
   }
 }

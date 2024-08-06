@@ -10,11 +10,13 @@ router.get("/", async (req, res) => {
 
 // creates a new project with given name and desc.
 router.post("/", async(req, res) => {
-    const { name, description } = req.body;
-    if (!name || !description) {
+    const { title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num} = req.body;
+    if (!title || !description || !owner || !preferred_skills || !project_deliverable || !created || !expiry || !status || !max_num_of_groups || !project_num) {
         return res.status(422);
     }
-    const project = await createProject(name, description);
+    
+    //details are valid and now passed to createProject function to query into database
+    const project = await createProject(title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num);
     return res.location(`/api/projects/${project.id}`).status(201).json(project);
 });
 

@@ -36,30 +36,52 @@ export async function retrieveProjects() {
     await connection.query(`USE ${DBName};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT');
     console.log('Rows:', rows);
-    return rows; // Return the result directly, no need for .map() unless transforming data
+
+    //if there is a connection, release it
+    if (connection) connection.release();
+
+    return rows;
+
   } catch (err) {
     console.error('Error executing query/s:', err.message);
-    throw err; // Ensure the error is propagated
   }
 }
 /**
  * Creates a new project 
- * @param {string} name the new name
- * @param {string} description the new description
+ * @param {string} title
+ * @param {string} description
+ * @param {number} owner
+ * @param {string} preferred_skills
+ * @param {string} project_deliverable
+ * @param {Date} created
+ * @param {string} expiry
+ * @param {'rejected'|'accepted'|'pending'} status
+ * @param {number} max_num_of_groups
+ * @param {number} project_num
  *
  * @return the newly created project
  */
-export async function createProject(name, description) {
+export async function createProject(title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num) {
+  let connection;
+  try {
 
- try {
-  const response = await pool.query(
-    "INSERT INTO Projects(name, description) VALUES(?, ?)",
-    name, 
-    description
-  );
+    //Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DBName};`);
+
+    //Insert project into db
+    const response = await connection.query(
+      "INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num]
+    );
 
   /** @type {Project} */
-  const project = await pool.query("SELECT * FROM Projects WHERE id = ?", response.lastID); // lastID is the auto-generated PK value.
+  const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
+
+  //If there is a connection, release it
+  if (connection) connection.release();
+
   return project;
 
 } catch (err) {

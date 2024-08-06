@@ -1,3 +1,5 @@
+
+
 /**           NAV BAR            **/
 
 .navbar{
@@ -7,9 +9,10 @@
   justify-content: space-between;
   color: white;
   align-items: center;
-  gap:2rem;
+  /*gap:2rem;*/
   padding: 0 1rem;
-  height: 17px;
+  height: 15vh;
+
 }
 
 .navbar ul{
@@ -35,17 +38,23 @@
   height: 100vh;
 }
 
+.login hr{
+  width: 30vw;
+  color: black;
+  margin-left: 23%;
+}
+
 .login-right{
-  background-color: grey;
+  background-color: white;
   width: 50%;
   float: right;
   height: 100vh;
   
 }
 
-h1{
+.login h1{
   text-align: center;
-  margin-top: 30%;
+  margin-top: 20%;
 }
 
 .login-form{
@@ -59,16 +68,29 @@ h1{
 }
 
 .login-form input{
-  width: 50%;
   padding: 4px;
   margin-top: 8px;
+  width: 25vw;
+}
+
+.login-form input[type=text]{
+  width: 25vw;
+  padding: 4px;
+  margin-top: 8px;
+  border: 1px, solid, black;
+  margin-left: 0;
   
+}
+
+.login-form label{
+  text-align: center;
+  margin-left: 2%;
 }
 
 .login button[type=new]{
   float:center;
-  width: 50%;
-  margin-left: 25%;
+  width: 25.85vw;
+  margin-left: 27.5%;
   background-color:#003998;
   border-radius: 3px;
   padding: 4px;
@@ -79,8 +101,7 @@ h1{
 }
 
 .login button[type=submit]{
-  width: 100%;
-  width: 50%;
+  width: 25.85vw;
   float:center;
   background-color:#2979FF;
   border-radius: 3px;
@@ -89,11 +110,11 @@ h1{
   transition-duration: 0.4s;
   border: 2px solid #2979FF;
   color: white;
-  margin-left: 0;
+  margin-left: 2%;
 }
 
 .login button:hover{
-  width: 50%;
+  width: 25.85vw;
   float:center;
   background-color: white;
   color: black;
@@ -113,8 +134,12 @@ h1{
 
 .projects #head{
   text-align: center;
-  width: 100vw;
-  background-color: lightcoral;
+  background-color:#2979FF;
+  height: 7vh;
+  color: white;
+  display: flex;
+  flex-direction:column;
+  justify-content: center;
 }
 
 #sorting{
@@ -124,16 +149,17 @@ h1{
 }
 
 #sorting #left{
-  background-color: beige;
   width: 33.5%;
+  border-color: black;
+  border-right: solid 1px;
 }
 #sorting #center{
-  background-color:bisque;
   width: 33%;
 }
 #sorting #right{
-  background-color:antiquewhite;
   width: 33.5%;
+  border-left: solid 1px;
+  border-color: black;
 }
 
 
@@ -154,7 +180,6 @@ h1{
   width: 80%;
   float: right;
   height: 100vh;
-  
 }
 
 #projectProposal, h1{
@@ -166,7 +191,7 @@ h1{
 #projectProposal,.proposalForm{
 
   margin-left: 5%;
-
+  /* position: absolute; */
 }
 
 
@@ -197,6 +222,8 @@ h1{
 #projectProposal, #one, #four, #eight, #eleven{
   display: none;
 }
+
+
 
 
 #projectProposal, #buttons{
@@ -235,4 +262,64 @@ h1{
 #projectProposal,#nextButton:hover{
   background-color: white;
   color: black;
+}
+
+/**           PROJECT PREFERENCE FORM             **/
+
+.projectPreferences{
+  background-color: #2979FF;
+  display: flex;
+  width: 100%;
+  height: 150vh;
+}
+
+.projectPreferences h2{
+  color: white;
+  margin-left: 3vw;
+  position: relative;
+}
+
+.preferenceProjects{
+  background-color: white;
+  width: 83%;
+  height: 60%;
+  position:absolute;
+  display: flex;
+  margin: 0;
+  margin-top: 10vh;
+  margin-left: 3vw;
+  border-radius: 10px;
+}
+
+
+
+.projectPreferences #sidebuttons button:hover{
+  float:center;
+  background-color: lightgray;
+  color: black;
+  
+}
+
+.projectPreferences #sidebuttons button{
+  border-radius: 10px;
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: 0.5px solid gray;
+  border-bottom: 2px solid grey;
+  background-color: white;
+  margin-top: 10px;
+}
+
+.projectPreferences button{
+  border-radius: 10px;
+  padding: 8px;
+  width: 10%;
+  height: 10%;
+  text-align: center;
+  border: 0.5px solid gray;
+  border-bottom: 2px solid grey;
+  background-color: white;
+  position: absolute;
 }

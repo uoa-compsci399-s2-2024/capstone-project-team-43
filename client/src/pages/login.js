@@ -24,7 +24,9 @@ const Login = () => {
             SIGN IN
             </button>
     </form>
-
+    <br></br>
+    <hr></hr>
+    <br></br>
             <button type="new" href="#">
             CREATE AN ACCOUNT
             </button>

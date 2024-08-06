@@ -142,7 +142,7 @@ const projectProposal = () => {
                     <input type="text" placeholder="Enter your answer"/>
                 </label>
                 <label>
-                <br />7. Special equipment requirements* <br />
+                <br />7.Special equipment requirements* <br />
                 <input type="radio" id="html" name="fav_language" value="HTML" /> No<br />
                 <input type="radio" id="html" name="fav_language" value="HTML" /> Yes<br />
                 <input type="text" placeholder="Please specify"/>
@@ -151,7 +151,7 @@ const projectProposal = () => {
 
                 <div id="eight">
                 <label>
-                8. Number of teams* <br />
+                8.Number of teams* <br />
                 <input type="radio" id="html" name="fav_language" value="HTML" /> No, only 1 team<br />
                 <input type="radio" id="html" name="fav_language" value="HTML" /> Yes, up to 4 teams<br />
                 <input type="radio" id="html" name="fav_language" value="HTML" />
@@ -208,6 +208,7 @@ const projectProposal = () => {
                 
 
                 <button onClick={next} id="nextButton">Next</button>
+                
                 </div>
 
         </div>

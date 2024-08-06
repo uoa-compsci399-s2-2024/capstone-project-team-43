@@ -51,7 +51,7 @@ const projectProposal = () => {
     }
 
     const next = () => {
-        //if info visable show one, if one vis show 4
+
         if (document.getElementById('info').style.display === 'block') 
             {
                 document.getElementById('info').style.display = "none";
@@ -79,9 +79,6 @@ const projectProposal = () => {
 
 
 
-    const shoot = () => {
-        alert("Great Shot!");
-      }
   
     return(
         
@@ -94,7 +91,7 @@ const projectProposal = () => {
                 <h1> Project Proposal Form </h1>
 
 
-                <form className="propForm1">
+                <form className="proposalForm">
                 <div id="info">
                 <h3>Deadline</h3>
 

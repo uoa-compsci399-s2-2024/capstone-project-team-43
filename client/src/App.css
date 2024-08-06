@@ -165,88 +165,113 @@
 
 /**           PROJECT PROPOSAL FORM             **/
 
+/* need to take nav height off total height */
 
-
-#projectProposal, .proposal-left{
+.projectProposal .proposal-left{
   background-color: #2979FF;
   width: 20%;
   display: flex;
   float: left;
-  height: 100vh;
+  height: 85vh;
 }
 
-#projectProposal, .proposal-right{
+.projectProposal .proposal-right{
   background-color: white;
   width: 80%;
   float: right;
-  height: 100vh;
+  height: 77vh;
+  padding-bottom: 80px;
 }
 
-#projectProposal, h1{
+.projectProposal h1{
   text-align: left;
   margin-top: 3%;
   padding-left: 5%;
 }
 
-#projectProposal,.proposalForm{
-
+.projectProposal .proposalForm{
   margin-left: 5%;
-  /* position: absolute; */
+  bottom: none;
 }
 
 
-#projectProposal, input[type=text], select{
+.projectProposal input[type=text], select{
   border: 2px, solid, #003998;
   border-radius: 3px;
 
 }
 
-#projectProposal, input[type=text]{
+.projectProposal input[type=text]{
   width: 50%;
   padding: 4px;
   margin-top: 8px;
   
 }
 
-#projectProposal, input[type=radio], select{
+.projectProposal input[type=radio], select{
 
   height: 14px;
   width: 14px;
-  background-color: orange;
+
   border-radius: 10%;
 }
 
-#projectProposal, #info{
+.projectProposal #info{
   display: block;
 }
-#projectProposal, #one, #four, #eight, #eleven{
+
+.projectProposal #one, #four, #eight, #eleven{
   display: none;
 }
 
-
-
-
-#projectProposal, #buttons{
-  display: flex;
-  justify-content: space-between;
-  padding-left: 10%;
-  padding-right: 10%;
-  margin-top: auto;
+.projectProposal #buttons, #infoButton, #oneButton, #fourButton, #eightButton, #elevenButton{
+  
   background-color: #EAEAEA;
+  display: flex;
+ 
+  height: 100%;
+  align-items: center;
+  padding: 0 8px;
+  
+ 
+}
+.projectProposal #infoButton{
+  background-color: lightblue;
+  width: 60px;
+  height: 100%;
+  align-items: center;
 
+}
+.projectProposal #buttons{
+  /* width: 80%; */
+  /* bottom: 0; */
+ /* height: 8vh; */
+ /* position: absolute; */
+ /* display: flex; */
+ /* justify-content: space-between; */
+ width:80%;
+ position: absolute;
+ right: 0;
+ bottom: 0; 
+ height: 8vh;
+ padding:0;
  
 }
 
-#projectProposal, #button{
+.projectProposal #button{
   background-color: white;
   border-radius: 6px;
   padding: 8px;
   width: 2rem;
   text-align: center;
+  height: 2rem;
+  vertical-align: center;
+  margin-left: 2%;
 }
 
 
-#projectProposal,#nextButton{
+.projectProposal #nextButton{
+  margin-top: auto;
   border-radius: 3px;
   padding: 8px;
   width: 5rem;
@@ -256,10 +281,14 @@
   border: 2px solid #003998;
   color: white;
   float:right;
-  margin-right: 15%;
+  position:absolute;
+  align-self: right;
+  right: 5%;
+  height: 2rem;
+  
 }
 
-#projectProposal,#nextButton:hover{
+.projectProposal #nextButton:hover{
   background-color: white;
   color: black;
 }

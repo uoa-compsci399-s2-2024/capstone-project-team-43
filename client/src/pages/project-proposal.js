@@ -13,64 +13,91 @@ const projectProposal = () => {
         document.getElementById('four').style.display = "none";
         document.getElementById('eight').style.display = "none";
         document.getElementById('eleven').style.display = "none";
+
+        document.getElementById('infoButton').style.backgroundColor = "lightblue";
+        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
     }
     
     const show123 = () => {
-        document.getElementById('one').style.display = "block";
         document.getElementById('info').style.display = "none";
+        document.getElementById('one').style.display = "block";
         document.getElementById('four').style.display = "none";
         document.getElementById('eight').style.display = "none";
         document.getElementById('eleven').style.display = "none";
+
+        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('oneButton').style.backgroundColor = "lightblue";
+        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
     }
 
 
     const show4567 = () => {
-        document.getElementById('four').style.display = "block";
+        
         document.getElementById('info').style.display = "none";
         document.getElementById('one').style.display = "none";
+        document.getElementById('four').style.display = "block";
         document.getElementById('eight').style.display = "none";
         document.getElementById('eleven').style.display = "none";
+
+        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('fourButton').style.backgroundColor = "lightblue";
+        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
     }
 
     const show8910 = () => {
-        document.getElementById('eight').style.display = "block";
+        
         document.getElementById('info').style.display = "none";
         document.getElementById('one').style.display = "none";
         document.getElementById('four').style.display = "none";
+        document.getElementById('eight').style.display = "block";
         document.getElementById('eleven').style.display = "none";
 
+        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('eightButton').style.backgroundColor = "lightblue";
+        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
     }
 
     const show111213 = () => {
-        document.getElementById('eleven').style.display = "block";
+        
         document.getElementById('info').style.display = "none";
         document.getElementById('one').style.display = "none";
         document.getElementById('four').style.display = "none";
         document.getElementById('eight').style.display = "none";
+        document.getElementById('eleven').style.display = "block";
+
+        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
+        document.getElementById('elevenButton').style.backgroundColor = "lightblue";
 
     }
 
     const next = () => {
-
-        if (document.getElementById('info').style.display === 'block') 
+        if (document.getElementById('info').style.display == 'block') 
             {
-                document.getElementById('info').style.display = "none";
-                document.getElementById('one').style.display = "block";
+                show123();
             }
-            else if(document.getElementById('one').style.display === 'block') 
+            else if(document.getElementById('one').style.display == 'block') 
                 {
-                    document.getElementById('one').style.display = "none";
-                    document.getElementById('four').style.display = "block";
+                    show4567();
                 }
-                else if(document.getElementById('four').style.display === 'block') 
+                else if(document.getElementById('four').style.display == 'block') 
                     {
-                        document.getElementById('four').style.display = "none";
-                        document.getElementById('eight').style.display = "block";
+                        show8910(); 
                     }
-                    else if(document.getElementById('eight').style.display === 'block') 
+                    else if(document.getElementById('eight').style.display == 'block') 
                         {
-                            document.getElementById('eight').style.display = "none";
-                            document.getElementById('eleven').style.display = "block";
+                            show111213();
                         }
                     
 
@@ -188,23 +215,28 @@ const projectProposal = () => {
                 </div>
 
                 </form>
-                <br /><br />
+
 
                 <div id="buttons">
-                <button onClick={showinfo} id="button">I</button>
+                    <div id="infoButton">
+                <button onClick={showinfo} id="button">I</button></div>
+                <div id="oneButton">
                 <button onClick={show123} id="button">1</button>
                 <button onClick={show123} id="button">2</button>
-                <button onClick={show123} id="button">3</button>
+                <button onClick={show123} id="button">3</button></div>
+                <div id="fourButton">
                 <button onClick={show4567} id="button">4</button>
                 <button onClick={show4567} id="button">5</button>
                 <button onClick={show4567} id="button">6</button>
-                <button onClick={show4567} id="button">7</button>
+                <button onClick={show4567} id="button">7</button></div>
+                <div id="eightButton">
                 <button onClick={show8910} id="button">8</button>
                 <button onClick={show8910} id="button">9</button>
-                <button onClick={show8910} id="button">10</button>
+                <button onClick={show8910} id="button">10</button> </div>
+                <div id="elevenButton">
                 <button onClick={show111213} id="button">11</button>
                 <button onClick={show111213} id="button">12</button>
-                <button onClick={show111213} id="button">13</button>
+                <button onClick={show111213} id="button">13</button></div>
                 
 
                 <button onClick={next} id="nextButton">Next</button>

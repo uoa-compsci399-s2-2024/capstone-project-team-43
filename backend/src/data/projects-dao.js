@@ -20,7 +20,7 @@ dotenv.config();
  */
 
 //Gets the database name from .env file
-const DBName = process.env.DBName;
+const DB_NAME = process.env.DB_NAME;
 
 /**
  * Gets all projects
@@ -30,10 +30,10 @@ const DBName = process.env.DBName;
 export async function retrieveProjects() {
   let connection;
   try {
-      //Get connection from pool
-      connection = await pool.getConnection();
+    //Get connection from pool
+    connection = await pool.getConnection();
 
-    await connection.query(`USE ${DBName};`);
+    await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT');
     console.log('Rows:', rows);
 
@@ -68,7 +68,7 @@ export async function createProject(title, description, owner, preferred_skills,
     //Get connection from pool
     connection = await pool.getConnection();
 
-    await connection.query(`USE ${DBName};`);
+    await connection.query(`USE ${DB_NAME};`);
 
     //Insert project into db
     const response = await connection.query(
@@ -76,17 +76,17 @@ export async function createProject(title, description, owner, preferred_skills,
       [title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num]
     );
 
-  /** @type {Project} */
-  const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
+    /** @type {Project} */
+    const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
 
-  //If there is a connection, release it
-  if (connection) connection.release();
+    //If there is a connection, release it
+    if (connection) connection.release();
 
-  return project;
+    return project;
 
-} catch (err) {
-  console.error('Error executing query/s:', err);
-}
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+  }
 }
 
 /**
@@ -96,7 +96,7 @@ export async function createProject(title, description, owner, preferred_skills,
  */
 export async function deleteProject(id) {
   try {
-  await pool.query("DELETE FROM Projects WHERE id = ?", id);
+    await pool.query("DELETE FROM Projects WHERE id = ?", id);
   } catch (err) {
     console.error('Error executing query/s:', err);
   }

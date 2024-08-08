@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-//Creates a pool of connections to the database
+// Creates a pool of connections to the database
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
@@ -12,33 +12,33 @@ const pool = mysql.createPool({
   multipleStatements: true
 });
 
-//Gets the database name from .env file
-const DBName = process.env.DBName;
+// Gets the database name from .env file
+const DB_NAME = process.env.DB_NAME;
 
 // Initializes the database, if no such database exists, it calls the create database function
 async function initializeDatabase() {
   let connection;
   try {
 
-    //get a connection from pool to check database
+    // Get a connection from pool to check database
     connection = await pool.getConnection();
 
     // Check if the database exists
-    const [rows] = await connection.query(`SHOW DATABASES LIKE '${DBName}';`);
+    const [rows] = await connection.query(`SHOW DATABASES LIKE '${DB_NAME}';`);
     if (rows.length === 0) {
-      console.log(`Database ${DBName} does not exist.`);
+      console.log(`Database ${DB_NAME} does not exist.`);
 
-      //Database doesn't exist so it calls a function to create one
+      // Database doesn't exist so it calls a function to create one
       await createDatabase();
 
     } else {
-      console.log(`Database ${DBName} already exists.`);
+      console.log(`Database ${DB_NAME} already exists.`);
     }
   } catch (err) {
     console.error('Error when checking for database: ', err.message);
   } finally {
 
-    //If there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
   }
 }
@@ -47,18 +47,18 @@ async function createDatabase() {
   let connection;
   try {
 
-    //Get connection from pool
+    // Get connection from pool
     connection = await pool.getConnection();
 
-    await connection.query(`CREATE DATABASE ${DBName};`);
+    await connection.query(`CREATE DATABASE ${DB_NAME};`);
 
-    console.log(`Database ${DBName} created successfully.`);
+    console.log(`Database ${DB_NAME} created successfully.`);
 
-    //Selects the newly created database
-    await connection.query(`USE ${DBName};`);
+    // Selects the newly created database
+    await connection.query(`USE ${DB_NAME};`);
 
-                // Creates tables and placeholder data
-                const createTablesQuery = `
+    // Creates tables and placeholder data
+    const createTablesQuery = `
                 CREATE TABLE PROJECT (
                   id INT AUTO_INCREMENT PRIMARY KEY,
                   title VARCHAR(255) NOT NULL,
@@ -99,19 +99,19 @@ async function createDatabase() {
                 INSERT INTO project (title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num) 
                 VALUES ('cornerstone','An amazing web solution!','0', NULL, NULL, '2024-08-01 13:35:00','2025 Sem 1','accepted','3','43');`;
 
-                //runs query, if query fails, returns error
-                try {
-                await connection.query(createTablesQuery);
-                console.log('Tables/Data inserted successfully');
-                } catch (err) {
-                  console.err('Error initializing database: ', err.message);
-                }
+    // Runs query, if query fails, returns error
+    try {
+      await connection.query(createTablesQuery);
+      console.log('Tables/Data inserted successfully');
+    } catch (err) {
+      console.err('Error initializing database: ', err.message);
+    }
 
   } catch (err) {
     console.error('Error creating database: ', err.message);
   } finally {
 
-    //If there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
   }
 }

@@ -81,14 +81,14 @@ export async function retrieveRejected() {
  * @param {string} preferred_skills
  * @param {string} project_deliverable
  * @param {Date} created
- * @param {string} expiry
+ * @param {number} semester_id
  * @param {'rejected'|'accepted'|'pending'} status
  * @param {number} max_num_of_groups
  * @param {number} project_num
  *
  * @return the newly created project
  */
-export async function createProject(title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num) {
+export async function createProject(title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) {
   let connection;
   try {
 
@@ -99,8 +99,8 @@ export async function createProject(title, description, owner, preferred_skills,
 
     //Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num]
+      "INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num]
     );
 
     /** @type {Project} */

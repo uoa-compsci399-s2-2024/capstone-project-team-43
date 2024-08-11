@@ -5,8 +5,8 @@ CREATE TABLE PROJECT (
     owner INTEGER NOT NULL,
     preferred_skills VARCHAR(255),
     project_deliverable VARCHAR(255),
-    created DATETIME NOT NULL,
-    expiry VARCHAR(255) NOT NULL,
+    created DATE NOT NULL,
+    semester_id INTEGER NOT NULL,
     status ENUM('rejected', 'accepted', 'pending') NOT NULL,
     max_num_of_groups INTEGER NOT NULL,
     project_num INTEGER NOT NULL
@@ -32,8 +32,15 @@ CREATE TABLE PROJECT_GROUP (
     id INT AUTO_INCREMENT PRIMARY KEY,
     project_id INTEGER NOT NULL,
     group_id INTEGER NOT NULL,
-    created DATETIME NOT NULL
+    created DATE NOT NULL
 );
 
-INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num) 
-VALUES ('cornerstone','An amazing web solution!','0', NULL, NULL, '2024-08-01 13:35:00','2025 Sem 1','accepted','3','43');
+CREATE TABLE SEMESTER_DATES (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    semester_name VARCHAR(255) NOT NULL
+);
+
+INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) 
+VALUES ('cornerstone','An amazing web solution!','0', NULL, NULL, '2024-08-01','1','accepted','3','43');

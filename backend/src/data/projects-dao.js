@@ -46,6 +46,33 @@ export async function retrieveProjects() {
     console.error('Error executing query/s:', err.message);
   }
 }
+
+  
+/**
+ * Gets all rejected projects
+ *
+ * @returns {Promise<Project[]>}
+ */
+export async function retrieveRejected() {
+  let connection;
+  try {
+    //Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = \'rejected\'');
+    console.log('Rows:', rows);
+
+    //if there is a connection, release it
+    if (connection) connection.release();
+
+    return rows;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  }
+}
+
 /**
  * Creates a new project 
  * @param {string} title
@@ -90,6 +117,31 @@ export async function createProject(title, description, owner, preferred_skills,
 }
 
 /**
+ * Updates the project with the given id and status
+ *
+ * @param {number} id the id of the project to update
+ * @param {number} status the new status of the project
+ */
+export async function updateProjectStatus(id, status) {
+  let connection;
+  try {
+
+    //Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    await connection.query("UPDATE `project` SET status = ? WHERE id = ?", [status, id]);
+
+    //If there is a connection, release it
+    if (connection) connection.release();
+
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}
+
+/**
  * Deletes the project with the given id
  *
  * @param {number} id the id of the project to delete
@@ -98,6 +150,6 @@ export async function deleteProject(id) {
   try {
     await pool.query("DELETE FROM Projects WHERE id = ?", id);
   } catch (err) {
-    console.error('Error executing query/s:', err);
+    console.error('Error executing query:', err);
   }
 }

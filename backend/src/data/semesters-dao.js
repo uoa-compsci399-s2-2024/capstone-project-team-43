@@ -17,11 +17,11 @@ const DB_NAME = process.env.DB_NAME;
  * Creates a new semester 
  * @param {Date} start_date
  * @param {Date} end_date
- * @param {string} semester_name //String visualization of semester, ie. "2024 Sem 2"
+ * @param {boolean} semester_name //String visualization of semester, ie. "2024 Sem 2"
  *
  * @return the newly created project
  */
-export async function createSemester(start_date, end_date, semester_name) {
+export async function createSemester(start_date, end_date, semester_one) {
     let connection;
     try {
   
@@ -32,7 +32,7 @@ export async function createSemester(start_date, end_date, semester_name) {
   
       //Insert semester into db
       const response = await connection.query(
-        "INSERT INTO SEMESTER_DATES (start_date, end_date, semester_name) VALUES (?, ?, ?)", [start_date, end_date, semester_name]);
+        "INSERT INTO SEMESTER_DATES (start_date, end_date, semester_one) VALUES (?, ?, ?)", [start_date, end_date, semester_one]);
   
       /** @type {Semester} */
       const semester = await connection.query("SELECT * FROM SEMESTER_DATES WHERE id = ?", [response.insertId]); // insertId is the auto-generated Primary Key value

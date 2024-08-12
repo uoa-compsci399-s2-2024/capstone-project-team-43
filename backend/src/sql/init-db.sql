@@ -39,7 +39,7 @@ CREATE TABLE SEMESTER_DATES (
     id INT AUTO_INCREMENT PRIMARY KEY,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    semester_name VARCHAR(255) NOT NULL
+    semester_one BOOL NOT NULL
 );
 
 INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) 

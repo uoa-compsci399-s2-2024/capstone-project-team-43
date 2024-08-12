@@ -26,14 +26,14 @@ const DB_NAME = process.env.DB_NAME;
 export async function retrieveUsers() {
   let connection;
   try {
-    //Get connection from pool
+    // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM USER');
     console.log('Rows:', rows);
 
-    //if there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
 
     return rows;
@@ -56,12 +56,12 @@ export async function createUser(type, email, password, first_name, last_name, c
   let connection;
   try {
 
-    //Get connection from pool
+    // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
 
-    //Insert User into db
+    // Insert User into db
     const response = await connection.query(
       "INSERT INTO USER (type, email, password, first_name, last_name, company) VALUES (?, ?, ?, ?, ?, ?)",
       [type, email, password, first_name, last_name, company]
@@ -70,7 +70,7 @@ export async function createUser(type, email, password, first_name, last_name, c
     /** @type {User} */
     const User = await connection.query("SELECT * FROM USER WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
 
-    //If there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
 
     return User;
@@ -101,26 +101,26 @@ export async function deleteUser(id) {
  * @param {string} email the new email 
  */
 export async function updateUserEmail(id, email) {
-    try {
-      await pool.query("UPDATE USER SET email = ? WHERE id = ?", [email, id]);
+  try {
+    await pool.query("UPDATE USER SET email = ? WHERE id = ?", [email, id]);
 
-    } catch (err) {
-      console.error('Error executing query/s:', err);
-    }
+  } catch (err) {
+    console.error('Error executing query/s:', err);
   }
+}
 
-  /**
- * Updates the User name
- *
- * @param {number} id the id of the User to delete
- * @param {string} first_name the new first name
- * @param {string} last_name the new first name
- */
+/**
+* Updates the User name
+*
+* @param {number} id the id of the User to delete
+* @param {string} first_name the new first name
+* @param {string} last_name the new first name
+*/
 export async function updateUserName(id, first_name, last_name) {
-    try {
-      await pool.query("UPDATE USER SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
+  try {
+    await pool.query("UPDATE USER SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
 
-    } catch (err) {
-      console.error('Error executing query/s:', err);
-    }
+  } catch (err) {
+    console.error('Error executing query/s:', err);
   }
+}

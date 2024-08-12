@@ -18,7 +18,7 @@ dotenv.config();
  * @property {number} project_num
  */
 
-//Gets the database name from .env file
+// Gets the database name from .env file
 const DB_NAME = process.env.DB_NAME;
 
 /**
@@ -29,14 +29,14 @@ const DB_NAME = process.env.DB_NAME;
 export async function retrieveProjects() {
   let connection;
   try {
-    //Get connection from pool
+    // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT');
     console.log('Rows:', rows);
 
-    //if there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
 
     return rows;
@@ -46,7 +46,7 @@ export async function retrieveProjects() {
   }
 }
 
-  
+
 /**
  * Gets all status projects
  * @param {string} status
@@ -55,14 +55,14 @@ export async function retrieveProjects() {
 export async function retrieveStatusProject(status) {
   let connection;
   try {
-    //Get connection from pool
+    // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
     console.log('Rows:', rows);
 
-    //if there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
 
     return rows;
@@ -91,12 +91,12 @@ export async function createProject(title, description, owner, preferred_skills,
   let connection;
   try {
 
-    //Get connection from pool
+    // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
 
-    //Insert project into db
+    // Insert project into db
     const response = await connection.query(
       "INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num]
@@ -105,7 +105,7 @@ export async function createProject(title, description, owner, preferred_skills,
     /** @type {Project} */
     const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
 
-    //If there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
 
     return project;
@@ -125,14 +125,14 @@ export async function updateProjectStatus(id, status) {
   let connection;
   try {
 
-    //Get connection from pool
+    // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
 
     await connection.query("UPDATE `project` SET status = ? WHERE id = ?", [status, id]);
 
-    //If there is a connection, release it
+    // If there is a connection, release it
     if (connection) connection.release();
 
   } catch (err) {

@@ -17,9 +17,10 @@ CREATE TABLE USER (
     type ENUM('admin', 'student', 'client') NOT NULL,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    company_name VARCHAR(255),
-    created DATETIME NOT NULL
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
+    company VARCHAR(255),
+    created DATE DEFAULT CURRENT_DATE
 );
 
 CREATE TABLE USER_GROUP (
@@ -44,3 +45,12 @@ CREATE TABLE SEMESTER_DATES (
 
 INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) 
 VALUES ('cornerstone','An amazing web solution!','0', NULL, NULL, '2024-08-01','1','accepted','3','43');
+
+INSERT INTO USER (type, email, password, first_name, last_name)
+VALUES ('student', 'test1@gmail.com', '12345', 'fname1', 'lname1');
+
+INSERT INTO USER (type, email, password, first_name, last_name)
+VALUES ('admin', 'test2@gmail.com', '12345', 'fname2', 'lname2');
+
+INSERT INTO USER (type, email, password, first_name, last_name, company)
+VALUES ('client', 'test3@gmail.com', '12345', 'fname3', 'lname3', 'testcompany');

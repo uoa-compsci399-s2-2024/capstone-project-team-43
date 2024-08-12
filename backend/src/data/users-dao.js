@@ -13,7 +13,7 @@ const DB_NAME = process.env.DB_NAME;
  * @property {string} email
  * @property {string} first_name
  * @property {string} last_name
- * @property {string} company_name
+ * @property {string} company
  * @property {Date} created
  * @property {Date} last_login
  */
@@ -30,7 +30,7 @@ export async function retrieveUsers() {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM User');
+    const [rows] = await connection.query('SELECT * FROM USER');
     console.log('Rows:', rows);
 
     //if there is a connection, release it
@@ -46,14 +46,13 @@ export async function retrieveUsers() {
  * Creates a new User 
  * @param {'admin'|'student'|'client'} type
  * @param {string} email
+ * @param {string} password
  * @param {string} first_name
  * @param {string} last_name
- * @param {Date} created
- * @param {Date} last_login
- *
+ * @param {string} company
  * @return the newly created User
  */
-export async function createUser(type, email, first_name, last_name, created, last_login) {
+export async function createUser(type, email, password, first_name, last_name, company) {
   let connection;
   try {
 
@@ -64,12 +63,12 @@ export async function createUser(type, email, first_name, last_name, created, la
 
     //Insert User into db
     const response = await connection.query(
-      "INSERT INTO User (type, email, first_name, last_name, created, last_login) VALUES (?, ?, ?, ?, ?, ?)",
-      [type, email, first_name, last_name, created, last_login]
+      "INSERT INTO USER (type, email, password, first_name, last_name, company) VALUES (?, ?, ?, ?, ?, ?)",
+      [type, email, password, first_name, last_name, company]
     );
 
     /** @type {User} */
-    const User = await connection.query("SELECT * FROM User WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
+    const User = await connection.query("SELECT * FROM USER WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
 
     //If there is a connection, release it
     if (connection) connection.release();
@@ -88,7 +87,7 @@ export async function createUser(type, email, first_name, last_name, created, la
  */
 export async function deleteUser(id) {
   try {
-    await pool.query("DELETE FROM Users WHERE id = ?", id);
+    await pool.query("DELETE FROM USER WHERE id = ?", id);
   } catch (err) {
     console.error('Error executing query/s:', err);
   }
@@ -103,7 +102,7 @@ export async function deleteUser(id) {
  */
 export async function updateUserEmail(id, email) {
     try {
-      await pool.query("UPDATE Users SET email = ? WHERE id = ?", [email, id]);
+      await pool.query("UPDATE USER SET email = ? WHERE id = ?", [email, id]);
 
     } catch (err) {
       console.error('Error executing query/s:', err);
@@ -119,7 +118,7 @@ export async function updateUserEmail(id, email) {
  */
 export async function updateUserName(id, first_name, last_name) {
     try {
-      await pool.query("UPDATE Users SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
+      await pool.query("UPDATE USER SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
 
     } catch (err) {
       console.error('Error executing query/s:', err);

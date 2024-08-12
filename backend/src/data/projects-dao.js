@@ -16,7 +16,6 @@ dotenv.config();
  * @property {'rejected'|'accepted'|'pending'} status
  * @property {number} max_num_of_groups
  * @property {number} project_num
- * 
  */
 
 //Gets the database name from .env file
@@ -49,18 +48,18 @@ export async function retrieveProjects() {
 
   
 /**
- * Gets all rejected projects
- *
+ * Gets all status projects
+ * @param {string} status
  * @returns {Promise<Project[]>}
  */
-export async function retrieveRejected() {
+export async function retrieveStatusProject(status) {
   let connection;
   try {
     //Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = \'rejected\'');
+    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
     console.log('Rows:', rows);
 
     //if there is a connection, release it

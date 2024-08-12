@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { retrieveProjects, createProject, deleteProject, retrieveRejected, updateProjectStatus } from "../../data/projects-dao.js";
+import { retrieveProjects, createProject, deleteProject, updateProjectStatus, retrieveStatusProject } from "../../data/projects-dao.js";
 
 const router = Router();
 
@@ -8,9 +8,10 @@ router.get("/", async (req, res) => {
     return res.json(await retrieveProjects())
 });
 
-// retrieves all rejected projects
-router.get("/rejected", async (req, res) => {
-    return res.json(await retrieveRejected())
+// retrieves all given status projects
+router.get("/status/:status_name", async (req, res) => {
+    const status = req.params.status_name;
+    return res.json(await retrieveStatusProject(status))
 });
 
 // updates status of project with given status

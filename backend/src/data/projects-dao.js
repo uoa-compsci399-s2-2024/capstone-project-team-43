@@ -146,8 +146,15 @@ export async function updateProjectStatus(id, status) {
  * @param {number} id the id of the project to delete
  */
 export async function deleteProject(id) {
+  let connection;
+
+  // Get connection from pool
+  connection = await pool.getConnection();
+
+  await connection.query(`USE ${DB_NAME};`);
+
   try {
-    await pool.query("DELETE FROM Projects WHERE id = ?", id);
+    await connection.query("DELETE FROM PROJECT WHERE id = ?", id);
   } catch (err) {
     console.error('Error executing query:', err);
   }

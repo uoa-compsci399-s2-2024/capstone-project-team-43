@@ -14,6 +14,34 @@ const DB_NAME = process.env.DB_NAME;
  */
 
 /**
+ * Gets a semester given an id
+ *
+ * @returns {Promise<Semester>}
+ */
+export async function retrieveSemester(id) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    /** @type {Semester} */
+    const semester = await connection.query('SELECT * FROM SEMESTER_DATES WHERE id = ?', [id]);
+
+    console.log('Semester:', semester);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+    return semester;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  }
+}
+
+/**
  * Creates a new semester 
  * @param {Date} start_date
  * @param {Date} end_date
@@ -47,8 +75,49 @@ export async function createSemester(start_date, end_date, semester_one) {
   }
 }
 
-// TODO: Implement Delete Semester
+/**
+ * Updates the project with the given id and status
+ *
+ * @param {number} id // The id of the semester to update
+ * @param {Date} start_date // The new start_date of semester
+ * @param {Date} end_date // The new end_date of semester
+ * @param {boolean} semester_one // Boolean if its semester one or not
+ */
+export async function updateSemester(id, start_date, end_date, semester_one) {
+  let connection;
+  try {
 
-// TODO: Implement Update Semester
+    // Get connection from pool
+    connection = await pool.getConnection();
 
-// TODO: Implement Get Semester
+    await connection.query(`USE ${DB_NAME};`);
+
+    await connection.query("UPDATE SEMESTER_DATES SET start_date = ?, end_date = ?, semester_one = ? WHERE id = ?", [start_date, end_date, semester_one, id]);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}
+
+/**
+ * Deletes the semester with the given id
+ *
+ * @param {number} id the id of the semester to delete
+ */
+export async function deleteSemester(id) {
+  let connection;
+
+  // Get connection from pool
+  connection = await pool.getConnection();
+
+  await connection.query(`USE ${DB_NAME};`);
+
+  try {
+    await connection.query("DELETE FROM SEMESTER_DATES WHERE id = ?", id);
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}

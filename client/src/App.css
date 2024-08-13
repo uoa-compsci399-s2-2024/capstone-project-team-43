@@ -341,3 +341,18 @@ input[type=text]{
   position:relative;
   margin-left: -94vw;
 }
+
+#onsubmission{
+  background-color: #2979FF;
+  color: white;
+  text-align: center;
+}
+
+#return button{
+  background-color: #003998;
+  color: white;
+  width: 10vw;
+  border: 1px solid #003998;
+  border-radius: 10px;
+  height: 5vh;
+}

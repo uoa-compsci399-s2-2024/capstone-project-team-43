@@ -83,19 +83,19 @@ const projectProposal = () => {
     }
 
     const next = () => {
-        if (document.getElementById('info').style.display == 'block') 
+        if (document.getElementById('info').style.display === 'block') 
             {
                 show123();
             }
-            else if(document.getElementById('one').style.display == 'block') 
+            else if(document.getElementById('one').style.display === 'block') 
                 {
                     show4567();
                 }
-                else if(document.getElementById('four').style.display == 'block') 
+                else if(document.getElementById('four').style.display === 'block') 
                     {
                         show8910(); 
                     }
-                    else if(document.getElementById('eight').style.display == 'block') 
+                    else if(document.getElementById('eight').style.display === 'block') 
                         {
                             show111213();
                         }

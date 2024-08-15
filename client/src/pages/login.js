@@ -4,7 +4,7 @@ import React from "react";
 import '../App.css';
 
 
-const Login = () => {
+const login = () => {
     return(
     <div className="login">
         <div className="login-left">
@@ -38,4 +38,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default login;

@@ -44,7 +44,13 @@ CREATE TABLE SEMESTER_DATES (
 );
 
 INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) 
-VALUES ('cornerstone','An amazing web solution!','0', NULL, NULL, '2024-08-01','1','accepted','3','43');
+VALUES ('testproj1','An amazing web solution!','0', NULL, NULL, '2024-08-01','1','accepted','3','43');
+
+INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) 
+VALUES ('testproj2','A bad web solution!','0', NULL, NULL, '2024-08-01','1','rejected','3','43');
+
+INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) 
+VALUES ('testproj3','Maybe an amazing web solution!','0', NULL, NULL, '2024-08-01','1','pending','3','43');
 
 INSERT INTO USER (type, email, password, first_name, last_name)
 VALUES ('student', 'test1@gmail.com', '12345', 'fname1', 'lname1');

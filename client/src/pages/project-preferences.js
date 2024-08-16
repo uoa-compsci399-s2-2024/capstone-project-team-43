@@ -1,6 +1,6 @@
 import React from "react";
 import '../App.css';
-
+import { Link } from "react-router-dom";
 const ProjectPreferences = ()=>{
 
     const submit =() =>{
@@ -34,7 +34,7 @@ const ProjectPreferences = ()=>{
                 <h2>Your project preferences have been submitted!</h2>
                 <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
                 <div id = "return">
-                <button>Return to Projects</button>
+                <Link to="/pages/projects-available"><button>Return to Projects</button></Link>
                 <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
                 </div>
             </div>

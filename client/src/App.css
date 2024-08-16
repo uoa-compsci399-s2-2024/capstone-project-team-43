@@ -391,6 +391,7 @@
   background-color: #2979FF;
   color: white;
   text-align: center;
+  display: none;
 }
 
 #return button{

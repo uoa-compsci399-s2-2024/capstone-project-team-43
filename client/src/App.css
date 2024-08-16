@@ -166,87 +166,132 @@
 
 /**           PROJECT PROPOSAL FORM             **/
 
+/* need to take nav height off total height */
 
-
-.proposal-left{
+.projectProposal .proposal-left{
   background-color: #2979FF;
-  width: 50%;
+  width: 20%;
   display: flex;
   float: left;
-  height: 100vh;
+  height: 85vh;
 }
 
-.proposal-right{
+.projectProposal .proposal-right{
   background-color: white;
-  width: 50%;
+  width: 80%;
   float: right;
-  height: 100vh;
+  height: 77vh;
+  padding-bottom: 80px;
 }
 
-h1{
+.projectProposal h1{
   text-align: left;
   margin-top: 3%;
   padding-left: 5%;
 }
 
-.propForm1{
-
+.projectProposal .proposalForm{
   margin-left: 5%;
-  position: absolute;
+  bottom: none;
 }
 
 
-input[type=text], select{
-  border: 1.5px, solid, #2979FF;
-  margin-left: 3%;
-  
+.projectProposal input[type=text], select{
+  border: 2px, solid, #003998;
+  border-radius: 3px;
 
 }
 
-input[type=text]{
-  width: 38vw;
+.projectProposal input[type=text]{
+  width: 50%;
   padding: 4px;
   margin-top: 8px;
   
 }
 
+.projectProposal input[type=radio], select{
 
-#four{
+  height: 14px;
+  width: 14px;
+
+  border-radius: 10%;
+}
+
+.projectProposal #info{
+  display: block;
+}
+
+.projectProposal #one, #four, #eight, #eleven{
   display: none;
 }
 
-#eight{
-  display: none;
-}
-
-#eleven{
-  display: none;
-}
-
-#button-container{
- background-color:lightgray;
- margin-top: 45vh;
- height: 33.6vh;
-}
-
-#buttons{
-  box-sizing: border-box;
+.projectProposal #buttons, #infoButton, #oneButton, #fourButton, #eightButton, #elevenButton{
+  
+  background-color: #EAEAEA;
   display: flex;
-  justify-content: space-between;
-  padding-left: 10%;
-  padding-right: 10%;
-  margin-bottom: 15%;
-  padding-top: 3%;
+ 
+  height: 100%;
+  align-items: center;
+  padding: 0 8px;
+  
+ 
+}
+.projectProposal #infoButton{
+  background-color: lightblue;
+  width: 60px;
+  height: 100%;
+  align-items: center;
+
+}
+.projectProposal #buttons{
+  /* width: 80%; */
+  /* bottom: 0; */
+ /* height: 8vh; */
+ /* position: absolute; */
+ /* display: flex; */
+ /* justify-content: space-between; */
+ width:80%;
+ position: absolute;
+ right: 0;
+ bottom: 0; 
+ height: 8vh;
+ padding:0;
+ 
 }
 
-#button{
+.projectProposal #button{
+  background-color: white;
   border-radius: 6px;
   padding: 8px;
   width: 2rem;
   text-align: center;
-  border: 0.5px solid gray;
-  border-bottom: 2px solid grey;
+  height: 2rem;
+  vertical-align: center;
+  margin-left: 2%;
+}
+
+
+.projectProposal #nextButton{
+  margin-top: auto;
+  border-radius: 3px;
+  padding: 8px;
+  width: 5rem;
+  text-align: center;
+  background-color:#003998;
+  transition-duration: 0.4s;
+  border: 2px solid #003998;
+  color: white;
+  float:right;
+  position:absolute;
+  align-self: right;
+  right: 5%;
+  height: 2rem;
+  
+}
+
+.projectProposal #nextButton:hover{
   background-color: white;
+  color: black;
 }
 
 /**           PROJECT PREFERENCE FORM             **/
@@ -356,3 +401,63 @@ input[type=text]{
   border-radius: 10px;
   height: 5vh;
 }
+
+
+/**           PROJECTS STUDENT VIEW           **/
+
+.projectsAvailable{
+  height: 100%;
+  /* background-color: aquamarine; */
+  padding: 5%;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.projectsAvailable .project{
+  width: 75%;
+  height: 150px;
+  padding: 1%;
+  background-color: white;
+  margin: 2%;
+  border-radius: 10px;
+  border: 1px solid #003998;
+
+}
+
+.projectsAvailable #projectNum{
+  /* position: absolute; */
+  float:left;
+  display: flex;
+  /* padding:2%; */
+  width: 20%;
+  height: 50px;
+  border-bottom: 1px solid #003998;
+  border-right: 1px solid #003998;
+  margin-left: -4px;
+  margin-top: -4px;
+  /* padding-top: 8px; */
+  /* padding-left: 8px; */
+}
+
+.projectsAvailable #projectName{
+  /* position: absolute; */
+  display: flex;
+  /* padding:2%; */
+  /* background-color: yellow; */
+  width: 81%;
+  height: 50px;
+  border-bottom: 1px solid #003998;
+  /* border-right: 1px solid #003998; */
+  /* margin-left: -4px; */
+  /* margin-top: -4px; */
+  /* padding-top: 8px; */
+  /* padding-left: 8px; */
+  /* width: 141px; */
+  /* padding-top: 2%; */
+  /* padding-bottom: 2%; */
+  text-align: center;
+  margin-top: -4px;
+  margin-right:-4px;
+
+}
+

@@ -8,7 +8,12 @@ const login = () => {
     return(
     <div className="login">
         <div className="login-left">
-            
+            <div id="viewcap">
+                <h3>Want to view previous 
+                    <br></br>
+                Computer Science Capstone projects?</h3>
+                <button><a href="https://www.capitalise.space/">VISIT CAPITALISE</a></button>
+            </div>
         </div>
 
         <div className="login-right">

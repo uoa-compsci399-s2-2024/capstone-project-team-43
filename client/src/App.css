@@ -37,6 +37,38 @@
   display: flex;
   float: left;
   height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-left #viewcap{
+  background-color: white;
+  align-items: center;
+  width: 70%;
+  height: 50%;
+  text-align: center;
+  justify-content: center;
+}
+
+.login-left #viewcap button{
+  color: white;
+  background-color: #003998;
+  min-width: 25.85vw;
+  float:center;
+  padding: 2%;
+  border-radius: 3px;
+  border-style: hidden;
+}
+.login-left #viewcap a{
+  color: white;
+  text-decoration: none;
+}
+
+.login-left button:hover{
+  min-width: 25.85vw;
+  float:center;
+  text-decoration: underline;
+  
 }
 
 .login hr{

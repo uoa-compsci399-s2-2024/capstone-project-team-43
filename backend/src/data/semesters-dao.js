@@ -42,6 +42,31 @@ export async function retrieveSemester(id) {
 }
 
 /**
+ * Gets all semesters
+ *
+ * @returns {Promise<Semester[]>}
+ */
+export async function retrieveSemesters() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+    const [rows] = await connection.query('SELECT * FROM SEMESTER_DATES');
+    console.log('Rows:', rows);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+    return rows;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  }
+}
+
+/**
  * Creates a new semester 
  * @param {Date} start_date
  * @param {Date} end_date

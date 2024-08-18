@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSemester, deleteSemester, retrieveSemester, updateSemester } from "../../data/semesters-dao.js";
+import { createSemester, deleteSemester, retrieveSemester, updateSemester, retrieveSemesters } from "../../data/semesters-dao.js";
 
 const router = Router();
 
@@ -7,6 +7,11 @@ const router = Router();
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     return res.json(await retrieveSemester(id))
+});
+
+// Retrieves all semesters
+router.get("/", async (req, res) => {
+    return res.json(await retrieveSemesters())
 });
 
 // Creates a new semester with start and end dates
@@ -28,8 +33,6 @@ router.post("/:id", async (req, res) => {
     const success = updateSemester(id, start_date, end_date, semester_one);
     res.sendStatus(success ? 204 : 404);
 });
-
-//TODO: Add route to change details of semester
 
 // Deletes the semester with the given ID
 router.delete("/:id", async (req, res) => {

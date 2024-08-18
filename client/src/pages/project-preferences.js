@@ -1,19 +1,31 @@
 import React from "react";
 import '../App.css';
 import { Link } from "react-router-dom";
+import Project from "../components/project";
+
 const ProjectPreferences = ()=>{
+
+    let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
+
+    let itemList=[];
+
+    items.forEach((item)=>{
+      itemList.push(
+         <Project name={item}/>
+        )
+    })
 
     const submit =() =>{
         document.getElementById('projectPreferenceselements').style.display = "none";
-        document.getElementById('onsubmission').style.display = "block";
+        document.getElementById('onsubmission').style.display = "flex";
     }
 
     return(
-        <div>
-            <div className="projectPreferences" id = "projectPreferenceselements">
+        <div className="projectPreferences">
+            <div id = "projectPreferenceselements">
                 <h2>Project Preferences</h2>
-                <br></br>
                 <div className="preferenceProjects">
+                {itemList}
                 </div>
                 <div id="sidebuttons">
                     <button>1</button>
@@ -32,10 +44,11 @@ const ProjectPreferences = ()=>{
             </div>
             <div id = "onsubmission">
                 <h2>Your project preferences have been submitted!</h2>
-                <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+                <div id = "chosenProjects">
+                {itemList}
+                </div>
                 <div id = "return">
                 <Link to="/pages/projects-available"><button>Return to Projects</button></Link>
-                <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
                 </div>
             </div>
         </div>

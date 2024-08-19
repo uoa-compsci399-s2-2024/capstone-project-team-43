@@ -8,7 +8,7 @@ function Projects(props){
     return(
         <div className="project">
             <div id="projectNum">
-            <h2>17</h2>
+            {props.id}
             </div>
 
             <div id="projectName">
@@ -17,9 +17,6 @@ function Projects(props){
 
             <div id="projectDescription">
                 {props.description}
-            {/* a paragraph of information on the project and its basic deliverables
-            a paragraph of information on the project and its basic deliverables
-            a paragraph of information on the project and its basic deliverables */}
             </div>
 
         </div>

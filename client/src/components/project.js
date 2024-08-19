@@ -16,9 +16,10 @@ function Projects(props){
             </div>
 
             <div id="projectDescription">
+                {props.description}
+            {/* a paragraph of information on the project and its basic deliverables
             a paragraph of information on the project and its basic deliverables
-            a paragraph of information on the project and its basic deliverables
-            a paragraph of information on the project and its basic deliverables
+            a paragraph of information on the project and its basic deliverables */}
             </div>
 
         </div>

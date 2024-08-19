@@ -4,8 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon ./src/app.js",
-    "start": "node ./src/app.js"
+    "start": "node ./src/app.js",
+    "client": "cd ../client && npm start",
+    "dev": "concurrently \"npm run client\" \"npm run backend\"",
+    "backend": "nodemon ./src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -18,5 +20,8 @@
     "express": "^4.19.2",
     "mysql2": "^3.11.0",
     "nodemon": "^3.1.4"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
   }
 }

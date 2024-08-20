@@ -160,7 +160,6 @@
 
 
 .projects{
-
   gap:2rem;
   align-items: center;
 }
@@ -194,6 +193,60 @@
   border-left: solid 1px;
   border-color: black;
 }
+
+
+.projects .project{
+  background-color: white;
+  margin: 1%;
+  border-radius: 10px;
+  border: 1px solid #003998;
+  text-align:left;
+  max-width: 18vw;
+  max-height: 28vh;
+  min-height: fit-content;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+
+}
+
+.projects #projectDescription{
+  margin-left: 5%;
+  font-size:small;
+  overflow: auto;
+  display: inline-flex;
+}
+
+.projects #projectNum{
+  float:left;
+  display:inline-flex;
+  width: 20%;
+  height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  border-right: 1px solid #003998;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.projects #projectName{
+  display:inline-flex;
+  width: 79.7%;
+  height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  float: right;
+  padding: 0;
+  margin: 0;
+
+}
+
+
 
 
 /**           PROJECT PROPOSAL FORM             **/

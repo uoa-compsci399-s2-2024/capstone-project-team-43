@@ -11,7 +11,7 @@ const projectProposal = () => {
 
     const next = () =>{
 
-       if(document.getElementById("check1").checked == false || document.getElementById("check2").checked == false){
+       if(document.getElementById("check1").checked === false || document.getElementById("check2").checked === false){
             alert("Please read the information and confirm availability before proceeding.");
        }else{
             document.getElementById('next').style.display = "none";
@@ -33,6 +33,7 @@ const projectProposal = () => {
     return(
         
             <div className="projectProposal">
+                <h1> Computer Science Capston Project Proposal Form</h1>
                 <div id="proposalInformation">
                 <h3>Deadline</h3>
 
@@ -72,7 +73,7 @@ const projectProposal = () => {
             
             <form className="proposalForm" id="proposalForm">
                 <div id="proposalContent">
-                <h1> Computer Science Capston Project Proposal Form</h1>
+                
  
                 <label>
                     <h3>1. Main client's (applicant's) name* </h3>

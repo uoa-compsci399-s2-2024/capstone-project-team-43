@@ -7,108 +7,18 @@ import '../App.css';
 
 const projectProposal = () => {
 
-    // const showinfo = () => {
-    //     document.getElementById('info').style.display = "block";
-    //     document.getElementById('one').style.display = "none";
-    //     document.getElementById('four').style.display = "none";
-    //     document.getElementById('eight').style.display = "none";
-    //     document.getElementById('eleven').style.display = "none";
 
-    //     document.getElementById('infoButton').style.backgroundColor = "lightblue";
-    //     document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
-    // }
-    
-    // const show123 = () => {
-    //     document.getElementById('info').style.display = "none";
-    //     document.getElementById('one').style.display = "block";
-    //     document.getElementById('four').style.display = "none";
-    //     document.getElementById('eight').style.display = "none";
-    //     document.getElementById('eleven').style.display = "none";
-
-    //     document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('oneButton').style.backgroundColor = "lightblue";
-    //     document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
-    // }
-
-
-    // const show4567 = () => {
-        
-    //     document.getElementById('info').style.display = "none";
-    //     document.getElementById('one').style.display = "none";
-    //     document.getElementById('four').style.display = "block";
-    //     document.getElementById('eight').style.display = "none";
-    //     document.getElementById('eleven').style.display = "none";
-
-    //     document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('fourButton').style.backgroundColor = "lightblue";
-    //     document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
-    // }
-
-    // const show8910 = () => {
-        
-    //     document.getElementById('info').style.display = "none";
-    //     document.getElementById('one').style.display = "none";
-    //     document.getElementById('four').style.display = "none";
-    //     document.getElementById('eight').style.display = "block";
-    //     document.getElementById('eleven').style.display = "none";
-
-    //     document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('eightButton').style.backgroundColor = "lightblue";
-    //     document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
-    // }
-
-    // const show111213 = () => {
-        
-    //     document.getElementById('info').style.display = "none";
-    //     document.getElementById('one').style.display = "none";
-    //     document.getElementById('four').style.display = "none";
-    //     document.getElementById('eight').style.display = "none";
-    //     document.getElementById('eleven').style.display = "block";
-
-    //     document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-    //     document.getElementById('elevenButton').style.backgroundColor = "lightblue";
-
-    // }
-
-    // const next = () => {
-    //     if (document.getElementById('info').style.display === 'block') 
-    //         {
-    //             show123();
-    //         }
-    //         else if(document.getElementById('one').style.display === 'block') 
-    //             {
-    //                 show4567();
-    //             }
-    //             else if(document.getElementById('four').style.display === 'block') 
-    //                 {
-    //                     show8910(); 
-    //                 }
-    //                 else if(document.getElementById('eight').style.display === 'block') 
-    //                     {
-    //                         show111213();
-    //                     }
-                    
-
-
-    // }
 
     const next = () =>{
-        document.getElementById('next').style.display = "none";
-        document.getElementById('back').style.display = "block";
-        document.getElementById('proposalContent').style.display = "block";
-        document.getElementById('proposalInformation').style.display = "none";
+
+       if(document.getElementById("check1").checked == false || document.getElementById("check2").checked == false){
+            alert("Please read the information and confirm availability before proceeding.");
+       }else{
+            document.getElementById('next').style.display = "none";
+            document.getElementById('back').style.display = "block";
+            document.getElementById('proposalContent').style.display = "block";
+            document.getElementById('proposalInformation').style.display = "none";
+       }
     }
 
     const back = () =>{
@@ -149,30 +59,30 @@ const projectProposal = () => {
                 <p>
                 The teaching team will aim to arrange meetings with the students at times that best suit your schedule. You can attend the meetings either in person or via Zoom (or Teams). The details and schedule of the meetings will be arranged at the beginning of the semester and will cover the entire duration of the course.
                 </p>
-                <input type="checkbox" id="check" value="check"  required/>
+                <input type="checkbox" id="check1" value="check"  required/>
                 I confirm that I will be able to attend 6 meetings with students, scheduled 2-3 weeks apart.<br />
 
            
                 <h3>Final presentation attendance:</h3>
                 <p>The teaching team will aim to arrange the final presentation at a time that best suits your schedule. The final presentation will be held on the UoA Main Campus and must be attended in person.</p>
-                <input type="checkbox" id="check" value="check" required/>
+                <input type="checkbox" id="check2" value="check" required/>
                 I confirm that I will be able to attend final presentation in-person.<br />
                 </div>
 
             
-            <form className="proposalForm">
+            <form className="proposalForm" id="proposalForm">
                 <div id="proposalContent">
                 <h1> Computer Science Capston Project Proposal Form</h1>
  
                 <label>
                     <h3>1. Main client's (applicant's) name* </h3>
                     <p>Please provide your name.</p>
-                    <input type="text" placeholder="Enter your answer"/>
+                    <input type="text" placeholder="Enter your answer" required/>
                 </label>
                 <label>
                     <h3>2. Main client's (applicant's) email* </h3>
                     <p>Please provide your email.</p>
-                    <input type="text" placeholder="Enter your answer"/>
+                    <input type="text" placeholder="Enter your answer" required/>
                 </label>
                 <label>
                     <h3>3. Other clients' details</h3>
@@ -182,17 +92,17 @@ const projectProposal = () => {
                 <label>
                     <h3>4. Project title* </h3>
                     <p>Please provide an informative project title.</p>
-                    <input type="text" placeholder="Enter your answer"/>
+                    <input type="text" name="title" placeholder="Enter your answer" required/>
                 </label>
                 <label>
                     <h3>5. Project description* </h3>
                     <p>Please provide a short description (3-10 sentences) of the project.</p>
-                    <textarea placeholder="Enter your answer" />
+                    <textarea placeholder="Enter your answer" required/>
                 </label>
                 <label>
                     <h3>6. Desired output*</h3>
                     <p>Please identify the features that will constitute the MVP (minimum viable product).</p>
-                    <textarea placeholder="Enter your answer" />
+                    <textarea placeholder="Enter your answer" required/>
                 </label>
                 <label>
                     <h3>7. Special equipment requirements*</h3>
@@ -231,54 +141,22 @@ const projectProposal = () => {
                     <h3>11. Project offering timeframe*</h3>
                     <p>Please specify the semester which you would like your project to be offered.</p>
 
-                    <select name="languages" id="timeframe">
-                        <option value="">This sem</option>
+                    <select name="languages" id="timeframe" required>
+                        <option value="">Select</option>
+                        <option value="">this sem</option>
                         <option value="">next sem</option>
                         <option value="">2 from current</option>
                         <option value="">3 from current</option>
                     </select>
                 </label>             
                 </div> 
-            </form>
-
-            
+            </form>  
             <div id="proposalButtons">
                 <button onClick={next} id="next">Next</button>
                 <button onClick={back} id="back">Back</button>
-                <input id="submit" form="proposalForm" type="submit" name="submit"/>
+                <button id="submit" form="proposalForm" type="submit">Submit</button>
+                
             </div>
-
-            
-
-                
-
-                {/* <div id="buttons">
-                    <div id="infoButton">
-                <button onClick={showinfo} id="button">I</button></div>
-                <div id="oneButton">
-                <button onClick={show123} id="button">1</button>
-                <button onClick={show123} id="button">2</button>
-                <button onClick={show123} id="button">3</button></div>
-                <div id="fourButton">
-                <button onClick={show4567} id="button">4</button>
-                <button onClick={show4567} id="button">5</button>
-                <button onClick={show4567} id="button">6</button>
-                <button onClick={show4567} id="button">7</button></div>
-                <div id="eightButton">
-                <button onClick={show8910} id="button">8</button>
-                <button onClick={show8910} id="button">9</button>
-                <button onClick={show8910} id="button">10</button> </div>
-                <div id="elevenButton">
-                <button onClick={show111213} id="button">11</button>
-                <button onClick={show111213} id="button">12</button>
-                <button onClick={show111213} id="button">13</button></div>
-                
-
-                <button onClick={next} id="nextButton">Next</button>
-                
-                </div> */}
-
-
         </div>
         
         

@@ -546,7 +546,8 @@
 
 /**           PROJECTS STUDENT VIEW           **/
 
-.projectsAvailable{
+.projectsAvailable ul{
+  list-style-type: none; /* gets rid of bullet points */
   height: 100%;
   /* background-color: aquamarine; */
   padding: 5%;

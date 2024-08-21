@@ -1,31 +1,37 @@
 
-import React from "react";
-
+import React, { useEffect, useState } from 'react';
 import '../App.css';
+import { fetchProjects } from '../Api.js'
 
-import Project from "../components/project";
+const ProjectsAvailable = () => {
 
+    const [projects, setProjects] = useState([]);
 
-const projectsAvailable = () => {
-    let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
-
-    let itemList=[];
-
-    items.forEach((item)=>{
-      itemList.push(
-         <Project name={item}/>
-        )
-    })
+    // get data onall accepted projects 
+    useEffect(() => {
+        async function getProjects() {
+            try {
+                const data = await fetchProjects('accepted');
+                setProjects(data);
+            } catch (error) {
+                console.error('Failed to load projects:', error);
+            }
+        }
+        getProjects();
+    }, []);
 
     return(
         <div className="projectsAvailable">
-
-        {itemList}
-
-        </div>
-
-        
+            <ul>
+                {projects.map(project => (
+                    <li key={project.id} className="project">
+                        <h2 id="projectName">{project.title}</h2>
+                        <p>{project.description}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>    
     );
 };
 
-export default projectsAvailable;
+export default ProjectsAvailable;

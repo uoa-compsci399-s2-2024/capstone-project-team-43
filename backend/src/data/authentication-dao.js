@@ -11,25 +11,8 @@ dotenv.config();
 const DB_NAME = process.env.DB_NAME;
 
 /**
- * TODO: (Create login method) Implement a method that fetches a user from USER table, 
- * if a user doesn't exist, return "Invalid login details"
- */
-
-/**
- * TODO: (Create register method for student) Implement a method that fetches a user from USER table, 
- * if a user doesn't exist OR date created attribute is NULL,
- * return "Invalid login details/you are not enrolled for capstone"
- */
-
-/**
- * TODO: (Create register method for client) Implement a method that creates a new client user.
- */
-
-/**
  * TODO: Create logout method
  */
-
-
 
 /**
  * @typedef {object} User // Defines user class
@@ -44,10 +27,10 @@ const DB_NAME = process.env.DB_NAME;
  */
 
 // Attempts to log the user in with given email & password, if such a user exists it returns a session token
-export async function generateToken(email, password) {
+export async function generateToken(email, password, checkIfRegisterd) {
 
     // Validate user here
-    const userid = await validateUser(email, password);
+    const userid = await validateUser(email, password, checkIfRegisterd);
 
     if(userid == null) {
         return null;
@@ -66,18 +49,36 @@ export async function generateToken(email, password) {
     const token = jwt.sign(data, jwtSecretKey, { expiresIn: '1h' });
     return token
   }
-
-
-
-async function validateUser(email, password) {
+  
+/** 
+ * Funtion is given an email and password which then checks if such a user exists in the database, returns user id if a user is found and null otherwise.
+ * The checkIfRegistered is a boolean which will check if a user has created their account before they can log in
+ * If checkIfRegisterd is set to false, it will validate the user without checking if the user has been registered
+ * 
+ * @param {string} email
+ * @param {string} password
+ * @param {boolean} checkIfRegistered
+ */ 
+async function validateUser(email, password, checkIfRegistered) {
     let connection;
     try {
       // Get connection from pool
       connection = await pool.getConnection();
   
       await connection.query(`USE ${DB_NAME};`);
-  
-      const [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND password = ?', [email, password]);
+
+      let [rows] = []
+      
+      if(checkIfRegistered) {
+
+        [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND password = ? AND created IS NOT NULL', [email, password]);
+
+      } else {
+      
+      // If user is not registered, just need to check if email is in the system already
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+
+      }
 
         // If there is a connection, release it
         if (connection) connection.release();
@@ -99,3 +100,42 @@ async function validateUser(email, password) {
       console.error('Error executing query/s:', err.message);
     }
   }
+
+  /**
+   * Attempts to register the student with given details, a user can only be registered if their university email is already in the database
+   * @param {string} email 
+   * @param {string} password
+   * @returns 
+   */
+export async function registerStudent(email, password) {
+
+  let connection;
+  let [rows] = [];
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    // Gets current date "YYYY-MM-DD" The .split('T') splits the date from the milliseconds time
+    const created = new Date().toISOString().split('T')[0];
+
+    // Updates student details
+    await connection.query(
+      "UPDATE USER SET password = ?, created = ? WHERE email = ?",
+      [password, created, email]
+    );
+
+    [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND password = ?', [email, password]);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+  }
+
+  console.log("User is registered");
+
+}

@@ -16,12 +16,12 @@ CREATE TABLE USER (
     id INT AUTO_INCREMENT PRIMARY KEY,
     role ENUM('admin', 'student', 'client') NOT NULL,
     email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
+    password VARCHAR(255),
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     company VARCHAR(255),
-    created DATETIME DEFAULT CURRENT_TIMESTAMP,
-    team_id INT NOT NULL 
+    created DATETIME,
+    team_id INT
 );
 
 -- CREATE TABLE USER_GROUP (

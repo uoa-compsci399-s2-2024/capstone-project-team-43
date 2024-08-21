@@ -39,21 +39,12 @@ router.delete("/:id", async (req, res) => {
     res.sendStatus(success ? 204 : 404);
 });
 
-// Deletes the user with the given ID
-router.delete("/:id", async (req, res) => {
-    const id = req.params.id;
-    const success = deleteUser(id);
-    res.sendStatus(success ? 204 : 404);
-});
-
 // Gets users in team with given id 
 router.get("/team/:id", async (req, res) => {
     const id = req.params.id;
     const users = await getUsersByTeam(id);
     return res.json(users);
 });
-
-
 
 export default router;
 

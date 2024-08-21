@@ -14,7 +14,6 @@ function Projects(props){
             <div id="projectName">
             {props.name}
             </div>
-
             <div id="projectDescription">
             a paragraph of information on the project and its basic deliverables
             a paragraph of information on the project and its basic deliverables

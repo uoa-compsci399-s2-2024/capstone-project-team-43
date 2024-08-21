@@ -431,7 +431,9 @@
   text-align:left;
   max-width: 18vw;
   max-height: 28vh;
-  min-height: fit-content;
+  min-width: 200px;
+  min-height: 100px;
+  height: fit-content;
   flex: 1 1 auto;
   flex-wrap: wrap;
 }
@@ -440,7 +442,9 @@
   margin-left: 5%;
   font-size:small;
   overflow: auto;
-  display: inline-flex;
+  width:fit-content;
+  min-width: 90%;
+  min-height: 100%;
 }
 
 .projectPreferences .preferenceProjects #projectNum{

@@ -195,7 +195,6 @@
 
 
 .projects{
-
   gap:2rem;
   align-items: center;
 }
@@ -231,67 +230,201 @@
 }
 
 
+.projects .project{
+  background-color: white;
+  margin: 1%;
+  border-radius: 10px;
+  border: 1px solid #003998;
+  text-align:left;
+  max-width: 18vw;
+  max-height: 28vh;
+  min-height: fit-content;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+
+}
+
+.projects #projectDescription{
+  margin-left: 5%;
+  font-size:small;
+  overflow: auto;
+  display: inline-flex;
+}
+
+.projects #projectNum{
+  float:left;
+  display:inline-flex;
+  width: 20%;
+  height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  border-right: 1px solid #003998;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.projects #projectName{
+  display:inline-flex;
+  width: 79.7%;
+  height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+  float: right;
+  padding: 0;
+  margin: 0;
+
+}
+
+
+
+
 /**           PROJECT PROPOSAL FORM             **/
 
-/* need to take nav height off total height */
 
-.projectProposal .proposal-left{
+
+/* .projectProposal .proposal-left{
   background-color: #2979FF;
   width: 20%;
   display: flex;
   float: left;
   height: 85vh;
-}
+} */
 
-.projectProposal .proposal-right{
-  background-color: white;
-  width: 80%;
-  float: right;
-  height: 77vh;
-  padding-bottom: 80px;
-}
-
-.projectProposal h1{
-  text-align: left;
-  margin-top: 3%;
-  padding-left: 5%;
+.projectProposal #proposalInformation{
+  text-align: center;
+  margin-left: 15%;
+  margin-right: 15%;
 }
 
 .projectProposal .proposalForm{
-  margin-left: 5%;
-  bottom: none;
+  margin-left: 17%;
+  margin-right: 17%;
 }
 
-
-.projectProposal input[type=text], select{
-  border: 2px, solid, #003998;
-  border-radius: 3px;
-
+.projectProposal #proposalContent{
+  display: none;
+  margin-left: 15%;
+  margin-right: 15%;
 }
+
+.projectProposal h1{
+  text-align: center;
+}
+
+.projectProposal h3{
+  margin-bottom: 0;
+}
+
+.projectProposal p{
+  margin-bottom: 0;
+  margin-top: 0;
+  margin-left: 1em;
+}
+
 
 .projectProposal input[type=text]{
-  width: 50%;
+  width: 100%;
   padding: 4px;
   margin-top: 8px;
-  
+  margin-left: 1em;
+  border: 2px, solid, #003998;
+  border-radius: 3px;
 }
 
-.projectProposal input[type=radio], select{
+.projectProposal textarea{
+  width: 100%;
+  padding: 4px;
+  margin-top: 8px;
+  margin-left: 1em;
+  height: 80px;
+  resize: vertical;
+  border: 2px, solid, #003998;
+  border-radius: 3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}
 
+.projectProposal #timeframe{
+  width: 100%;
+  padding: 4px;
+  margin-top: 8px;
+  margin-left: 1em;
+  height: 35px;
+  border: 2px, solid, #003998;
+  border-radius: 3px;
+}
+
+.projectProposal input[type=radio]{
   height: 14px;
   width: 14px;
-
   border-radius: 10%;
 }
 
+
+.projectProposal #proposalButtons{
+  /* text-align: center; */
+  /* margin-left: 15%; */
+  /* margin-right: 15%; */
+  padding-top:5%;
+  padding-bottom:5%;
+ 
+}
+
+.projectProposal button, #submit{
+  width: 5%;
+  height: 4%;
+  background-color:#003998;
+  border-radius: 3px;
+  padding: 4px;
+  margin-top: 8px;
+  transition-duration: 0.4s;
+  border: 2px solid #003998;
+  color: white;
+  position: absolute;
+}
+
+.projectProposal #back, #next{
+  background-color:#2979FF;
+  border: 2px solid #2979FF;
+  margin-left: 45%;
+}
+
+
+
+.projectProposal #proposalButtons #submit{
+  margin-left: 50%;
+}
+
+.projectProposal #back:hover, #next:hover{
+  background-color:white;
+  color: black;
+}
+
+.projectProposal button:hover, #submit:hover{
+  background-color: white;
+  color: black;
+}
+
+.projectProposal #back{
+  display: none;
+}
+
+
+
+/* 
+
 .projectProposal #info{
   display: block;
-}
+} 
 
 .projectProposal #one, #four, #eight, #eleven{
   display: none;
 }
-
 .projectProposal #buttons, #infoButton, #oneButton, #fourButton, #eightButton, #elevenButton{
   
   background-color: #EAEAEA;
@@ -309,7 +442,8 @@
   height: 100%;
   align-items: center;
 
-}
+} 
+
 .projectProposal #buttons{
   /* width: 80%; */
   /* bottom: 0; */
@@ -317,14 +451,14 @@
  /* position: absolute; */
  /* display: flex; */
  /* justify-content: space-between; */
- width:80%;
+ /* width:80%;
  position: absolute;
  right: 0;
  bottom: 0; 
  height: 8vh;
  padding:0;
  
-}
+ } 
 
 .projectProposal #button{
   background-color: white;
@@ -335,7 +469,7 @@
   height: 2rem;
   vertical-align: center;
   margin-left: 2%;
-}
+} 
 
 
 .projectProposal #nextButton{
@@ -359,7 +493,7 @@
 .projectProposal #nextButton:hover{
   background-color: white;
   color: black;
-}
+} */
 
 /**           PROJECT PREFERENCE FORM             **/
 
@@ -579,10 +713,12 @@
 
 
 
+
+
 /**           PROJECTS STUDENT VIEW           **/
 
 .projectsAvailable ul{
-  list-style-type: none; /* gets rid of bullet points */
+  /* list-style-type: none; gets rid of bullet points */
   height: 100%;
   /* background-color: aquamarine; */
   padding: 5%;

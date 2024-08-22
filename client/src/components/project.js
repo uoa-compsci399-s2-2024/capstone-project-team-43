@@ -8,16 +8,14 @@ function Projects(props){
     return(
         <div className="project">
             <div id="projectNum">
-            <h2>17</h2>
+            {props.id}
             </div>
 
             <div id="projectName">
             {props.name}
             </div>
             <div id="projectDescription">
-            a paragraph of information on the project and its basic deliverables
-            a paragraph of information on the project and its basic deliverables
-            a paragraph of information on the project and its basic deliverables
+                {props.description}
             </div>
 
         </div>

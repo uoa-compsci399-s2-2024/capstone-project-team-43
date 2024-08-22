@@ -9,7 +9,7 @@ const DB_NAME = process.env.DB_NAME;
 /**
  * @typedef {object} User
  * @property {number} id
- * @property {'admin'|'student'|'client'} type
+ * @property {'admin'|'student'|'client'} role
  * @property {string} email
  * @property {string} first_name
  * @property {string} last_name
@@ -19,40 +19,78 @@ const DB_NAME = process.env.DB_NAME;
  */
 
 /**
- * Gets all Users
+ * Gets Users based on role if provided, otherwise gets all users.
+ * @param {'admin'|'student'|'client'} [role] - Optional role to filter users.
  *
  * @returns {Promise<User[]>}
  */
-export async function retrieveUsers() {
+export async function getUsers(role) {
   let connection;
   try {
     // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM USER');
-    console.log('Rows:', rows);
 
-    // If there is a connection, release it
-    if (connection) connection.release();
+    let query = 'SELECT * FROM USER';
+    let queryParams = [];
+
+
+    // If a role is provided, filter by role
+    if (role) {
+      query += ' WHERE role = ?';
+      queryParams.push(role);
+    }
+
+    const [rows] = await connection.query(query, queryParams);
 
     return rows;
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
   }
 }
+
+/**
+ * Gets Users based on team_id
+ * @param {number} team_id
+ *
+ * @returns {Promise<User[]>}
+ */
+export async function getUsersByTeam(team_id) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+    const [users] = await connection.query('SELECT * FROM USER WHERE team_id = ?', team_id);
+    
+    return users;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally { 
+    // If there is a connection, release it
+    if (connection) connection.release();
+  }
+}
+
 /**
  * Creates a new User 
- * @param {'admin'|'student'|'client'} type
+ * @param {'admin'|'student'|'client'} role
  * @param {string} email
  * @param {string} password
  * @param {string} first_name
  * @param {string} last_name
- * @param {string} company
+ * @param {string} company // if client
+ * @param {number} team_id // if student 
  * @return the newly created User
  */
-export async function createUser(type, email, password, first_name, last_name, company) {
+export async function createUser(role, email, password, first_name, last_name, company, team_id) {
   let connection;
   try {
 
@@ -63,8 +101,8 @@ export async function createUser(type, email, password, first_name, last_name, c
 
     // Insert User into db
     const response = await connection.query(
-      "INSERT INTO USER (type, email, password, first_name, last_name, company) VALUES (?, ?, ?, ?, ?, ?)",
-      [type, email, password, first_name, last_name, company]
+      "INSERT INTO USER (role, email, password, first_name, last_name, company, team_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [role, email, password, first_name, last_name, company, team_id]
     );
 
     /** @type {User} */

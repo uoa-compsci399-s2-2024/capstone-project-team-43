@@ -8,25 +8,24 @@ dotenv.config();
  * @property {number} id
  * @property {string} title
  * @property {string} description
- * @property {number} owner
+ * @property {number} owner_id
  * @property {string} preferred_skills
  * @property {string} project_deliverable
  * @property {Date} created
  * @property {string} expiry
  * @property {'rejected'|'accepted'|'pending'} status
- * @property {number} max_num_of_groups
- * @property {number} project_num
+ * @property {number} max_teams
+ * @property {number} project_number
  */
 
 // Gets the database name from .env file
 const DB_NAME = process.env.DB_NAME;
-
 /**
  * Gets all projects
  *
  * @returns {Promise<Project[]>}
  */
-export async function retrieveProjects() {
+export async function getProjects() {
   let connection;
   try {
     // Get connection from pool
@@ -45,14 +44,12 @@ export async function retrieveProjects() {
     console.error('Error executing query/s:', err.message);
   }
 }
-
-
 /**
  * Gets all status projects
  * @param {string} status
  * @returns {Promise<Project[]>}
  */
-export async function retrieveStatusProject(status) {
+export async function getStatusProject(status) {
   let connection;
   try {
     // Get connection from pool
@@ -76,18 +73,18 @@ export async function retrieveStatusProject(status) {
  * Creates a new project 
  * @param {string} title
  * @param {string} description
- * @param {number} owner
+ * @param {number} owner_id
  * @param {string} preferred_skills
  * @param {string} project_deliverable
  * @param {Date} created
  * @param {number} semester_id
  * @param {'rejected'|'accepted'|'pending'} status
- * @param {number} max_num_of_groups
- * @param {number} project_num
+ * @param {number} max_teams
+ * @param {number} project_number
  *
  * @return the newly created project
  */
-export async function createProject(title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) {
+export async function createProject(title, description, owner_id, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number) {
   let connection;
   try {
 
@@ -98,8 +95,8 @@ export async function createProject(title, description, owner, preferred_skills,
 
     // Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [title, description, owner, preferred_skills, project_deliverable, created, semester_id, status, max_num_of_groups, project_num]
+      "INSERT INTO PROJECT (title, description, owner_id, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, description, owner_id, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number]
     );
 
     /** @type {Project} */
@@ -118,8 +115,8 @@ export async function createProject(title, description, owner, preferred_skills,
 /**
  * Updates the project with the given id and status
  *
- * @param {number} id the id of the project to update
- * @param {number} status the new status of the project
+ * @param {id} id the id of the project to update
+ * @param {status} status the new status of the project
  */
 export async function updateProjectStatus(id, status) {
   let connection;

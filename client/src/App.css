@@ -556,39 +556,54 @@
 }
 
 .projectsAvailable .project{
-  width: 75%;
-  height: 150px;
-  padding: 1%;
   background-color: white;
-  margin: 2%;
+  margin: 1%;
   border-radius: 10px;
   border: 1px solid #003998;
-
+  text-align:left;
+  max-width: 18vw;
+  max-height: 28vh;
+  min-width: 200px;
+  min-height: 100px;
+  height: fit-content;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
 }
 
 .projectsAvailable #projectNum{
-  /* position: absolute; */
   float:left;
-  display: flex;
+  display:inline-flex;
   /* padding:2%; */
   width: 20%;
   height: 50px;
+  max-height: 20vh;
   border-bottom: 1px solid #003998;
   border-right: 1px solid #003998;
-  margin-left: -4px;
-  margin-top: -4px;
-  /* padding-top: 8px; */
-  /* padding-left: 8px; */
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.projectsAvailable  #projectDescription{
+  margin-left: 5%;
+  font-size:small;
+  overflow: auto;
+  width:fit-content;
+  min-width: 90%;
+  min-height: 100%;
 }
 
 .projectsAvailable #projectName{
-  /* position: absolute; */
-  display: flex;
+  display:inline-flex;
   /* padding:2%; */
   /* background-color: yellow; */
-  width: 81%;
+  width: 79.7%;
   height: 50px;
+  max-height: 20vh;
   border-bottom: 1px solid #003998;
+  justify-content: center;
   /* border-right: 1px solid #003998; */
   /* margin-left: -4px; */
   /* margin-top: -4px; */
@@ -598,8 +613,9 @@
   /* padding-top: 2%; */
   /* padding-bottom: 2%; */
   text-align: center;
-  margin-top: -4px;
-  margin-right:-4px;
-
+  align-items: center;
+  float: right;
+  padding: 0;
+  margin: 0;
 }
 

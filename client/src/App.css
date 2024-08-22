@@ -92,7 +92,7 @@
 
 .login-form{
   float:center;
-  margin-left: 25%;
+  margin-left: 18%;
 }
 
 .login-form input, select{
@@ -104,15 +104,25 @@
   padding: 4px;
   margin-top: 8px;
   width: 25vw;
+
 }
 
 .login-form input[type=text]{
-  width: 25vw;
-  padding: 4px;
+  width: 29vw;
+  padding: 10px;
   margin-top: 8px;
-  border: 1px, solid, black;
-  margin-left: 0;
-  
+  border: 1px, solid, #003998;
+  margin: 1%;
+  border-radius: 3px;
+}
+
+.login-form input[type=password]{
+  width: 29vw;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px, solid, #003998;
+  margin: 1%;
+  border-radius: 3px;
 }
 
 .login-form label{
@@ -122,11 +132,11 @@
 
 .login button[type=new]{
   float:center;
-  width: 25.85vw;
-  margin-left: 27.5%;
+  width: 30.3vw;
+  margin-left: 21%;
   background-color:#003998;
   border-radius: 3px;
-  padding: 4px;
+  padding: 8px;
   margin-top: 8px;
   transition-duration: 0.4s;
   border: 2px solid #003998;
@@ -134,24 +144,49 @@
 }
 
 .login button[type=submit]{
-  width: 25.85vw;
+  width: 30.7vw;
   float:center;
   background-color:#2979FF;
   border-radius: 3px;
-  padding: 4px;
+  padding: 8px;
   margin-top: 8px;
   transition-duration: 0.4s;
   border: 2px solid #2979FF;
   color: white;
-  margin-left: 2%;
+  margin-left: 3%;
 }
 
-.login button:hover{
-  width: 25.85vw;
+.login button[type=new]:hover{
+  width: 30.3vw;
   float:center;
   background-color: white;
   color: black;
   
+}
+
+.login button[type=submit]:hover{
+  width: 30.7vw;
+  float:center;
+  background-color: white;
+  color: black;
+}
+
+
+#createacc button{
+  width: 30.7vw;
+  float:center;
+  background-color:#003998;
+  border-radius: 3px;
+  padding: 8px;
+  margin-top: 8px;
+  transition-duration: 0.4s;
+  border: 2px solid #003998;
+  color: white;
+  margin-left: 3%;
+}
+
+#createacc{
+  display: none;
 }
 
 

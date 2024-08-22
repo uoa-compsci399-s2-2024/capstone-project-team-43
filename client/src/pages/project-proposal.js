@@ -18,6 +18,8 @@ const projectProposal = () => {
             document.getElementById('back').style.display = "block";
             document.getElementById('proposalContent').style.display = "block";
             document.getElementById('proposalInformation').style.display = "none";
+            document.getElementById("proposalHeader").scrollIntoView({ behavior: "smooth" });
+
        }
     }
 
@@ -33,7 +35,7 @@ const projectProposal = () => {
     return(
         
             <div className="projectProposal">
-                <h1> Computer Science Capston Project Proposal Form</h1>
+                <h1 id="proposalHeader"> Computer Science Capston Project Proposal Form</h1>
                 <div id="proposalInformation">
                 <h3>Deadline</h3>
 

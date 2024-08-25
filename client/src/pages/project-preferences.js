@@ -5,6 +5,11 @@ import Project from "../components/project";
 
 const ProjectPreferences = ()=>{
 
+    <div id="agreeon">
+                <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
+                <label for="agreeupon"> Do all team members agree on the order of the projects provided above?</label>
+                </div>  
+
     let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
 
     let itemList=[];
@@ -17,11 +22,16 @@ const ProjectPreferences = ()=>{
 
     const submit =() =>{
         document.getElementById('projectPreferenceselements').style.display = "none";
-        document.getElementById('onsubmission').style.display = "flex";
+        document.getElementById('onsubmission').style.display = "block";
+    }
+
+    const confirmation = () =>{
+
     }
 
     return(
         <div className="projectPreferences">
+            <meta name = "viewport" content = "width=device-width, initial-scale=1"/>
             <div id = "projectPreferenceselements">
                 <h2>Project Preferences</h2>
                 <div className="preferenceProjects">
@@ -36,11 +46,7 @@ const ProjectPreferences = ()=>{
                 </div>
                 <div id = "preferencesubmit">
                 <button onClick={submit}>Submit</button>
-                </div>
-                <div id="agreeon">
-                <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
-                <label for="agreeupon"> Do all team members agree on the order of the projects provided above?</label>
-                </div>       
+                </div>     
             </div>
             <div id = "onsubmission">
                 <h2>Your project preferences have been submitted!</h2>

@@ -6,13 +6,8 @@ import bcrypt from 'bcrypt'; // Will use this for password hashing
 
 dotenv.config();
 
-
 // Gets the database name from .env file
 const DB_NAME = process.env.DB_NAME;
-
-/**
- * TODO: Create logout method
- */
 
 /**
  * @typedef {object} User // Defines user class
@@ -138,4 +133,23 @@ export async function registerStudent(email, password) {
 
   console.log("User is registered");
 
+}
+
+// Initializes the token blacklist for logging out users
+var tokenBlacklist = [];
+
+export async function blacklistToken(token) {
+  tokenBlacklist.push(token);
+}
+
+export async function checkTokenBlacklist(token) {
+  
+  // Checks if the token is in the blacklist, checks every single token, if no matching token if found, .find() returns undefined
+  const result = tokenBlacklist.find(blacklistedToken => blacklistedToken === token);
+
+  // If no token is found, return false
+  if(result == undefined) {
+    return false;
+  }
+  return true;
 }

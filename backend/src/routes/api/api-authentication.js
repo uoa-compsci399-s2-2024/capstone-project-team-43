@@ -1,6 +1,6 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
-import { generateToken, registerStudent } from "../../data/authentication-dao.js";
+import { generateToken, registerStudent, blacklistToken, checkTokenBlacklist } from "../../data/authentication-dao.js";
 import { createUser } from "../../data/users-dao.js";
 
 const router = Router();
@@ -14,6 +14,17 @@ router.get("/validateToken", async (req, res) => {
 
     try {
         const token = req.header(tokenHeaderKey);
+
+        console.log("Token Received: " + token);
+
+        const result = await checkTokenBlacklist(token);
+
+        console.log("RESULT :" + result);
+
+        // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
+        if (result) {
+            throw new Error('Token is invalid');
+        }
 
         const verified = jwt.verify(token, jwtSecretKey);
         if (verified) {
@@ -71,6 +82,22 @@ router.post("/register", async (req, res) => {
     console.log("Token generated and User Registered: " + token);
 
     res.status(202).send(token);
+});
+
+router.post("/logout", async (req, res) => {
+    try {
+    //Gets token from header
+    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+    const token = req.header(tokenHeaderKey);
+
+    //Adds token to blacklist so that specific token is invalid
+    await blacklistToken(token);
+
+    res.status(202).send("Logged out successfully");
+
+    } catch(error) {
+        return res.status(401).send("Error logging out");
+    }
 });
 
 export default router;

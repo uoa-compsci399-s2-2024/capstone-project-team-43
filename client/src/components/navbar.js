@@ -46,7 +46,7 @@ const navbar = () =>{
                     <a href="/pages/projects-available" className="sidemenusub">Browse Projects</a>
                 </li>
                 <li>
-                    <a href="/pages/projects-available" className="sidemenusub">Project Preferences Form</a>
+                    <a href="/pages/project-preferences" className="sidemenusub">Project Preferences Form</a>
                 </li>
                 <li>
                     <a href="/pages/about">About</a>

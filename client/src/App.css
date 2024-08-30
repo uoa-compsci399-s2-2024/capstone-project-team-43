@@ -37,7 +37,7 @@
   background-color: #003998;
   position: absolute;
   color: white;
-  
+  z-index: 1;
   font-weight: bold;
 }
 

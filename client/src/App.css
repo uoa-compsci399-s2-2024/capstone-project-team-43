@@ -855,3 +855,36 @@
   margin: 0;
 }
 
+/**           About Page           **/
+
+.aboutuspage{
+  text-align: center;
+}
+
+.aboutuspage #viewprevious{
+  font-weight: bold;
+}
+
+.aboutuspage #viewprevious button{
+  color: white;
+  background-color: #003998;
+  min-width: 26vw;
+  float:center;
+  padding: 1%;
+  border-radius: 3px;
+  border-style: hidden;
+}
+
+.aboutuspage #viewprevious a{
+  color: white;
+  text-decoration: none;
+}
+
+.aboutuspage #viewprevious button:hover{
+  min-width: 26vw;
+  float:center;
+  text-decoration: underline;
+  
+}
+
+/**           Contact Page           **/

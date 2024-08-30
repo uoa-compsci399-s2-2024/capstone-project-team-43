@@ -855,17 +855,22 @@
   margin: 0;
 }
 
-/**           About Page           **/
+/**           About Page + Contact Page           **/
 
 .aboutuspage{
   text-align: center;
 }
 
-.aboutuspage #viewprevious{
-  font-weight: bold;
+.contactpage{
+  text-align: center;
 }
 
-.aboutuspage #viewprevious button{
+#viewprevious{
+  font-weight: bold;
+  font-size: smaller;
+}
+
+#viewprevious button{
   color: white;
   background-color: #003998;
   min-width: 26vw;
@@ -875,16 +880,13 @@
   border-style: hidden;
 }
 
-.aboutuspage #viewprevious a{
+#viewprevious a{
   color: white;
   text-decoration: none;
 }
 
-.aboutuspage #viewprevious button:hover{
+#viewprevious button:hover{
   min-width: 26vw;
   float:center;
   text-decoration: underline;
-  
 }
-
-/**           Contact Page           **/

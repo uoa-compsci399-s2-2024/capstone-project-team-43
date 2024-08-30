@@ -11,6 +11,7 @@ import ProjectProposalForm from "./pages/project-proposal";
 import ProjectPreferences from './pages/project-preferences';
 import ProjectsAvailable from './pages/projects-available';
 import About from './pages/about';
+import Contact from './pages/contact';
 import Navbar from "./components/navbar";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path='/pages/project-preferences' Component={ProjectPreferences} />
         <Route path='/pages/projects-available' Component={ProjectsAvailable} />
         <Route path='/pages/about' Component={About} />
+        <Route path='/pages/contact' Component={Contact} />
       </Routes>
       
 

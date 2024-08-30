@@ -28,6 +28,37 @@
   text-decoration: none;
 }
 
+/**           NAV BAR(SIDE MENU)            **/
+
+#sidemenu{
+  display: none;
+  min-height: 100vh;
+  width: 15vw;
+  background-color: #003998;
+  position: absolute;
+  color: white;
+  
+  font-weight: bold;
+}
+
+#sidemenu ul{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
+}
+#sidemenu a{
+  color: inherit;
+  text-decoration: none;
+}
+
+.sidemenusub{
+  font-weight: normal;
+  font-size: small;
+}
+
 /**           LOGIN PAGE             **/
 
 

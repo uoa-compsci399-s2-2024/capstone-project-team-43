@@ -21,6 +21,11 @@ const navbar = () =>{
                 <li>
                     <a href="/pages/projects-available">Projects(students)</a>
                 </li>
+
+                <li>
+                    <a href="/dnd">dnd</a>
+                </li>
+            
             </ul>
             
         </nav>

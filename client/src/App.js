@@ -12,6 +12,8 @@ import ProjectPreferences from './pages/project-preferences';
 import ProjectsAvailable from './pages/projects-available';
 import Navbar from "./components/navbar";
 
+import dnd from './pages/dnd';
+
 function App() {
 
   return (
@@ -23,6 +25,7 @@ function App() {
         <Route path='/pages/project-proposal' Component={ProjectProposalForm} />
         <Route path='/pages/project-preferences' Component={ProjectPreferences} />
         <Route path='/pages/projects-available' Component={ProjectsAvailable} />
+        <Route path='/dnd' Component={dnd} />
       </Routes>
 
 

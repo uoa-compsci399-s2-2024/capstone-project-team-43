@@ -93,5 +93,5 @@ VALUES
 INSERT INTO SEMESTER 
     (start_date, end_date, is_semester_one) 
 VALUES 
-    ('2024-26-02', '2024-24-06', true), 
-    ('2024-15-07', '2024-11-11', false);
+    (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), true), 
+    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false);

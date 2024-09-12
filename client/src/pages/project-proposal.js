@@ -7,119 +7,36 @@ import '../App.css';
 
 const projectProposal = () => {
 
-    const showinfo = () => {
-        document.getElementById('info').style.display = "block";
-        document.getElementById('one').style.display = "none";
-        document.getElementById('four').style.display = "none";
-        document.getElementById('eight').style.display = "none";
-        document.getElementById('eleven').style.display = "none";
 
-        document.getElementById('infoButton').style.backgroundColor = "lightblue";
-        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
-    }
-    
-    const show123 = () => {
-        document.getElementById('info').style.display = "none";
-        document.getElementById('one').style.display = "block";
-        document.getElementById('four').style.display = "none";
-        document.getElementById('eight').style.display = "none";
-        document.getElementById('eleven').style.display = "none";
 
-        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('oneButton').style.backgroundColor = "lightblue";
-        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
+    const next = () =>{
+
+       if(document.getElementById("check1").checked === false || document.getElementById("check2").checked === false){
+            alert("Please read the information and confirm availability before proceeding.");
+       }else{
+            document.getElementById('next').style.display = "none";
+            document.getElementById('back').style.display = "block";
+            document.getElementById('proposalContent').style.display = "block";
+            document.getElementById('proposalInformation').style.display = "none";
+            document.getElementById("proposalHeader").scrollIntoView({ behavior: "smooth" });
+
+       }
     }
 
-
-    const show4567 = () => {
-        
-        document.getElementById('info').style.display = "none";
-        document.getElementById('one').style.display = "none";
-        document.getElementById('four').style.display = "block";
-        document.getElementById('eight').style.display = "none";
-        document.getElementById('eleven').style.display = "none";
-
-        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('fourButton').style.backgroundColor = "lightblue";
-        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
+    const back = () =>{
+        document.getElementById('next').style.display = "block";
+        document.getElementById('back').style.display = "none";
+        document.getElementById('proposalContent').style.display = "none";
+        document.getElementById('proposalInformation').style.display = "block";
     }
-
-    const show8910 = () => {
-        
-        document.getElementById('info').style.display = "none";
-        document.getElementById('one').style.display = "none";
-        document.getElementById('four').style.display = "none";
-        document.getElementById('eight').style.display = "block";
-        document.getElementById('eleven').style.display = "none";
-
-        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('eightButton').style.backgroundColor = "lightblue";
-        document.getElementById('elevenButton').style.backgroundColor = "#EAEAEA";
-    }
-
-    const show111213 = () => {
-        
-        document.getElementById('info').style.display = "none";
-        document.getElementById('one').style.display = "none";
-        document.getElementById('four').style.display = "none";
-        document.getElementById('eight').style.display = "none";
-        document.getElementById('eleven').style.display = "block";
-
-        document.getElementById('infoButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('oneButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('fourButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('eightButton').style.backgroundColor = "#EAEAEA";
-        document.getElementById('elevenButton').style.backgroundColor = "lightblue";
-
-    }
-
-    const next = () => {
-        if (document.getElementById('info').style.display === 'block') 
-            {
-                show123();
-            }
-            else if(document.getElementById('one').style.display === 'block') 
-                {
-                    show4567();
-                }
-                else if(document.getElementById('four').style.display === 'block') 
-                    {
-                        show8910(); 
-                    }
-                    else if(document.getElementById('eight').style.display === 'block') 
-                        {
-                            show111213();
-                        }
-                    
-
-
-    }
-
 
 
   
     return(
         
-        <div className="projectProposal">
-            <div className="proposal-left">
-            
-            </div>
-    
-            <div className="proposal-right">
-                <h1> Project Proposal Form </h1>
-
-
-                <form className="proposalForm">
-                <div id="info">
+            <div className="projectProposal">
+                <h1 id="proposalHeader"> Computer Science Capston Project Proposal Form</h1>
+                <div id="proposalInformation">
                 <h3>Deadline</h3>
 
                 Please complete this form if you wish to propose a project for the COMPSCI 399 Capstone Course in S2 2024. The deadline for form submission is June 30, 2024, by 11:59 pm.
@@ -139,119 +56,112 @@ const projectProposal = () => {
                 <br />You can find examples of projects created by capstone students following this link: https://www.capitalise.space/
                 <br />The course overview can be found here: https://courseoutline.auckland.ac.nz/dco/course/COMPSCI/399/1243 
                 <br /> If you have any questions, please feel free to contact Anna Trofimova (anna.trofimova@auckland.ac.nz) or Asma Shakil (asma.shakil@auckland.ac.nz)
-                </div>
-                <div id="one">
-                <label>
-                    1. Main client's (applicant's) name* <br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                <label>
-                <br />2.Main client's (applicant's) email* <br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                <label>
-                <br />3. Other clients' details<br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                </div>
-
-                <div id="four">
-                <label>
-                4. Project title* <br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                <label>
-                <br />5. Project description* <br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                <label>
-                <br />6.Desired output* <br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                <label>
-                <br />7.Special equipment requirements* <br />
-                <input type="radio" id="html" name="fav_language" value="HTML" /> No<br />
-                <input type="radio" id="html" name="fav_language" value="HTML" /> Yes<br />
-                <input type="text" placeholder="Please specify"/>
-                </label>
-                </div>
-
-                <div id="eight">
-                <label>
-                8.Number of teams* <br />
-                <input type="radio" id="html" name="fav_language" value="HTML" /> No, only 1 team<br />
-                <input type="radio" id="html" name="fav_language" value="HTML" /> Yes, up to 4 teams<br />
-                <input type="radio" id="html" name="fav_language" value="HTML" />
-                    <input type="text" placeholder="Other"/>
-                </label>
-                <label>
-                <br />9.Desired team skills <br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                <label>
-                <br />10.Available resources <br />
-                    <input type="text" placeholder="Enter your answer"/>
-                </label>
-                </div>
                 
-                <div id="eleven">
-                <label>
-                11.Future consideration <br />
-                <input type="radio" id="html" name="fav_language" value="HTML" /> Yes<br />
-                <input type="radio" id="html" name="fav_language" value="HTML" /> No<br />
-                </label>
-                <label>
-                <br />12.Meeting attendance:* <br />
-                <input type="checkbox" id="check" value="check" />
+
+                <h3>Meeting attendance:</h3>
+                <p>
+                The teaching team will aim to arrange meetings with the students at times that best suit your schedule. You can attend the meetings either in person or via Zoom (or Teams). The details and schedule of the meetings will be arranged at the beginning of the semester and will cover the entire duration of the course.
+                </p>
+                <input type="checkbox" id="check1" value="check"  required/>
                 I confirm that I will be able to attend 6 meetings with students, scheduled 2-3 weeks apart.<br />
 
+           
+                <h3>Final presentation attendance:</h3>
+                <p>The teaching team will aim to arrange the final presentation at a time that best suits your schedule. The final presentation will be held on the UoA Main Campus and must be attended in person.</p>
+                <input type="checkbox" id="check2" value="check" required/>
+                I confirm that I will be able to attend final presentation in-person.<br />
+                </div>
+
+            
+            <form className="proposalForm" id="proposalForm">
+                <div id="proposalContent">
+                
+ 
+                <label>
+                    <h3>1. Main client's (applicant's) name* </h3>
+                    <p>Please provide your name.</p>
+                    <input type="text" placeholder="Enter your answer" required/>
                 </label>
                 <label>
-                <br />13.Final presentation attendance:* <br />
-                <input type="checkbox" id="check" value="check" />
-                I confirm that I will be able to attend final presentation in-person.<br />
-             
+                    <h3>2. Main client's (applicant's) email* </h3>
+                    <p>Please provide your email.</p>
+                    <input type="text" placeholder="Enter your answer" required/>
                 </label>
-                </div>
+                <label>
+                    <h3>3. Other clients' details</h3>
+                    <p>If there is anyone else involved in the project, please provide their names and emails</p>
+                    <textarea placeholder="Enter your answer" />
+                </label>
+                <label>
+                    <h3>4. Project title* </h3>
+                    <p>Please provide an informative project title.</p>
+                    <input type="text" name="title" placeholder="Enter your answer" required/>
+                </label>
+                <label>
+                    <h3>5. Project description* </h3>
+                    <p>Please provide a short description (3-10 sentences) of the project.</p>
+                    <textarea placeholder="Enter your answer" required/>
+                </label>
+                <label>
+                    <h3>6. Desired output*</h3>
+                    <p>Please identify the features that will constitute the MVP (minimum viable product).</p>
+                    <textarea placeholder="Enter your answer" required/>
+                </label>
+                <label>
+                    <h3>7. Special equipment requirements*</h3>
+                    <p>Will your project require special equipment that you are unable to provide? <br />
+                        If yes, please specify the required equipment.<br />
+                        Note: We can only accept a limited number of projects with special equipment needs.
+                    </p>
+                    <input type="radio" id="html" name="fav_language" value="HTML" /> No<br />
+                    <input type="radio" id="html" name="fav_language" value="HTML" /> Yes<br />
+                    <textarea placeholder="Please specify" />
+                </label>
+                <label>
+                    <h3>8. Number of teams*</h3>
+                    <p>Would you be open to the idea of multiple teams working on your project? If yes, please specify the maximum number of teams you would be happy to work with. To make it easier for you, all team meetings will be combined into the same time slot, ensuring you won't need to allocate more meeting time than you would with one team.<br /><br />
+                        For your consideration, 1-4 teams would require a 1-hour meeting fortnightly. Additionally, we will invite you to evaluate teams' final presentations, typically taking about 20 minutes per team.<br /><br />
+                        Working with multiple teams offers the advantage of bringing diverse perspectives and ideas to the project. It also increases the likelihood of achieving a final result that aligns with expectations.</p>
+                    <input type="radio" id="html" value="1" /> No, only 1 team<br />
+                    <input type="radio" id="html" value="4" /> Yes, up to 4 teams<br />
+                    <input type="radio" id="html" value="" /> <input type="text" name="other" />
+                </label>
+                <label>
+                    <h3>9. Desired team skills </h3>
+                    <p>
+                    Please specify any skills you would like team members to have. This could include expertise in a specific technology or tool that you want the team to use for implementing the project.
+                    </p>
+                    <textarea placeholder="Enter your answer" />
+                </label>
+                <label>
+                    <h3>10. Available resources</h3>
+                    <p>
+                    Are there any resources you would like to provide for students to become more familiar with your project?
+                    </p>
+                    <textarea placeholder="Enter your answer" />
+                </label>
+                <label>
+                    <h3>11. Project offering timeframe*</h3>
+                    <p>Please specify the semester which you would like your project to be offered.</p>
 
-                </form>
-
-
-                <div id="buttons">
-                    <div id="infoButton">
-                <button onClick={showinfo} id="button">I</button></div>
-                <div id="oneButton">
-                <button onClick={show123} id="button">1</button>
-                <button onClick={show123} id="button">2</button>
-                <button onClick={show123} id="button">3</button></div>
-                <div id="fourButton">
-                <button onClick={show4567} id="button">4</button>
-                <button onClick={show4567} id="button">5</button>
-                <button onClick={show4567} id="button">6</button>
-                <button onClick={show4567} id="button">7</button></div>
-                <div id="eightButton">
-                <button onClick={show8910} id="button">8</button>
-                <button onClick={show8910} id="button">9</button>
-                <button onClick={show8910} id="button">10</button> </div>
-                <div id="elevenButton">
-                <button onClick={show111213} id="button">11</button>
-                <button onClick={show111213} id="button">12</button>
-                <button onClick={show111213} id="button">13</button></div>
+                    <select name="languages" id="timeframe" required>
+                        <option value="">Select</option>
+                        <option value="">this sem</option>
+                        <option value="">next sem</option>
+                        <option value="">2 from current</option>
+                        <option value="">3 from current</option>
+                    </select>
+                </label>             
+                </div> 
+            </form>  
+            <div id="proposalButtons">
+                <button onClick={next} id="next">Next</button>
+                <button onClick={back} id="back">Back</button>
+                <button id="submit" form="proposalForm" type="submit">Submit</button>
                 
-
-                <button onClick={next} id="nextButton">Next</button>
-                
-                </div>
-
+            </div>
         </div>
-
-
-       <script>
-
-       </script>
-       
-
-        </div>
+        
         
     )
 

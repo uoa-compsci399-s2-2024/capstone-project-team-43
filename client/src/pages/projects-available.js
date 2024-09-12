@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { fetchProjects } from '../Api.js'
+import Project from "../components/project";
 
 const ProjectsAvailable = () => {
 
@@ -24,10 +25,7 @@ const ProjectsAvailable = () => {
         <div className="projectsAvailable">
             <ul>
                 {projects.map(project => (
-                    <li key={project.id} className="project">
-                        <h2 id="projectName">{project.title}</h2>
-                        <p>{project.description}</p>
-                    </li>
+                    <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul>
         </div>    

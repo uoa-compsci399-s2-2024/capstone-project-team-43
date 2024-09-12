@@ -5,6 +5,11 @@ import Project from "../components/project";
 
 const ProjectPreferences = ()=>{
 
+    <div id="agreeon">
+                <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
+                <label for="agreeupon"> Do all team members agree on the order of the projects provided above?</label>
+                </div>  
+
     let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
 
     let itemList=[];
@@ -17,13 +22,43 @@ const ProjectPreferences = ()=>{
 
     const submit =() =>{
         document.getElementById('projectPreferenceselements').style.display = "none";
-        document.getElementById('onsubmission').style.display = "flex";
+        document.getElementById('onsubmission').style.display = "block";
+        document.getElementById('confirm').style.display = "none";
+    }
+
+    const cancel = () =>{
+        document.getElementById('confirm').style.display = "none";
+        document.getElementById('projectPreferenceselements').style.background = "#2979FF";
+        document.getElementById('projectPreferenceselements').style.opacity = "100%";
+    }
+
+    const confirmation = () =>{
+        document.getElementById('confirm').style.display = "block";
+        document.getElementById('projectPreferenceselements').style.background = "#003998";
+        document.getElementById('projectPreferenceselements').style.opacity = "30%";
     }
 
     return(
         <div className="projectPreferences">
+            
+            <meta name = "viewport" content = "width=device-width, initial-scale=1"/>
+
+            <div id="confirm">
+            <br></br><br></br>
+            <h2>Are you sure you want to submit?</h2>
+            <p>Please note that this submission will count for your entire group.</p>
+            <div id="confirmprojects">
+            {itemList}
+            </div>
+            <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
+            <label for="agreeupon"> Do all team members agree on the order of the projects provided above?*</label>
+            <br></br>
+            <button onClick={cancel}>Cancel</button><button onClick={submit}>Confirm</button>
+            <br></br><br></br><br></br>
+            </div>
+
             <div id = "projectPreferenceselements">
-                <h2>Project Preferences</h2>
+                <h2 id="">Project Preferences</h2>
                 <div className="preferenceProjects">
                 {itemList}
                 </div>
@@ -35,12 +70,8 @@ const ProjectPreferences = ()=>{
                     <button>5</button>
                 </div>
                 <div id = "preferencesubmit">
-                <button onClick={submit}>Submit</button>
-                </div>
-                <div id="agreeon">
-                <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
-                <label for="agreeupon"> Do all team members agree on the order of the projects provided above?</label>
-                </div>       
+                <button onClick={confirmation}>Submit</button>
+                </div>     
             </div>
             <div id = "onsubmission">
                 <h2>Your project preferences have been submitted!</h2>

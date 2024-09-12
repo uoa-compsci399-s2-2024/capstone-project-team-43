@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchProjects } from '../Api.js'
+import Project from "../components/project";
 
 const ProjectsAdmin = () => {
 
@@ -33,10 +34,11 @@ const ProjectsAdmin = () => {
                 {projects
                 .filter(project => project.status === 'rejected')
                 .map(project => (
-                    <li key={project.id}>
-                        <h2>{project.title}</h2>
-                        <p>{project.description}</p>
-                    </li>
+                    // <li key={project.id}>
+                    //     <h2>{project.title}</h2>
+                    //     <p>{project.description}</p>
+                    // </li>
+                    <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul>
         </div>
@@ -47,10 +49,11 @@ const ProjectsAdmin = () => {
                 {projects
                 .filter(project => project.status === 'pending')
                 .map(project => (
-                    <li key={project.id}>
-                        <h2>{project.title}</h2>
-                        <p>{project.description}</p>
-                    </li>
+                    // <li key={project.id}>
+                    //     <h2>{project.title}</h2>
+                    //     <p>{project.description}</p>
+                    // </li>
+                    <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul>
         </div>
@@ -61,10 +64,11 @@ const ProjectsAdmin = () => {
                 {projects
                 .filter(project => project.status === 'accepted')
                 .map(project => (
-                    <li key={project.id}>
-                        <h2>{project.title}</h2>
-                        <p>{project.description}</p>
-                    </li>
+                    // <li key={project.id}>
+                    //     <h2>{project.title}</h2>
+                    //     <p>{project.description}</p>
+                    // </li>
+                    <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul>
             

@@ -19,9 +19,13 @@
     "dayjs": "^1.11.10",
     "dotenv": "^16.4.1",
     "express": "^4.19.2",
+    "google-auth-library": "^9.14.1",
+    "googleapis": "^144.0.0",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "open": "^10.1.0",
+    "server-destroy": "^1.0.1"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

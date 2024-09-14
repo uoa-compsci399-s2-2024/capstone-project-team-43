@@ -21,11 +21,15 @@ const DB_NAME = process.env.DB_NAME;
  * @property {Date} last_login
  */
 
-// Attempts to log the user in with given email & password, if such a user exists it returns a session token
-export async function generateToken(email, password, checkIfRegisterd) {
+/** Attempts to log the user in with given email & password, if such a user exists it returns a session token
+ * @param {string} email // email of the user
+ * @param {string} password // encrypted password of user
+ * @param {boolean} googleAuth // toggle if google authentication was used
+*/
+export async function generateToken(email, password, googleAuth) {
 
     // Validate user here
-    const userid = await validateUser(email, password, checkIfRegisterd);
+    const userid = await validateUser(email, password, googleAuth);
 
     if(userid == null) {
         return null;
@@ -50,11 +54,11 @@ export async function generateToken(email, password, checkIfRegisterd) {
  * The checkIfRegistered is a boolean which will check if a user has created their account before they can log in
  * If checkIfRegisterd is set to false, it will validate the user without checking if the user has been registered
  * 
- * @param {string} email
- * @param {string} password
- * @param {boolean} checkIfRegistered
+ * @param {string} email // email of the user
+ * @param {string} password // encrypted password of user
+ * @param {boolean} googleAuth // toggle if google authentication was used
  */ 
-async function validateUser(email, password, checkIfRegistered) {
+async function validateUser(email, password, googleAuth) {
     let connection;
     try {
       // Get connection from pool
@@ -63,15 +67,16 @@ async function validateUser(email, password, checkIfRegistered) {
       await connection.query(`USE ${DB_NAME};`);
 
       let [rows] = []
-      
-      if(checkIfRegistered) {
-
-        [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND password = ? AND created IS NOT NULL', [email, password]);
+    
+      if(googleAuth) {
+        
+        // Google authentication has been used, need to just check if email is in the database
+        [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
 
       } else {
-      
-      // If user is not registered, just need to check if email is in the system already
-      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+
+      // Need to check if user with given details is in the system
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND password = ?', [email, password]);
 
       }
 
@@ -153,3 +158,37 @@ export async function checkTokenBlacklist(token) {
   }
   return true;
 }
+
+// Finds a user with given email and returns which role the user has
+export async function findUser(email) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    let [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+     // Checks if a user has been found
+    if (rows.length > 0) {
+
+      /** @type {User} */
+      const user = rows[0];
+
+      console.log("User:", user, " With Role: " + user.role);
+
+      return user.role;
+  }
+
+    return null;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  }
+}
+
+

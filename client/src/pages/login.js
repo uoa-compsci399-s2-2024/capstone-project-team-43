@@ -36,7 +36,10 @@ const login = () => {
             <button type="submit">
             SIGN IN
             </button>
+            
     </form>
+    <br></br>
+    <a href="http://localhost:3001/api/auth/google" id="googleSignInLink">Sign in with Google</a>
     <br></br>
     <hr></hr>
     <br></br>

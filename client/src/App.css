@@ -192,7 +192,18 @@
   float:center;
   background-color: white;
   color: black;
-  
+
+}
+
+#googleSignInLink {
+  color:white;
+  text-decoration: none;
+  background-color:#2979FF;
+  border-radius: 3px;
+  padding: 4px;
+  margin-top: 8px;
+  border: 2px solid #2979FF;
+  margin-left: 44.75%;
 }
 
 .login button[type=submit]:hover{

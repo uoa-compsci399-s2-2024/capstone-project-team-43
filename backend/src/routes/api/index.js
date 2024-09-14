@@ -16,7 +16,7 @@ router.use("/semesters", semestersRoute);
 
 router.use("/users", usersRoute);
 
-router.use("/authentication", authenticationRoute);
+router.use("/auth", authenticationRoute);
 
 router.use("/teams", teamsRoute);
 

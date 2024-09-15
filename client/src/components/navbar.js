@@ -37,6 +37,9 @@ const navbar = () =>{
                 <li>
                     <a href="/pages/contact">Contact</a>
                 </li>
+                <li>
+                    <a href="/pages/new-semster">New Semster</a>
+                </li>
             </ul>
         </nav>
         <div id="sidemenu">

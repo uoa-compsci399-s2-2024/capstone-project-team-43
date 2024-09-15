@@ -932,3 +932,115 @@
   float:center;
   text-decoration: underline;
 }
+
+/**           New Semster Page           **/
+
+
+.newsemsterpage{
+  position:absolute;
+  height: 100%;
+  width: 100%;
+  display: grid;
+}
+
+.newsemsterpage #newsemsterpage-heading{
+  text-align: center;
+}
+
+.newsemsterpage #newsemsterpage-heading h1{
+  margin-top:-3vh;
+}
+
+#viewprevious{
+  font-weight: bold;
+  font-size: smaller;
+}
+
+#viewprevious button{
+  color: white;
+  background-color: #003998;
+  min-width: 26vw;
+  float:center;
+  padding: 1%;
+  border-radius: 3px;
+  border-style: hidden;
+}
+
+#viewprevious a{
+  color: white;
+  text-decoration: none;
+}
+
+#viewprevious button:hover{
+  min-width: 26vw;
+  float:center;
+  text-decoration: underline;
+}
+
+.newsemsterpage-semster1{
+  height: fit-content;
+  width: 30%;
+  justify-self: center;
+  display: inline;
+}
+
+.newsemsterpage-semster1 input[type=short]{
+  max-width: 17%;
+  margin: 1%;
+
+}
+
+.newsemsterpage-semster1 input[type=long]{
+  max-width: 27%;
+  margin: 2%;
+}
+
+.rightside{
+  float: right;
+}
+
+.leftside{
+  float: left;
+}
+
+.end{
+  float: right;
+  width: 35%;
+}
+
+.begin input[type=short]{
+  max-width: 15%;
+  margin: 1%;
+
+}
+
+.begin input[type=long]{
+  max-width: 20%;
+  margin: 1%;
+}
+
+.begin{
+  float: left;
+  width: 45%;
+}
+
+.newsemsterpage-semster2{
+  height: fit-content;
+  width: 30%;
+  justify-self: center;
+}
+
+.newsemsterpage-semster2 input[type=short]{
+  max-width: 17%;
+  margin: 1%;
+
+}
+
+.newsemsterpage-semster2 input[type=long]{
+  max-width: 27%;
+  margin: 2%;
+}
+
+.newsemsterpage-semster2{
+  margin-top:-5%;
+}

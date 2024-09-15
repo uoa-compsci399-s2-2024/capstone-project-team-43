@@ -20,7 +20,7 @@ CREATE TABLE USER (
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     company VARCHAR(255),
-    created DATETIME,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
     team_id INT
 );
 

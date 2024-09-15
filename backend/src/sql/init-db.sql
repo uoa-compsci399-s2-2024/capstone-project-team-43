@@ -52,6 +52,14 @@ CREATE TABLE TEAM (
     project_id INT
 );
 
+CREATE TABLE PREFERENCE (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    team_id INT NOT NULL,
+    project_id INT NOT NULL,
+    preference INT NOT NULL,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- undecided on if we need the below views 
 
 -- CREATE VIEW CLIENTS AS
@@ -95,3 +103,8 @@ INSERT INTO SEMESTER
 VALUES 
     (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), true), 
     (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false);
+
+INSERT INTO PREFERENCE
+    (team_id, project_id, preference)
+VALUES
+    (1, 1, 1);

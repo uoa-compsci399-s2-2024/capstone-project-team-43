@@ -57,7 +57,7 @@ CREATE TABLE PREFERENCE (
     team_id INT NOT NULL,
     project_id INT NOT NULL,
     preference INT NOT NULL,
-    created DATETIME DEFAULT CURRENT_TIMESTAMP
+    created TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3)
 );
 
 -- undecided on if we need the below views 

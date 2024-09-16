@@ -8,6 +8,7 @@ import semestersRoute from "./api-semesters.js";
 import usersRoute from "./api-users.js";
 import authenticationRoute from "./api-authentication.js";
 import teamsRoute from "./api-teams.js";
+import preferencesRoute from "./api-preferences.js";
 
 
 router.use("/projects", projectsRoute);
@@ -20,6 +21,7 @@ router.use("/authentication", authenticationRoute);
 
 router.use("/teams", teamsRoute);
 
+router.use("/preferences", preferencesRoute);
 
 // TODO Add API routes here
 

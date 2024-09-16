@@ -2,6 +2,22 @@ import React, { useState, useEffect } from "react";
 import { fetchProjects } from '../Api.js'
 import Project from "../components/project";
 
+import {
+    DndContext,
+    DragOverlay,
+    rectIntersection,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+  } from '@dnd-kit/core';
+  import {arrayMove, sortableKeyboardCoordinates} from '@dnd-kit/sortable';
+  
+  import Container from './container';
+  import {Item} from './sortable_item';
+
+  import '../App.css';
+
 const ProjectsAdmin = () => {
 
     const [projects, setProjects] = useState([]);
@@ -19,6 +35,53 @@ const ProjectsAdmin = () => {
         getProjects();
     }, []);
 
+//Rejected projects
+
+    let rejected = [[{id:0, name: 'placeholder', description: 'placeholder'}], ];
+
+    projects.filter(project => project.status === 'rejected').map(project => (
+
+            // rejected = [[{id:project.id, name: project.title, description: project.description}], ]
+            rejected.push([{id:project.id, name: project.title, description: project.description}] )
+
+          ));
+
+
+console.log(rejected)
+        //Unsorted projects
+let unsorted = []
+    projects
+    .filter(project => project.status === 'pending')
+    .map(project => (
+        unsorted.push([{id: project.id, name:project.title, description:project.description}])
+    ))
+
+    const list5 =[[{id: 3, name:"proj3", description:"desc3" }],
+[{id: 4, name:"proj4", description:"desc4" }],
+[{id: 5, name:"proj5", description:"desc5" }],
+];
+console.log(list5);
+const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
+[{id: 11, name:"proj11", description:"desc11" }],
+[{id: 12, name:"proj12", description:"desc12" }],
+];
+
+    const [items, setItems] = useState({
+        rejected: rejected,
+        unsorted: list5,
+        approved: list6,
+      });
+      console.log(items);
+      
+        const [activeId, setActiveId] = useState();
+      
+        const sensors = useSensors(
+          useSensor(PointerSensor),
+          useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+          }),
+        );
+
     return(
         <div className="projects">
             <div id="head"> 
@@ -27,9 +90,16 @@ const ProjectsAdmin = () => {
             </div>
             
         <div id="sorting">
+        <DndContext
+        sensors={sensors}
+        collisionDetection={rectIntersection}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
         <div id="left">
             <h2>Rejected</h2>
-            {/* List rejected projects */}
+            {/* List rejected projects
             <ul>
                 {projects
                 .filter(project => project.status === 'rejected')
@@ -40,12 +110,13 @@ const ProjectsAdmin = () => {
                     // </li>
                     <Project id={project.id} name={project.title} description={project.description} />
                 ))}
-            </ul>
+            </ul> */}
+            <Container id="root" items={items.rejected} />
         </div>
         <div id="center">
             <h2>Unsorted</h2>
             {/* List unsorted projects */}
-            <ul>
+            {/* <ul>
                 {projects
                 .filter(project => project.status === 'pending')
                 .map(project => (
@@ -55,12 +126,14 @@ const ProjectsAdmin = () => {
                     // </li>
                     <Project id={project.id} name={project.title} description={project.description} />
                 ))}
-            </ul>
+                    
+            </ul> */}
+            <Container id="container1" items={items.unsorted} />
         </div>
         <div id="right">
             <h2>Approved</h2>
             {/* List approved projects */}
-            <ul>
+            {/* <ul>
                 {projects
                 .filter(project => project.status === 'accepted')
                 .map(project => (
@@ -70,15 +143,111 @@ const ProjectsAdmin = () => {
                     // </li>
                     <Project id={project.id} name={project.title} description={project.description} />
                 ))}
-            </ul>
-            
+            </ul> */}
+            <Container id="container2" items={items.approved} />
         </div>
-
+        <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
+        </DndContext>
         </div>
 
         </div>
 
     );
+    function findContainer(id) {
+        if (id in items) {
+          return id;
+        }
+        return Object.keys(items).find((key) => items[key].includes(id));
+      }
+    
+      function handleDragStart(event) {
+        const {active} = event;
+        const {id} = active;
+        setActiveId(id);
+      }
+    
+      function handleDragOver(event) {
+        const {active, over, draggingRect} = event;
+        const {id} = active;
+    
+        if (over === null) return;
+        const {id: overId} = over;
+    
+    
+        const activeContainer = findContainer(id);
+        const overContainer = findContainer(overId);
+        if (
+          !activeContainer ||
+          !overContainer ||
+          activeContainer === overContainer
+        ) {
+          return;
+        }
+        
+        setItems((prev) => {
+          const activeItems = prev[activeContainer];
+          const overItems = prev[overContainer];
+          
+          const activeIndex = activeItems.indexOf(id);
+          const overIndex = overItems.indexOf(overId);
+          
+          let newIndex;
+          if (overId in prev) {
+            newIndex = overItems.length + 1;
+          } else {
+            const isBelowLastItem =
+              over &&
+              overIndex === overItems.length - 1 &&
+              draggingRect?.offsetTop > over.rect.offsetTop + over.rect.height;
+    
+            const modifier = isBelowLastItem ? 1 : 0;
+    
+            newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
+          }
+    
+          return {
+            ...prev,
+            [activeContainer]: [...prev[activeContainer].filter((item) => item !== active.id)],
+            [overContainer]: [...prev[overContainer].slice(0, newIndex),
+              items[activeContainer][activeIndex], ...prev[overContainer].slice(newIndex, prev[overContainer].length),],
+          };
+        });
+      }
+    
+      function handleDragEnd(event) {
+        const {active, over} = event;
+        const {id} = active;
+        if (over === null) return;
+        const {id: overId} = over;
+    
+        const activeContainer = findContainer(id);
+        const overContainer = findContainer(overId);
+    
+        if (
+          !activeContainer ||
+          !overContainer ||
+          activeContainer !== overContainer
+        ) {
+          return;
+        }
+    
+        const activeIndex = items[activeContainer].indexOf(active.id);
+        const overIndex = items[overContainer].indexOf(overId);
+    
+        if (activeIndex !== overIndex) {
+          setItems((items) => ({
+            ...items,
+            [overContainer]: arrayMove(
+              items[overContainer],
+              activeIndex,
+              overIndex,
+            ),
+          }));
+        }
+    
+        setActiveId(null);
+      }
+
 };
 
 export default ProjectsAdmin;

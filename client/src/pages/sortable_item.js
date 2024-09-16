@@ -18,7 +18,9 @@ export function Item(props) {
 
 
 return (
-<div style={style}>
+
+    <div>
+      {/* <div style={style}> */}
   {id.map((id) => (   
          <Project id={id.id} name={id.name} description ={id.description} />
         ))}

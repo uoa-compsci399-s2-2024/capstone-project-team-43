@@ -158,10 +158,11 @@
 /**           PROJECTS ADMIN             **/
 
 
-
 .projects{
   gap:2rem;
   align-items: center;
+  display: 'flex';
+  /* flexDirection: 'row'; */
 }
 
 .projects #head{
@@ -184,14 +185,26 @@
   width: 33.5%;
   border-color: black;
   border-right: solid 1px;
+  /* background: #dadada;
+  padding: 10;
+  margin: 10;
+  flex: 1; */
 }
 #sorting #center{
   width: 33%;
+  background: #dadada;
+  padding: 10;
+  margin: 10;
+  flex: 1;
 }
 #sorting #right{
   width: 33.5%;
   border-left: solid 1px;
   border-color: black;
+  /* background: #dadada;
+  padding: 10;
+  margin: 10;
+  flex: 1; */
 }
 
 

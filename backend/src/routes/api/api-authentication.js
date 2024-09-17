@@ -1,6 +1,6 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
-import { generateToken, registerStudent, blacklistToken, checkTokenBlacklist, findUser } from "../../data/authentication-dao.js";
+import { generateToken, registerStudent, blacklistToken, checkTokenBlacklist, findUser, passwordEncrypt } from "../../data/authentication-dao.js";
 import { createUser } from "../../data/users-dao.js";
 import { OAuth2Client } from 'google-auth-library';
 import http from 'http'; // Built-in Node module
@@ -70,13 +70,23 @@ router.post("/login", async (req, res) => {
     res.status(202).send(token);
 });
 
-// Gets user details and attempts to register student, if a user is valid it returns a signed JWT token
+// Gets user details and attempts to register client, if a user is valid it returns a signed JWT token
 router.post("/register", async (req, res) => {
     const { role, email, password, first_name, last_name, company } = req.body;
     let token = null;
 
+    let hashPassword = await passwordEncrypt(password);
+    console.log("CREATED HASH: " + hashPassword);
+
+    // Checks if the client has an existing account
+
+    if (await findUser(email) == null) {
+
     // A client is registering
-    await createUser("client", email, password, first_name, last_name, company, null);
+    await createUser("client", email, hashPassword, first_name, last_name, company, null);
+    }
+
+    token = await generateToken(email, password, false);
 
     console.log("Token generated and User Registered: " + token);
 

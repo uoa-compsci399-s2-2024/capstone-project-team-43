@@ -3,11 +3,12 @@ import dotenv from "dotenv";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; // Will use this for password hashing
 
-
 dotenv.config();
 
 // Gets the database name from .env file
 const DB_NAME = process.env.DB_NAME;
+
+const saltRounds = 10; // Typically a value between 10 and 12
 
 /**
  * @typedef {object} User // Defines user class
@@ -18,7 +19,7 @@ const DB_NAME = process.env.DB_NAME;
  * @property {string} last_name
  * @property {string} company
  * @property {Date} created
- * @property {Date} last_login
+ * @property {number} team_id
  */
 
 /** Attempts to log the user in with given email & password, if such a user exists it returns a session token
@@ -28,63 +29,65 @@ const DB_NAME = process.env.DB_NAME;
 */
 export async function generateToken(email, password, googleAuth) {
 
-    // Validate user here
-    const userid = await validateUser(email, password, googleAuth);
+  // Validate user here
+  const userid = await validateUser(email, password, googleAuth);
 
-    if(userid == null) {
-        return null;
-    }
-
-    console.log("Generating token with user ID: " + userid);
-
-    // User is valid, now generates  and returns a token
-    let jwtSecretKey = process.env.JWT_SECRET_KEY;
-    let data = {
-        time: Date.now(),
-        userId: userid,
-    }
-
-    // JWT token is signed with given userID, secret key, current date, and expires after 1 hour
-    const token = jwt.sign(data, jwtSecretKey, { expiresIn: '1h' });
-    return token
+  if (userid == null) {
+    return null;
   }
-  
+
+  console.log("Generating token with user ID: " + userid);
+
+  // User is valid, now generates  and returns a token
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+  let data = {
+    time: Date.now(),
+    userId: userid,
+  }
+
+  // JWT token is signed with given userID, secret key, current date, and expires after 1 hour
+  const token = jwt.sign(data, jwtSecretKey, { expiresIn: '1h' });
+  console.log("TOKEN GENERATED");
+  return token
+}
+
 /** 
  * Funtion is given an email and password which then checks if such a user exists in the database, returns user id if a user is found and null otherwise.
- * The checkIfRegistered is a boolean which will check if a user has created their account before they can log in
- * If checkIfRegisterd is set to false, it will validate the user without checking if the user has been registered
+ * The googleAuth is a boolean which will check if a user is logging in via google's Authentication
  * 
  * @param {string} email // email of the user
  * @param {string} password // encrypted password of user
  * @param {boolean} googleAuth // toggle if google authentication was used
- */ 
+ */
 async function validateUser(email, password, googleAuth) {
-    let connection;
-    try {
-      // Get connection from pool
-      connection = await pool.getConnection();
-  
-      await connection.query(`USE ${DB_NAME};`);
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
 
-      let [rows] = []
-    
-      if(googleAuth) {
-        
-        // Google authentication has been used, need to just check if email is in the database
-        [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+    await connection.query(`USE ${DB_NAME};`);
 
-      } else {
+    let [rows] = []
+
+    if (googleAuth) {
+
+      // Google authentication has been used, need to just check if email is in the database
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+
+    } else {
+
 
       // Need to check if user with given details is in the system
-      [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND password = ?', [email, password]);
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
 
-      }
+    }
 
-        // If there is a connection, release it
-        if (connection) connection.release();
+    // If there is a connection, release it
+    if (connection) connection.release();
 
-       // Checks no user was found,
-      if (rows.length > 0) {
+    // Checks no user was found,
+    if (rows.length > 0) {
+      if (googleAuth) {
 
         /** @type {User} */
         const user = rows[0];
@@ -92,21 +95,63 @@ async function validateUser(email, password, googleAuth) {
         console.log("User:", user, " With ID: " + user.id);
 
         return user.id;
-    }
-  
-      return null;
-  
-    } catch (err) {
-      console.error('Error executing query/s:', err.message);
-    }
-  }
 
-  /**
-   * Attempts to register the student with given details, a user can only be registered if their university email is already in the database
-   * @param {string} email 
-   * @param {string} password
-   * @returns 
-   */
+      } else {
+          /** @type {User} */
+          const user = rows[0];
+        try {
+        // Need to check hashed password
+        console.log("PASSWORD: ", password);
+        console.log("DB PASSWORD: ", user);
+        let result = bcrypt.compare(password, user.password);
+
+          if (result) {
+            // Passwords match, authentication successful
+            console.log('Passwords match! User authenticated.');
+
+            return user.id;
+
+          } else {
+            // Passwords don't match, authentication failed
+            console.log('Passwords do not match! Authentication failed.');
+            return null;
+          }
+
+        } catch (err) {
+          console.log("Error comparing passwords: ", err);
+          return null;
+        }
+
+      }
+    }
+
+    return null;
+
+  } catch (err) {
+    console.error('Error executing query/s here:', err.message);
+  }
+}
+
+export async function passwordEncrypt(password) {
+    
+  try {
+    let hashPassword = bcrypt.hash(password, saltRounds);
+
+      console.log("given hash : ", hashPassword);
+      return hashPassword;
+
+  } catch (err) {
+    console.log("Error creating hash");
+    return null;
+  }
+}
+
+/**
+ * Attempts to register the student with given details, a user can only be registered if their university email is already in the database
+ * @param {string} email 
+ * @param {string} password
+ * @returns 
+ */
 export async function registerStudent(email, password) {
 
   let connection;
@@ -121,13 +166,13 @@ export async function registerStudent(email, password) {
     // Gets current date "YYYY-MM-DD" The .split('T') splits the date from the milliseconds time
     const created = new Date().toISOString().split('T')[0];
 
-    // Updates student details
+    const hash = await passwordEncrypt(password);
+
+    // Updates client details
     await connection.query(
       "UPDATE USER SET password = ?, created = ? WHERE email = ?",
-      [password, created, email]
+      [hash, created, email]
     );
-
-    [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND password = ?', [email, password]);
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -148,12 +193,12 @@ export async function blacklistToken(token) {
 }
 
 export async function checkTokenBlacklist(token) {
-  
+
   // Checks if the token is in the blacklist, checks every single token, if no matching token if found, .find() returns undefined
   const result = tokenBlacklist.find(blacklistedToken => blacklistedToken === token);
 
   // If no token is found, return false
-  if(result == undefined) {
+  if (result == undefined) {
     return false;
   }
   return true;
@@ -173,7 +218,7 @@ export async function findUser(email) {
     // If there is a connection, release it
     if (connection) connection.release();
 
-     // Checks if a user has been found
+    // Checks if a user has been found
     if (rows.length > 0) {
 
       /** @type {User} */
@@ -182,7 +227,7 @@ export async function findUser(email) {
       console.log("User:", user, " With Role: " + user.role);
 
       return user.role;
-  }
+    }
 
     return null;
 

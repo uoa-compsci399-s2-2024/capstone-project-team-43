@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTeam, getTeam, getTeamsBySemester, setTeamProject } from "../../data/teams-dao.js";
+import { createTeam, getTeam, getTeamsBySemester, deleteTeamBySemester, setTeamProject } from "../../data/teams-dao.js";
 
 const router = Router();
 
@@ -36,6 +36,14 @@ router.post("/project_id/:team_id/:project_id", async (req, res) => {
     const project_id = req.params.project_id;
     const success = setTeamProject(team_id, project_id);
     res.sendStatus(success ? 204 : 404);
+});
+
+// Deletes all teams of a specific semester 
+router.delete("/:semesterId", async (req, res) => {
+    const { semesterId } = req.params;
+    console.log(`Deleting teams from semester with id ${semesterId}`);
+    const teams = await deleteTeamBySemester(semesterId);
+    return res.json(teams);
 });
 
 export default router;

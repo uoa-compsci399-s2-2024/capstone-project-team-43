@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsers, getUsersByTeam, createUser, deleteUser } from "../../data/users-dao.js";
+import { getUsers, getUsersByTeam, createUser, deleteUser, deleteUserByRole } from "../../data/users-dao.js";
 
 const router = Router();
 
@@ -17,15 +17,20 @@ router.get("/:role?", async (req, res) => {
     return res.json(users);
 });
 
+// Deletes all users of a specific role ('client','admin', or'student')
+router.delete("/:role", async (req, res) => {
+    const { role } = req.params;
+    console.log(`Deleting users with role ${role}`);
+    const users = await deleteUserByRole(role);
+    return res.json(users);
+});
+
 // Creates a new user with given role, email, first name, last name, and company
 router.post("/", async (req, res) => {
     const { role, email, password, first_name, last_name, company } = req.body;
-    if (!role, !email, !password, !first_name, !last_name) {
+    if (!role, !email, !first_name, !last_name) {
         return res.status(422);
     }
-
-    // Sets company to null if not provided
-    // company = company ? company : null;
 
     // Details are valid and now passed to createUser function to query into database
     const user = await createUser(role, email, password, first_name, last_name, company);

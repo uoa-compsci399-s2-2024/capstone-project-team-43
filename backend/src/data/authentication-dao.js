@@ -30,29 +30,29 @@ const saltRounds = 10; // Typically a value between 10 and 12
 export async function generateToken(email, password, googleAuth) {
 
   // Validate user here
-  const userid = await validateUser(email, password, googleAuth);
+  /** @type {User} */
+  const user = await validateUser(email, password, googleAuth);
 
-  if (userid == null) {
+  if (user == null) {
     return null;
   }
 
-  console.log("Generating token with user ID: " + userid);
+  console.log("Generating token with user ID: " + user);
 
-  // User is valid, now generates  and returns a token
-  let jwtSecretKey = process.env.JWT_SECRET_KEY;
-  let data = {
-    time: Date.now(),
-    userId: userid,
-  }
+  // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
+  const token = jwt.sign(
+    {
+      time: Date.now(),
+      userId: user.id,
+      email: user.email,
+      role: user.role, 
+    }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }); // Token is valid for 1 hour
 
-  // JWT token is signed with given userID, secret key, current date, and expires after 1 hour
-  const token = jwt.sign(data, jwtSecretKey, { expiresIn: '1h' });
-  console.log("TOKEN GENERATED");
   return token
 }
 
 /** 
- * Funtion is given an email and password which then checks if such a user exists in the database, returns user id if a user is found and null otherwise.
+ * Funtion is given an email and password which then checks if such a user exists in the database, returns user object if a user is found and null otherwise.
  * The googleAuth is a boolean which will check if a user is logging in via google's Authentication
  * 
  * @param {string} email // email of the user
@@ -94,7 +94,7 @@ async function validateUser(email, password, googleAuth) {
 
         console.log("User:", user, " With ID: " + user.id);
 
-        return user.id;
+        return user;
 
       } else {
           /** @type {User} */
@@ -109,7 +109,7 @@ async function validateUser(email, password, googleAuth) {
             // Passwords match, authentication successful
             console.log('Passwords match! User authenticated.');
 
-            return user.id;
+            return user;
 
           } else {
             // Passwords don't match, authentication failed

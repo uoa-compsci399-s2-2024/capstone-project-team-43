@@ -13,6 +13,7 @@ import ProjectsAvailable from './pages/projects-available';
 import About from './pages/about';
 import Contact from './pages/contact';
 import NewSemster from './pages/new-semster';
+import ManageFuture from './pages/manage-future';
 import Navbar from "./components/navbar";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path='/pages/about' Component={About} />
         <Route path='/pages/contact' Component={Contact} />
         <Route path='/pages/new-semster' Component={NewSemster} />
+        <Route path='/pages/manage-future' Component={ManageFuture} />
       </Routes>
       
 

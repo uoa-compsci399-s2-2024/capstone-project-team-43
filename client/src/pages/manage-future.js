@@ -2,28 +2,19 @@ import React from "react";
 
 import '../App.css';
 
-const NewSemster = () =>{
+const ManageFuture = () =>{
 
-    const cancel = () =>{
-        alert("you clicked cancel");
+    const save = () =>{
+        alert("you clicked save");
     }
-
-    const create = () =>{
-        alert("you clicked create");
-    }
-
 
     return(
-        <div id="newsemster" className="newsemsterpage">
-            <div id="newsemsterpage-heading">
-                <p>Create a Semester</p>
-                <h1>New Semester</h1>
+        <div id="managefuture" className="managefuturepage">
+            <div id="managefuturepage-heading">
+                <p>Manage Future Semsters</p>
+                <h1>Semster One, 2025</h1>
             </div>
-                <form className="newsemsterpage-semster1">
-                    <p className = "leftside">Semster One</p>
-                    <p className = "rightside">Semester Two</p>
-                    <br></br>
-                    <br></br>
+                <form className="managefuturepage-semster1">
                     <p>1. Semster Dates</p>
                     <p className = "leftside">semster begins:</p>
                     <p className = "rightside">semester ends:</p>
@@ -57,7 +48,7 @@ const NewSemster = () =>{
                     </div>
                     <br></br>
                 </form>
-                <form className="newsemsterpage-semster2">
+                <form className="managefuturepage-semster2">
                 <p>2. Project Bidding Timeframe</p>
                     <p className = "leftside">project bidding begins:</p>
                     <p className = "rightside">project bidding ends:</p>
@@ -89,13 +80,11 @@ const NewSemster = () =>{
                     </label>
                     </div>
                 </form>
-                <div className="newsemsterpage-buttons">
-                <button className="cancel" onClick = {cancel}>CANCEL</button>
-                <br></br>
-                <button className="create" onClick = {create}>CREATE</button>
+                <div className="managefuturepage-buttons">
+                <button className="save" onClick = {save}>Save</button>
                 </div>
             </div>
     )
 }
 
-export default NewSemster;
+export default ManageFuture;

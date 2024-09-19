@@ -951,31 +951,6 @@
   margin-top:-3vh;
 }
 
-#viewprevious{
-  font-weight: bold;
-  font-size: smaller;
-}
-
-#viewprevious button{
-  color: white;
-  background-color: #003998;
-  min-width: 26vw;
-  float:center;
-  padding: 1%;
-  border-radius: 3px;
-  border-style: hidden;
-}
-
-#viewprevious a{
-  color: white;
-  text-decoration: none;
-}
-
-#viewprevious button:hover{
-  min-width: 26vw;
-  float:center;
-  text-decoration: underline;
-}
 
 .newsemsterpage-semster1{
   height: fit-content;
@@ -1043,4 +1018,133 @@
 
 .newsemsterpage-semster2{
   margin-top:-5%;
+}
+
+.newsemsterpage-buttons{
+  justify-self: center;
+  display: flex;
+  width: 18%;
+  justify-content: space-between;
+}
+
+.newsemsterpage-buttons button{
+  max-width: 10vw;
+  min-width: 8vw;
+  max-height: 6vh;
+  border: 1px white solid;
+  border-radius: 5px;
+  color: white;
+  font-size: large;
+}
+
+.cancel{
+  background-color: #2979FF;
+}
+
+.create{
+  background-color: #003998;
+}
+
+/**           Manage Future Semester Page           **/
+
+.managefuturepage{
+  position:absolute;
+  height: 100%;
+  width: 100%;
+  display: grid;
+}
+
+.managefuturepage #managefuturepage-heading{
+  text-align: center;
+}
+
+.managefuturepage #managefuturepage-heading h1{
+  margin-top:-3vh;
+}
+
+.managefuturepage-semster1{
+  height: fit-content;
+  width: 30%;
+  justify-self: center;
+  display: inline;
+}
+
+.managefuturepage-semster1 input[type=short]{
+  max-width: 17%;
+  margin: 1%;
+
+}
+
+.managefuturepage-semster1 input[type=long]{
+  max-width: 27%;
+  margin: 2%;
+}
+
+.rightside{
+  float: right;
+}
+
+.leftside{
+  float: left;
+}
+
+.end{
+  float: right;
+  width: 35%;
+}
+
+.begin input[type=short]{
+  max-width: 15%;
+  margin: 1%;
+
+}
+
+.begin input[type=long]{
+  max-width: 20%;
+  margin: 1%;
+}
+
+.begin{
+  float: left;
+  width: 45%;
+}
+
+.managefuturepage-semster2{
+  height: fit-content;
+  width: 30%;
+  justify-self: center;
+}
+
+.managefuturepage-semster2 input[type=short]{
+  max-width: 17%;
+  margin: 1%;
+
+}
+
+.managefuturepage-semster2 input[type=long]{
+  max-width: 27%;
+  margin: 2%;
+}
+
+.managefuturepage-semster2{
+  margin-top:-5%;
+}
+
+.managefuturepage-buttons{
+  justify-self: center;
+}
+
+.managefuturepage-buttons button{
+  max-width: 10vw;
+  min-width: 8vw;
+  max-height: 8vh;
+  min-height: 6vh;
+  border: 1px white solid;
+  border-radius: 5px;
+  color: white;
+  font-size: large;
+}
+
+.save{
+  background-color:#003998;
 }

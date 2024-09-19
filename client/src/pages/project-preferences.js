@@ -5,17 +5,22 @@ import Project from "../components/project";
 
 const ProjectPreferences = ()=>{
 
+    let chosenproject = [];
+
     const handleclick = (name) =>{
-        if (opt1 == true){
+        if (opt1 === true){
             //let projectdes = itemList[2].props.name;
             let projectdes = name;
+            chosenproject.push(document.getElementById(name));
+            chosenproject.push(document.getElementById(name));
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
             options.innerHTML += projectdes;
             options.innerHTML += "</p>";
             opt1 = false;
+            alert(chosenproject);
         }
-        else if (opt2 == true){
+        else if (opt2 === true){
             //let projectdes = itemList[2].props.name;
             let projectdes = name;
             let options = document.getElementById('option2');
@@ -24,7 +29,7 @@ const ProjectPreferences = ()=>{
             options.innerHTML += "</p>";
             opt2 = false;
         }
-        else if (opt3 == true){
+        else if (opt3 === true){
             //let projectdes = itemList[2].props.name;
             let projectdes = name;
             let options = document.getElementById('option3');
@@ -33,7 +38,7 @@ const ProjectPreferences = ()=>{
             options.innerHTML += "</p>";
             opt3 = false;
         }
-        else if (opt4 == true){
+        else if (opt4 === true){
             //let projectdes = itemList[2].props.name;
             let projectdes = name;
             let options = document.getElementById('option4');
@@ -42,7 +47,7 @@ const ProjectPreferences = ()=>{
             options.innerHTML += "</p>";
             opt4 = false;
         }
-        else if (opt5 == true){
+        else if (opt5 === true){
             //let projectdes = itemList[2].props.name;
             let projectdes = name;
             let options = document.getElementById('option5');
@@ -136,6 +141,7 @@ const ProjectPreferences = ()=>{
             <h2>Are you sure you want to submit?</h2>
             <p>Please note that this submission will count for your entire group.</p>
             <div id="confirmprojects">
+            {chosenproject}
             {itemList}
             </div>
             <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>

@@ -88,13 +88,12 @@ router.post("/login", async (req, res) => {
     res.status(202).send(token);
 });
 
-// Gets user details and attempts to register client, if a user is valid it returns a signed JWT token
+// Gets user details and attempts to register client
 router.post("/register", async (req, res) => {
     const { role, email, password, first_name, last_name, company } = req.body;
     let token = null;
 
     let hashPassword = await passwordEncrypt(password);
-    console.log("CREATED HASH: " + hashPassword);
 
     // Checks if the client has an existing account
 
@@ -111,16 +110,99 @@ router.post("/register", async (req, res) => {
     res.status(202).send(token);
 });
 
+// Gets user details and attempts to register admin
+router.post("/register/admin", async (req, res) => {
+    const { role, email, password, first_name, last_name, company } = req.body;
+
+    // For security reasons, registering an admin is only possible is there is an admin logged in
+    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+    const token = req.header(tokenHeaderKey);
+
+    const result = await checkTokenBlacklist(token);
+
+    // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
+    if (result) {
+        return res.status(401);
+    }
+
+    const verifiedToken = jwt.verify(token, jwtSecretKey);
+
+    // Extract user's data
+    const user = {
+        id: verifiedToken.userId,
+        email: verifiedToken.email,
+        role: verifiedToken.role,
+    };
+
+    //Checks if the user is in the database, if so it returns their role, then checks if the user is an admin
+    const user_role = await findUser(user.email);
+
+    if (user_role != "admin") {
+        return res.status(401);
+    }
+
+    let hashPassword = await passwordEncrypt(password);
+
+    // Checks if the admin has an existing account
+    if (await findUser(email) == null) {
+
+        // A admin is registering
+        await createUser("admin", email, hashPassword, first_name, last_name, company, null);
+    }
+
+    token = await generateToken(email, password, false);
+
+    console.log("Token generated and User Registered: " + token);
+
+    res.status(201).send(token);
+});
+
+router.post("/delete/admin", async (req, res) => {
+
+    // For security reasons, deleting an admin is only possible is there is an admin logged in
+    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+    const token = req.header(tokenHeaderKey);
+
+    const result = await checkTokenBlacklist(token);
+
+    // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
+    if (result) {
+        return res.status(401);
+    }
+
+    const verifiedToken = jwt.verify(token, jwtSecretKey);
+
+    // Extract user's data
+    const user = {
+        id: verifiedToken.userId,
+        email: verifiedToken.email,
+        role: verifiedToken.role,
+    };
+
+    // Checks if the user is in the database, if so it returns their role, then checks if the user is an admin
+    const user_role = await findUser(user.email);
+
+    if (user_role != "admin") {
+        return res.status(401);
+    }
+
+    let hashPassword = await passwordEncrypt(password);
+
+    await deleteUser(user.id);
+
+    res.status(200);
+});
+
 router.post("/logout", async (req, res) => {
     try {
-        //Gets token from header
+        // Gets token from header
         let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
         const token = req.header(tokenHeaderKey);
 
-        //Adds token to blacklist so that specific token is invalid
+        // Adds token to blacklist so that specific token is invalid
         await blacklistToken(token);
 
-        res.status(202).send("Logged out successfully");
+        res.status(200).send("Logged out successfully");
 
     } catch (error) {
         return res.status(401).send("Error logging out");
@@ -216,7 +298,7 @@ router.get('/google/callback', async (req, res) => {
             return res.cookie('token', token).redirect('http://localhost:3000/');
 
         } else {
-            
+
             console.log("User unauthorized to login");
             //User is not registered and not a client, they are unauthorized to login
             return res.status(400).redirect('http://localhost:3000/');

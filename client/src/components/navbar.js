@@ -22,9 +22,6 @@ const navbar = () =>{
                     <a href="/pages/projects-available">Projects(students)</a>
                 </li>
 
-                <li>
-                    <a href="/dnd">dnd</a>
-                </li>
             
             </ul>
             

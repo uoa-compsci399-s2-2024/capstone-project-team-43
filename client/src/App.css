@@ -185,6 +185,7 @@
   width: 33.5%;
   border-color: black;
   border-right: solid 1px;
+  overflow: scroll;
   /* background: #dadada;
   padding: 10;
   margin: 10;
@@ -196,11 +197,15 @@
   padding: 10;
   margin: 10;
   flex: 1;
+  overflow: scroll;
+
 }
 #sorting #right{
   width: 33.5%;
   border-left: solid 1px;
   border-color: black;
+  overflow: scroll;
+
   /* background: #dadada;
   padding: 10;
   margin: 10;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Project from "../components/project";
+import Project from "./project";
 export function Item(props) {
   const { id } = props;
 
@@ -16,7 +16,8 @@ export function Item(props) {
     background: "white"
   };
 
-
+// console.log("sorte");
+// console.log(id[0].name);
 return (
 
     <div>
@@ -43,7 +44,9 @@ export default function SortableItem(props) {
     transform: CSS.Transform.toString(transform),
     transition
   };
- const item = <Project id={props.id} name={props.name} description={props.description} />;
+//  const item = <Project id={props.id} name={props.name} description={props.description} />;
+// console.log("sorte");
+// console.log(props);
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <Item id={props.id} />

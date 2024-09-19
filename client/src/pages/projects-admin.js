@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchProjects } from '../Api.js'
-import Project from "../components/project";
+
 
 import {
     DndContext,
@@ -13,8 +13,8 @@ import {
   } from '@dnd-kit/core';
   import {arrayMove, sortableKeyboardCoordinates} from '@dnd-kit/sortable';
   
-  import Container from './container';
-  import {Item} from './sortable_item';
+  import Container from '../components/container';
+  import {Item} from '../components/sortable_item.js';
 
   import '../App.css';
 
@@ -37,42 +37,85 @@ const ProjectsAdmin = () => {
 
 //Rejected projects
 
-    let rejected = [[{id:0, name: 'placeholder', description: 'placeholder'}], ];
+ let rejected = []
 
-    projects.filter(project => project.status === 'rejected').map(project => (
+    projects
+    .filter(project => project.status === 'rejected')
+    .map(project => (
+      rejected.push([{id: project.id, name:project.title, description:project.description}])
 
-            // rejected = [[{id:project.id, name: project.title, description: project.description}], ]
-            rejected.push([{id:project.id, name: project.title, description: project.description}] )
+    ))
 
-          ));
-
-
-console.log(rejected)
-        //Unsorted projects
+//Unsorted projects
 let unsorted = []
+
     projects
     .filter(project => project.status === 'pending')
     .map(project => (
-        unsorted.push([{id: project.id, name:project.title, description:project.description}])
+      unsorted.push([{id: project.id, name:project.title, description:project.description}])
+
     ))
 
-    const list5 =[[{id: 3, name:"proj3", description:"desc3" }],
+//Approved projects
+let approved = []
+
+    projects
+    .filter(project => project.status === 'accepted')
+    .map(project => (
+      approved.push([{id: project.id, name:project.title, description:project.description}])
+
+    ))
+
+const list5 =[[{id: 3, name:"proj3", description:"desc3" }],
 [{id: 4, name:"proj4", description:"desc4" }],
 [{id: 5, name:"proj5", description:"desc5" }],
 ];
-console.log(list5);
+
 const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
 [{id: 11, name:"proj11", description:"desc11" }],
 [{id: 12, name:"proj12", description:"desc12" }],
 ];
 
     const [items, setItems] = useState({
-        rejected: rejected,
-        unsorted: list5,
-        approved: list6,
+        rejected:[],
+        unsorted: [],
+        approved: [],
       });
-      console.log(items);
-      
+
+
+
+      const load = () => {
+        let updatedItems = {};
+        items.rejected = [];
+        items.unsorted = [];
+        items.approved = [];
+      for (let i = 0; i < rejected.length; i++) {
+        items.rejected.push(rejected[i]);
+      };
+
+      for (let i = 0; i < unsorted.length; i++) {
+        items.unsorted.push(unsorted[i]);
+      };
+
+      for (let i = 0; i < approved.length; i++) {
+        items.approved.push(approved[i]);
+      };
+
+      updatedItems = {
+        rejected: items.rejected,
+        unsorted: items.unsorted,
+        approved: items.approved,
+      };
+
+      setItems(items =>
+      ({  ...items,
+    ...updatedItems})
+        
+      );
+      };
+
+
+
         const [activeId, setActiveId] = useState();
       
         const sensors = useSensors(
@@ -88,6 +131,7 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
             <h3>2024 - Semester 2</h3>
 
             </div>
+            <button onClick={load}>Load all</button>
             
         <div id="sorting">
         <DndContext
@@ -149,7 +193,14 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
         <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
         </DndContext>
         </div>
-
+        Some othe words
+        {projects
+    .filter(project => project.status === 'pending').map(unsorted => (
+                   <li key={unsorted.id}>
+                   <h2>{unsorted.title}</h2>
+                   <p>{unsorted.description}</p>
+               </li>
+                ))}
         </div>
 
     );

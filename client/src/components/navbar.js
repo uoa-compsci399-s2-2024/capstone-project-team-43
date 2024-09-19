@@ -3,7 +3,7 @@ import React from "react";
 import '../App.css';
 const navbar = () =>{
     const showsidemenu = () =>{
-        if(document.getElementById('sidemenu').style.display == "block"){
+        if(document.getElementById('sidemenu').style.display === "block"){
             document.getElementById('sidemenu').style.display = "none";
         }
         else{
@@ -39,6 +39,15 @@ const navbar = () =>{
                 </li>
                 <li>
                     <a href="/pages/manage-semester">Upload</a>
+                </li>
+                <li>
+                    <a href="/pages/new-semster">New Semster</a>
+                </li>
+                <li>
+                    <a href="/pages/manage-future">Manage Future</a>
+                </li>
+                <li>
+                    <a href="/pages/manage-current">Manage Current</a>
                 </li>
             </ul>
         </nav>

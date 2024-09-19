@@ -134,31 +134,41 @@ const oAuth2Client = new OAuth2Client(
     GOOGLE_REDIRECT_URI
 );
 
-router.get('/google', async (req, res) => {
+router.get('/google/role/:role', async (req, res) => {
 
     try {
 
-        // Generates the URL for Google consent form
+        const { role } = req.params;
+
+        // Checks that the role is either a client, student, or admin
+
+        if (['student', 'client', 'admin'].indexOf(role) == -1) {
+            return res.status(400).send('Not a valid role');
+        }
+
+        // Generates the URL for Google consent form with the role requested to register/login
         const authorizeUrl = oAuth2Client.generateAuthUrl({
             access_type: 'offline',
             scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+            state: role,
         });
 
         // Redirect the user to Google’s consent screen
         res.redirect(authorizeUrl);
     } catch (error) {
         console.log("Error authenticating: " + error);
-        res.status(500).send('Error during authentication').redirect('http://localhost:3000/');
+        res.status(500).redirect('http://localhost:3000/');
     }
 });
 
-// Callback route for Google OAuth2
+// Callback route for Google OAuth2, it returns the role in the request aswell
 router.get('/google/callback', async (req, res) => {
     try {
         const Authcode = req.query.code;
+        const { state: role } = req.query;
 
         if (!Authcode) {
-            return res.status(400).send('Authorization code invalid');
+            return res.status(400).redirect('http://localhost:3000/');
         }
 
         // Exchange Google's authorization code to get tokens
@@ -184,27 +194,37 @@ router.get('/google/callback', async (req, res) => {
         const user_role = await findUser(email);
         let token = null
 
-        if (user_role == null) {
+        if (user_role == null && role == "client") {
 
             // User does not exist in the database must create a new client
             await createUser("client", email, null, userInfo.given_name, userInfo.family_name, null);
             token = await generateToken(email, null, true);
 
-        } else {
+            console.log("TOKEN GENERATED GOOGLE USER: " + token);
+
+            // Respond with JWT token and redirect to homepage
+            return res.cookie('token', token).redirect('http://localhost:3000/');
+
+        } else if (user_role != null && role == user_role) {
 
             //User is registered and exist in the database, can be logged in
             token = await generateToken(email, null, true);
 
+            console.log("TOKEN GENERATED GOOGLE USER: " + token);
+
+            // Respond with JWT token and redirect to homepage
+            return res.cookie('token', token).redirect('http://localhost:3000/');
+
+        } else {
+            
+            console.log("User unauthorized to login");
+            //User is not registered and not a client, they are unauthorized to login
+            return res.status(400).redirect('http://localhost:3000/');
         }
-
-        console.log("TOKEN GENERATED GOOGLE USER: " + token);
-
-        // Respond with JWT token and redirect to homepage
-        res.cookie('token', token).redirect('http://localhost:3000/');
 
     } catch (error) {
         console.error('Error during Google OAuth callback:', error);
-        res.status(500).send('Error during authentication').redirect('http://localhost:3000/');
+        return res.status(500).redirect('http://localhost:3000/');
     }
 });
 

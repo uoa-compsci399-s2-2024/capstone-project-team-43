@@ -37,8 +37,6 @@ export async function generateToken(email, password, googleAuth) {
     return null;
   }
 
-  console.log("Generating token with user ID: " + user);
-
   // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
   const token = jwt.sign(
     {
@@ -92,8 +90,6 @@ async function validateUser(email, password, googleAuth) {
         /** @type {User} */
         const user = rows[0];
 
-        console.log("User:", user, " With ID: " + user.id);
-
         return user;
 
       } else {
@@ -101,8 +97,6 @@ async function validateUser(email, password, googleAuth) {
           const user = rows[0];
         try {
         // Need to check hashed password
-        console.log("PASSWORD: ", password);
-        console.log("DB PASSWORD: ", user);
         let result = bcrypt.compare(password, user.password);
 
           if (result) {

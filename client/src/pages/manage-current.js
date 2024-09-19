@@ -24,12 +24,12 @@ const ManageCurrent = () =>{
     return(
         <div id="managecurrent" className="managecurrentpage">
             <div id="managecurrentpage-heading">
-                <p>Manage Current Semster</p>
-                <h1>Semster Two, 2024</h1>
+                <p>Manage Current Semester</p>
+                <h1>Semester Two, 2024</h1>
             </div>
                 <form className="managecurrentpage-semster1">
-                    <p>1. Semster Dates</p>
-                    <p className = "leftside">semster begins:</p>
+                    <p>1. Semester Dates</p>
+                    <p className = "leftside">semester begins:</p>
                     <p className = "rightside">semester ends:</p>
                     <br></br>
                     <br></br>

@@ -1148,3 +1148,116 @@
 .save{
   background-color:#003998;
 }
+
+/**           Manage Current Semester Page           **/
+
+.managecurrentpage{
+  position:absolute;
+  height: 100%;
+  width: 100%;
+  display: grid;
+}
+
+.managecurrentpage form{
+  height: fit-content;
+  width: 30%;
+  justify-self: center;
+  display: inline;
+}
+
+.managecurrentpage #managecurrentpage-heading{
+  text-align: center;
+}
+
+.managecurrentpage #managecurrentpage-heading h1{
+  margin-top:-3vh;
+}
+
+.managecurrentpage-semster1{
+  height: fit-content;
+  width: 30%;
+  justify-self: center;
+  display: inline;
+}
+
+.managecurrentpage-semster1 input[type=short]{
+  max-width: 17%;
+  margin: 1%;
+
+}
+
+.managecurrentpage-semster1 input[type=long]{
+  max-width: 27%;
+  margin: 2%;
+}
+
+.rightside{
+  float: right;
+}
+
+.leftside{
+  float: left;
+}
+
+.end{
+  float: right;
+  width: 35%;
+}
+
+.begin input[type=short]{
+  max-width: 15%;
+  margin: 1%;
+
+}
+
+.begin input[type=long]{
+  max-width: 20%;
+  margin: 1%;
+}
+
+.begin{
+  float: left;
+  width: 45%;
+}
+
+.managecurrentpage-semster2{
+  height: fit-content;
+  width: 30%;
+  justify-self: center;
+}
+
+.managecurrentpage-semster2 input[type=short]{
+  max-width: 17%;
+  margin: 1%;
+
+}
+
+.managecurrentpage-semster2 input[type=long]{
+  max-width: 27%;
+  margin: 2%;
+}
+
+.managecurrentpage-buttons{
+  justify-self: center;
+  display: flex;
+  width: 18%;
+  justify-content: space-between;
+}
+
+.managecurrentpage-buttons button{
+  max-width: 10vw;
+  min-width: 8vw;
+  max-height: 6vh;
+  border: 1px white solid;
+  border-radius: 5px;
+  color: white;
+  font-size: large;
+}
+
+.retire{
+  background-color: #2979FF;
+}
+
+.save{
+  background-color:#003998;
+}

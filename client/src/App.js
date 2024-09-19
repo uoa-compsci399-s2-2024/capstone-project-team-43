@@ -14,6 +14,7 @@ import About from './pages/about';
 import Contact from './pages/contact';
 import NewSemster from './pages/new-semster';
 import ManageFuture from './pages/manage-future';
+import ManageCurrent from './pages/manage-current';
 import Navbar from "./components/navbar";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path='/pages/contact' Component={Contact} />
         <Route path='/pages/new-semster' Component={NewSemster} />
         <Route path='/pages/manage-future' Component={ManageFuture} />
+        <Route path='/pages/manage-current' Component={ManageCurrent} />
       </Routes>
       
 

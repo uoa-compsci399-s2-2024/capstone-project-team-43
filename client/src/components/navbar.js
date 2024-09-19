@@ -43,6 +43,9 @@ const navbar = () =>{
                 <li>
                     <a href="/pages/manage-future">Manage Future</a>
                 </li>
+                <li>
+                    <a href="/pages/manage-current">Manage Current</a>
+                </li>
             </ul>
         </nav>
         <div id="sidemenu">

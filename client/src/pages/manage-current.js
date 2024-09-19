@@ -2,19 +2,32 @@ import React from "react";
 
 import '../App.css';
 
-const ManageFuture = () =>{
+const ManageCurrent = () =>{
+
+    const retire = () =>{
+        alert("you clicked retire");
+    }
 
     const save = () =>{
         alert("you clicked save");
     }
 
+    const uploadteams = () =>{
+        alert("you clicked upload files");
+    }
+
+    const uploadstudents = () =>{
+        alert("you clicked upload files");
+    }
+
+
     return(
-        <div id="managefuture" className="managefuturepage">
-            <div id="managefuturepage-heading">
-                <p>Manage Future Semsters</p>
-                <h1>Semster One, 2025</h1>
+        <div id="managecurrent" className="managecurrentpage">
+            <div id="managecurrentpage-heading">
+                <p>Manage Current Semster</p>
+                <h1>Semster Two, 2024</h1>
             </div>
-                <form className="managefuturepage-semster1">
+                <form className="managecurrentpage-semster1">
                     <p>1. Semster Dates</p>
                     <p className = "leftside">semster begins:</p>
                     <p className = "rightside">semester ends:</p>
@@ -48,8 +61,21 @@ const ManageFuture = () =>{
                     </div>
                     <br></br>
                 </form>
-                <form className="managefuturepage-semster2">
-                <p>2. Project Bidding Timeframe</p>
+                <form>
+                <p>2. Capstone students list</p>
+                Please upload a .csv file of the list of this semester’s students for the COMPSCI 399 Capstone course.
+
+                <button id="uploadstudent" className = "upload" onClick={uploadstudents}>Upload File</button>
+                </form>
+
+                <form>
+                <p>3. Capstone teams list</p>
+                Please upload a .csv file of the list of this semester’s teams for the COMPSCI 399 Capstone course.
+                <button id="uploadteam" className = "upload" onClick = {uploadteams}>Upload File</button>
+                </form>
+
+                <form className="managecurrentpage-semster2">
+                <p>4. Project Bidding Timeframe</p>
                     <p className = "leftside">project bidding begins:</p>
                     <p className = "rightside">project bidding ends:</p>
                     <br></br>
@@ -80,11 +106,14 @@ const ManageFuture = () =>{
                     </label>
                     </div>
                 </form>
-                <div className="managefuturepage-buttons">
+                <br></br>
+                <div className="managecurrentpage-buttons">
+                <button className="retire" onClick = {retire}>RETIRE</button>
+                <br></br>
                 <button className="save" onClick = {save}>SAVE</button>
                 </div>
             </div>
     )
 }
 
-export default ManageFuture;
+export default ManageCurrent;

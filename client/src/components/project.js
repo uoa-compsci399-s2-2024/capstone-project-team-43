@@ -14,7 +14,6 @@ function Projects(props){
             <div id="projectName">
             {props.name}
             </div>
-
             <div id="projectDescription">
                 {props.description}
             </div>

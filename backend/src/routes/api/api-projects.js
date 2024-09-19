@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { retrieveProjects, createProject, deleteProject, updateProjectStatus, retrieveStatusProject } from "../../data/projects-dao.js";
+import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject } from "../../data/projects-dao.js";
 
 const router = Router();
 
 // Retrieves all projects
 router.get("/", async (req, res) => {
-    return res.json(await retrieveProjects())
+    return res.json(await getProjects())
 });
 
 // Retrieves all given status projects
 router.get("/status/:status_name", async (req, res) => {
     const status = req.params.status_name;
-    return res.json(await retrieveStatusProject(status))
+    return res.json(await getStatusProject(status))
 });
 
 // Updates status of project with given status
@@ -24,13 +24,13 @@ router.post("/:id", async (req, res) => {
 
 // Creates a new project with given name and desc.
 router.post("/", async (req, res) => {
-    const { title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num } = req.body;
-    if (!title || !description || !owner || !preferred_skills || !project_deliverable || !created || !expiry || !status || !max_num_of_groups || !project_num) {
+    const { title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number } = req.body;
+    if (!title || !description || !owner_id || !preferred_skills || !project_deliverable || !created || !expiry || !status || !max_teams || !project_number) {
         return res.status(422);
     }
 
     // Details are valid and now passed to createProject function to query into database
-    const project = await createProject(title, description, owner, preferred_skills, project_deliverable, created, expiry, status, max_num_of_groups, project_num);
+    const project = await createProject(title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number);
     return res.location(`/api/projects/${project.id}`).status(201).json(project);
 });
 

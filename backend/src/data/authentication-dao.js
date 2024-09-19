@@ -1,0 +1,239 @@
+import { pool } from "./database.js";
+import dotenv from "dotenv";
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt'; // Will use this for password hashing
+
+dotenv.config();
+
+// Gets the database name from .env file
+const DB_NAME = process.env.DB_NAME;
+
+const saltRounds = 10; // Typically a value between 10 and 12
+
+/**
+ * @typedef {object} User // Defines user class
+ * @property {number} id
+ * @property {'admin'|'student'|'client'} type
+ * @property {string} email
+ * @property {string} first_name
+ * @property {string} last_name
+ * @property {string} company
+ * @property {Date} created
+ * @property {number} team_id
+ */
+
+/** Attempts to log the user in with given email & password, if such a user exists it returns a session token
+ * @param {string} email // email of the user
+ * @param {string} password // encrypted password of user
+ * @param {boolean} googleAuth // toggle if google authentication was used
+*/
+export async function generateToken(email, password, googleAuth) {
+
+  // Validate user here
+  /** @type {User} */
+  const user = await validateUser(email, password, googleAuth);
+
+  if (user == null) {
+    return null;
+  }
+
+  console.log("Generating token with user ID: " + user);
+
+  // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
+  const token = jwt.sign(
+    {
+      time: Date.now(),
+      userId: user.id,
+      email: user.email,
+      role: user.role, 
+    }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }); // Token is valid for 1 hour
+
+  return token
+}
+
+/** 
+ * Funtion is given an email and password which then checks if such a user exists in the database, returns user object if a user is found and null otherwise.
+ * The googleAuth is a boolean which will check if a user is logging in via google's Authentication
+ * 
+ * @param {string} email // email of the user
+ * @param {string} password // encrypted password of user
+ * @param {boolean} googleAuth // toggle if google authentication was used
+ */
+async function validateUser(email, password, googleAuth) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    let [rows] = []
+
+    if (googleAuth) {
+
+      // Google authentication has been used, need to just check if email is in the database
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+
+    } else {
+
+
+      // Need to check if user with given details is in the system
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+
+    }
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+    // Checks no user was found,
+    if (rows.length > 0) {
+      if (googleAuth) {
+
+        /** @type {User} */
+        const user = rows[0];
+
+        console.log("User:", user, " With ID: " + user.id);
+
+        return user;
+
+      } else {
+          /** @type {User} */
+          const user = rows[0];
+        try {
+        // Need to check hashed password
+        console.log("PASSWORD: ", password);
+        console.log("DB PASSWORD: ", user);
+        let result = bcrypt.compare(password, user.password);
+
+          if (result) {
+            // Passwords match, authentication successful
+            console.log('Passwords match! User authenticated.');
+
+            return user;
+
+          } else {
+            // Passwords don't match, authentication failed
+            console.log('Passwords do not match! Authentication failed.');
+            return null;
+          }
+
+        } catch (err) {
+          console.log("Error comparing passwords: ", err);
+          return null;
+        }
+
+      }
+    }
+
+    return null;
+
+  } catch (err) {
+    console.error('Error executing query/s here:', err.message);
+  }
+}
+
+export async function passwordEncrypt(password) {
+    
+  try {
+    let hashPassword = bcrypt.hash(password, saltRounds);
+
+      console.log("given hash : ", hashPassword);
+      return hashPassword;
+
+  } catch (err) {
+    console.log("Error creating hash");
+    return null;
+  }
+}
+
+/**
+ * Attempts to register the student with given details, a user can only be registered if their university email is already in the database
+ * @param {string} email 
+ * @param {string} password
+ * @returns 
+ */
+export async function registerStudent(email, password) {
+
+  let connection;
+  let [rows] = [];
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    // Gets current date "YYYY-MM-DD" The .split('T') splits the date from the milliseconds time
+    const created = new Date().toISOString().split('T')[0];
+
+    const hash = await passwordEncrypt(password);
+
+    // Updates client details
+    await connection.query(
+      "UPDATE USER SET password = ?, created = ? WHERE email = ?",
+      [hash, created, email]
+    );
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+  }
+
+  console.log("User is registered");
+
+}
+
+// Initializes the token blacklist for logging out users
+var tokenBlacklist = [];
+
+export async function blacklistToken(token) {
+  tokenBlacklist.push(token);
+}
+
+export async function checkTokenBlacklist(token) {
+
+  // Checks if the token is in the blacklist, checks every single token, if no matching token if found, .find() returns undefined
+  const result = tokenBlacklist.find(blacklistedToken => blacklistedToken === token);
+
+  // If no token is found, return false
+  if (result == undefined) {
+    return false;
+  }
+  return true;
+}
+
+// Finds a user with given email and returns which role the user has
+export async function findUser(email) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    let [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+    // Checks if a user has been found
+    if (rows.length > 0) {
+
+      /** @type {User} */
+      const user = rows[0];
+
+      console.log("User:", user, " With Role: " + user.role);
+
+      return user.role;
+    }
+
+    return null;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  }
+}
+
+

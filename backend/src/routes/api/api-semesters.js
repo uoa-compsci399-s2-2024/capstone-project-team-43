@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSemester, deleteSemester, getSemester, getSemesters, updateSemester } from "../../data/semesters-dao.js";
+import { createSemester, deleteSemester, getSemester, getSemesters } from "../../data/semesters-dao.js";
 import { getUsers, updateTeam, getUsersByTeam, createUser, createStudent, deleteUser, deleteUserByRole } from "../../data/users-dao.js";
 import { createTeam, deleteTeamBySemester } from "../../data/teams-dao.js";
 import multer from "multer";
@@ -32,7 +32,7 @@ router.get("/:id", async (req, res) => {
 
 // Retrieves all semesters
 router.get("/", async (req, res) => {
-    return res.json(await retrieveSemesters())
+    return res.json(await getSemesters())
 });
 
 // Adds students or teams to database from CSV 
@@ -95,10 +95,10 @@ router.post("/:id/upload/:fileContent", upload.single("myFile"), async (req, res
 
 
 // Updates start date, end date of semester with given id
-router.post("/:id", async (req, res) => {
+router.post("/:id/dates", async (req, res) => {
     const id = req.params.id;
-    const { start_date, end_date, is_semester_one } = req.body;
-    const success = updateSemester(id, start_date, end_date, is_semester_one);
+    const { start_date, end_date} = req.body;
+    const success = updateSemesterDates(id, start_date, end_date);
     res.sendStatus(success ? 204 : 404);
 });
 
@@ -108,6 +108,8 @@ router.post("/", async (req, res) => {
     if (!start_date || !end_date || !is_semester_one) {
         return res.status(422);
     }
+
+    is_
 
     // Details are valid and now passed to createSemester function to query into database
     const semester = await createSemester(start_date, end_date, is_semester_one);

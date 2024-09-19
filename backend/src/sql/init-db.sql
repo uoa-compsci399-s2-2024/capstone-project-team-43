@@ -28,7 +28,8 @@ CREATE TABLE SEMESTER (
     id INT AUTO_INCREMENT PRIMARY KEY,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    is_semester_one BOOL NOT NULL
+    is_semester_one BOOL NOT NULL,
+    status ENUM('retired', 'current', 'upcoming')
 );
 
 CREATE TABLE TEAM (
@@ -64,5 +65,9 @@ VALUES
 INSERT INTO SEMESTER 
     (start_date, end_date, is_semester_one) 
 VALUES 
+    (STR_TO_DATE('02-26-2025','%m-%d-%Y'), STR_TO_DATE('06-24-2025','%m-%d-%Y'), true), 
+    (STR_TO_DATE('07-15-2025','%m-%d-%Y'), STR_TO_DATE('11-11-2025','%m-%d-%Y'), false),
     (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false);
+    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false),
+    (STR_TO_DATE('02-26-2023','%m-%d-%Y'), STR_TO_DATE('06-24-2023','%m-%d-%Y'), true), 
+    (STR_TO_DATE('07-15-2023','%m-%d-%Y'), STR_TO_DATE('11-11-2023','%m-%d-%Y'), false);

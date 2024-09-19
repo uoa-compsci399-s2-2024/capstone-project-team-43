@@ -38,6 +38,9 @@ const navbar = () =>{
                     <a href="/pages/contact">Contact</a>
                 </li>
                 <li>
+                    <a href="/pages/manage-semester">Upload</a>
+                </li>
+                <li>
                     <a href="/pages/new-semster">New Semster</a>
                 </li>
                 <li>

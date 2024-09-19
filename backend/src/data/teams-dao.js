@@ -83,14 +83,23 @@ export async function createTeam(team_number, team_name, semester_id) {
 
     await connection.query(`USE ${DB_NAME};`);
 
-    // Insert semester into db
-    const response = await connection.query(
+    // return team if it already exists 
+    const [existingTeam] = await connection.query(
+      "SELECT * FROM TEAM WHERE (team_number = ? AND team_name = ? AND semester_id = ?)", [team_number, team_name, semester_id]
+    );
+    if (existingTeam.length > 0) {
+      return existingTeam[0];
+    }
+
+    // Otherwise insert new team into database
+    const [response] = await connection.query(
       "INSERT INTO TEAM (team_number, team_name, semester_id) VALUES (?, ?, ?)", [team_number, team_name, semester_id]);
 
-    /** @type {Team} */
-    const semester = await connection.query("SELECT * FROM TEAM WHERE id = ?", [response.insertId]); // insertId is the auto-generated Primary Key value
 
-    return semester;
+    /** @type {Team} */
+    const [team] = await connection.query("SELECT * FROM TEAM WHERE id = ?", [response.insertId]); // insertId is the auto-generated Primary Key value
+    
+    return team[0];
 
   } catch (err) {
     console.error('Error executing query/s:', err);
@@ -118,6 +127,30 @@ export async function setTeamProject(id, project_id) {
     await connection.query("UPDATE TEAM SET project_id = ? WHERE id = ?", [project_id, id]);
   } catch (err) {
     console.error('Error executing query:', err);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
+  }
+}
+
+/**
+ * Deletes Teams based on given semesterId
+ * @param {number} [semesterId]
+ *
+ * @returns {Promise<Team[]>} // returns remaining users
+ */
+export async function deleteTeamBySemester(semesterId) {
+  let connection;
+  let result = 0;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+
+    const [result] = await connection.query("DELETE FROM TEAM WHERE semester_id = ?", [semesterId]);
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
   } finally {
     // If there is a connection, release it
     if (connection) connection.release();

@@ -1,12 +1,8 @@
 import { Router } from "express";
 import jwt from 'jsonwebtoken';
-import { generateToken, registerStudent, blacklistToken, checkTokenBlacklist, findUser } from "../../data/authentication-dao.js";
+import { generateToken, registerStudent, blacklistToken, checkTokenBlacklist, findUser, passwordEncrypt } from "../../data/authentication-dao.js";
 import { createUser } from "../../data/users-dao.js";
 import { OAuth2Client } from 'google-auth-library';
-import http from 'http'; // Built-in Node module
-import url from 'url'; // Built-in Node module
-import open from 'open'; // Third-party package
-import destroyer from 'server-destroy'; // Third-party package
 import dotenv from "dotenv";
 import { google } from 'googleapis';
 
@@ -22,15 +18,16 @@ const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
 // Validates that the token given in the header is a valid token
 router.get("/validateToken", async (req, res) => {
-    // Tokens are passed in header of request for security
 
+    // Gets the role that the page is requesting
+    const { requested_role } = req.body;
+
+    // Tokens are passed in header of request for security
     let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
     let jwtSecretKey = process.env.JWT_SECRET_KEY;
 
     try {
         const token = req.header(tokenHeaderKey);
-
-        console.log("Token Received: " + token);
 
         const result = await checkTokenBlacklist(token);
 
@@ -39,21 +36,42 @@ router.get("/validateToken", async (req, res) => {
             throw new Error('Token is invalid');
         }
 
-        const verified = jwt.verify(token, jwtSecretKey);
-        if (verified) {
-            return res.send("Successfully Verified");
+        const verifiedToken = jwt.verify(token, jwtSecretKey);
+
+        // Extract user's data
+        const user = {
+            id: verifiedToken.userId,
+            email: verifiedToken.email,
+            role: verifiedToken.role,
+        };
+
+        //Checks if the user is in the database, if so it returns their role
+        const user_role = await findUser(user.email);
+
+        /** 
+         * The following must occur for a user to be verified:
+         * The token is valid and not in the blacklist token (checked above)
+         * The role in the token is the same as the requested role
+         * The user's role in the database is the same as the requested role
+         * 
+         * If the above conditions are all true, the user is verified
+         */
+
+        if (verifiedToken && user.role == requested_role && requested_role == user_role) {
+            return res.status(201).send("Successfully Verified");
         } else {
             // Access Denied
-            return res.status(401).send(error);
+            return res.status(401).send("Access Denied");
         }
     } catch (error) {
+        console.log("Error validating token: ", error);
         // Access Denied
         return res.status(401).send(error);
     }
 
 });
 
- // Gets user details and attempts to log user in, if a user is valid it returns a signed JWT token
+// Gets user details and attempts to log user in, if a user is valid it returns a signed JWT token
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
@@ -70,13 +88,23 @@ router.post("/login", async (req, res) => {
     res.status(202).send(token);
 });
 
-// Gets user details and attempts to register student, if a user is valid it returns a signed JWT token
+// Gets user details and attempts to register client, if a user is valid it returns a signed JWT token
 router.post("/register", async (req, res) => {
     const { role, email, password, first_name, last_name, company } = req.body;
     let token = null;
 
-    // A client is registering
-    await createUser("client", email, password, first_name, last_name, company, null);
+    let hashPassword = await passwordEncrypt(password);
+    console.log("CREATED HASH: " + hashPassword);
+
+    // Checks if the client has an existing account
+
+    if (await findUser(email) == null) {
+
+        // A client is registering
+        await createUser("client", email, hashPassword, first_name, last_name, company, null);
+    }
+
+    token = await generateToken(email, password, false);
 
     console.log("Token generated and User Registered: " + token);
 
@@ -85,16 +113,16 @@ router.post("/register", async (req, res) => {
 
 router.post("/logout", async (req, res) => {
     try {
-    //Gets token from header
-    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
-    const token = req.header(tokenHeaderKey);
+        //Gets token from header
+        let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+        const token = req.header(tokenHeaderKey);
 
-    //Adds token to blacklist so that specific token is invalid
-    await blacklistToken(token);
+        //Adds token to blacklist so that specific token is invalid
+        await blacklistToken(token);
 
-    res.status(202).send("Logged out successfully");
+        res.status(202).send("Logged out successfully");
 
-    } catch(error) {
+    } catch (error) {
         return res.status(401).send("Error logging out");
     }
 });
@@ -110,14 +138,14 @@ router.get('/google', async (req, res) => {
 
     try {
 
-    // Generates the URL for Google consent form
-    const authorizeUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
-    });
+        // Generates the URL for Google consent form
+        const authorizeUrl = oAuth2Client.generateAuthUrl({
+            access_type: 'offline',
+            scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+        });
 
-    // Redirect the user to Google’s consent screen
-    res.redirect(authorizeUrl);
+        // Redirect the user to Google’s consent screen
+        res.redirect(authorizeUrl);
     } catch (error) {
         console.log("Error authenticating: " + error);
         res.status(500).send('Error during authentication').redirect('http://localhost:3000/');
@@ -145,7 +173,7 @@ router.get('/google/callback', async (req, res) => {
 
         const { data: userInfo } = await oauth2.userinfo.get();
         const email = userInfo.email;
-        const first_name = userInfo.given_name; 
+        const first_name = userInfo.given_name;
         const last_name = userInfo.family_name;
 
         console.log('User email:', email);
@@ -166,7 +194,7 @@ router.get('/google/callback', async (req, res) => {
 
             //User is registered and exist in the database, can be logged in
             token = await generateToken(email, null, true);
-            
+
         }
 
         console.log("TOKEN GENERATED GOOGLE USER: " + token);

@@ -119,6 +119,41 @@ export async function createUser(role, email, password, first_name, last_name, c
 }
 
 /**
+ * Creates a new User with role = 'student'
+ * @param {string} email
+ * @param {string} first_name
+ * @param {string} last_name
+ * @return the newly created User
+ */
+export async function createStudent(email, first_name, last_name) {
+  let connection;
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    // Insert User into db
+    const response = await connection.query(
+      "INSERT INTO USER (role, email, password, first_name, last_name, company, team_id) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      ['student', email, null, first_name, last_name, null, null]
+    );
+
+    /** @type {User} */
+    const User = await connection.query("SELECT * FROM USER WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+    return User;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+  }
+}
+
+/**
  * Deletes the User with the given id
  *
  * @param {number} id the id of the User to delete
@@ -128,6 +163,30 @@ export async function deleteUser(id) {
     await pool.query("DELETE FROM USER WHERE id = ?", id);
   } catch (err) {
     console.error('Error executing query/s:', err);
+  }
+}
+
+/**
+ * Deletes Users based on role 
+ * @param {'admin'|'student'|'client'} [role]
+ *
+ * @returns {Promise<User[]>} // returns remaining users
+ */
+export async function deleteUserByRole(role) {
+  let connection;
+  let result = 0;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+
+    const [result] = await connection.query("DELETE FROM USER WHERE role = ?", [role]);
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
   }
 }
 
@@ -157,6 +216,21 @@ export async function updateUserEmail(id, email) {
 export async function updateUserName(id, first_name, last_name) {
   try {
     await pool.query("UPDATE USER SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+  }
+}
+
+/**
+* Updates the team_id of the student whose email starts with the given unikey
+*
+* @param {string} unikey student's unikey
+* @param {number} team_id student's team
+*/
+export async function updateTeam(unikey, team_id) {
+  try {
+    await pool.query("UPDATE USER SET team_id = ? WHERE email LIKE ?", [team_id, `${unikey}%`]);
 
   } catch (err) {
     console.error('Error executing query/s:', err);

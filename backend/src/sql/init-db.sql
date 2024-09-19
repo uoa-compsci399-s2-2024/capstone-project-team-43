@@ -20,28 +20,16 @@ CREATE TABLE USER (
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     company VARCHAR(255),
-    created DATETIME,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
     team_id INT
 );
-
--- CREATE TABLE USER_GROUP (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     user_id INTEGER NOT NULL,
---     group_id INTEGER NOT NULL
--- );
-
--- CREATE TABLE PROJECT_TEAM (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     project_id INTEGER NOT NULL,
---     team_id INTEGER NOT NULL,
---     -- created DATE NOT NULL 
--- );
 
 CREATE TABLE SEMESTER (
     id INT AUTO_INCREMENT PRIMARY KEY,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    is_semester_one BOOL NOT NULL
+    is_semester_one BOOL NOT NULL,
+    status ENUM('retired', 'current', 'upcoming')
 );
 
 CREATE TABLE TEAM (
@@ -52,22 +40,6 @@ CREATE TABLE TEAM (
     project_id INT
 );
 
--- undecided on if we need the below views 
-
--- CREATE VIEW CLIENTS AS
--- SELECT *
--- FROM USER
--- WHERE role = 'client';
-
--- CREATE VIEW ADMINS AS
--- SELECT *
--- FROM USER
--- WHERE role = 'admin';
-
--- CREATE VIEW STUDENTS AS
--- SELECT *
--- FROM USER
--- WHERE role = 'student';
 
 INSERT INTO PROJECT 
     (title, description, owner_id, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number) 
@@ -93,5 +65,9 @@ VALUES
 INSERT INTO SEMESTER 
     (start_date, end_date, is_semester_one) 
 VALUES 
+    (STR_TO_DATE('02-26-2025','%m-%d-%Y'), STR_TO_DATE('06-24-2025','%m-%d-%Y'), true), 
+    (STR_TO_DATE('07-15-2025','%m-%d-%Y'), STR_TO_DATE('11-11-2025','%m-%d-%Y'), false),
     (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false);
+    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false),
+    (STR_TO_DATE('02-26-2023','%m-%d-%Y'), STR_TO_DATE('06-24-2023','%m-%d-%Y'), true), 
+    (STR_TO_DATE('07-15-2023','%m-%d-%Y'), STR_TO_DATE('11-11-2023','%m-%d-%Y'), false);

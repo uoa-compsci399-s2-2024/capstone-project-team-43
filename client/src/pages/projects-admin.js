@@ -15,7 +15,7 @@ import {
   
   import Container from '../components/container';
   import {Item} from '../components/sortable_item.js';
-
+  import Header from "../components/admin-semester-header.js";
   import '../App.css';
 
 const ProjectsAdmin = () => {
@@ -114,6 +114,13 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
       );
       };
 
+      const unpublish = () => {
+
+      };
+      const publish = () => {
+
+      };
+      
 
 
         const [activeId, setActiveId] = useState();
@@ -127,11 +134,8 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
 
     return(
         <div className="projects">
-            <div id="head"> 
-            <h3>2024 - Semester 2</h3>
-
-            </div>
-            <button onClick={load}>Load all</button>
+           <Header semester = "2024 - Semester 1" current = "2024 - Semester 2"/>
+            <button onClick={load} id="load">Load all</button>
             
         <div id="sorting">
         <DndContext
@@ -189,18 +193,16 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
                 ))}
             </ul> */}
             <Container id="container2" items={items.approved} />
+            <div id="publishing">
+        <button onClick={unpublish} id="unpublish">Unpublish</button>
+        <button onClick={publish} id="publish">Publish</button>
+        </div>
         </div>
         <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
         </DndContext>
         </div>
-        Some othe words
-        {projects
-    .filter(project => project.status === 'pending').map(unsorted => (
-                   <li key={unsorted.id}>
-                   <h2>{unsorted.title}</h2>
-                   <p>{unsorted.description}</p>
-               </li>
-                ))}
+
+
         </div>
 
     );

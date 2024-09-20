@@ -8,7 +8,7 @@ import {
 import SortableItem from "../components/sortable_item";
 
 const containerStyle = {
-  background: "#dadada",
+  // background: "#dadada",
   padding: 10,
   margin: 10,
   flex: 1

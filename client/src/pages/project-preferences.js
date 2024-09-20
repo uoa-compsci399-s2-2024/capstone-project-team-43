@@ -1,14 +1,12 @@
-import React from "react";
+import React, { Component } from "react";
 import '../App.css';
 import { Link } from "react-router-dom";
 import Project from "../components/project";
 import { useState } from "react";
-import Projects from "../components/project";
 
 const ProjectPreferences = ()=>{
 
-    const [chosenproject, setchosenproject] = useState(new Array(5).fill(null));
-
+    const [chosenproject, setchosenproject] = useState(new Array(5).fill(<Project/>));
     const choose = (element, index) =>{
         const newchosen = [...chosenproject];
         newchosen[index] = element;
@@ -18,48 +16,54 @@ const ProjectPreferences = ()=>{
     const handleclick = (project) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
-            {choose(project, 0)};
+            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
+                {choose(project, 0)};
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
             options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
             opt1 = false;
+            }
         }
         else if (opt2 === true){
             //let projectdes = itemList[2].props.name;
+            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
             {choose(project, 1)};
             let options = document.getElementById('option2');
             options.innerHTML += "<p>";
             options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
-            opt2 = false;
+            opt2 = false;}
         }
         else if (opt3 === true){
             //let projectdes = itemList[2].props.name;
+            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
             {choose(project, 2)};
             let options = document.getElementById('option3');
             options.innerHTML += "<p>";
             options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
-            opt3 = false;
+            opt3 = false;}
         }
         else if (opt4 === true){
             //let projectdes = itemList[2].props.name;
+            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
             {choose(project, 3)};
             let options = document.getElementById('option4');
             options.innerHTML += "<p>";
             options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
-            opt4 = false;
+            opt4 = false;}
         }
         else if (opt5 === true){
             //let projectdes = itemList[2].props.name;
+            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
             {choose(project, 4)};
             let options = document.getElementById('option5');
             options.innerHTML += "<p>";
             options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
-            opt5 = false;
+            opt5 = false;}
         }
     }
 
@@ -93,7 +97,7 @@ const ProjectPreferences = ()=>{
     }
 
     const confirmation = () =>{
-        if(chosenproject[0] !== null && chosenproject[1] !== null && chosenproject[2] !== null && chosenproject[3] !== null && chosenproject[4] !== null){
+        if(chosenproject[0].props.name !== undefined && chosenproject[1].props.name !== undefined && chosenproject[2].props.name !== undefined && chosenproject[3].props.name !== undefined && chosenproject[4].props.name !== undefined){
         document.getElementById('confirm').style.display = "block";
         document.getElementById('projectPreferenceselements').style.background = "#003998";
         document.getElementById('projectPreferenceselements').style.opacity = "30%";

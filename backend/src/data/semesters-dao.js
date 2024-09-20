@@ -99,11 +99,13 @@ export async function getSemester(id) {
  * Creates a new semester 
  * @param {Date} start_date
  * @param {Date} end_date
+ * @param {Date} start_bidding_date
+ * @param {Date} end_bidding_date
  * @param {boolean} is_semester_one //String visualization of semester, ie. "2024 Sem 2"
  *
  * @return the newly created project
  */
-export async function createSemester(start_date, end_date, is_semester_one) {
+export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {
   let connection;
   try {
 
@@ -114,7 +116,7 @@ export async function createSemester(start_date, end_date, is_semester_one) {
 
     // Insert semester into db
     const response = await connection.query(
-      "INSERT INTO SEMESTER (start_date, end_date, is_semester_one) VALUES (?, ?, ?)", [start_date, end_date, is_semester_one]);
+      "INSERT INTO SEMESTER (start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) VALUES (?, ?, ?, ?, ?)", [start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one]);
 
     /** @type {Semester} */
     const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [response.insertId]); // insertId is the auto-generated Primary Key value
@@ -135,8 +137,10 @@ export async function createSemester(start_date, end_date, is_semester_one) {
  * @param {number} id // The id of the semester to update
  * @param {Date} start_date // The new start_date of semester
  * @param {Date} end_date // The new end_date of semester
+ * @param {Date} start_bidding_date // The new start_bidding_date of semester
+ * @param {Date} end_bidding_date // The new end_bidding_date of semester
  */
-export async function updateSemesterDates(id, start_date, end_date) {
+export async function updateSemesterDates(id, start_date, end_date, start_bidding_date, end_bidding_date) {
   let connection;
   try {
 
@@ -145,7 +149,7 @@ export async function updateSemesterDates(id, start_date, end_date) {
 
     await connection.query(`USE ${DB_NAME};`);
 
-    await connection.query("UPDATE SEMESTER SET start_date = ?, end_date = ? WHERE id = ?", [start_date, end_date, id]);
+    await connection.query("UPDATE SEMESTER SET start_date = ?, end_date = ?, start_bidding_date = ?, end_bidding_date = ? WHERE id = ?", [start_date, end_date, start_bidding_date, end_bidding_date, id]);
 
     // If there is a connection, release it
     if (connection) connection.release();

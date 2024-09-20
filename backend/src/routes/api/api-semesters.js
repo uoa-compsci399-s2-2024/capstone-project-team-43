@@ -94,23 +94,20 @@ router.post("/:id/upload/:fileContent", upload.single("myFile"), async (req, res
 });
 
 
-// Updates start date, end date of semester with given id
+// Updates start date, end date, bidding date of semester with given id
 router.post("/:id/dates", async (req, res) => {
     const id = req.params.id;
-    const { start_date, end_date} = req.body;
-    const success = updateSemesterDates(id, start_date, end_date);
+    const { start_date, end_date, start_bidding_date, end_bidding_date} = req.body;
+    const success = updateSemesterDates(id, start_date, end_date, start_bidding_date, end_bidding_date);
     res.sendStatus(success ? 204 : 404);
 });
 
 // Creates a new semester with start and end dates
 router.post("/", async (req, res) => {
-    const { start_date, end_date, is_semester_one } = req.body;
-    if (!start_date || !end_date || !is_semester_one) {
+    const { start_date, end_date, is_semester_one, start_bidding_date, end_bidding_date } = req.body;
+    if (!start_date || !end_date || !is_semester_one || !start_bidding_date || !end_bidding_date) {
         return res.status(422);
     }
-
-    is_
-
     // Details are valid and now passed to createSemester function to query into database
     const semester = await createSemester(start_date, end_date, is_semester_one);
     return res.status(201).json(semester);

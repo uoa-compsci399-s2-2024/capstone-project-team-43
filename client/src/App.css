@@ -36,7 +36,7 @@
 
 /**           NAV BAR(SIDE MENU)            **/
 
-#sidemenu{
+.sidemenu{
   display: none;
   min-height: 100vh;
   width: 15vw;
@@ -46,8 +46,7 @@
   z-index: 1;
   font-weight: bold;
 }
-
-#sidemenu ul{
+.sidemenu ul{
   padding: 0;
   margin: 0;
   list-style: none;
@@ -55,7 +54,7 @@
   flex-direction: column;
   margin-left: 10%;
 }
-#sidemenu a{
+.sidemenu a{
   color: inherit;
   text-decoration: none;
 }
@@ -64,6 +63,8 @@
   font-weight: normal;
   font-size: small;
 }
+
+
 
 /**           LOGIN PAGE             **/
 

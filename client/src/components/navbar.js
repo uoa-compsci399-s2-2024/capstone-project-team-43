@@ -10,10 +10,31 @@ const navbar = () =>{
             document.getElementById('sidemenu').style.display = "block";
         }
     }
+
+    const showadminsidemenu = () =>{
+        if(document.getElementById('adminsidemenu').style.display === "block"){
+            document.getElementById('adminsidemenu').style.display = "none";
+        }
+        else{
+            document.getElementById('adminsidemenu').style.display = "block";
+        }
+    }
+
+    const showclientsidemenu = () =>{
+        if(document.getElementById('clientsidemenu').style.display === "block"){
+            document.getElementById('clientsidemenu').style.display = "none";
+        }
+        else{
+            document.getElementById('clientsidemenu').style.display = "block";
+        }
+    }
+
     return(
         <div>
         <nav className="navbar">
             <p onClick={showsidemenu}>sidemenu</p>
+            <p onClick={showadminsidemenu}>Admin sidemenu</p>
+            <p onClick={showclientsidemenu}>Client sidemenu</p>
             <a href="/">Cornerstone</a>
             <ul>
                 <li>
@@ -51,7 +72,7 @@ const navbar = () =>{
                 </li>
             </ul>
         </nav>
-        <div id="sidemenu">
+        <div id="sidemenu" className="sidemenu">
                 <ul>
                     Projects                    
                 <li>
@@ -65,6 +86,61 @@ const navbar = () =>{
                 </li>
                 <li>
                     <a href="/pages/contact">Contact</a>
+                </li>
+                <li>
+                    Sign Out
+                </li>
+                </ul>
+            </div>
+            <div id="adminsidemenu" className="sidemenu">
+                <ul>
+                    Control Panel                  
+                <li>
+                    <a href="/pages/projects-admin" className="sidemenusub">Manage Projects</a>
+                </li>
+                <li>
+                    <a href="/pages/manage-current" className="sidemenusub">Manage Semesters</a>
+                </li>
+                <li>
+                    <a href="/pages/projects-archive" className="sidemenusub">View Archive</a>
+                </li>
+                Projects
+                <li>
+                    <a href="/pages/project-proposal" className="sidemenusub">Project Proposal Form</a>
+                </li>
+                <li>
+                    <a className="sidemenusub">My Projects</a>
+                </li>
+
+
+                <li>
+                    <a href="/pages/about">About</a>
+                </li>
+                <li>
+                    <a href="/pages/contact">Contact</a>
+                </li>
+                <li>
+                    Sign Out
+                </li>
+                </ul>
+            </div>
+            <div id="clientsidemenu" className="sidemenu">
+                <ul>
+                    Projects                    
+                <li>
+                    <a href="/pages/project-proposal" className="sidemenusub">Project Proposal Form</a>
+                </li>
+                <li>
+                    <a className="sidemenusub">My Projects</a>
+                </li>
+                <li>
+                    <a href="/pages/about">About</a>
+                </li>
+                <li>
+                    <a href="/pages/contact">Contact</a>
+                </li>
+                <li>
+                    Sign Out
                 </li>
                 </ul>
             </div>

@@ -69,11 +69,6 @@ const ProjectPreferences = ()=>{
     let opt4 = false;
     let opt5 = false;
 
-    <div id="agreeon">
-                <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
-                <label for="agreeupon"> Do all team members agree on the order of the projects provided above?</label>
-                </div>  
-
     let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
 
     let itemList=[];
@@ -85,9 +80,10 @@ const ProjectPreferences = ()=>{
     })
 
     const submit =() =>{
+        if(document.getElementById("agreeupon").checked === true){
         document.getElementById('projectPreferenceselements').style.display = "none";
         document.getElementById('onsubmission').style.display = "block";
-        document.getElementById('confirm').style.display = "none";
+        document.getElementById('confirm').style.display = "none";}
     }
 
     const cancel = () =>{
@@ -97,9 +93,11 @@ const ProjectPreferences = ()=>{
     }
 
     const confirmation = () =>{
+        if(chosenproject[0] !== null && chosenproject[1] !== null && chosenproject[2] !== null && chosenproject[3] !== null && chosenproject[4] !== null){
         document.getElementById('confirm').style.display = "block";
         document.getElementById('projectPreferenceselements').style.background = "#003998";
         document.getElementById('projectPreferenceselements').style.opacity = "30%";
+        }
     }
 
     const selecting = (option) =>{
@@ -150,7 +148,7 @@ const ProjectPreferences = ()=>{
                 </div>
             )}
             </div>
-            <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
+            <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n" required></input>
             <label for="agreeupon"> Do all team members agree on the order of the projects provided above?*</label>
             <br></br>
             <button onClick={cancel}>Cancel</button><button onClick={submit}>Confirm</button>

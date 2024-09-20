@@ -2,17 +2,23 @@ import React from "react";
 import '../App.css';
 import { Link } from "react-router-dom";
 import Project from "../components/project";
+import { useState } from "react";
 
 const ProjectPreferences = ()=>{
 
-    let chosenproject = [];
+    const [chosenproject, setchosenproject] = useState(new Array(5).fill(null));
+
+    const choose = (element, index) =>{
+        const newchosen = [...chosenproject];
+        newchosen[index] = element;
+        setchosenproject(newchosen);
+    }
 
     const handleclick = (name) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
             let projectdes = name;
-            chosenproject.push(document.getElementById(name));
-            chosenproject.push(document.getElementById(name));
+            {choose(name, 0)}; 
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
             options.innerHTML += projectdes;

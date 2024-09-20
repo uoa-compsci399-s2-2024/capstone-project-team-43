@@ -3,6 +3,7 @@ import '../App.css';
 import { Link } from "react-router-dom";
 import Project from "../components/project";
 import { useState } from "react";
+import Projects from "../components/project";
 
 const ProjectPreferences = ()=>{
 
@@ -14,51 +15,49 @@ const ProjectPreferences = ()=>{
         setchosenproject(newchosen);
     }
 
-    const handleclick = (name) =>{
+    const handleclick = (project) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
-            let projectdes = name;
-            {choose(name, 0)}; 
+            {choose(project, 0)};
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
-            options.innerHTML += projectdes;
+            options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
             opt1 = false;
-            alert(chosenproject);
         }
         else if (opt2 === true){
             //let projectdes = itemList[2].props.name;
-            let projectdes = name;
+            {choose(project, 1)};
             let options = document.getElementById('option2');
             options.innerHTML += "<p>";
-            options.innerHTML += projectdes;
+            options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
             opt2 = false;
         }
         else if (opt3 === true){
             //let projectdes = itemList[2].props.name;
-            let projectdes = name;
+            {choose(project, 2)};
             let options = document.getElementById('option3');
             options.innerHTML += "<p>";
-            options.innerHTML += projectdes;
+            options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
             opt3 = false;
         }
         else if (opt4 === true){
             //let projectdes = itemList[2].props.name;
-            let projectdes = name;
+            {choose(project, 3)};
             let options = document.getElementById('option4');
             options.innerHTML += "<p>";
-            options.innerHTML += projectdes;
+            options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
             opt4 = false;
         }
         else if (opt5 === true){
             //let projectdes = itemList[2].props.name;
-            let projectdes = name;
+            {choose(project, 4)};
             let options = document.getElementById('option5');
             options.innerHTML += "<p>";
-            options.innerHTML += projectdes;
+            options.innerHTML += project.props.name;
             options.innerHTML += "</p>";
             opt5 = false;
         }
@@ -81,9 +80,7 @@ const ProjectPreferences = ()=>{
 
     items.forEach((item)=>{
       itemList.push(
-        <div id = {item} onClick={() => handleclick(item)}>
          <Project name={item}/>
-         </div>
         )
     })
 
@@ -147,8 +144,11 @@ const ProjectPreferences = ()=>{
             <h2>Are you sure you want to submit?</h2>
             <p>Please note that this submission will count for your entire group.</p>
             <div id="confirmprojects">
-            {chosenproject}
-            {itemList}
+            {chosenproject.map((chosen, index) =>
+                <div>
+                {chosen ? chosen : <Project/ >}
+                </div>
+            )}
             </div>
             <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n"></input>
             <label for="agreeupon"> Do all team members agree on the order of the projects provided above?*</label>
@@ -160,7 +160,10 @@ const ProjectPreferences = ()=>{
             <div id = "projectPreferenceselements">
                 <h2 id="">Project Preferences</h2>
                 <div className="preferenceProjects">
-                {itemList}
+                {itemList.map((project) => 
+                    (<div onClick={() => handleclick(project)}>
+                    {project}
+                    </div>))}
                 </div>
                 <div id="sidebuttons">
                     <button id="option1" onClick={()=>{selecting("option1")}}>1</button>
@@ -176,7 +179,11 @@ const ProjectPreferences = ()=>{
             <div id = "onsubmission">
                 <h2>Your project preferences have been submitted!</h2>
                 <div id = "chosenProjects">
-                {itemList}
+                {chosenproject.map((chosen, index) =>
+                <div>
+                {chosen ? chosen : <Project/ >}
+                </div>
+            )}
                 </div>
                 <div id = "return">
                 <Link to="/pages/projects-available"><button>Return to Projects</button></Link>

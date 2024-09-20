@@ -19,9 +19,9 @@ const navbar = () =>{
                 <li>
                     <a href="/pages/projects-admin">project</a>
                 </li>
-                {/* <li>
-                    <a href="/pages/login">login</a>
-                </li> */}
+                <li>
+                    <a href="/pages/projects-archive">Projects archive</a>
+                </li>
                 <li>
                     <a href="/pages/project-proposal">Project Proposal</a>
                 </li>

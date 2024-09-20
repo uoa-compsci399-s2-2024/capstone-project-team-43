@@ -17,6 +17,8 @@ import ManageFuture from './pages/manage-future';
 import ManageCurrent from './pages/manage-current';
 import Navbar from "./components/navbar";
 import ManageSemester from './pages/manage-semester';
+import ProjectsArchive from './pages/projects-archive';
+
 
 function App() {
 
@@ -25,10 +27,11 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/pages/projects-admin' Component={Cornerstone} />
+        <Route path='/pages/projects-available' Component={ProjectsAvailable} />
         <Route path='/' Component={Login} />
         <Route path='/pages/project-proposal' Component={ProjectProposalForm} />
         <Route path='/pages/project-preferences' Component={ProjectPreferences} />
-        <Route path='/pages/projects-available' Component={ProjectsAvailable} />
+        <Route path='/pages/projects-archive' Component={ProjectsArchive} />
         <Route path='/pages/about' Component={About} />
         <Route path='/pages/contact' Component={Contact} />
         <Route path='/pages/manage-semester' element={<ManageSemester semesterID={1} />} />

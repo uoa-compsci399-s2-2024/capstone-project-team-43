@@ -300,6 +300,17 @@
   flex: 1; */
 }
 
+#container1{
+  height: 100%;
+}
+
+#container2{
+  height: 100%;
+}
+
+#root{
+  height: 100%;
+}
 
 .projects .project{
   background-color: white;

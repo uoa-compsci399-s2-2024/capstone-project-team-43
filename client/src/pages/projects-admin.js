@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchProjects,updateProjectStatus } from '../Api.js'
+import { fetchProjects,updateStatus } from '../Api.js'
 
 
 import {
@@ -309,9 +309,8 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
         else if(event.collisions[1].id === "unsorted"){
           newStatus = "pending"
         }
-        const projectId=event.collisions[0].id[0].id;
-      console.log({newStatus,projectId})
-      updateProjectStatus(projectId, newStatus);
+        const projectId = event.collisions[0].id[0].id;
+      updateStatus(projectId, newStatus);
           }
 
 };

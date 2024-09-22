@@ -28,16 +28,19 @@ export async function fetchProjects(status) {
         throw error;    }
 };
 
-export async function updateProjectStatus(id,status) {
+export async function updateStatus(id,status) {
     try {
          const response = await fetch(`${BASE_URL}/api/projects/${id}`, {
             method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
             body: JSON.stringify({ status })
           })
-
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
         throw error;    }
 };
+
 

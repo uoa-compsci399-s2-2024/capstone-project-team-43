@@ -43,7 +43,7 @@ export async function updateStatus(id,status) {
         throw error;    }
 };
 
-export async function createProject(title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number) {
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number) {
     console.log("we are here");
     try {
         console.log("we are inside try statement");
@@ -52,7 +52,7 @@ export async function createProject(title, description, owner_id, preferred_skil
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number}),
+            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number}),
           })
 
           const resJson = await response.json();

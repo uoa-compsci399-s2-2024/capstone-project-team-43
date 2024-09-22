@@ -24,16 +24,15 @@ router.post("/:id", async (req, res) => {
 
 // Creates a new project with given name and desc.
 router.post("/", async (req, res) => {
-    const { title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number } = req.body;
+    const { title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number } = req.body;
 
-    console.log(title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number );
-    if (!title || !description || !owner_id || !preferred_skills || !project_deliverable || !created || !expiry || !status || !max_teams || !project_number) {
+    if (!title || !description || !owner_id || !project_deliverable || !created || !expiry || !status || !max_teams || !project_number) {
         console.log("Not Valid Project Details");
         return res.status(422);
     }
 
     // Details are valid and now passed to createProject function to query into database
-    const project = await createProject(title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number);
+    const project = await createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number);
     return res.location(`/api/projects/${project.id}`).status(201).json(project);
 });
 

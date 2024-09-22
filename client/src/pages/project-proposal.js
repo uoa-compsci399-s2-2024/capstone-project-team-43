@@ -28,10 +28,10 @@ const projectProposal = () => {
         let status = "pending";
         let project_number = 43;
 
-        createProject(title, description, 1, preferred_skills, project_deliverable, created, expiry, "pending", 2, 43);
+        createProject(title, description, 1, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", 2, 43);
 
 
-        //title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number
+        //title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number
     }
 
     const next = () =>{

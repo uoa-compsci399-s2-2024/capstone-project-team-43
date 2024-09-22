@@ -2,6 +2,7 @@ import React from "react";
 
 import '../App.css';
 
+// /api/semesters/
 
 function Header(props){
     const drop = () =>{

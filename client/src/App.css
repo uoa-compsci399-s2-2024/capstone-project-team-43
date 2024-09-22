@@ -44,6 +44,7 @@
   border-collapse: collapse;
   width: 100%;
   height: 100%;
+  border-radius: 10px;
 }
 
 #confirm td{
@@ -57,12 +58,17 @@
 }
 
 .projectsAvailable #close{
-  width: 20px;
-  background-color: none;
+  width: 25px;
+  height: 25px;
+  background-color: #2979FF;
   color: white;
   position: absolute;
-  margin-right: 1%;
-  margin-left: auto;
+  margin-top: -7.5%;
+  margin-left: 72%;
+  display: none;
+  border: none;
+  z-index: 5;
+  font-size: large;
 }
 
 
@@ -538,15 +544,6 @@
 /**           PROJECT PROPOSAL FORM             **/
 
 
-
-/* .projectProposal .proposal-left{
-  background-color: #2979FF;
-  width: 20%;
-  display: flex;
-  float: left;
-  height: 85vh;
-} */
-
 .projectProposal #proposalInformation{
   text-align: center;
   margin-left: 15%;
@@ -630,7 +627,7 @@
   width: 5%;
   height: 4%;
   background-color:#003998;
-  border-radius: 3px;
+  border-radius: 10px;
   padding: 4px;
   margin-top: 8px;
   transition-duration: 0.4s;
@@ -665,87 +662,42 @@
   display: none;
 }
 
-
-
-/* 
-
-.projectProposal #info{
-  display: block;
-} 
-
-.projectProposal #one, #four, #eight, #eleven{
+.projectProposal #pop{
+  position: absolute;
   display: none;
-}
-.projectProposal #buttons, #infoButton, #oneButton, #fourButton, #eightButton, #elevenButton{
-  
-  background-color: #EAEAEA;
-  display: flex;
- 
-  height: 100%;
-  align-items: center;
-  padding: 0 8px;
-  
- 
-}
-.projectProposal #infoButton{
-  background-color: lightblue;
-  width: 60px;
-  height: 100%;
-  align-items: center;
-
-} 
-
-.projectProposal #buttons{
-  /* width: 80%; */
-  /* bottom: 0; */
- /* height: 8vh; */
- /* position: absolute; */
- /* display: flex; */
- /* justify-content: space-between; */
- /* width:80%;
- position: absolute;
- right: 0;
- bottom: 0; 
- height: 8vh;
- padding:0;
- 
- } 
-
-.projectProposal #button{
-  background-color: white;
-  border-radius: 6px;
-  padding: 8px;
-  width: 2rem;
+  z-index: 99;
+  background-color: #2979FF;
+  color: white;
+  width: 20%;
+  border-radius: 10px;
   text-align: center;
-  height: 2rem;
-  vertical-align: center;
-  margin-left: 2%;
-} 
+  font-weight: bold;
+  font-size: large;
+  padding: 3.5%;
+  margin-left: 36.5%;
+  margin-top: 10%;
+}
 
-
-.projectProposal #nextButton{
-  margin-top: auto;
+.projectProposal #popBack{
+  width: 50px;
+  height: fit-content;
+  background-color:#003998;
   border-radius: 3px;
   padding: 8px;
-  width: 5rem;
-  text-align: center;
-  background-color:#003998;
+  margin-top: 0;
   transition-duration: 0.4s;
   border: 2px solid #003998;
   color: white;
-  float:right;
-  position:absolute;
-  align-self: right;
-  right: 5%;
-  height: 2rem;
-  
+  position: absolute;
+  margin: auto;
+  /* margin-right:70%; */
+  border-radius: 10px;
+  margin-left: -25px;
 }
-
-.projectProposal #nextButton:hover{
+.projectProposal #popBack:hover{
   background-color: white;
   color: black;
-} */
-
+}
 /**           PROJECT PREFERENCE FORM             **/
 
 .projectPreferences{

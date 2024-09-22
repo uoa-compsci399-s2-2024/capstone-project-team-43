@@ -12,7 +12,8 @@ const projectProposal = () => {
     const next = () =>{
 
        if(document.getElementById("check1").checked === false || document.getElementById("check2").checked === false){
-            alert("Please read the information and confirm availability before proceeding.");
+            // alert("Please read the information and confirm availability before proceeding.");
+            document.getElementById('pop').style.display = "block";
        }else{
             document.getElementById('next').style.display = "none";
             document.getElementById('back').style.display = "block";
@@ -30,11 +31,20 @@ const projectProposal = () => {
         document.getElementById('proposalInformation').style.display = "block";
     }
 
+    const close = () => {
+        document.getElementById('pop').style.display = "none";
+    }
+
 
   
     return(
         
             <div className="projectProposal">
+                
+            <div id="pop">
+                Please confirm meeting attendance and final presentation attendance. <br /><br /><br />
+                <button id="popBack" onClick={close}>Back</button>
+            </div>
                 <h1 id="proposalHeader"> Computer Science Capston Project Proposal Form</h1>
                 <div id="proposalInformation">
                 <h3>Deadline</h3>

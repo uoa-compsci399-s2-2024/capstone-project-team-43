@@ -21,11 +21,14 @@ const projectProposal = () => {
         let preferred_skills = document.getElementById("desiredskill").value;
         let available_resources = document.getElementById("clientname").value;
         let expiry = document.getElementById("clientname").value;
-        let owner_id = 0;
-        let created = "2024-08-01";
+        let owner_id = 1;
+        let currentDate = new Date();
+        let created = currentDate.toISOString().split('T')[0];
+        console.log("created");
         let status = "pending";
         let project_number = 43;
-        createProject("title", "description", 0, "preferred_skills", "project_deliverable", "2024-08-01", "2024-08-01", "pending", 3, 43);
+
+        createProject(title, description, 1, preferred_skills, project_deliverable, created, expiry, "pending", 2, 43);
 
 
         //title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number
@@ -176,7 +179,7 @@ const projectProposal = () => {
                 </div> 
             </form>  
             <div id="proposalButtons">
-                <button onClick={submit} id="next">Next</button>
+                <button onClick={next} id="next">Next</button>
                 <button onClick={back} id="back">Back</button>
                 <button id="submit" form="proposalForm" type="submit" onClick={submit}>Submit</button>
             </div>

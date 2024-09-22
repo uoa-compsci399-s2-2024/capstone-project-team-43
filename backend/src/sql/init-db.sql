@@ -55,9 +55,9 @@ VALUES
 
 INSERT INTO USER  (role, email, password, first_name, last_name, team_id, company)
 VALUES 
-    ('student', 'test1@gmail.com', '12345', 'fname1', 'lname1', 1, NULL),
-    ('admin', 'test2@gmail.com', '12345', 'fname2', 'lname2', NULL, NULL),
-    ('client', 'test3@gmail.com', '12345', 'fname3', 'lname3', NULL, 'testcompany');
+    ('student', 'student@gmail.com', NULL, 'fname1', 'lname1', 1, NULL),
+    ('admin', 'admin@gmail.com', NULL, 'fname2', 'lname2', NULL, NULL),
+    ('client', 'client@gmail.com', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'fname3', 'lname3', NULL, 'testcompany');
 
 INSERT INTO TEAM 
     (team_number, team_name, semester_id)

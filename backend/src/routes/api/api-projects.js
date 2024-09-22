@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject } from "../../data/projects-dao.js";
+import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject, publishProjects } from "../../data/projects-dao.js";
 
 const router = Router();
 
@@ -40,6 +40,13 @@ router.delete("/:id", async (req, res) => {
     const success = deleteProject(id);
     res.sendStatus(success ? 204 : 404);
 });
+
+// Sets all projects to published
+router.post("/publish/:status", async (req, res) => {
+    const status = req.params.status;
+    return res.json(await publishProjects(status))
+});
+
 
 export default router;
 

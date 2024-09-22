@@ -9,7 +9,8 @@ CREATE TABLE PROJECT (
     created DATE NOT NULL,
     semester_id INTEGER NOT NULL,
     status ENUM('rejected', 'accepted', 'pending') NOT NULL,
-    max_teams INTEGER NOT NULL
+    max_teams INTEGER NOT NULL,
+    published ENUM('true', 'false') NOT NULL
 );
 
 CREATE TABLE USER (
@@ -44,11 +45,11 @@ CREATE TABLE TEAM (
 
 
 INSERT INTO PROJECT 
-    (title, description, owner_id, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number) 
+    (title, description, owner_id, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, published) 
 VALUES 
-    ('testproj1','An amazing web solution!','0', NULL, NULL, '2024-08-01','1','accepted','3','43'),
-    ('testproj2','A bad web solution!','0', NULL, NULL, '2024-08-01','1','rejected','3','43'),
-    ('testproj3','Maybe an amazing web solution!','0', NULL, NULL, '2024-08-01','1','pending','3','43');
+    ('testproj1','An amazing web solution!','0', NULL, NULL, '2024-08-01','1','accepted','3','43', 'false'),
+    ('testproj2','A bad web solution!','0', NULL, NULL, '2024-08-01','1','rejected','3','43', 'false'),
+    ('testproj3','Maybe an amazing web solution!','0', NULL, NULL, '2024-08-01','1','pending','3','43', 'false');
 
 INSERT INTO USER  (role, email, password, first_name, last_name, team_id, company)
 VALUES 

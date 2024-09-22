@@ -156,3 +156,28 @@ export async function deleteProject(id) {
     console.error('Error executing query:', err);
   }
 }
+
+
+/**
+ * Sets all projects to published/unpublished
+ *
+ * @param {number} status // status is either true/false to publish/unpublish all projects
+ */
+export async function publishProjects(status) {
+  let connection;
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    await connection.query("UPDATE `project` SET published = ?", [status]);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}

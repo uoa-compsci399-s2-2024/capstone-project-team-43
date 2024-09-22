@@ -43,4 +43,17 @@ export async function updateStatus(id,status) {
         throw error;    }
 };
 
-
+export async function createProject(title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number) {
+    try {
+         const response = await fetch(`${BASE_URL}/api/projects/`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number})
+          })
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    }
+};

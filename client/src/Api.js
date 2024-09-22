@@ -28,4 +28,38 @@ export async function fetchProjects(status) {
         throw error;    }
 };
 
+export async function updateStatus(id,status) {
+    try {
+         const response = await fetch(`${BASE_URL}/api/projects/${id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({ status })
+          })
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    }
+};
 
+export async function createProject(title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number) {
+    console.log("we are here");
+    try {
+        console.log("we are inside try statement");
+         const response = await fetch(`${BASE_URL}/api/projects/`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({title, description, owner_id, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number}),
+          })
+
+          const resJson = await response.json();
+
+          console.log("status: ", response.status);
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    }
+};

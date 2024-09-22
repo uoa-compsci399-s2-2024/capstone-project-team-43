@@ -163,6 +163,15 @@
   border-radius: 3px;
 }
 
+.login-form input[type=email]{
+  width: 29vw;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px, solid, #003998;
+  margin: 1%;
+  border-radius: 3px;
+}
+
 .login-form label{
   text-align: center;
   margin-left: 2%;

@@ -13,7 +13,10 @@ const PORT = process.env.PORT ?? 3000;
 const app = express();
 
 // Configure middleware (CORS support, JSON parsing support, static files support)
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true, // Enable cookies
+}));
 app.use(express.json());
 app.use(express.static("public"));
 

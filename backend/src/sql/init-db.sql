@@ -35,8 +35,26 @@ CREATE TABLE SEMESTER (
     start_bidding_date DATE NOT NULL,
     end_bidding_date DATE NOT NULL,
     is_semester_one BOOL NOT NULL,
-    status ENUM('retired', 'current', 'upcoming')
+    status ENUM('retired', 'current', 'upcoming'),
+    name VARCHAR(255) DEFAULT NULL
+
 );
+-- trigger to fill value in name column of SEMESTER
+CREATE TRIGGER before_insert_semester
+BEFORE INSERT ON SEMESTER
+FOR EACH ROW
+BEGIN
+    DECLARE semester_num VARCHAR(3);
+
+    IF NEW.is_semester_one = 1 THEN
+        SET semester_num = 'One';
+    ELSE
+        SET semester_num = 'Two';
+    END IF;
+
+    -- Set name as "Semester {1 or 2}, {start_date year}"
+    SET NEW.name = CONCAT('Semester ', semester_num, ', ', YEAR(NEW.start_date));
+END; 
 
 CREATE TABLE TEAM (
     id INT AUTO_INCREMENT PRIMARY KEY,

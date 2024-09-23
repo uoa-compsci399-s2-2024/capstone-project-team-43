@@ -54,6 +54,7 @@ export async function getUsers(role) {
   }
 }
 
+
 /**
  * Gets Users based on team_id
  * @param {number} team_id
@@ -70,6 +71,31 @@ export async function getUsersByTeam(team_id) {
     const [users] = await connection.query('SELECT * FROM USER WHERE team_id = ?', team_id);
     
     return users;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally { 
+    // If there is a connection, release it
+    if (connection) connection.release();
+  }
+}
+
+/**
+ * Gets User based on id
+ * @param {number} id
+ *
+ * @returns {Promise<User[]>}
+ */
+export async function getUser(id) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+    const [users] = await connection.query('SELECT * FROM USER WHERE id = ?', id);
+    
+    return users[0];
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);

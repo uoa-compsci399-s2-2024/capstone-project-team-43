@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsers, getUsersByTeam, createUser, deleteUser, deleteUserByRole } from "../../data/users-dao.js";
+import { getUsers, getUsersByTeam, createUser, deleteUser, deleteUserByRole, getUser } from "../../data/users-dao.js";
 
 const router = Router();
 
@@ -49,6 +49,13 @@ router.get("/team/:id", async (req, res) => {
     const id = req.params.id;
     const users = await getUsersByTeam(id);
     return res.json(users);
+});
+
+// Gets users in team with given id 
+router.get("/:id", async (req, res) => {
+    const id = req.params.id;
+    const user = await getUsers(id);
+    return res.json(user);
 });
 
 export default router;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchProjects,updateStatus, updatePublish } from '../Api.js'
+import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../Api.js'
 
 
 import {
@@ -19,6 +19,20 @@ import {
   import '../App.css';
 
 const ProjectsAdmin = () => {
+  const [semesters, setSemesters] = useState([]);
+
+  // get data onall semesters
+  useEffect(() => {
+      async function getSemesters() {
+          try {
+              const data = await fetchSemesters();
+              setSemesters(data);
+          } catch (error) {
+              console.error('Failed to load semesters:', error);
+          }
+      }
+      getSemesters();
+  }, []);
 
     const [projects, setProjects] = useState([]);
 
@@ -116,7 +130,7 @@ let approved = []
 
     return(
         <div className="projects">
-           <Header semester = "2024 - Semester 1" current = "2024 - Semester 2"/>
+            <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/>
             <button onClick={load} id="load">Load all</button>
             
         <div id="sorting">

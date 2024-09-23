@@ -3,7 +3,11 @@ import React from "react";
 import '../App.css';
 
 
+
 function Header(props){
+
+
+
     const drop = () =>{
         
         if(document.getElementById('dropdown').style.display == "block"){
@@ -14,7 +18,13 @@ function Header(props){
 
     };
 
-    let semesters = ["sem1", "sem2", "sem3", "sem4", "sem5"];
+let semesters =[];
+    props.semesters.map(semester => (
+        semesters.push(semester.id)
+
+    ))
+
+    let s = ["sem1", "sem2", "sem3", "sem4", "sem5"];
 
     return(
         <div className="head"> 

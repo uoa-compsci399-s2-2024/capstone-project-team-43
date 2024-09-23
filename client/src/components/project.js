@@ -7,7 +7,11 @@ import '../App.css';
 function Projects(props){
 
 
-
+    // if(props.status == 'Accepted'){
+    //     document.getElementById('next').style.backgroundColor  = "#00BB07";
+    // }else{
+    //     document.getElementById('next').style.backgroundColor  = "#FF0000"
+    // }
 
     return(
         <div className="project">

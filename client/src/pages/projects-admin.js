@@ -66,16 +66,6 @@ let approved = []
 
     ))
 
-const list5 =[[{id: 3, name:"proj3", description:"desc3" }],
-[{id: 4, name:"proj4", description:"desc4" }],
-[{id: 5, name:"proj5", description:"desc5" }],
-];
-
-const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
-[{id: 11, name:"proj11", description:"desc11" }],
-[{id: 12, name:"proj12", description:"desc12" }],
-];
-
     const [items, setItems] = useState({
         rejected:[],
         unsorted: [],

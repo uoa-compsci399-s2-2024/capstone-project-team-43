@@ -156,9 +156,17 @@ const projectProposal = () => {
                     <p>Would you be open to the idea of multiple teams working on your project? If yes, please specify the maximum number of teams you would be happy to work with. To make it easier for you, all team meetings will be combined into the same time slot, ensuring you won't need to allocate more meeting time than you would with one team.<br /><br />
                         For your consideration, 1-4 teams would require a 1-hour meeting fortnightly. Additionally, we will invite you to evaluate teams' final presentations, typically taking about 20 minutes per team.<br /><br />
                         Working with multiple teams offers the advantage of bringing diverse perspectives and ideas to the project. It also increases the likelihood of achieving a final result that aligns with expectations.</p>
-                    <input type="radio" id="html" value="1" /> No, only 1 team<br />
+                    {/* <input type="radio" id="html" value="1" /> No, only 1 team<br />
                     <input type="radio" id="html" value="4" /> Yes, up to 4 teams<br />
-                    <input type="radio" id="html" value="" /> <input type="text" name="other" id="numberofteams"/>
+                    <input type="radio" id="html" value="" /> <input type="text" name="other" id="numberofteams"/> */}
+                    <select name="languages" id="teams" required>
+                        <option value="">Select</option>
+                        <option value="">1</option>
+                        <option value="">2</option>
+                        <option value="">3</option>
+                        <option value="">4</option>
+                    </select>
+
                 </label>
                 <label>
                     <h3>9. Desired team skills </h3>

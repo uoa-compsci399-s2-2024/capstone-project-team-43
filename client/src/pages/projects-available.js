@@ -50,29 +50,8 @@ const ProjectsAvailable = () => {
 
  
             <ul>
-
-                {projects.map(project => (
-                    
-
-                    (<div onClick={() => handleclick(project)}>
-                    <Project id={project.id} name={project.title} description={project.description}/>
-                    <div id="confirm">
-                        {console.log(project)}
-            <PopUp id={project.id} 
-            name={project.title} 
-            description={project.description}
-            // owner id
-            skills = {project.preferred_skills}
-            deliverable = {project.project_deliverable}
-            created = {project.created}
-            // expiry= {project.expiry}
-            teams = {project.max_num_of_groups}
-            number = {project.project_num}
-            />
-           
-        </div>
-
-                    </div>)
+                {projects.filter(project => project.published === 'false').map(project => (
+                    <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul>
 

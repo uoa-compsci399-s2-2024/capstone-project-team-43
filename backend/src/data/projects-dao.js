@@ -225,3 +225,26 @@ export async function publishProjects(status) {
     console.error('Error executing query:', err);
   }
 }
+/**
+ * Gets all projects by semester
+ * @param {number} semester_id
+ * @returns {Promise<Project[]>}
+ */
+export async function getProjectsBySemester(semester_id) {
+  let connection;
+  try {
+    console.log('semester',semester_id);
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE semester_id = ?', [semester_id]);
+    console.log('Here are the Rows:', rows);
+
+    return rows;
+
+  } catch (err) {
+    if (connection) connection.release();
+    console.error('Error executing query/s:', err.message);
+  }
+}

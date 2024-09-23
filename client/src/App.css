@@ -616,6 +616,16 @@
   border-radius: 3px;
 }
 
+.projectProposal #teams{
+  width: 10%;
+  padding: 4px;
+  margin-top: 8px;
+  margin-left: 1em;
+  height: 35px;
+  border: 2px, solid, #003998;
+  border-radius: 3px;
+}
+
 .projectProposal input[type=radio]{
   height: 14px;
   width: 14px;

@@ -9,7 +9,9 @@ function adminPop(props){
     const submit =() =>{
         document.getElementById('confirm').style.display = "none";
     }
-
+    const edit =() =>{
+        alert("edit");
+    }
 // console.log(props);
     return(
         <div id="popup">    
@@ -80,6 +82,8 @@ function adminPop(props){
                             </td>
                         </tr>
                     </table> 
+                    <button id="edit" onClick={edit}>Edit</button>
+
 
                     <br></br><br></br><br></br>
                     </div>

@@ -3,29 +3,17 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { fetchProjects } from '../Api.js'
 import Project from "../components/project";
-import PopUp from "../components/project-pop-up-admin.js";
+import PopUp from "../components/project-pop-up-student.js";
 
 const ProjectsAvailable = () => {
 
 
     const [projects, setProjects] = useState([]);
 
-    
-    const submit =() =>{
-        document.getElementById('confirm').style.display = "none";
-        document.getElementById('close').style.display = "none";
-        document.getElementById('edit').style.display = "none";
-    }
 
-    const edit =() =>{
-        alert("edit");
-    }
 
-    const confirmation = () =>{
- 
-        document.getElementById('confirm').style.display = "block";
 
-    }
+
    
 
     // get data onall accepted projects 
@@ -45,9 +33,14 @@ const ProjectsAvailable = () => {
       const handleclick = () =>{
         document.getElementById('confirm').style.display = "block";
         document.getElementById('close').style.display = "block";
-        document.getElementById('edit').style.display = "block";
+        // document.getElementById('edit').style.display = "block";
       };
 
+      const submit =() =>{
+        document.getElementById('confirm').style.display = "none";
+        document.getElementById('close').style.display = "none";
+        // document.getElementById('edit').style.display = "none";
+    }
 
       
     return(
@@ -82,8 +75,7 @@ const ProjectsAvailable = () => {
             </ul>
 
             <button id="close" onClick={submit}>&times;</button>
-            <button id="edit" onClick={edit}>Edit</button>
-
+           
         </div>    
 
     );

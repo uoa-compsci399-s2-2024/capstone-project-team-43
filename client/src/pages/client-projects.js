@@ -52,9 +52,6 @@ const ClientProjects = () => {
         document.getElementById('close').style.display = "none";
         document.getElementById('edit').style.display = "none";
     }
-    const edit =() =>{
-        alert("edit");
-    }
 
     let owner_id = 1;
     return(
@@ -88,7 +85,7 @@ const ClientProjects = () => {
                     
                 ))}
 <button id="close" onClick={submit}>&times;</button>
-<button id="edit" onClick={edit}>Edit</button>
+
             </div>  
         </div>  
     );

@@ -504,7 +504,7 @@
   z-index: 5;
   font-size: large;
 }
-.sortable #edit{
+/* .sortable #edit{
   width: 25px;
   height: 25px;
   background-color: #2979FF;
@@ -515,8 +515,8 @@
   display: none;
   border: none;
   z-index: 10;
-  /* font-size: large; */
-}
+  
+} */
 
 /**           PROJECT PROPOSAL FORM             **/
 
@@ -1554,6 +1554,14 @@
   font-weight: bold;
 }
 
+.archive #close{
+
+  position: absolute;
+  margin-left: 65%;
+  margin-top: 5%;
+  font-size: large;
+}
+
 /**              CLIENT PROJECTS                 **/
 
 .clientProjects{
@@ -1787,7 +1795,7 @@
   z-index: 5;
   font-size: large;
 }
-.projectsAvailable #edit{
+/* #edit{
   width: 25px;
   height: 25px;
   background-color: #2979FF;
@@ -1798,8 +1806,8 @@
   display: none;
   border: none;
   z-index: 10;
-  /* font-size: large; */
-}
+  /* font-size: large;
+} */
 
 #close{
   width: 25px;
@@ -1819,7 +1827,7 @@
   height: 25px;
   background-color: #2979FF;
   color: white;
-  /* position: absolute; */
+  position: absolute;
   margin-top: -7.5%;
   margin-left: 80%;
   display: none;

@@ -5,6 +5,7 @@ import { fetchProjects, fetchSemesters } from '../Api.js'
 import Project from "../components/project";
 import Header from "../components/admin-semester-header.js";
 import { useLocation } from 'react-router-dom'
+import PopUp from "../components/project-pop-up-admin.js";
 
 const ProjectsArchive = () => {
     const location = useLocation()
@@ -27,7 +28,16 @@ const ProjectsArchive = () => {
         getSemesters();
     }, []);
 
-// console.log(props);
+    const handleclick = () =>{
+        document.getElementById('confirm').style.display = "block";
+        document.getElementById('close').style.display = "block";
+        document.getElementById('edit').style.display = "block";
+      };
+      const submit =() =>{
+        document.getElementById('confirm').style.display = "none";
+        document.getElementById('close').style.display = "none";
+        document.getElementById('edit').style.display = "none";
+    }
 
 
     const [projects, setProjects] = useState([]);
@@ -44,18 +54,40 @@ const ProjectsArchive = () => {
         }
         getProjects();
     }, []);
-
+    let current = semesters.filter(semester => semester.status == 'current')
     let sem_id = from;
     return(
         
         <div className="archive">
-            <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/>
+            <Header current = {semesters[0]}  semesters = {semesters} page={from}/>
             <div id="archivedProjects">
             
                 {projects.filter(project => project.semester_id === sem_id).map(project => (
-                    <Project id={project.id} name={project.title} description={project.description} status={project.status}/>
+                    
+
+                    (<div onClick={() => handleclick(project)}>
+                 <Project id={project.id} name={project.title} description={project.description} status={project.status}/>
+                    <div id="confirm">
+
+            <PopUp id={project.id} 
+            name={project.title} 
+            description={project.description}
+            // owner id
+            requirements = {project.special_requirements}
+            resources = {project.resources}
+            skills = {project.preferred_skills}
+            deliverable = {project.project_deliverable}
+            created = {project.created}
+            expiry= {project.expiry}
+            teams = {project.max_teams}
+            number = {project.project_number}
+            />
+        </div>
+{/* <button id="close" onClick={submit}>&times;</button> */}
+                    </div>)
                     
                 ))}
+        <button id="close" onClick={submit}>&times;</button>
                  {/* <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />
                  <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />
                  <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />

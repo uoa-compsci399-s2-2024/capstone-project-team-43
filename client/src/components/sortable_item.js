@@ -4,47 +4,7 @@ import { CSS } from "@dnd-kit/utilities";
 import Project from "./project";
 import PopUp from "../components/project-pop-up-admin.js";
 
-// import type { PointerEvent } from "react";
-import { PointerSensor } from "@dnd-kit/core";
 
-/**
- * An extended "PointerSensor" that prevent some
- * interactive html element(button, input, textarea, select, option...) from dragging
- */
-class MyPointerSensor extends PointerSensor {
-  static activators = [
-    {
-      eventName: 'onPointerDown',
-      handler: ({nativeEvent: event}) => {
-        if (
-          !event.isPrimary ||
-          event.button !== 0 ||
-          isInteractiveElement(event.target)
-        ) {
-          return false;
-        }
-
-        return true;
-      },
-    },
-  ];
-}
-
-function isInteractiveElement(element) {
-  const interactiveElements = [
-    'button',
-    'input',
-    'textarea',
-    'select',
-    'option',
-  ];
-
-  if (interactiveElements.includes(element.tagName.toLowerCase())) {
-    return true;
-  }
-
-  return false;
-}
 export function Item(props) {
   const { id } = props;
 
@@ -68,9 +28,7 @@ export function Item(props) {
     document.getElementById('close').style.display = "none";
     document.getElementById('edit').style.display = "none";
 }
-const edit =() =>{
-    alert("edit");
-}
+
 const i = props.project;
 
 return (
@@ -108,8 +66,7 @@ return (
         ))}
 
         <button id="close" onClick={submit}>&times;</button>
-        <button id="edit" onClick={edit}>Edit</button>
-
+        
   </div>);
 }
 

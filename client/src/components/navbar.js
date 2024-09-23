@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
+import cornerstone_logo from '../media/cornerstone_logo.png';
 
 import '../App.css';
 
@@ -17,7 +18,6 @@ const Navbar = () => {
 
     // Hides both register and login forms
     const form_close = () => {
-        console.log("ROLE LOGGED IN: ", role);
         document.getElementById('loginright').style.display = "none";
         document.getElementById('createacc').style.display = "none";
     }
@@ -32,14 +32,10 @@ const Navbar = () => {
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "block";
         document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectsArchiveNav').style.display = "none";
         document.getElementById('projectProposalNav').style.display = "none";
         document.getElementById('projectPreferencesNav').style.display = "block";
         document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('uploadCSVNav').style.display = "none";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "none";
-        document.getElementById('manageCurrentNav').style.display = "none";
+        document.getElementById('clientProjectNav').style.display = "none";
     }
 
     const client_view = () => {
@@ -50,14 +46,10 @@ const Navbar = () => {
         document.getElementById('clientSideBar').style.display = "block";
         document.getElementById('studentSideBar').style.display = "none";
         document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectsArchiveNav').style.display = "none";
         document.getElementById('projectProposalNav').style.display = "block";
         document.getElementById('projectPreferencesNav').style.display = "none";
         document.getElementById('projectsAvailableNav').style.display = "none";
-        document.getElementById('uploadCSVNav').style.display = "none";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "none";
-        document.getElementById('manageCurrentNav').style.display = "none";
+        document.getElementById('clientProjectNav').style.display = "block";
     }
 
     const admin_view = () => {
@@ -72,10 +64,7 @@ const Navbar = () => {
         document.getElementById('projectProposalNav').style.display = "block";
         document.getElementById('projectPreferencesNav').style.display = "none";
         document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('uploadCSVNav').style.display = "block";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "block";
-        document.getElementById('manageCurrentNav').style.display = "block";
+        document.getElementById('clientProjectNav').style.display = "block";
     }
 
     const not_logged_in = () => {
@@ -83,14 +72,10 @@ const Navbar = () => {
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "none";
         document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectsArchiveNav').style.display = "none";
         document.getElementById('projectProposalNav').style.display = "none";
         document.getElementById('projectsAvailableNav').style.display = "none";
         document.getElementById('projectPreferencesNav').style.display = "none";
-        document.getElementById('uploadCSVNav').style.display = "none";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "none";
-        document.getElementById('manageCurrentNav').style.display = "none";
+        document.getElementById('clientProjectNav').style.display = "none";
     }
 
     const debugging_nav = () => {
@@ -98,21 +83,18 @@ const Navbar = () => {
         document.getElementById('clientSideBar').style.display = "block";
         document.getElementById('studentSideBar').style.display = "block";
         document.getElementById('projectSortNav').style.display = "block";
-        document.getElementById('projectsArchiveNav').style.display = "block";
         document.getElementById('projectProposalNav').style.display = "block";
         document.getElementById('projectsAvailableNav').style.display = "block";
         document.getElementById('projectPreferencesNav').style.display = "block";
-        document.getElementById('uploadCSVNav').style.display = "block";
-        document.getElementById('newSemNav').style.display = "block";
-        document.getElementById('manageFutureNav').style.display = "block";
-        document.getElementById('manageCurrentNav').style.display = "block";
+        document.getElementById('clientProjectNav').style.display = "block";
+        
     }
 
     try {
         const token = localStorage.getItem("authToken");
         if (token === "") {
             //debugging_nav();
-            not_logged_in(); //**uncomment for production**
+            not_logged_in(); //**comment for production**
         } else {
         const decoded = jwtDecode(token);
         const role = decoded.role;
@@ -229,8 +211,8 @@ const Navbar = () => {
                             admin_view();
                         } else {
                             debugging_nav();
-                            //not_logged_in();  **once debugging nav bar is done uncomment theses**
-                        }
+                            //not_logged_in();   **once debugging nav bar is done uncomment theses**
+                        } 
 
                     } else {
                         console.log("An error occurred during login");
@@ -239,8 +221,8 @@ const Navbar = () => {
                     console.log(err);
                 }
             } else {
-                debugging_nav();
-                //not_logged_in(); **once debugging nav bar is done uncomment theses**
+                debugging_nav(); 
+                //not_logged_in();  **once debugging nav bar is done uncomment theses**
             }
 
 
@@ -252,18 +234,15 @@ const Navbar = () => {
     return (
         <div>
             <nav className="navbar">
-                <p onClick={showsidemenu} id="studentSideBar">sidemenu</p>
-                <p onClick={showadminsidemenu} id="adminSideBar">Admin sidemenu</p>
-                <p onClick={showclientsidemenu} id="clientSideBar">Client sidemenu</p>
+                <button className = 'sideMenuButton' onClick={showsidemenu} id="studentSideBar"></button>
+                <button className = 'sideMenuButton' onClick={showadminsidemenu} id="adminSideBar"></button>
+                <button className = 'sideMenuButton' onClick={showclientsidemenu} id="clientSideBar"></button>
                 <ul>
                     <li>
                         <Link to='/pages/projects-admin' id="projectSortNav" state={{ user: "admin" }}> Project </Link> <br />
                     </li>
                     <li>
-                        <Link to='/pages/projects-archive' id="projectsArchiveNav" state={{ user: "admin" }}> Projects archive </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/project-preferences' id="projectPreferencesNav" state={{ user: "student" }}> Project Preferences </Link> <br />
+                        <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
                     </li>
                     <li>
                         <Link to='/pages/projects-available' id="projectsAvailableNav" state={{ user: "student" }}> Projects(students) </Link> <br />
@@ -272,100 +251,98 @@ const Navbar = () => {
                         <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
                     </li>
                     <li>
-                        <Link to='/' state={{ user: role }}> Cornerstone </Link> <br />
+                        <Link to='/' state={{ user: role }}> 
+                            <img id="cornerstone_logo" src={cornerstone_logo} alt="Cornerstone" />
+                        </Link> <br />
                     </li>
                     <li>
                         <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                     </li>
                     <li>
-                        <Link to='/pages/manage-semester' id="uploadCSVNav" state={{ user: "admin" }}> Upload </Link> <br />
+                        <Link to='/pages/project-preferences' id="projectPreferencesNav" state={{ user: "student" }}> Project Preferences </Link> <br />
                     </li>
                     <li>
-                        <Link to='/pages/new-semster' id="newSemNav" state={{ user: "admin" }}> New Semster </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/manage-future' id="manageFutureNav" state={{ user: "admin" }}> Manage Future </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/manage-current' id="manageCurrentNav" state={{ user: "admin" }}> Manage Current </Link> <br />
-                    </li>
-                    <li>
-                        {/* Need fix */}
                     <Link to="/pages/client-projects" id="clientProjectNav">Client Projects</Link> <br />
                     </li>
                 </ul>
             </nav>
             <div id="sidemenu" className="sidemenu">
-                <ul>
-                    Projects
-                    <li>
-                        <a href="/pages/projects-available" className="sidemenusub">Browse Projects</a>
-                    </li>
-                    <li>
-                        <a href="/pages/project-preferences" className="sidemenusub">Project Preferences Form</a>
-                    </li>
-                    <li>
-                        <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
-                    </li>
-                    <li>
-                        <button onClick={Logout}>Sign Out</button>
-                    </li>
-                </ul>
+                <div className='sidemenu-link-container'>
+                    <ul>
+                        Projects
+                        <li>
+                            <a href="/pages/projects-available" className="sidemenusub">Browse Projects</a>
+                        </li>
+                        <li>
+                            <a href="/pages/project-preferences" className="sidemenusub">Project Preferences Form</a>
+                        </li>
+                        <li>
+                            <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
+                        </li>
+                        <li>
+                            <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
+                        </li>
+                        <li>
+                            <button className = 'logoutButton' onClick={Logout}>Sign Out</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div id="adminsidemenu" className="sidemenu">
-                <ul>
-                    Control Panel
-                    <li>
-                        <a href="/pages/projects-admin" className="sidemenusub">Manage Projects</a>
-                    </li>
-                    <li>
-                        <a href="/pages/manage-current" className="sidemenusub">Manage Semesters</a>
-                    </li>
-                    <li>
-                        <a href="/pages/projects-archive" className="sidemenusub">View Archive</a>
-                    </li>
-                    Projects
-                    <li>
-                        <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
-                    </li>
-                    <li>
-                        <a className="sidemenusub">My Projects</a>
-                    </li>
+                <div className='sidemenu-link-container'>
+                    <ul>
+                        Control Panel
+                        <li>
+                            <a href="/pages/projects-admin" className="sidemenusub">Manage Projects</a>
+                        </li>
+                        <li>
+                            <a href="/pages/manage-semester/1" className="sidemenusub">Manage Semesters</a>
+                        </li>
+                        <li>
+                            <a href="/pages/projects-archive/1" id="projectsArchiveNav" className="sidemenusub">View Archive</a>
+                        </li>
+                        Projects
+                        <li>
+                            <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
+                        </li>
+                        <li>
+                            <a className="sidemenusub">My Projects</a>
+                        </li>
 
 
-                    <li>
-                        <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
-                    </li>
-                    <li>
-                        <button onClick={Logout}>Sign Out</button>
-                    </li>
-                </ul>
+                        <li>
+                            <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
+                        </li>
+                        <li>
+                            <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
+                        </li>
+                        <li>
+                            <button className = 'logoutButton' onClick={Logout}>Sign Out</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div id="clientsidemenu" className="sidemenu">
-                <ul>
-                    Projects
-                    <li>
-                        <a href="/pages/project-proposal" className="sidemenusub">Project Proposal Form</a>
-                    </li>
-                    <li>
-                        <a className="sidemenusub">My Projects</a>
-                    </li>
-                    <li>
-                        <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
-                    </li>
-                    <li>
-                        <button onClick={Logout}>Sign Out</button>
-                    </li>
-                </ul>
+                <div className='sidemenu-link-container'>
+                    <ul>
+                        Projects
+                        <li>
+                            <a href="/pages/project-proposal" className="sidemenusub">Project Proposal Form</a>
+                        </li>
+                        <li>
+                            <a className="sidemenusub">My Projects</a>
+                        </li>
+                        <li>
+                            <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
+                        </li>
+                        <li>
+                            <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
+                        </li>
+                        <li>
+                            <button className = 'logoutButton' onClick={Logout}>Sign Out</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     )

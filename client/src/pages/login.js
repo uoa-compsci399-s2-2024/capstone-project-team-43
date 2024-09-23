@@ -133,27 +133,36 @@ const Login = () => {
                 </div>
 
                 <div className="login-right" id="loginright">
-                    <h1> Client Login </h1>
-                    <form className="login-form" onSubmit={handleSubmit}>
-                        <label>
-                            <input type="email" placeholder="Email Address*" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                        </label>
-                        <label>
-                            <input type="password" placeholder="Password*" value={password} onChange={(e) => setPassword(e.target.value)} required />
-                        </label>
-                        <button type="submit">SIGN IN</button>
+                    <div className='login-form-container'>
+                        <div className='login-header'>
+                            <h1>Client Login</h1>
+                        </div>
+                        <div className='login-button-container'>
+                            <form className="login-form" onSubmit={handleSubmit}>
+                                <label>
+                                    <input type="email" placeholder="Email Address*" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                                </label>
+                                <label>
+                                    <input type="password" placeholder="Password*" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                                </label>
+                                <button type="submit">SIGN IN</button>
 
-                    </form>
-                    <br></br>
-                    <button type="new" onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/student"}>Google Sign in as Student</button><br></br>
-                    <button type="new" onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>Google Sign in as Client</button><br></br>
-                    <button type="new" onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/admin"}>Google Sign in as Admin</button><br></br>
-                    <br></br>
-                    <hr></hr>
-                    <br></br>
-                    <button type="new" href="#" onClick={sign_up}>
-                        CREATE AN ACCOUNT
-                    </button>
+                            </form>
+                            <br></br>
+                            <div className='login-google-container'>
+                                <button type="new" className = 'login-google-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/student"}>Google Sign in as Student</button><br></br>
+                                <button type="new" className = 'login-google-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>Google Sign in as Client</button><br></br>
+                                <button type="new" className = 'login-google-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/admin"}>Google Sign in as Admin</button><br></br>
+                            </div>
+                        
+                            <br></br>
+                            <hr></hr>
+                            <br></br>
+                            <button type="new" href="#" onClick={sign_up}>
+                                CREATE AN ACCOUNT
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="createacc" className="login-right">

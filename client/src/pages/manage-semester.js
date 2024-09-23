@@ -1,20 +1,192 @@
-import React, { useState } from 'react';
-import '../App.css';
-import SemesterCSVUpload from './semester-csv-upload';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import '../App.js'
+import SemesterCSVUpload from '../components/semester-csv-upload.js';
+import { fetchSemester, fetchUsersByRole, fetchTeamsBySemester } from '../Api.js';
+import '../admin.css';
+import '../index.js';
+import SemesterDropdown from '../components/semester-dropdown.js';
+import uploadIcon from '../media/upload-icon.png';
 
-const ManageSemester = ({ semesterID }) => {
+
+const ManageSemester = () => {
+    const { semesterID } = useParams();
+
+    const [semester, setSemester] = useState(null);
+    const [editingField, setEditingField] = useState(null);
+    const [students, setStudents] = useState([]);
+    const [teams, setTeams] = useState([]);
+
+    // Control visibility of student/teams upload functionality
+    const [showStudentUpload, setShowStudentUpload] = useState(false);  
+    const [showTeamUpload, setShowTeamUpload] = useState(false);        
+    const openStudentUpload = () => setShowStudentUpload(true);
+    const openTeamUpload = () => setShowTeamUpload(true);
+    const closeStudentUpload = () => setShowStudentUpload(false);
+    const closeTeamUpload = () => setShowTeamUpload(false);
+
+    // Required headers for csv uploads
+    const studentHeaders = ['Student name', 'Student ID', 'Student SIS ID', 'Email', 'Section name'];
+    const teamHeaders = ['name', 'canvas_user_id', 'user_id', 'login_id', 'sections', 'group_name', 'canvas_group_id', 'group_id'];
+
+    // Helper function for date formatting the semester start/end dates
+    const formatSemesterDate = (dateString) => {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const year = date.getFullYear().toString().slice(-2); 
+      
+        return `${day}/${month}/${year}`;
+    };
+
+    // Helper function to format the bidding start/end dates 
+    const formatBiddingDate = (dateString) => {
+        const date = new Date(dateString);
+        const hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        const formattedHours = (hours % 12) || 12;
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const year = date.getFullYear().toString().slice(-2); 
+    
+        return `${formattedHours}:${minutes}${ampm} ${day}/${month}/${year}`;
+    };
+
+    // Get semester data from server
+    useEffect(() => {
+        async function getSemester() {
+            try {
+                const data = await fetchSemester(semesterID);
+                setSemester(data);
+                console.log('Fetched semester data:', data);  
+            } catch (error) {
+                console.error('Failed to load semester:', error);
+            }
+        }
+        getSemester();
+    }, [semesterID]);
+
+    // Get semester's students 
+    useEffect(() => {
+        async function getStudents() {
+            try {
+                const data = await fetchUsersByRole('student');
+                setStudents(data);
+                // setNumStudents(data.length); 
+                console.log('Fetched students:', data);  
+            } catch (error) {
+                console.error('Failed to load students:', error);
+            }
+        }
+        getStudents();
+    }, []);
+
+    // Get semester's teams
+    useEffect(() => {
+        async function getTeams() {
+            try {
+                const data = await fetchTeamsBySemester(semesterID);
+                setTeams(data);
+                console.log('Fetched teams:', data);  
+            } catch (error) {
+                console.error('Failed to load teams:', error);
+            }
+        }
+        getTeams();
+    }, [semesterID]);
+
+    if (!semester) {
+        return <div>Loading...</div>;  
+    }
 
     return (
-        <div className='ManageSemester'>
-        {/* Add other page content here  */}
-        
-        {/* CSV File Upload Forms for Semester Student/Team Data */}
-            <div className='semester-uploads-container'>
-                {/* Upload Students CSV */}
-                <SemesterCSVUpload semesterID={semesterID} fileContent='students' />
-                
-                {/* Upload Teams CSV */}
-                <SemesterCSVUpload semesterID={semesterID} fileContent='teams' />
+        <div className='manage-semester'>
+            <div className='page-header'>
+                <h2>Manage {semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h2>
+                <div className='semester-heading'>
+                    {semester && <h1>{semester.name}</h1>}
+                    <SemesterDropdown pathway={'manage'}></SemesterDropdown>
+                </div>
+            </div>
+            <div className='page-content'>
+                <div className='content-section'>
+                    <h2>Semester Timeframe</h2>
+                    <p className='text-detail'>View and edit the semester dates</p>
+                    <div className='data-container'>
+                        <div className='container-text'>
+                            <p>Start date: {formatSemesterDate(semester.start_date)}</p>
+                            <p>End date: {formatSemesterDate(semester.end_date)}</p>
+                        </div>
+                        <button className = 'edit-button'></button>
+                    </div>
+                </div>
+                <div className='content-section'>
+                    <h2>Project Bidding Timeframe</h2>
+                    <p className='text-detail'>View and edit when teams are able to submit their project preferences</p>
+                        <div className='data-container'>
+                        <div className='container-text'>
+                            <p>Start date: {formatBiddingDate(semester.start_bidding_date)}</p>
+                            <p>End date: {formatBiddingDate(semester.end_bidding_date)}</p>
+                        </div>
+                        <button className = 'edit-button'></button>
+                    </div>
+                </div>
+                {/* Semester Student/Team Data */}
+                <div className='content-section'>
+                    <h2>Students and Teams</h2>
+                    <p className='text-detail'>View, edit, and download the semester's students and teams</p>
+                    {/* Displays student count & gives upload option */}
+                    <div className='data-container'>
+                        <div className='container-text'>
+                            <p> {students.length} student{students.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
+                        </div>
+                        <div className='container-button'>
+                            <button className = 'upload-button' onClick ={openStudentUpload}> 
+                                <img src= {uploadIcon} alt ='icon' class='upload-icon'></img> 
+                                {students.length >= 1 ? 'Reupload' : 'Upload'} student data
+                            </button>
+                        </div>
+                    </div>
+                    { showStudentUpload && (
+                        <div className='pop-up'>
+                            <div className='pop-up-header'>
+                                <h3>Upload Student Data</h3>
+                                <button className = 'quit-button' onClick={closeStudentUpload}></button>
+                            </div>
+                            <div className='pop-up-text'>
+                                <p>File must be a CSV with headers {studentHeaders.join(', ')}</p>
+                                <p className='warning'>Warning: Reuploading student data will remove the already existing students from the system. This cannot be undone.</p>
+                            </div>
+                            <SemesterCSVUpload semesterID={semesterID} fileContent='students' />
+                        </div>                
+                    )}
+                    {/* Displays team count & gives upload option */}
+                    <div className='data-container'> 
+                        <div className='container-text'>
+                            <p>{teams.length} team{teams.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
+                        </div>
+                        <div className='container-button'>
+                            <button className = 'upload-button' onClick={openTeamUpload}>
+                                <img src={uploadIcon} alt ='icon' class='upload-icon'></img> 
+                                {teams.length >= 1 ? 'Reupload' : 'Upload'} team data
+                            </button>
+                        </div>
+                    </div>
+                    { showTeamUpload && (
+                        <div className='pop-up'>
+                            <div className='pop-up-header'>
+                                <h3>Upload Team Data</h3>
+                                <button className = 'quit-button' onClick={closeTeamUpload}></button>
+                            </div>
+                            <div className='pop-up-text'>
+                                <p>File must be a CSV with headers {teamHeaders.join(', ')}</p>
+                                <p className='warning'>Warning: Reuploading team data will remove the already existing teams from the system. This cannot be undone.</p>
+                            </div>
+                            <SemesterCSVUpload semesterID={semesterID} fileContent='teams' />
+                            </div>
+                        )}
+                </div>
             </div>
         </div>
     );

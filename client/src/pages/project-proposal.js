@@ -89,14 +89,13 @@ const projectProposal = () => {
 
   
     return(
-        
             <div className="projectProposal">
                 
             <div id="pop">
                 Please confirm meeting attendance and final presentation attendance. <br /><br /><br />
                 <button id="popBack" onClick={close}>Back</button>
             </div>
-                <h1 id="proposalHeader"> Computer Science Capston Project Proposal Form</h1>
+                <h1 id="proposalHeader"> Computer Science Capstone Project Proposal Form</h1>
                 <div id="proposalInformation">
                 <h3>Deadline</h3>
 

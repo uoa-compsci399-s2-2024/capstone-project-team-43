@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import '../App.css';
 import axios from 'axios';
+import '../admin.css';
 
 const SemesterCSVUpload = ({ semesterID, fileContent }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState(''); 
+    const fileInput = useRef(null)
+
 
     // Initialise required headers for the CSV depending on the file content type
     let requiredHeaders; 
@@ -16,7 +19,7 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
     } else {
         // Return if fileContent is not 'students' or 'teams'
         requiredHeaders = [];
-        return <p>Invalid upload type. Must be "students" or "teams".</p>;
+        return <p>Invalid upload type. Must be 'students' or 'teams'.</p>;
     }
 
     // Handles File Selection 
@@ -56,7 +59,7 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
 
             if (valid) {
                 const formData = new FormData();
-                formData.append("myFile", selectedFile, selectedFile.name);
+                formData.append('myFile', selectedFile, selectedFile.name);
 
                 // send CSV content to server
                 axios.post(`http://localhost:3001/api/semesters/${semesterID}/upload/${fileContent}`, formData, {
@@ -81,12 +84,22 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
 
     return (
         <div className='SemesterCSVUpload'>
-            <div className='admin-form-container'>
-                <div className='file-upload-form'>
-                    <input type="file" accept=".csv" onChange={onFileSelect} />
-                    <button onClick={onFileUpload}>Upload {fileContent === 'students' ? 'Student' : 'Team'} Data</button>
-                    {error && <p>{error}</p>}  
-                    {successMessage && <p>{successMessage}</p>} 
+            <div className='file-form-container'>
+                {/* Represents select file button */}
+                <div className='select-file-container'>
+                    <button className='pop-up-button file-button select-upload-button'
+                        onClick={() => fileInput.current.click()}>Select File
+                    </button>
+                    {/* Conditionally display selected file name */}
+                    {selectedFile && <p className='file-name'>{selectedFile.name}</p>}
+                    {/* Hides the functioning select file button because it's ugly */}
+                </div>
+                <input className = 'select-file-default' type='file' ref={fileInput} accept='.csv' onChange={onFileSelect} />
+                {/* Confirm upload */}
+                <div className = 'upload-file-container'>
+                    {selectedFile && <button className = 'pop-up-button confirm-upload-button' onClick={onFileUpload}>Upload {fileContent === 'students' ? 'Student' : 'Team'} Data</button>}
+                    {error && <p className='upload-error-message'>{error}</p>}  
+                    {successMessage && <p className='upload-success-message'>{successMessage}</p>} 
                 </div>
             </div>
         </div>

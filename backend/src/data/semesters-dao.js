@@ -101,8 +101,8 @@ export async function getSemester(id) {
  * @param {Date} end_date
  * @param {Date} start_bidding_date
  * @param {Date} end_bidding_date
- * @param {boolean} is_semester_one //String visualization of semester, ie. "2024 Sem 2"
- *
+ * @param {boolean} is_semester_one 
+ * 
  * @return the newly created project
  */
 export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {

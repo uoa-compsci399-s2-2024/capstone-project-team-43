@@ -3,10 +3,25 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { fetchProjects, fetchSemesters } from '../Api.js'
 import Project from "../components/project";
-
 import PopUp from "../components/project-pop-up-admin.js";
+import { jwtDecode } from "jwt-decode";
 
 const ClientProjects = () => {
+
+    let id;
+    try {
+        const token = localStorage.getItem("authToken");
+        if (token === "") {
+            console.log("User not logged in");
+        } else {
+        const decoded = jwtDecode(token);
+        console.log(decoded);
+        id = decoded.userId;
+        console.log("ROLE SHOWING ", id);
+    }
+    } catch (err) {
+        console.log(err);
+    } 
 
 
     const [semesters, setSemesters] = useState([]);
@@ -53,7 +68,7 @@ const ClientProjects = () => {
         document.getElementById('edit').style.display = "none";
     }
 
-    let owner_id = 1;
+    let owner_id = id;
     return(
         
         <div className="clientProjects">

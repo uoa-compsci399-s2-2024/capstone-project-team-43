@@ -45,7 +45,9 @@ router.delete("/:id", async (req, res) => {
 
 // Sets all projects to published
 router.post("/publish/:status", async (req, res) => {
+
     const status = req.params.status;
+    console.log(status);
     return res.json(await publishProjects(status))
 });
 

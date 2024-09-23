@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchProjects,updateStatus } from '../Api.js'
+import { fetchProjects,updateStatus, updatePublish } from '../Api.js'
 
 
 import {
@@ -113,15 +113,7 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
         
       );
       };
-
-      const unpublish = () => {
-
-      };
-      const publish = () => {
-
-      };
       
-
 
         const [activeId, setActiveId] = useState();
       
@@ -194,8 +186,8 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
             </ul> */}
             <Container id="approved" items={items.approved} />
             <div id="publishing">
-        <button onClick={unpublish} id="unpublish">Unpublish</button>
-        <button onClick={publish} id="publish">Publish</button>
+        <button onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
+        <button onClick={()=>updatePublish(true)} id="publish">Publish</button>
         </div>
         </div>
         <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>

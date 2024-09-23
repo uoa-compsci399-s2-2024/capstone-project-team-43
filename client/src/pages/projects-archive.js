@@ -21,7 +21,6 @@ const ProjectsArchive = () => {
         getSemesters();
     }, []);
 
-    console.log(semesters);
 
 
 
@@ -43,11 +42,6 @@ const ProjectsArchive = () => {
     return(
         
         <div className="archive">
-
-            {semesters.map(semester => (
-                    semester.id
-                    
-                ))}
             <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/>
             <div id="archivedProjects">
             

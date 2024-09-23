@@ -1,11 +1,30 @@
 
 import React, { useEffect, useState } from 'react';
 import '../App.css';
-import { fetchProjects } from '../Api.js'
+import { fetchProjects, fetchSemesters } from '../Api.js'
 import Project from "../components/project";
 import Header from "../components/admin-semester-header.js";
 
 const ProjectsArchive = () => {
+    const [semesters, setSemesters] = useState([]);
+
+    // get data onall semesters
+    useEffect(() => {
+        async function getSemesters() {
+            try {
+                const data = await fetchSemesters();
+                setSemesters(data);
+            } catch (error) {
+                console.error('Failed to load semesters:', error);
+            }
+        }
+        getSemesters();
+    }, []);
+
+    console.log(semesters);
+
+
+
     const [projects, setProjects] = useState([]);
 
     // get data onall accepted projects 
@@ -24,7 +43,12 @@ const ProjectsArchive = () => {
     return(
         
         <div className="archive">
-            <Header semester = "2024 - Semester 1" current = "2024 - Semester 2"/>
+
+            {semesters.map(semester => (
+                    semester.id
+                    
+                ))}
+            <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/>
             <div id="archivedProjects">
             
                 {projects.map(project => (

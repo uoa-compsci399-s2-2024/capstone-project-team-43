@@ -29,3 +29,14 @@ export async function fetchProjects(status) {
 };
 
 
+export async function fetchSemesters() {
+    try {
+        let response; 
+        
+        response = await fetch(`${BASE_URL}/api/semesters`);
+        // console.log(response);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching semesters:', error);
+        throw error;    }
+};

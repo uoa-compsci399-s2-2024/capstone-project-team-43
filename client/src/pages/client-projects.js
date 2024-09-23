@@ -65,9 +65,9 @@ const ClientProjects = () => {
             
                 {projects.filter(project => project.owner_id === owner_id).map(project => (
                      (<div onClick={() => handleclick(project)}>
-                     <Project id={project.id} name={project.title} description={project.description}/>
+                     <Project id={project.id} name={project.title} description={project.description} expiry={project.expiry}/>
                      <div id="confirm">
-                         {console.log(project)}
+
              <PopUp id={project.id} 
              name={project.title} 
              description={project.description}
@@ -77,12 +77,12 @@ const ClientProjects = () => {
              skills = {project.preferred_skills}
              deliverable = {project.project_deliverable}
              created = {project.created}
-             // expiry= {project.expiry}
-             teams = {project.max_num_of_groups}
+             expiry= {project.expiry}
+             teams = {project.max_teams}
              number = {project.project_number}
              />
-             {/* <button id="close" onClick={submit}>&times;</button> */}
          </div>
+
                      </div>)
                  
                     

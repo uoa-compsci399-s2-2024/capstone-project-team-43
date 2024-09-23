@@ -53,7 +53,7 @@ const ProjectsArchive = () => {
             <div id="archivedProjects">
             
                 {projects.filter(project => project.semester_id === sem_id).map(project => (
-                    <Project id={project.id} name={project.title} description={project.description} />
+                    <Project id={project.id} name={project.title} description={project.description} status={project.status}/>
                     
                 ))}
                  {/* <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />

@@ -2,7 +2,6 @@ import React from "react";
 
 import '../App.css';
 
-// /api/semesters/
 
 function adminPop(props){
 
@@ -16,7 +15,7 @@ function adminPop(props){
         <div id="popup">    
              
                     <br></br><br></br>
-                    
+ 
                     <table>
                         <tr id="top">
                             <td>{props.number}</td>

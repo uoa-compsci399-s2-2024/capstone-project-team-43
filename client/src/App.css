@@ -9,6 +9,7 @@
 
 .project #projectAvailable{
   display: none;
+  /* background-color: yellow; */
 }
 
 
@@ -488,6 +489,33 @@
 .projects #publish:hover{
   background-color: white;
   color: black;
+}
+
+.sortable #close{
+  width: 25px;
+  height: 25px;
+  background-color: #2979FF;
+  color: white;
+  position: absolute;
+  margin-top: -7.5%;
+  margin-left: 85%;
+  display: none;
+  border: none;
+  z-index: 5;
+  font-size: large;
+}
+.sortable #edit{
+  width: 25px;
+  height: 25px;
+  background-color: #2979FF;
+  color: white;
+  position: absolute;
+  margin-top: -7.5%;
+  margin-left: 80%;
+  display: none;
+  border: none;
+  z-index: 10;
+  /* font-size: large; */
 }
 
 /**           PROJECT PROPOSAL FORM             **/

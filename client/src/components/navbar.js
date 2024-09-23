@@ -299,6 +299,10 @@ const Navbar = () => {
                     <li>
                     <Link to='/pages/manage-current' id="manageCurrentNav" state={{ user: "admin" }}> Manage Current </Link> <br />
                     </li>
+                    <li>
+                        {/* Need fix */}
+                    <Link to="/pages/client-projects" id="clientProjectNav">Client Projects</Link> <br />
+                    </li>
                 </ul>
             </nav>
             <div id="sidemenu" className="sidemenu">

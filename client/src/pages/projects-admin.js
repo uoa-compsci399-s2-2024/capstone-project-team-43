@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, PointerEvent } from "react";
 import { fetchProjects,updateStatus, fetchSemesters } from '../Api.js'
 
 
@@ -17,6 +17,7 @@ import {
   import {Item} from '../components/sortable_item.js';
   import Header from "../components/admin-semester-header.js";
   import '../App.css';
+  import PopUp from "../components/project-pop-up-admin.js";
 
 const ProjectsAdmin = () => {
   const [semesters, setSemesters] = useState([]);
@@ -56,7 +57,7 @@ const ProjectsAdmin = () => {
     projects
     .filter(project => project.status === 'rejected')
     .map(project => (
-      rejected.push([{id: project.id, name:project.title, description:project.description}])
+      rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
     ))
 
@@ -66,7 +67,7 @@ let unsorted = []
     projects
     .filter(project => project.status === 'pending')
     .map(project => (
-      unsorted.push([{id: project.id, name:project.title, description:project.description}])
+      unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
     ))
 
@@ -76,7 +77,7 @@ let approved = []
     projects
     .filter(project => project.status === 'accepted')
     .map(project => (
-      approved.push([{id: project.id, name:project.title, description:project.description}])
+      approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
     ))
 
@@ -135,7 +136,6 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
 
       };
       
-
 
         const [activeId, setActiveId] = useState();
       

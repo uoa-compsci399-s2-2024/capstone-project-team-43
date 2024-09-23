@@ -7,11 +7,20 @@ import '../App.css';
 function Projects(props){
 
 
-    // if(props.status == 'Accepted'){
-    //     document.getElementById('next').style.backgroundColor  = "#00BB07";
-    // }else{
-    //     document.getElementById('next').style.backgroundColor  = "#FF0000"
-    // }
+
+        let today = new Date();
+        let formatDate = today.toISOString();
+
+        let available = "Unavailable"
+
+        if(formatDate < props.expiry){
+            available = "Available"
+        }
+
+        // if (available = "Unavailable"){
+        //     document.getElementById("projectAvailable").style.backgroundColor  = "#FF0000"
+        // }
+    
 
     return(
         <div className="project">
@@ -30,18 +39,18 @@ function Projects(props){
                 
             </div>
             <div id="projectStatus">
-                Rejected
+                {props.status}
             </div>
 
             <div id="projectAvailable">
-                Available
+            {available}
             </div>
             
         </div>
         
     )
     
-    
+
 }
 
 

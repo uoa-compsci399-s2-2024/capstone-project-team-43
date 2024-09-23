@@ -42,7 +42,18 @@ function adminPop(props){
                             
                             </td>
                         </tr>
-
+                        <tr>
+                            <td>Special requirements</td>
+                            <td>{props.requirements}
+                            
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Resources Available</td>
+                            <td>{props.resources}
+                            
+                            </td>
+                        </tr>
 
                     </table> 
 

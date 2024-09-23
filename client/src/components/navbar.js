@@ -98,6 +98,9 @@ const navbar = () =>{
                 <li>
                     <a href="/pages/manage-current" id="manageCurrentNav">Manage Current</a>
                 </li>
+                <li>
+                    <a href="/pages/client-projects" id="manageCurrentNav">Client Projects</a>
+                </li>
             </ul>
         </nav>
         <div id="sidemenu" className="sidemenu">

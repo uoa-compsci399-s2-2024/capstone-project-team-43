@@ -14,6 +14,11 @@ const ProjectsAvailable = () => {
     const submit =() =>{
         document.getElementById('confirm').style.display = "none";
         document.getElementById('close').style.display = "none";
+        document.getElementById('edit').style.display = "none";
+    }
+
+    const edit =() =>{
+        alert("edit");
     }
 
     const confirmation = () =>{
@@ -40,6 +45,7 @@ const ProjectsAvailable = () => {
       const handleclick = (project) =>{
         document.getElementById('confirm').style.display = "block";
         document.getElementById('close').style.display = "block";
+        document.getElementById('edit').style.display = "block";
       };
 
 
@@ -51,11 +57,32 @@ const ProjectsAvailable = () => {
  
             <ul>
                 {projects.filter(project => project.published === 'false').map(project => (
-                    <Project id={project.id} name={project.title} description={project.description} />
-                ))}
+                   (<div onClick={() => handleclick(project)}>
+                   <Project id={project.id} name={project.title} description={project.description}/>
+                   <div id="confirm">
+                       {console.log(project)}
+           <PopUp id={project.id} 
+           name={project.title} 
+           description={project.description}
+           // owner id
+           requirements = {project.special_requirements}
+           resources = {project.resources}
+           skills = {project.preferred_skills}
+           deliverable = {project.project_deliverable}
+           created = {project.created}
+           // expiry= {project.expiry}
+           teams = {project.max_num_of_groups}
+           number = {project.project_number}
+           />
+           {/* <button id="close" onClick={submit}>&times;</button> */}
+       </div>
+                   </div>)
+               )
+                )}
             </ul>
 
             <button id="close" onClick={submit}>&times;</button>
+            <button id="edit" onClick={edit}>Edit</button>
 
         </div>    
 

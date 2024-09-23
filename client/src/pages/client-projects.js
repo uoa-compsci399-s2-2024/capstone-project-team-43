@@ -3,15 +3,12 @@ import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { fetchProjects, fetchSemesters } from '../Api.js'
 import Project from "../components/project";
-import Header from "../components/admin-semester-header.js";
-import { useLocation } from 'react-router-dom'
 
-const ProjectsArchive = () => {
-    const location = useLocation()
-  const { from } = location.state
+import PopUp from "../components/project-pop-up-admin.js";
 
-  console.log(from);
-  
+const ClientProjects = () => {
+
+
     const [semesters, setSemesters] = useState([]);
 
     // get data onall semesters
@@ -27,7 +24,6 @@ const ProjectsArchive = () => {
         getSemesters();
     }, []);
 
-// console.log(props);
 
 
     const [projects, setProjects] = useState([]);
@@ -45,25 +41,21 @@ const ProjectsArchive = () => {
         getProjects();
     }, []);
 
-    let sem_id = from;
+    let owner_id = 1;
     return(
         
         <div className="archive">
-            <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/>
+           
             <div id="archivedProjects">
             
-                {projects.filter(project => project.semester_id === sem_id).map(project => (
+                {projects.filter(project => project.owner_id === owner_id).map(project => (
                     <Project id={project.id} name={project.title} description={project.description} />
                     
                 ))}
-                 {/* <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />
-                 <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />
-                 <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />
-                 <Project id={3} name={"another project"} description={"Another project descrition with some words describing it written here"} />
-             */}
+
             </div>  
         </div>  
     );
 }
 
-export default ProjectsArchive;
+export default ClientProjects;

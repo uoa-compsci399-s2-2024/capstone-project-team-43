@@ -18,6 +18,7 @@ import ManageCurrent from './pages/manage-current';
 import Navbar from "./components/navbar";
 import ManageSemester from './pages/manage-semester';
 import ProjectsArchive from './pages/projects-archive';
+import ClientProjects from './pages/client-projects';
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
         <Route path='/pages/new-semster' Component={NewSemster} />
         <Route path='/pages/manage-future' Component={ManageFuture} />
         <Route path='/pages/manage-current' Component={ManageCurrent} />
+        <Route path='/pages/client-projects' Component={ClientProjects} />
       </Routes>
       
 

@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 import '../App.css';
 
 
@@ -43,9 +43,16 @@ let semesters =[];
                     </li>
             {
                 semesters.map(semester => (
-                    <li>
-                    <a href="/pages/projects-archive"> {semester}</a>
-                    </li>
+                    // <li>
+                    // <a href="/pages/projects-archive"> {semester}</a>
+                    // </li>
+                    <div>                   
+                         <Link
+                    to='/pages/projects-archive'
+                    state={{ from: semester }}
+                    > {semester} </Link> <br />
+                  </div>
+
                 ))
             }
             </ul>

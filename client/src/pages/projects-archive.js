@@ -6,8 +6,10 @@ import Project from "../components/project";
 import Header from "../components/admin-semester-header.js";
 import { useLocation } from 'react-router-dom'
 import PopUp from "../components/project-pop-up-admin.js";
-
+import { useNavigate } from "react-router-dom";
+export let archiveprojectinfo = null;
 const ProjectsArchive = () => {
+    const Navigate = useNavigate();
     const location = useLocation()
   const { from } = location.state
 
@@ -27,11 +29,12 @@ const ProjectsArchive = () => {
         }
         getSemesters();
     }, []);
-
-    const handleclick = () =>{
-        document.getElementById('confirm').style.display = "block";
-        document.getElementById('close').style.display = "block";
-        document.getElementById('edit').style.display = "block";
+    const handleclick = (proj) =>{
+        archiveprojectinfo = proj;
+        Navigate('/pages/project-proposal');
+        // document.getElementById('confirm').style.display = "block";
+        // document.getElementById('close').style.display = "block";
+        // document.getElementById('edit').style.display = "block";
       };
       const submit =() =>{
         document.getElementById('confirm').style.display = "none";

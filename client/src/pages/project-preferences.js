@@ -87,18 +87,18 @@ const ProjectPreferences = ()=>{
         if(document.getElementById("agreeupon").checked === true){
         document.getElementById('projectPreferenceselements').style.display = "none";
         document.getElementById('onsubmission').style.display = "block";
-        document.getElementById('confirm').style.display = "none";}
+        document.getElementById('projectpreferenceconfirm').style.display = "none";}
     }
 
     const cancel = () =>{
-        document.getElementById('confirm').style.display = "none";
+        document.getElementById('projectpreferenceconfirm').style.display = "none";
         document.getElementById('projectPreferenceselements').style.background = "#2979FF";
         document.getElementById('projectPreferenceselements').style.opacity = "100%";
     }
 
     const confirmation = () =>{
         if(chosenproject[0].props.name !== undefined && chosenproject[1].props.name !== undefined && chosenproject[2].props.name !== undefined && chosenproject[3].props.name !== undefined && chosenproject[4].props.name !== undefined){
-        document.getElementById('confirm').style.display = "block";
+        document.getElementById('projectpreferenceconfirm').style.display = "block";
         document.getElementById('projectPreferenceselements').style.background = "#003998";
         document.getElementById('projectPreferenceselements').style.opacity = "30%";
         }
@@ -141,7 +141,7 @@ const ProjectPreferences = ()=>{
             
             <meta name = "viewport" content = "width=device-width, initial-scale=1"/>
 
-            <div id="confirm">
+            <div id="projectpreferenceconfirm">
             <br></br><br></br>
             <h2>Are you sure you want to submit?</h2>
             <p>Please note that this submission will count for your entire group.</p>

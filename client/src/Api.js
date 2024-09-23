@@ -58,6 +58,8 @@ export async function updatePublish(status) {
         throw error;}
 };
 
+
+
 export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number) {
     console.log("we are here");
     try {
@@ -69,6 +71,7 @@ export async function createProject(title, description, owner_id, special_requir
             },
             body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number}),
           })
+          console.log();
 
           const resJson = await response.json();
 
@@ -77,7 +80,9 @@ export async function createProject(title, description, owner_id, special_requir
     } catch (error) {
         console.error('Error fetching projects:', error);
         throw error;    }
-};export async function fetchSemesters() {
+};
+
+export async function fetchSemesters() {
     try {
         let response; 
         

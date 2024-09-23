@@ -445,7 +445,6 @@
 .projects #publishing{
   background-color: #dadada;
   width: 100%;
-  z-index: 99;
   bottom: 0px;
   position: absolute;
   padding-top: 2%;
@@ -906,7 +905,7 @@
   overflow: hidden;
 }
 
-#confirm{
+#projectpreferenceconfirm{
   min-height: fit-content;
   min-width: fit-content;
   width: 50%;
@@ -947,11 +946,11 @@
   height: fit-content;
 }
 
-#confirm p{
+#projectpreferenceconfirm p{
   font-size: small;
 }
 
-#confirm button{
+#projectpreferenceconfirm button{
   background-color: #003998;
   margin: 1%;
   padding: 1%;

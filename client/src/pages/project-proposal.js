@@ -3,24 +3,25 @@ import React from "react";
 import { createProject } from '../Api.js'
 
 import '../App.css';
+import { projectinfo } from "../components/sortable_item.js";
+import { archiveprojectinfo } from "./projects-archive.js";
 
 
 
 const projectProposal = () => {
-
-
+    console.log(projectinfo);
     const submit = () =>{
         let client_name = document.getElementById("clientname").value;
-        let client_email = document.getElementById("clientname").value;
+        let client_email = document.getElementById("clientemail").value;
         let other_client_details = document.getElementById("clientname").value;
         let title = document.getElementById("projecttitle").value;
         let description = document.getElementById("projectdescription").value;
         let project_deliverable = document.getElementById("desiredoutput").value;
-        let special_equipment_requirment = document.getElementById("clientname").value;
+        let special_equipment_requirment = document.getElementById("specialequipment").value;
         let max_teams = document.getElementById("numberofteams").value;
         let preferred_skills = document.getElementById("desiredskill").value;
-        let available_resources = document.getElementById("clientname").value;
-        let expiry = document.getElementById("clientname").value;
+        let available_resources = document.getElementById("availableresources").value;
+        let expiry = document.getElementById("date").value;
         let owner_id = 1;
         let currentDate = new Date();
         let created = currentDate.toISOString().split('T')[0];
@@ -35,6 +36,30 @@ const projectProposal = () => {
     }
 
     const next = () =>{
+
+        if(projectinfo !== null){
+
+            document.getElementById("clientname").value = projectinfo.project.owner_id;
+            document.getElementById("clientemail").value = projectinfo.project.owner_id;
+            document.getElementById("projecttitle").value = projectinfo.project.title;
+            document.getElementById("projectdescription").value = projectinfo.project.description;
+            document.getElementById("desiredoutput").value = projectinfo.project.deliverable;
+            document.getElementById("specialequipment").value = projectinfo.project.special_requirements;
+            document.getElementById("desiredskill").value = projectinfo.project.preferred_skills;
+            document.getElementById("date").value = projectinfo.project.expiry;   
+            // console.log(document.getElementById("clientname"));
+            // document.getElementById("clientname").value = projectinfo.owner_id;
+        }
+        else if (archiveprojectinfo !== null){
+            document.getElementById("clientname").value = archiveprojectinfo.owner_id;
+            document.getElementById("clientemail").value = archiveprojectinfo.owner_id;
+            document.getElementById("projecttitle").value = archiveprojectinfo.title;
+            document.getElementById("projectdescription").value = archiveprojectinfo.description;
+            document.getElementById("desiredoutput").value = archiveprojectinfo.deliverable;
+            document.getElementById("specialequipment").value = archiveprojectinfo.special_requirements;
+            document.getElementById("desiredskill").value = archiveprojectinfo.preferred_skills;
+            document.getElementById("date").value = archiveprojectinfo.expiry;
+        }
 
        if(document.getElementById("check1").checked === false || document.getElementById("check2").checked === false){
             // alert("Please read the information and confirm availability before proceeding.");
@@ -59,6 +84,7 @@ const projectProposal = () => {
     const close = () => {
         document.getElementById('pop').style.display = "none";
     }
+
 
 
   
@@ -119,7 +145,7 @@ const projectProposal = () => {
                 <label>
                     <h3>2. Main client's (applicant's) email* </h3>
                     <p>Please provide your email.</p>
-                    <input type="text" placeholder="Enter your answer" required/>
+                    <input type="text" placeholder="Enter your answer" required id="clientemail"/>
                 </label>
                 <label>
                     <h3>3. Other clients' details</h3>
@@ -149,7 +175,7 @@ const projectProposal = () => {
                     </p>
                     <input type="radio" id="html" name="fav_language" value="HTML" /> No<br />
                     <input type="radio" id="html" name="fav_language" value="HTML" /> Yes<br />
-                    <textarea placeholder="Please specify" />
+                    <textarea placeholder="Please specify" id = "specialequipment"/>
                 </label>
                 <label>
                     <h3>8. Number of teams*</h3>
@@ -180,7 +206,7 @@ const projectProposal = () => {
                     <p>
                     Are there any resources you would like to provide for students to become more familiar with your project?
                     </p>
-                    <textarea placeholder="Enter your answer" />
+                    <textarea placeholder="Enter your answer" id="availableresources" />
                 </label>
                 <label>
                     <h3>11. Project offering timeframe*</h3>
@@ -193,7 +219,7 @@ const projectProposal = () => {
                         <option value="">2 from current</option>
                         <option value="">3 from current</option>
                     </select> */}
-                    <input type="date" /> 
+                    <input type="date" id="date"/> 
                 </label>             
                 </div> 
             </form>  

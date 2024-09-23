@@ -3,7 +3,9 @@ import { useSortable, PointerEvent } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Project from "./project";
 import PopUp from "../components/project-pop-up-admin.js";
+import { useNavigate } from "react-router-dom";
 
+export let projectinfo = null;
 
 export function Item(props) {
   const { id } = props;
@@ -16,18 +18,25 @@ export function Item(props) {
     justifyContent: "center",
     border: "1px solid black",
     margin: "10px 0",
-    background: "white"
+    background: "white",
+    position: "absolute"
   };
+
+  const Navigate = useNavigate();
   const handleclick = () =>{
-    document.getElementById('confirm').style.display = "block";
-    document.getElementById('close').style.display = "block";
-    document.getElementById('edit').style.display = "block";
+    projectinfo = (id[0]);
+    Navigate('/pages/project-proposal');
   };
-  const submit =() =>{
-    document.getElementById('confirm').style.display = "none";
-    document.getElementById('close').style.display = "none";
-    document.getElementById('edit').style.display = "none";
-}
+
+      const submit =() =>{
+        document.getElementById('confirm').style.display = "none";
+        document.getElementById('close').style.display = "none";
+        document.getElementById('edit').style.display = "none";
+    }
+
+    // const edit = () =>{
+    //   console.log(document.getElementById('edit').style.display);
+    // }
 
 const i = props.project;
 
@@ -40,7 +49,7 @@ return (
   {id.map((project) => (   
 
       
- (<div onClick={() => handleclick()}>
+ (<div onClick={handleclick}>
   {/* <button >read</button> */}
      <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry}/>
      <div id="confirm">
@@ -59,13 +68,13 @@ return (
           number = {project.project.project_number}
           />
           </div>
+          <button id="close" onClick={submit}>&times;</button>
+          {/* <button id="edit" onClick={edit}>Edit</button> */}
 
      </div>)
          
 
         ))}
-
-        <button id="close" onClick={submit}>&times;</button>
         
   </div>);
 }

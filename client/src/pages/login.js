@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
-
+import React, { useState } from 'react';
 
 import '../App.css';
 
@@ -14,25 +12,11 @@ const Login = () => {
 
     }
 
-        // Hides register form, shows register form
-        const login_form = () => {
-            document.getElementById('loginright').style.display = "block";
-            document.getElementById('createacc').style.display = "none";
-    
-        }
-
-    // Hides both register and login forms
-    const form_close = () => {
-        document.getElementById('loginright').style.display = "none";
-        document.getElementById('createacc').style.display = "none";
-    }
-
     // Constants to store form data
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
 
     // Handles the login form submission, stores the response auth token in local storage
     const handleSubmit = async (e) => {
@@ -110,154 +94,6 @@ const Login = () => {
         }
         window.location.reload();
     };
-
-    useEffect(() => {
-
-        
-    const client_view = () => {
-        form_close();
-        document.getElementById('adminSideBar').style.display = "none";
-        document.getElementById('clientSideBar').style.display = "block";
-        document.getElementById('studentSideBar').style.display = "none";
-        document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectsArchiveNav').style.display = "none";
-        document.getElementById('projectProposalNav').style.display = "block";
-        document.getElementById('projectPreferencesNav').style.display = "none";
-        document.getElementById('projectsAvailableNav').style.display = "none";
-        document.getElementById('uploadCSVNav').style.display = "none";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "none";
-        document.getElementById('manageCurrentNav').style.display = "none";
-    }
-
-    const student_view = () => {
-        form_close();
-        document.getElementById('adminSideBar').style.display = "none";
-        document.getElementById('clientSideBar').style.display = "none";
-        document.getElementById('studentSideBar').style.display = "block";
-        document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectsArchiveNav').style.display = "none";
-        document.getElementById('projectProposalNav').style.display = "none";
-        document.getElementById('projectPreferencesNav').style.display = "block";
-        document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('uploadCSVNav').style.display = "none";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "none";
-        document.getElementById('manageCurrentNav').style.display = "none";
-    }
-
-    const admin_view = () => {
-        form_close();
-        document.getElementById('adminSideBar').style.display = "block";
-        document.getElementById('clientSideBar').style.display = "none";
-        document.getElementById('studentSideBar').style.display = "none";
-        document.getElementById('projectSortNav').style.display = "block";
-        document.getElementById('projectsArchiveNav').style.display = "block";
-        document.getElementById('projectProposalNav').style.display = "block";
-        document.getElementById('projectPreferencesNav').style.display = "none";
-        document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('uploadCSVNav').style.display = "block";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "block";
-        document.getElementById('manageCurrentNav').style.display = "block";
-    }
-
-    const not_logged_in = () => {
-        document.getElementById('adminSideBar').style.display = "none";
-        document.getElementById('clientSideBar').style.display = "none";
-        document.getElementById('studentSideBar').style.display = "none";
-        document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectsArchiveNav').style.display = "none";
-        document.getElementById('projectProposalNav').style.display = "none";
-        document.getElementById('projectsAvailableNav').style.display = "none";
-        document.getElementById('projectPreferencesNav').style.display = "none";
-        document.getElementById('uploadCSVNav').style.display = "none";
-        document.getElementById('newSemNav').style.display = "none";
-        document.getElementById('manageFutureNav').style.display = "none";
-        document.getElementById('manageCurrentNav').style.display = "none";
-    }
-
-    const debugging_nav = () => {
-        document.getElementById('adminSideBar').style.display = "block";
-        document.getElementById('clientSideBar').style.display = "block";
-        document.getElementById('studentSideBar').style.display = "block";
-        document.getElementById('projectSortNav').style.display = "block";
-        document.getElementById('projectsArchiveNav').style.display = "block";
-        document.getElementById('projectProposalNav').style.display = "block";
-        document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('projectPreferencesNav').style.display = "block";
-        document.getElementById('uploadCSVNav').style.display = "block";
-        document.getElementById('newSemNav').style.display = "block";
-        document.getElementById('manageFutureNav').style.display = "block";
-        document.getElementById('manageCurrentNav').style.display = "block";
-    }
-
-
-        // Gets the token from the cookie sent from the google callback
-        const getToken = async () => {
-            const token = Cookies.get('authToken');
-            if (token) {
-
-                // Stores the resulting Auth Token
-                localStorage.setItem("authToken", token);
-                console.log("Token stored:", token);
-
-            }
-
-            const stored_token = localStorage.getItem("authToken");
-
-            console.log("token: ", stored_token);
-            
-            if(stored_token !== "") {
-
-            try {
-                let res = await fetch("http://localhost:3001/api/auth/role", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "authToken": `${stored_token}`,
-
-                    },
-                });
-                const resJson = await res.json();
-
-                const role = resJson.role;
-
-                if (res.status === 200) {
-
-                    if (role === "client") {
-                        console.log("user is a client");
-                        client_view();
-                    } else if (role === "student") {
-                        console.log("user is a student");
-                        student_view();
-                    } else if (role === "admin") {
-                        console.log("user is an admin");
-                        admin_view();
-                    } else {
-
-                        debugging_nav();
-                        //login_form(); **once debugging nav bar is done uncomment theses**
-                        //not_logged_in();
-                    }
-
-                } else {
-                    console.log("An error occurred during login");
-                }
-            } catch (err) {
-                console.log(err);
-            }
-        } else {
-            debugging_nav();
-            //login_form(); **once debugging nav bar is done uncomment theses**
-            //not_logged_in();
-        }
-
-
-        };
-
-        getToken(); // This function gets called every time the page is rendered, (page refresh or redirects)
-    }, []);
 
     return (
         <div className="login+signup">

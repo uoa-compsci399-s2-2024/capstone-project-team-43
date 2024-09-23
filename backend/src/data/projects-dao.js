@@ -81,10 +81,11 @@ export async function getStatusProject(status) {
  * @param {'rejected'|'accepted'|'pending'} status
  * @param {number} max_teams
  * @param {number} project_number
+ * @param {Date} expiry
  *
  * @return the newly created project
  */
-export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number) {
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id) {
   let connection;
   try {
 
@@ -95,8 +96,8 @@ export async function createProject(title, description, owner_id, special_requir
 
     // Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number]
+      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number, expiry]
     );
 
     /** @type {Project} */

@@ -9,6 +9,7 @@ CREATE TABLE PROJECT (
     special_requirements VARCHAR(255),
     available_resources VARCHAR(255),
     created DATE NOT NULL,
+    expiry DATE NOT NULL,
     semester_id INTEGER NOT NULL,
     status ENUM('rejected', 'accepted', 'pending') NOT NULL,
     max_teams INTEGER NOT NULL,
@@ -47,11 +48,11 @@ CREATE TABLE TEAM (
 
 
 INSERT INTO PROJECT 
-    (title, description, owner_id, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published) 
+    (title, description, owner_id, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry) 
 VALUES 
-    ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false'),
-    ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false'),
-    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false');
+    ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false', '2025-08-01'),
+    ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false', '2025-09-01'),
+    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false', '2025-10-01');
 
 INSERT INTO USER  (role, email, password, first_name, last_name, team_id, company)
 VALUES 

@@ -181,7 +181,7 @@ button:hover{
   font-size: 20px;
   width: 10vw;
   background-color: var(--theme-dark);
-  position: absolute;
+  position: relative;
   color: white;
   z-index: 1;
   font-weight: bold;

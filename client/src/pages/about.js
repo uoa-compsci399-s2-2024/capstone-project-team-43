@@ -6,7 +6,7 @@ const About = () =>{
     return(
         <div id="aboutus" className="aboutuspage">
             <br></br>
-            <h2>About Us</h2>
+            <h1>About Us</h1>
                 <p>Team Error 404 built Cornerstone to support the staff, students and clients of 
                 <br></br>the COMPSCI399 capstone course by simplifying and streamlining the processes of 
                 <br></br>project proposal, bidding and allocation.

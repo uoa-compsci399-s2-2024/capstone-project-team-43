@@ -1,12 +1,13 @@
 import React from "react";
 
 import '../App.css';
+import '../index.css';
 
 const Contact = () =>{
     return(
         <div id="contact" className="contactpage">
             <br></br>
-            <h2>Contact</h2>
+            <h1>Contact</h1>
                 <p>COMPSCI399 course coordinators
                     <br></br>Asma Shakil
                     <br></br>asma.shakil@auckland.ac.nz

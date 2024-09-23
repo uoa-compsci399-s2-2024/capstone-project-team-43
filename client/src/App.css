@@ -43,7 +43,7 @@
 .navbar li {
   display: block;
   padding: 0 10px 0 10px;
-  margin-left: -4vh;
+  margin-left: -0.75vw;
 }
 
 .navbar a{
@@ -228,7 +228,7 @@
 
 .login-google-button{
   padding: 0px;
-  margin-bottom: -2.7vh;
+  margin-bottom: -25px;
 }
 
 .login h1{
@@ -711,17 +711,20 @@
   position: absolute;
 }
 
-.projectProposal #back, #next{
+.projectProposal #back{
   background-color:#2979FF;
   border: 2px solid #2979FF;
   margin-left: 45%;
 }
 
-
-
-.projectProposal #proposalButtons #submit{
-  margin-left: 50%;
+.projectProposal #next{
+  background-color:#2979FF;
+  border: 2px solid #2979FF;
+  margin-left: -5.1%;
+  position: absolute;
 }
+
+
 
 .projectProposal #back:hover, #next:hover{
   background-color:white;

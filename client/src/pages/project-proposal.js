@@ -10,8 +10,9 @@ import { getUserByID } from "../Api.js";
 
 
 const projectProposal = () => {
-    console.log(projectinfo);
+
     const submit = () =>{
+        try {
         let client_name = document.getElementById("clientname").value;
         let client_email = document.getElementById("clientemail").value;
         let other_client_details = document.getElementById("clientname").value;
@@ -19,7 +20,7 @@ const projectProposal = () => {
         let description = document.getElementById("projectdescription").value;
         let project_deliverable = document.getElementById("desiredoutput").value;
         let special_equipment_requirment = document.getElementById("specialequipment").value;
-        let max_teams = document.getElementById("numberofteams").value;
+        let max_teams = document.getElementById("teams").value;
         let preferred_skills = document.getElementById("desiredskill").value;
         let available_resources = document.getElementById("availableresources").value;
         let expiry = document.getElementById("date").value;
@@ -30,11 +31,14 @@ const projectProposal = () => {
         let status = "pending";
         let project_number = 43;
 
-        createProject(title, description, 1, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", 2, 43);
-
-
-        //title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number
+        createProject(title, description, 1, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", 2, 43, 1);
+    } catch (err) {
+        console.log("Error", err);
     }
+    }
+
+        //title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id
+
 
     const next = () =>{
 
@@ -76,7 +80,7 @@ const projectProposal = () => {
     }
 
     const back = () =>{
-        document.getElementById('next').style.display = "block";
+        document.getElementById('next').style.display = "inline";
         document.getElementById('back').style.display = "none";
         document.getElementById('proposalContent').style.display = "none";
         document.getElementById('proposalInformation').style.display = "block";

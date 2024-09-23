@@ -28,6 +28,7 @@ const Navbar = () => {
             console.log("form closing");
             form_close();
         }
+        try {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "block";
@@ -36,12 +37,14 @@ const Navbar = () => {
         document.getElementById('projectPreferencesNav').style.display = "block";
         document.getElementById('projectsAvailableNav').style.display = "block";
         document.getElementById('clientProjectNav').style.display = "none";
+        } catch (err) {}
     }
 
     const client_view = () => {
         if (getLocation() === "/") {
             form_close();
         }
+        try {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "block";
         document.getElementById('studentSideBar').style.display = "none";
@@ -50,24 +53,28 @@ const Navbar = () => {
         document.getElementById('projectPreferencesNav').style.display = "none";
         document.getElementById('projectsAvailableNav').style.display = "none";
         document.getElementById('clientProjectNav').style.display = "block";
+        } catch (err) {}
     }
 
     const admin_view = () => {
         if (getLocation() === "/") {
             form_close();
         }
+        try {
         document.getElementById('adminSideBar').style.display = "block";
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "none";
         document.getElementById('projectSortNav').style.display = "block";
         document.getElementById('projectsArchiveNav').style.display = "block";
-        document.getElementById('projectProposalNav').style.display = "block";
+        document.getElementById('projectProposalNav').style.display = "none";
         document.getElementById('projectPreferencesNav').style.display = "none";
         document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('clientProjectNav').style.display = "block";
+        document.getElementById('clientProjectNav').style.display = "none";
+        } catch (err) {}
     }
 
     const not_logged_in = () => {
+        try {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "none";
@@ -76,6 +83,7 @@ const Navbar = () => {
         document.getElementById('projectsAvailableNav').style.display = "none";
         document.getElementById('projectPreferencesNav').style.display = "none";
         document.getElementById('clientProjectNav').style.display = "none";
+        } catch (err) {}
     }
 
     const debugging_nav = () => {
@@ -92,13 +100,14 @@ const Navbar = () => {
 
     try {
         const token = localStorage.getItem("authToken");
-        if (token === "") {
-            //debugging_nav();
-            not_logged_in(); //**comment for production**
+
+        if (token === "" || token === null) {
+            localStorage.setItem("authToken", "");
+            //debugging_nav(); 
+            not_logged_in(); //**uncomment for production and commment out debugging_nav()**
         } else {
         const decoded = jwtDecode(token);
         const role = decoded.role;
-        console.log("ROLE SHOWING ", role);
 
         if (role === "student") {
             student_view();
@@ -171,13 +180,6 @@ const Navbar = () => {
         // Gets the token from the cookie sent from the google callback
         const getToken = async () => {
             const token = Cookies.get('authToken');
-            if (token) {
-
-                // Stores the resulting Auth Token
-                localStorage.setItem("authToken", token);
-                console.log("Token stored:", token);
-
-            }
 
             const stored_token = localStorage.getItem("authToken");
 
@@ -210,8 +212,8 @@ const Navbar = () => {
                             console.log("user is an admin");
                             admin_view();
                         } else {
-                            debugging_nav();
-                            //not_logged_in();   **once debugging nav bar is done uncomment theses**
+                            //debugging_nav();
+                            not_logged_in();  //**uncomment for production and commment out debugging_nav()**
                         } 
 
                     } else {
@@ -221,8 +223,8 @@ const Navbar = () => {
                     console.log(err);
                 }
             } else {
-                debugging_nav(); 
-                //not_logged_in();  **once debugging nav bar is done uncomment theses**
+                //debugging_nav(); 
+                not_logged_in(); //**uncomment for production and commment out debugging_nav()**
             }
 
 
@@ -239,31 +241,36 @@ const Navbar = () => {
                 <button className = 'sideMenuButton' onClick={showclientsidemenu} id="clientSideBar"></button>
                 <ul>
                     <li>
-                        <Link to='/pages/projects-admin' id="projectSortNav" state={{ user: "admin" }}> Project </Link> <br />
+                        <Link to='/pages/projects-available' id="projectsAvailableNav" state={{ user: "student" }}> Projects Available </Link> <br />
                     </li>
+                    
                     <li>
-                        <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
+                            <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
+                        </li>
+                        <li>
+                        <Link to='/pages/about' state={{ user: role }} id="aboutNav"> About </Link> <br />
                     </li>
-                    <li>
-                        <Link to='/pages/projects-available' id="projectsAvailableNav" state={{ user: "student" }}> Projects(students) </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
-                    </li>
+                    
                     <li>
                         <Link to='/' state={{ user: role }}> 
                             <img id="cornerstone_logo" src={cornerstone_logo} alt="Cornerstone" />
                         </Link> <br />
                     </li>
+                    
                     <li>
                         <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                     </li>
+                    
                     <li>
                         <Link to='/pages/project-preferences' id="projectPreferencesNav" state={{ user: "student" }}> Project Preferences </Link> <br />
                     </li>
                     <li>
+                        <Link to='/pages/projects-admin' id="projectSortNav" state={{ user: "admin" }}> Projects </Link> <br />
+                    </li>
+                    <li>
                     <Link to="/pages/client-projects" id="clientProjectNav">Client Projects</Link> <br />
                     </li>
+
                 </ul>
             </nav>
             <div id="sidemenu" className="sidemenu">
@@ -303,10 +310,10 @@ const Navbar = () => {
                         </li>
                         Projects
                         <li>
-                            <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
+                            <Link to='/pages/project-proposal' state={{ user: role }}> Project Proposal Form </Link> <br />
                         </li>
                         <li>
-                            <a className="sidemenusub">My Projects</a>
+                            <Link to="/pages/client-projects" className="sidemenusub">My Projects</Link>
                         </li>
 
 

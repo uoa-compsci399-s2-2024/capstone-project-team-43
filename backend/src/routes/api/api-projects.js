@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject, publishProjects } from "../../data/projects-dao.js";
+import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject, publishProjects, editProject } from "../../data/projects-dao.js";
 
 const router = Router();
 
@@ -33,6 +33,23 @@ router.post("/", async (req, res) => {
 
     // Details are valid and now passed to createProject function to query into database
     const project = await createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id);
+    return res.location(`/api/projects/${project.id}`).status(201).json(project);
+});
+
+// Creates a new project with given name and desc.
+router.post("/update/:id", async (req, res) => {
+    const id = req.params.id;
+    const { title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, semester_id } = req.body;
+
+    console.log(title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, semester_id);
+
+    if (!id || !title || !expiry|| !max_teams || !semester_id) {
+        console.log("Not Valid Project Details");
+        return res.status(422);
+    }
+
+    // Details are valid and now passed to createProject function to query into database
+    const project = await editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, semester_id);
     return res.location(`/api/projects/${project.id}`).status(201).json(project);
 });
 

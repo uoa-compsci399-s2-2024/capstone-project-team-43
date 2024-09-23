@@ -1,13 +1,31 @@
 import React, { useEffect } from 'react';
 import Cookies from 'js-cookie';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
 
 import '../App.css';
+
 const Navbar = () => {
 
+        // Changes to the user's role once the auth token has been verified
+        let role = null;
+
+    const getLocation = () => {
+        const path = window.location.pathname;
+        return path;
+    }
+
+    // Hides both register and login forms
+    const form_close = () => {
+        console.log("ROLE LOGGED IN: ", role);
+        document.getElementById('loginright').style.display = "none";
+        document.getElementById('createacc').style.display = "none";
+    }
 
     const student_view = () => {
+        console.log("PATH: ", getLocation());
         if (getLocation() === "/") {
+            console.log("form closing");
             form_close();
         }
         document.getElementById('adminSideBar').style.display = "none";
@@ -61,9 +79,6 @@ const Navbar = () => {
     }
 
     const not_logged_in = () => {
-        if (getLocation() === "/") {
-            login_form();
-        }
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "none";
@@ -79,10 +94,6 @@ const Navbar = () => {
     }
 
     const debugging_nav = () => {
-        if (getLocation() === "/") {
-            login_form();
-        }
-
         document.getElementById('adminSideBar').style.display = "block";
         document.getElementById('clientSideBar').style.display = "block";
         document.getElementById('studentSideBar').style.display = "block";
@@ -98,19 +109,26 @@ const Navbar = () => {
     }
 
     try {
-        const location = useLocation();
-        const { user } = location.state;
-
-        if (user === "student") {
-            student_view();
-        } else if (user === "client") {
-            client_view();
-        } else if (user === "admin") {
-            admin_view();
+        const token = localStorage.getItem("authToken");
+        if (token === "") {
+            //debugging_nav();
+            not_logged_in(); //**uncomment for production**
         } else {
-            //not_logged_in(); **uncomment for production**
+        const decoded = jwtDecode(token);
+        const role = decoded.role;
+        console.log("ROLE SHOWING ", role);
+
+        if (role === "student") {
+            student_view();
+        } else if (role === "client") {
+            client_view();
+        } else if (role === "admin") {
+            admin_view();
         }
-    } catch { }
+    }
+    } catch (err) {
+        console.log(err);
+    }
 
     const showsidemenu = () => {
         if (document.getElementById('sidemenu').style.display === "block") {
@@ -161,37 +179,13 @@ const Navbar = () => {
             localStorage.setItem('authToken', "");
             Cookies.remove('authToken');
             console.log("Successfully Logged out!");
-            window.location.reload();
+            window.location.href = '/';
         } catch (err) {
             console.log(err);
         }
     };
 
-    const getLocation = () => {
-        const path = window.location.pathname;
-        return path;
-    }
-
-    // Hides register form, shows register form
-    const login_form = () => {
-        document.getElementById('loginright').style.display = "block";
-        document.getElementById('createacc').style.display = "none";
-
-    }
-
-    // Hides both register and login forms
-    const form_close = () => {
-        document.getElementById('loginright').style.display = "none";
-        document.getElementById('createacc').style.display = "none";
-    }
-
-    // Changes to the user's role once the auth token has been verified
-    let role = null;
-
-
     useEffect(() => {
-
-
         // Gets the token from the cookie sent from the google callback
         const getToken = async () => {
             const token = Cookies.get('authToken');
@@ -234,10 +228,8 @@ const Navbar = () => {
                             console.log("user is an admin");
                             admin_view();
                         } else {
-
                             debugging_nav();
-                            //login_form(); **once debugging nav bar is done uncomment theses**
-                            //not_logged_in();
+                            //not_logged_in();  **once debugging nav bar is done uncomment theses**
                         }
 
                     } else {
@@ -248,8 +240,7 @@ const Navbar = () => {
                 }
             } else {
                 debugging_nav();
-                //login_form(); **once debugging nav bar is done uncomment theses**
-                //not_logged_in();
+                //not_logged_in(); **once debugging nav bar is done uncomment theses**
             }
 
 
@@ -264,16 +255,12 @@ const Navbar = () => {
                 <p onClick={showsidemenu} id="studentSideBar">sidemenu</p>
                 <p onClick={showadminsidemenu} id="adminSideBar">Admin sidemenu</p>
                 <p onClick={showclientsidemenu} id="clientSideBar">Client sidemenu</p>
-                <a href="/">Cornerstone</a>
                 <ul>
                     <li>
                         <Link to='/pages/projects-admin' id="projectSortNav" state={{ user: "admin" }}> Project </Link> <br />
                     </li>
                     <li>
                         <Link to='/pages/projects-archive' id="projectsArchiveNav" state={{ user: "admin" }}> Projects archive </Link> <br />
-                    </li>
-                    <li>
-                        <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal </Link> <br />
                     </li>
                     <li>
                         <Link to='/pages/project-preferences' id="projectPreferencesNav" state={{ user: "student" }}> Project Preferences </Link> <br />
@@ -285,6 +272,9 @@ const Navbar = () => {
                         <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
                     </li>
                     <li>
+                        <Link to='/' state={{ user: role }}> Cornerstone </Link> <br />
+                    </li>
+                    <li>
                         <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                     </li>
                     <li>
@@ -294,10 +284,10 @@ const Navbar = () => {
                         <Link to='/pages/new-semster' id="newSemNav" state={{ user: "admin" }}> New Semster </Link> <br />
                     </li>
                     <li>
-                    <Link to='/pages/manage-future' id="manageFutureNav" state={{ user: "admin" }}> Manage Future </Link> <br />
+                        <Link to='/pages/manage-future' id="manageFutureNav" state={{ user: "admin" }}> Manage Future </Link> <br />
                     </li>
                     <li>
-                    <Link to='/pages/manage-current' id="manageCurrentNav" state={{ user: "admin" }}> Manage Current </Link> <br />
+                        <Link to='/pages/manage-current' id="manageCurrentNav" state={{ user: "admin" }}> Manage Current </Link> <br />
                     </li>
                 </ul>
             </nav>
@@ -311,10 +301,10 @@ const Navbar = () => {
                         <a href="/pages/project-preferences" className="sidemenusub">Project Preferences Form</a>
                     </li>
                     <li>
-                        <a href="/pages/about">About</a>
+                        <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
                     </li>
                     <li>
-                        <a href="/pages/contact">Contact</a>
+                        <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                     </li>
                     <li>
                         <button onClick={Logout}>Sign Out</button>
@@ -335,7 +325,7 @@ const Navbar = () => {
                     </li>
                     Projects
                     <li>
-                        <a href="/pages/project-proposal" className="sidemenusub">Project Proposal Form</a>
+                        <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
                     </li>
                     <li>
                         <a className="sidemenusub">My Projects</a>
@@ -343,10 +333,10 @@ const Navbar = () => {
 
 
                     <li>
-                        <a href="/pages/about">About</a>
+                        <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
                     </li>
                     <li>
-                        <a href="/pages/contact">Contact</a>
+                        <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                     </li>
                     <li>
                         <button onClick={Logout}>Sign Out</button>
@@ -363,10 +353,10 @@ const Navbar = () => {
                         <a className="sidemenusub">My Projects</a>
                     </li>
                     <li>
-                        <a href="/pages/about">About</a>
+                        <Link to='/pages/about' state={{ user: role }}> About </Link> <br />
                     </li>
                     <li>
-                        <a href="/pages/contact">Contact</a>
+                        <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                     </li>
                     <li>
                         <button onClick={Logout}>Sign Out</button>

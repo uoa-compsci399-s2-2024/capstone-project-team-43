@@ -114,6 +114,51 @@ export async function createProject(title, description, owner_id, special_requir
 }
 
 /**
+ * Creates a new project 
+ * @param {number} id
+ * @param {string} title
+ * @param {string} description
+ * @param {number} owner_id
+ * @param {string} preferred_skills
+ * @param {string} project_deliverable
+ * @param {Date} created
+ * @param {number} semester_id
+ * @param {'rejected'|'accepted'|'pending'} status
+ * @param {number} max_teams
+ * @param {number} project_number
+ * @param {Date} expiry
+ *
+ * @return the newly created project
+ */
+export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, project_number, semester_id) {
+  let connection;
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    // Insert project into db
+    const response = await connection.query(
+      
+      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ? WHERE id = ?",
+      [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, semester_id, max_teams, project_number, expiry, id]);
+
+    /** @type {Project} */
+    const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+    return project;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+  }
+}
+
+/**
  * Updates the project with the given id and status
  *
  * @param {id} id the id of the project to update

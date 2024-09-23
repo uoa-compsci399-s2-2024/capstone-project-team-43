@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { jwtDecode } from "jwt-decode";
 
 import '../App.css';
 
@@ -9,7 +10,6 @@ const Login = () => {
     const sign_up = () => {
         document.getElementById('loginright').style.display = "none";
         document.getElementById('createacc').style.display = "block";
-
     }
 
     // Constants to store form data
@@ -94,6 +94,31 @@ const Login = () => {
         }
         window.location.reload();
     };
+
+    // Hides register form, shows register form
+    const login_form = () => {
+    document.getElementById('loginright').style.display = "block";
+    document.getElementById('createacc').style.display = "none";
+}
+
+    useEffect(() => {
+        try {
+            const token = localStorage.getItem("authToken");
+            if (token === "") {
+                login_form();
+            } else {
+                const decoded = jwtDecode(token);
+                const role = decoded.role;
+    
+                if (role === null) {
+                    login_form();
+                }
+            }
+    
+        } catch (err) {
+            console.log(err);
+        }
+    }, []);
 
     return (
         <div className="login+signup">

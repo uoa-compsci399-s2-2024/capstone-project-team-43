@@ -32,6 +32,10 @@ function Projects(props){
             <div id="projectStatus">
                 Rejected
             </div>
+
+            <div id="projectAvailable">
+                Available
+            </div>
             
         </div>
         

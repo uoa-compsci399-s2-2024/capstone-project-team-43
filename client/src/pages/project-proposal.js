@@ -186,13 +186,14 @@ const projectProposal = () => {
                     <h3>11. Project offering timeframe*</h3>
                     <p>Please specify the semester which you would like your project to be offered.</p>
 
-                    <select name="languages" id="timeframe" required>
+                    {/* <select name="languages" id="timeframe" required>
                         <option value="">Select</option>
                         <option value="">this sem</option>
                         <option value="">next sem</option>
                         <option value="">2 from current</option>
                         <option value="">3 from current</option>
-                    </select>
+                    </select> */}
+                    <input type="date" /> 
                 </label>             
                 </div> 
             </form>  

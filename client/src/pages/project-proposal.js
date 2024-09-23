@@ -4,7 +4,8 @@ import { createProject } from '../Api.js'
 
 import '../App.css';
 import { projectinfo } from "../components/sortable_item.js";
-import { archiveprojectinfo } from "./projects-archive.js";
+import { getUserByID } from "../Api.js";
+// import { archiveprojectinfo } from "./projects-archive.js";
 
 
 
@@ -38,7 +39,7 @@ const projectProposal = () => {
     const next = () =>{
 
         if(projectinfo !== null){
-
+            console.log(getUserByID(projectinfo.project.owner_id));
             document.getElementById("clientname").value = projectinfo.project.owner_id;
             document.getElementById("clientemail").value = projectinfo.project.owner_id;
             document.getElementById("projecttitle").value = projectinfo.project.title;
@@ -50,16 +51,16 @@ const projectProposal = () => {
             // console.log(document.getElementById("clientname"));
             // document.getElementById("clientname").value = projectinfo.owner_id;
         }
-        else if (archiveprojectinfo !== null){
-            document.getElementById("clientname").value = archiveprojectinfo.owner_id;
-            document.getElementById("clientemail").value = archiveprojectinfo.owner_id;
-            document.getElementById("projecttitle").value = archiveprojectinfo.title;
-            document.getElementById("projectdescription").value = archiveprojectinfo.description;
-            document.getElementById("desiredoutput").value = archiveprojectinfo.deliverable;
-            document.getElementById("specialequipment").value = archiveprojectinfo.special_requirements;
-            document.getElementById("desiredskill").value = archiveprojectinfo.preferred_skills;
-            document.getElementById("date").value = archiveprojectinfo.expiry;
-        }
+        // else if (archiveprojectinfo !== null){
+        //     document.getElementById("clientname").value = archiveprojectinfo.owner_id;
+        //     document.getElementById("clientemail").value = archiveprojectinfo.owner_id;
+        //     document.getElementById("projecttitle").value = archiveprojectinfo.title;
+        //     document.getElementById("projectdescription").value = archiveprojectinfo.description;
+        //     document.getElementById("desiredoutput").value = archiveprojectinfo.deliverable;
+        //     document.getElementById("specialequipment").value = archiveprojectinfo.special_requirements;
+        //     document.getElementById("desiredskill").value = archiveprojectinfo.preferred_skills;
+        //     document.getElementById("date").value = archiveprojectinfo.expiry;
+        // }
 
        if(document.getElementById("check1").checked === false || document.getElementById("check2").checked === false){
             // alert("Please read the information and confirm availability before proceeding.");

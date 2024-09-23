@@ -173,3 +173,13 @@ export async function fetchProjectsBySemester(semesterId) {
         console.error('Error fetching projects:', error);
         throw error;    }
 };
+
+export async function getUserByID(id) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/users/${id}`);
+        console.log(response[0]);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    }
+};

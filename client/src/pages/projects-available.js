@@ -24,7 +24,7 @@ const ProjectsAvailable = () => {
     return(
         <div className="projectsAvailable">
             <ul>
-                {projects.map(project => (
+                {projects.filter(project => project.published === 'false').map(project => (
                     <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul>

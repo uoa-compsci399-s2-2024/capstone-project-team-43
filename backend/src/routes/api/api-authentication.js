@@ -5,6 +5,7 @@ import { createUser } from "../../data/users-dao.js";
 import { OAuth2Client } from 'google-auth-library';
 import dotenv from "dotenv";
 import { google } from 'googleapis';
+import cookie from 'cookie';
 
 const router = Router();
 
@@ -85,12 +86,12 @@ router.post("/login", async (req, res) => {
 
     console.log("Token generated: " + token);
 
-    res.status(202).send(token);
+    res.status(200).json({ token: token });
 });
 
 // Gets user details and attempts to register client
 router.post("/register", async (req, res) => {
-    const { role, email, password, first_name, last_name, company } = req.body;
+    const { email, password, first_name, last_name, company } = req.body;
     let token = null;
 
     let hashPassword = await passwordEncrypt(password);
@@ -107,7 +108,7 @@ router.post("/register", async (req, res) => {
 
     console.log("Token generated and User Registered: " + token);
 
-    res.status(202).send(token);
+    res.status(200).json({ token: token });
 });
 
 // Gets user details and attempts to register admin
@@ -186,8 +187,6 @@ router.post("/delete/admin", async (req, res) => {
         return res.status(401);
     }
 
-    let hashPassword = await passwordEncrypt(password);
-
     await deleteUser(user.id);
 
     res.status(200);
@@ -198,7 +197,6 @@ router.post("/logout", async (req, res) => {
         // Gets token from header
         let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
         const token = req.header(tokenHeaderKey);
-
         // Adds token to blacklist so that specific token is invalid
         await blacklistToken(token);
 
@@ -284,8 +282,16 @@ router.get('/google/callback', async (req, res) => {
 
             console.log("TOKEN GENERATED GOOGLE USER: " + token);
 
-            // Respond with JWT token and redirect to homepage
-            return res.cookie('token', token).redirect('http://localhost:3000/');
+            res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
+                httpOnly: false, // Prevents JavaScript access to the cookie
+                secure: false, // Once in production, must set to "true", only works over https
+                maxAge: 60 * 60 * 1, // Cookie only valid for 1 hour
+                sameSite: 'Strict',
+                path: '/'
+            }));
+
+            return res.status(200).redirect('http://localhost:3000/');
+
 
         } else if (user_role != null && role == user_role) {
 
@@ -294,19 +300,69 @@ router.get('/google/callback', async (req, res) => {
 
             console.log("TOKEN GENERATED GOOGLE USER: " + token);
 
-            // Respond with JWT token and redirect to homepage
-            return res.cookie('token', token).redirect('http://localhost:3000/');
+            res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
+                httpOnly: false, // Prevents JavaScript access to the cookie
+                secure: false, // Once in production, must set to "true", only works over https
+                maxAge: 60 * 60 * 1, // Cookie only valid for 1 hour
+                sameSite: 'Strict',
+                path: '/'
+            }));
+
+            return res.status(200).redirect('http://localhost:3000/');
 
         } else {
 
             console.log("User unauthorized to login");
             //User is not registered and not a client, they are unauthorized to login
-            return res.status(400).redirect('http://localhost:3000/');
+            res.setHeader('Set-Cookie', cookie.serialize('authToken', "null", {
+                httpOnly: false, // Prevents JavaScript access to the cookie
+                secure: false, // Once in production, must set to "true", only works over https
+                maxAge: 60 * 60 * 1, // Cookie only valid for 1 hour
+                sameSite: 'Strict',
+                path: '/'
+            }));
+
+            return res.status(401).redirect('http://localhost:3000/');
         }
 
     } catch (error) {
         console.error('Error during Google OAuth callback:', error);
-        return res.status(500).redirect('http://localhost:3000/');
+        return res.status(500);
+    }
+});
+
+// Gets users role
+router.get("/role", async (req, res) => {
+
+    try {
+        let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+        let jwtSecretKey = process.env.JWT_SECRET_KEY;
+        const token = req.header(tokenHeaderKey);
+
+        const verifiedToken = jwt.verify(token, jwtSecretKey);
+
+        // Extract user's data
+        const user = {
+            id: verifiedToken.userId,
+            email: verifiedToken.email,
+            role: verifiedToken.role,
+        };
+
+        const db_role = await findUser(user.email);
+
+        if (db_role == user.role) {
+
+            return res.status(200).json({ role: user.role });
+
+        } else {
+
+            // If the role in the database and token don't match, then the token has been tampered with
+            console.log("JWT Token has been changed!");
+            return res.status(401);
+        }
+    } catch (err) {
+        console.log(err);
+        return res.json({ role: "none" });
     }
 });
 

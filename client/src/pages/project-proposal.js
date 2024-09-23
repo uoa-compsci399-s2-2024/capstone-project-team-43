@@ -1,5 +1,6 @@
 
 import React from "react";
+import { createProject } from '../Api.js'
 
 import '../App.css';
 
@@ -8,6 +9,30 @@ import '../App.css';
 const projectProposal = () => {
 
 
+    const submit = () =>{
+        let client_name = document.getElementById("clientname").value;
+        let client_email = document.getElementById("clientname").value;
+        let other_client_details = document.getElementById("clientname").value;
+        let title = document.getElementById("projecttitle").value;
+        let description = document.getElementById("projectdescription").value;
+        let project_deliverable = document.getElementById("desiredoutput").value;
+        let special_equipment_requirment = document.getElementById("clientname").value;
+        let max_teams = document.getElementById("numberofteams").value;
+        let preferred_skills = document.getElementById("desiredskill").value;
+        let available_resources = document.getElementById("clientname").value;
+        let expiry = document.getElementById("clientname").value;
+        let owner_id = 1;
+        let currentDate = new Date();
+        let created = currentDate.toISOString().split('T')[0];
+        console.log("created");
+        let status = "pending";
+        let project_number = 43;
+
+        createProject(title, description, 1, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", 2, 43);
+
+
+        //title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number
+    }
 
     const next = () =>{
 
@@ -86,11 +111,10 @@ const projectProposal = () => {
             <form className="proposalForm" id="proposalForm">
                 <div id="proposalContent">
                 
- 
                 <label>
                     <h3>1. Main client's (applicant's) name* </h3>
                     <p>Please provide your name.</p>
-                    <input type="text" placeholder="Enter your answer" required/>
+                    <input type="text" placeholder="Enter your answer" required id="clientname"/>
                 </label>
                 <label>
                     <h3>2. Main client's (applicant's) email* </h3>
@@ -105,17 +129,17 @@ const projectProposal = () => {
                 <label>
                     <h3>4. Project title* </h3>
                     <p>Please provide an informative project title.</p>
-                    <input type="text" name="title" placeholder="Enter your answer" required/>
+                    <input type="text" name="title" placeholder="Enter your answer" required id="projecttitle"/>
                 </label>
                 <label>
                     <h3>5. Project description* </h3>
                     <p>Please provide a short description (3-10 sentences) of the project.</p>
-                    <textarea placeholder="Enter your answer" required/>
+                    <textarea placeholder="Enter your answer" required id="projectdescription"/>
                 </label>
                 <label>
                     <h3>6. Desired output*</h3>
                     <p>Please identify the features that will constitute the MVP (minimum viable product).</p>
-                    <textarea placeholder="Enter your answer" required/>
+                    <textarea placeholder="Enter your answer" required id="desiredoutput"/>
                 </label>
                 <label>
                     <h3>7. Special equipment requirements*</h3>
@@ -134,14 +158,14 @@ const projectProposal = () => {
                         Working with multiple teams offers the advantage of bringing diverse perspectives and ideas to the project. It also increases the likelihood of achieving a final result that aligns with expectations.</p>
                     <input type="radio" id="html" value="1" /> No, only 1 team<br />
                     <input type="radio" id="html" value="4" /> Yes, up to 4 teams<br />
-                    <input type="radio" id="html" value="" /> <input type="text" name="other" />
+                    <input type="radio" id="html" value="" /> <input type="text" name="other" id="numberofteams"/>
                 </label>
                 <label>
                     <h3>9. Desired team skills </h3>
                     <p>
                     Please specify any skills you would like team members to have. This could include expertise in a specific technology or tool that you want the team to use for implementing the project.
                     </p>
-                    <textarea placeholder="Enter your answer" />
+                    <textarea placeholder="Enter your answer" id="desiredskill"/>
                 </label>
                 <label>
                     <h3>10. Available resources</h3>
@@ -167,8 +191,7 @@ const projectProposal = () => {
             <div id="proposalButtons">
                 <button onClick={next} id="next">Next</button>
                 <button onClick={back} id="back">Back</button>
-                <button id="submit" form="proposalForm" type="submit">Submit</button>
-                
+                <button id="submit" form="proposalForm" type="submit" onClick={submit}>Submit</button>
             </div>
         </div>
         

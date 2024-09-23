@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { fetchProjects } from '../Api.js'
+import { fetchProjects,updateStatus } from '../Api.js'
 
 
 import {
@@ -159,7 +159,7 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
                     <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul> */}
-            <Container id="root" items={items.rejected} />
+            <Container id="rejected" items={items.rejected} />
         </div>
         <div id="center">
             <h2>Unsorted</h2>
@@ -176,7 +176,7 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
                 ))}
                     
             </ul> */}
-            <Container id="container1" items={items.unsorted} />
+            <Container id="unsorted" items={items.unsorted} />
         </div>
         <div id="right">
             <h2>Approved</h2>
@@ -192,7 +192,7 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
                     <Project id={project.id} name={project.title} description={project.description} />
                 ))}
             </ul> */}
-            <Container id="container2" items={items.approved} />
+            <Container id="approved" items={items.approved} />
             <div id="publishing">
         <button onClick={unpublish} id="unpublish">Unpublish</button>
         <button onClick={publish} id="publish">Publish</button>
@@ -299,7 +299,19 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
         }
     
         setActiveId(null);
-      }
+        let newStatus = "pending";
+        if(event.collisions[1].id === "approved"){
+          newStatus = "accepted"
+        }
+        else if(event.collisions[1].id === "rejected"){
+          newStatus = "rejected"
+        }
+        else if(event.collisions[1].id === "unsorted"){
+          newStatus = "pending"
+        }
+        const projectId = event.collisions[0].id[0].id;
+      updateStatus(projectId, newStatus);
+          }
 
 };
 

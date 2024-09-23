@@ -230,6 +230,15 @@
   border-radius: 3px;
 }
 
+.login-form input[type=email]{
+  width: 29vw;
+  padding: 10px;
+  margin-top: 8px;
+  border: 1px, solid, #003998;
+  margin: 1%;
+  border-radius: 3px;
+}
+
 .login-form label{
   text-align: center;
   margin-left: 2%;
@@ -267,17 +276,6 @@
   background-color: white;
   color: black;
 
-}
-
-#googleSignInLink {
-  color:white;
-  text-decoration: none;
-  background-color:#2979FF;
-  border-radius: 3px;
-  padding: 4px;
-  margin-top: 8px;
-  border: 2px solid #2979FF;
-  margin-left: 44.75%;
 }
 
 .login button[type=submit]:hover{
@@ -367,6 +365,17 @@
   flex: 1; */
 }
 
+#container1{
+  height: 100%;
+}
+
+#container2{
+  height: 100%;
+}
+
+#root{
+  height: 100%;
+}
 
 .projects .project{
   background-color: white;

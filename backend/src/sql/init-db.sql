@@ -6,10 +6,13 @@ CREATE TABLE PROJECT (
     description VARCHAR(255) NOT NULL,
     owner_id INTEGER NOT NULL,
     preferred_skills VARCHAR(255),
+    special_requirements VARCHAR(255),
+    available_resources VARCHAR(255),
     created DATE NOT NULL,
     semester_id INTEGER NOT NULL,
     status ENUM('rejected', 'accepted', 'pending') NOT NULL,
-    max_teams INTEGER NOT NULL
+    max_teams INTEGER NOT NULL,
+    published ENUM('true', 'false') NOT NULL
 );
 
 CREATE TABLE USER (
@@ -44,17 +47,17 @@ CREATE TABLE TEAM (
 
 
 INSERT INTO PROJECT 
-    (title, description, owner_id, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number) 
+    (title, description, owner_id, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published) 
 VALUES 
-    ('testproj1','An amazing web solution!','0', NULL, NULL, '2024-08-01','1','accepted','3','43'),
-    ('testproj2','A bad web solution!','0', NULL, NULL, '2024-08-01','1','rejected','3','43'),
-    ('testproj3','Maybe an amazing web solution!','0', NULL, NULL, '2024-08-01','1','pending','3','43');
+    ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false'),
+    ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false'),
+    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false');
 
 INSERT INTO USER  (role, email, password, first_name, last_name, team_id, company)
 VALUES 
-    ('student', 'test1@gmail.com', '12345', 'fname1', 'lname1', 1, NULL),
-    ('admin', 'test2@gmail.com', '12345', 'fname2', 'lname2', NULL, NULL),
-    ('client', 'test3@gmail.com', '12345', 'fname3', 'lname3', NULL, 'testcompany');
+    ('student', 'student@gmail.com', NULL, 'fname1', 'lname1', 1, NULL),
+    ('admin', 'admin@gmail.com', NULL, 'fname2', 'lname2', NULL, NULL),
+    ('client', 'client@gmail.com', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'fname3', 'lname3', NULL, 'testcompany');
 
 INSERT INTO TEAM 
     (team_number, team_name, semester_id)

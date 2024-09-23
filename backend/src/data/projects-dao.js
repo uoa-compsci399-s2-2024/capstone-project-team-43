@@ -84,7 +84,7 @@ export async function getStatusProject(status) {
  *
  * @return the newly created project
  */
-export async function createProject(title, description, owner_id, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number) {
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number) {
   let connection;
   try {
 
@@ -95,8 +95,8 @@ export async function createProject(title, description, owner_id, preferred_skil
 
     // Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner_id, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [title, description, owner_id, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number]
+      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number]
     );
 
     /** @type {Project} */
@@ -152,6 +152,31 @@ export async function deleteProject(id) {
 
   try {
     await connection.query("DELETE FROM PROJECT WHERE id = ?", id);
+  } catch (err) {
+    console.error('Error executing query:', err);
+  }
+}
+
+
+/**
+ * Sets all projects to published/unpublished
+ *
+ * @param {number} status // status is either true/false to publish/unpublish all projects
+ */
+export async function publishProjects(status) {
+  let connection;
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    await connection.query("UPDATE `project` SET published = ?", [status]);
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
   } catch (err) {
     console.error('Error executing query:', err);
   }

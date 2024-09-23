@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from 'js-cookie';
 
 import '../App.css';
 const navbar = () =>{
@@ -29,28 +30,55 @@ const navbar = () =>{
         }
     }
 
+    // Logs the user out by blacklisting the token and clearing the users local storage token
+    const Logout = async (e) => {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('authToken');
+            console.log("TAKING TOKEN: ", token);
+            let res = await fetch("http://localhost:3001/api/auth/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authToken": `${token}`,
+                },
+            });
+
+        if (res.status !== 200) {
+            throw new Error('Logout was Unsuccessful');
+        }
+
+        // Clears local storage
+        localStorage.setItem('authToken', ""); 
+        Cookies.remove('authToken');
+        console.log("Successfully Logged out!");
+        window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    };
     return(
         <div>
         <nav className="navbar">
-            <p onClick={showsidemenu}>sidemenu</p>
-            <p onClick={showadminsidemenu}>Admin sidemenu</p>
-            <p onClick={showclientsidemenu}>Client sidemenu</p>
+            <p onClick={showsidemenu} id="studentSideBar">sidemenu</p>
+            <p onClick={showadminsidemenu} id="adminSideBar">Admin sidemenu</p>
+            <p onClick={showclientsidemenu} id="clientSideBar">Client sidemenu</p>
             <a href="/">Cornerstone</a>
             <ul>
                 <li>
-                    <a href="/pages/projects-admin">project</a>
+                    <a href="/pages/projects-admin" id="projectSortNav">project</a>
                 </li>
                 <li>
-                    <a href="/pages/projects-archive">Projects archive</a>
+                    <a href="/pages/projects-archive" id="projectsArchiveNav">Projects archive</a>
                 </li>
                 <li>
-                    <a href="/pages/project-proposal">Project Proposal</a>
+                    <a href="/pages/project-proposal" id="projectProposalNav">Project Proposal</a>
                 </li>
                 <li>
-                    <a href="/pages/project-preferences">Project Preferences</a>
+                    <a href="/pages/project-preferences" id="projectPreferencesNav">Project Preferences</a>
                 </li>
                 <li>
-                    <a href="/pages/projects-available">Projects(students)</a>
+                    <a href="/pages/projects-available" id="projectsAvailableNav">Projects(students)</a>
                 </li>
                 <li>
                     <a href="/pages/about">About</a>
@@ -59,16 +87,16 @@ const navbar = () =>{
                     <a href="/pages/contact">Contact</a>
                 </li>
                 <li>
-                    <a href="/pages/manage-semester">Upload</a>
+                    <a href="/pages/manage-semester" id ="uploadCSVNav">Upload</a>
                 </li>
                 <li>
-                    <a href="/pages/new-semster">New Semster</a>
+                    <a href="/pages/new-semster" id="newSemNav">New Semster</a>
                 </li>
                 <li>
-                    <a href="/pages/manage-future">Manage Future</a>
+                    <a href="/pages/manage-future" id="manageFutureNav">Manage Future</a>
                 </li>
                 <li>
-                    <a href="/pages/manage-current">Manage Current</a>
+                    <a href="/pages/manage-current" id="manageCurrentNav">Manage Current</a>
                 </li>
             </ul>
         </nav>
@@ -88,7 +116,7 @@ const navbar = () =>{
                     <a href="/pages/contact">Contact</a>
                 </li>
                 <li>
-                    Sign Out
+                    <button onClick={Logout}>Sign Out</button>
                 </li>
                 </ul>
             </div>
@@ -120,7 +148,7 @@ const navbar = () =>{
                     <a href="/pages/contact">Contact</a>
                 </li>
                 <li>
-                    Sign Out
+                    <button onClick={Logout}>Sign Out</button>
                 </li>
                 </ul>
             </div>
@@ -140,7 +168,7 @@ const navbar = () =>{
                     <a href="/pages/contact">Contact</a>
                 </li>
                 <li>
-                    Sign Out
+                <button onClick={Logout}>Sign Out</button>
                 </li>
                 </ul>
             </div>

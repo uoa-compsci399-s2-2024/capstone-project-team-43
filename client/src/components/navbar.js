@@ -66,19 +66,19 @@ const navbar = () =>{
             <a href="/">Cornerstone</a>
             <ul>
                 <li>
-                    <a href="/pages/projects-admin">project</a>
+                    <a href="/pages/projects-admin" id="projectSortNav">project</a>
                 </li>
                 <li>
-                    <a href="/pages/projects-archive">Projects archive</a>
+                    <a href="/pages/projects-archive" id="projectsArchiveNav">Projects archive</a>
                 </li>
                 <li>
-                    <a href="/pages/project-proposal">Project Proposal</a>
+                    <a href="/pages/project-proposal" id="projectProposalNav">Project Proposal</a>
                 </li>
                 <li>
-                    <a href="/pages/project-preferences">Project Preferences</a>
+                    <a href="/pages/project-preferences" id="projectPreferencesNav">Project Preferences</a>
                 </li>
                 <li>
-                    <a href="/pages/projects-available">Projects(students)</a>
+                    <a href="/pages/projects-available" id="projectsAvailableNav">Projects(students)</a>
                 </li>
                 <li>
                     <a href="/pages/about">About</a>
@@ -87,16 +87,16 @@ const navbar = () =>{
                     <a href="/pages/contact">Contact</a>
                 </li>
                 <li>
-                    <a href="/pages/manage-semester">Upload</a>
+                    <a href="/pages/manage-semester" id ="uploadCSVNav">Upload</a>
                 </li>
                 <li>
-                    <a href="/pages/new-semster">New Semster</a>
+                    <a href="/pages/new-semster" id="newSemNav">New Semster</a>
                 </li>
                 <li>
-                    <a href="/pages/manage-future">Manage Future</a>
+                    <a href="/pages/manage-future" id="manageFutureNav">Manage Future</a>
                 </li>
                 <li>
-                    <a href="/pages/manage-current">Manage Current</a>
+                    <a href="/pages/manage-current" id="manageCurrentNav">Manage Current</a>
                 </li>
             </ul>
         </nav>

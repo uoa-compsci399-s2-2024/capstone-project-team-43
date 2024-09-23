@@ -119,6 +119,15 @@ const Login = () => {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "block";
         document.getElementById('studentSideBar').style.display = "none";
+        document.getElementById('projectSortNav').style.display = "none";
+        document.getElementById('projectsArchiveNav').style.display = "none";
+        document.getElementById('projectProposalNav').style.display = "block";
+        document.getElementById('projectPreferencesNav').style.display = "none";
+        document.getElementById('projectsAvailableNav').style.display = "none";
+        document.getElementById('uploadCSVNav').style.display = "none";
+        document.getElementById('newSemNav').style.display = "none";
+        document.getElementById('manageFutureNav').style.display = "none";
+        document.getElementById('manageCurrentNav').style.display = "none";
     }
 
     const student_view = () => {
@@ -126,6 +135,15 @@ const Login = () => {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "block";
+        document.getElementById('projectSortNav').style.display = "none";
+        document.getElementById('projectsArchiveNav').style.display = "none";
+        document.getElementById('projectProposalNav').style.display = "none";
+        document.getElementById('projectPreferencesNav').style.display = "block";
+        document.getElementById('projectsAvailableNav').style.display = "block";
+        document.getElementById('uploadCSVNav').style.display = "none";
+        document.getElementById('newSemNav').style.display = "none";
+        document.getElementById('manageFutureNav').style.display = "none";
+        document.getElementById('manageCurrentNav').style.display = "none";
     }
 
     const admin_view = () => {
@@ -133,13 +151,47 @@ const Login = () => {
         document.getElementById('adminSideBar').style.display = "block";
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "none";
+        document.getElementById('projectSortNav').style.display = "block";
+        document.getElementById('projectsArchiveNav').style.display = "block";
+        document.getElementById('projectProposalNav').style.display = "block";
+        document.getElementById('projectPreferencesNav').style.display = "none";
+        document.getElementById('projectsAvailableNav').style.display = "block";
+        document.getElementById('uploadCSVNav').style.display = "block";
+        document.getElementById('newSemNav').style.display = "none";
+        document.getElementById('manageFutureNav').style.display = "block";
+        document.getElementById('manageCurrentNav').style.display = "block";
     }
 
     const not_logged_in = () => {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "none";
         document.getElementById('studentSideBar').style.display = "none";
+        document.getElementById('projectSortNav').style.display = "none";
+        document.getElementById('projectsArchiveNav').style.display = "none";
+        document.getElementById('projectProposalNav').style.display = "none";
+        document.getElementById('projectsAvailableNav').style.display = "none";
+        document.getElementById('projectPreferencesNav').style.display = "none";
+        document.getElementById('uploadCSVNav').style.display = "none";
+        document.getElementById('newSemNav').style.display = "none";
+        document.getElementById('manageFutureNav').style.display = "none";
+        document.getElementById('manageCurrentNav').style.display = "none";
     }
+
+    const debugging_nav = () => {
+        document.getElementById('adminSideBar').style.display = "block";
+        document.getElementById('clientSideBar').style.display = "block";
+        document.getElementById('studentSideBar').style.display = "block";
+        document.getElementById('projectSortNav').style.display = "block";
+        document.getElementById('projectsArchiveNav').style.display = "block";
+        document.getElementById('projectProposalNav').style.display = "block";
+        document.getElementById('projectsAvailableNav').style.display = "block";
+        document.getElementById('projectPreferencesNav').style.display = "block";
+        document.getElementById('uploadCSVNav').style.display = "block";
+        document.getElementById('newSemNav').style.display = "block";
+        document.getElementById('manageFutureNav').style.display = "block";
+        document.getElementById('manageCurrentNav').style.display = "block";
+    }
+
 
         // Gets the token from the cookie sent from the google callback
         const getToken = async () => {
@@ -182,6 +234,11 @@ const Login = () => {
                     } else if (role === "admin") {
                         console.log("user is an admin");
                         admin_view();
+                    } else {
+
+                        debugging_nav();
+                        //login_form(); **once debugging nav bar is done uncomment theses**
+                        //not_logged_in();
                     }
 
                 } else {
@@ -191,8 +248,9 @@ const Login = () => {
                 console.log(err);
             }
         } else {
-            login_form();
-            not_logged_in();
+            debugging_nav();
+            //login_form(); **once debugging nav bar is done uncomment theses**
+            //not_logged_in();
         }
 
 
@@ -200,7 +258,6 @@ const Login = () => {
 
         getToken(); // This function gets called every time the page is rendered, (page refresh or redirects)
     }, []);
-
 
     return (
         <div className="login+signup">
@@ -215,7 +272,7 @@ const Login = () => {
                 </div>
 
                 <div className="login-right" id="loginright">
-                    <h1> Login </h1>
+                    <h1> Client Login </h1>
                     <form className="login-form" onSubmit={handleSubmit}>
                         <label>
                             <input type="email" placeholder="Email Address*" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -227,7 +284,9 @@ const Login = () => {
 
                     </form>
                     <br></br>
-                    <a href="http://localhost:3001/api/auth/google/role/client" id="googleSignInLink">Sign in with Google</a>
+                    <button type="new" onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/student"}>Google Sign in as Student</button><br></br>
+                    <button type="new" onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>Google Sign in as Client</button><br></br>
+                    <button type="new" onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/admin"}>Google Sign in as Admin</button><br></br>
                     <br></br>
                     <hr></hr>
                     <br></br>

@@ -170,9 +170,7 @@ export async function publishProjects(status) {
 
     // Get connection from pool
     connection = await pool.getConnection();
-
     await connection.query(`USE ${DB_NAME};`);
-
     await connection.query("UPDATE `project` SET published = ?", [status]);
 
     // If there is a connection, release it

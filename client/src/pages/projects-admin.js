@@ -1,5 +1,5 @@
-import React, { useState, useEffect, PointerEvent } from "react";
-import { fetchProjects,updateStatus, fetchSemesters } from '../Api.js'
+import React, { useState, useEffect } from "react";
+import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../Api.js'
 
 
 import {
@@ -56,6 +56,7 @@ const ProjectsAdmin = () => {
 
     projects
     .filter(project => project.status === 'rejected')
+    .filter(project => project.semester_id === 1)
     .map(project => (
       rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -66,6 +67,7 @@ let unsorted = []
 
     projects
     .filter(project => project.status === 'pending')
+    .filter(project => project.semester_id === 1)
     .map(project => (
       unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -76,6 +78,7 @@ let approved = []
 
     projects
     .filter(project => project.status === 'accepted')
+    .filter(project => project.semester_id === 1)
     .map(project => (
       approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -127,13 +130,6 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
     ...updatedItems})
         
       );
-      };
-
-      const unpublish = () => {
-
-      };
-      const publish = () => {
-
       };
       
 
@@ -208,8 +204,8 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
             </ul> */}
             <Container id="approved" items={items.approved} />
             <div id="publishing">
-        <button onClick={unpublish} id="unpublish">Unpublish</button>
-        <button onClick={publish} id="publish">Publish</button>
+        <button onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
+        <button onClick={()=>updatePublish(true)} id="publish">Publish</button>
         </div>
         </div>
         <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
@@ -324,6 +320,8 @@ const list6 =[[{id: 10, name:"proj10", description:"desc10" }],
           newStatus = "pending"
         }
         const projectId = event.collisions[0].id[0].id;
+        console.log(event.collisions[0].id[0].id);
+        console.log(event);
       updateStatus(projectId, newStatus);
           }
 

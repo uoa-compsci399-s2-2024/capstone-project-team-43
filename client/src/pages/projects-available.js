@@ -56,7 +56,7 @@ const ProjectsAvailable = () => {
 
  
             <ul>
-                {projects.filter(project => project.published === 'false').map(project => (
+                {projects.filter(project => project.published === 'true' && project.semester_id === 1).map(project => (
                    (<div onClick={() => handleclick(project)}>
                    <Project id={project.id} name={project.title} description={project.description}/>
                    <div id="confirm">

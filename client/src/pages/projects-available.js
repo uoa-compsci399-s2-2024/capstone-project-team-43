@@ -50,30 +50,27 @@ const ProjectsAvailable = () => {
 
  
             <ul>
+            {projects.filter(project => project.published === 'true' && project.semester_id === 1).map(project => (
+                (<div onClick={() => handleclick(project)}>
+                <Project id={project.id} name={project.title} description={project.description}/>
+                <div id="confirm">
+                    {console.log(project)}
+        <PopUp id={project.id} 
+        name={project.title} 
+        description={project.description}
+        // owner id
+        skills = {project.preferred_skills}
+        deliverable = {project.project_deliverable}
+        created = {project.created}
+        // expiry= {project.expiry}
+        teams = {project.max_num_of_groups}
+        number = {project.project_num}
+        />
+       
+    </div>
 
-                {projects.map(project => (
-                    
-
-                    (<div onClick={() => handleclick(project)}>
-                    <Project id={project.id} name={project.title} description={project.description}/>
-                    <div id="confirm">
-                        {console.log(project)}
-            <PopUp id={project.id} 
-            name={project.title} 
-            description={project.description}
-            // owner id
-            skills = {project.preferred_skills}
-            deliverable = {project.project_deliverable}
-            created = {project.created}
-            // expiry= {project.expiry}
-            teams = {project.max_num_of_groups}
-            number = {project.project_num}
-            />
-           
-        </div>
-
-                    </div>)
-                ))}
+                </div>)
+                    ))}
             </ul>
 
             <button id="close" onClick={submit}>&times;</button>

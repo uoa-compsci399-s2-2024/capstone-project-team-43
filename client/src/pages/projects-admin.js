@@ -55,6 +55,7 @@ const ProjectsAdmin = () => {
 
     projects
     .filter(project => project.status === 'rejected')
+    .filter(project => project.semester_id === 1)
     .map(project => (
       rejected.push([{id: project.id, name:project.title, description:project.description}])
 
@@ -65,6 +66,7 @@ let unsorted = []
 
     projects
     .filter(project => project.status === 'pending')
+    .filter(project => project.semester_id === 1)
     .map(project => (
       unsorted.push([{id: project.id, name:project.title, description:project.description}])
 
@@ -75,6 +77,7 @@ let approved = []
 
     projects
     .filter(project => project.status === 'accepted')
+    .filter(project => project.semester_id === 1)
     .map(project => (
       approved.push([{id: project.id, name:project.title, description:project.description}])
 
@@ -306,6 +309,8 @@ let approved = []
           newStatus = "pending"
         }
         const projectId = event.collisions[0].id[0].id;
+        console.log(event.collisions[0].id[0].id);
+        console.log(event);
       updateStatus(projectId, newStatus);
           }
 

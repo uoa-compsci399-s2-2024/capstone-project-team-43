@@ -25,7 +25,6 @@ export async function getSemesters() {
   try {
     // Get connection from pool
     connection = await pool.getConnection();
-
     await connection.query(`USE ${DB_NAME};`);
 
     /** @type {Semester[]} */
@@ -46,13 +45,14 @@ export async function getSemesters() {
       return semester;
     });
 
-    // If there is a connection, release it
-    if (connection) connection.release();
-
     return semestersWithStatus;
 
-  } catch (err) {
+  } catch (err) { 
     console.error('Error executing query/s:', err.message);
+    return [];
+  } finally {
+    // release connection
+    if (connection) connection.release();
   }
 }
 
@@ -85,13 +85,14 @@ export async function getSemester(id) {
       semester.status = 'retired';
     }
 
-    // If there is a connection, release it
-    if (connection) connection.release();
-
     return semester;
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
+    return [];
+  } finally {
+    // release connection
+    if (connection) connection.release();
   }
 }
 
@@ -103,7 +104,7 @@ export async function getSemester(id) {
  * @param {Date} end_bidding_date
  * @param {boolean} is_semester_one 
  * 
- * @return the newly created project
+ * @returns {Promise<Semester>}
  */
 export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {
   let connection;
@@ -120,14 +121,14 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
 
     /** @type {Semester} */
     const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [response.insertId]); // insertId is the auto-generated Primary Key value
-
-    // If there is a connection, release it
-    if (connection) connection.release();
-
     return semester;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
+    return [];
+  } finally {
+    // release connection
+    if (connection) connection.release();
   }
 }
 
@@ -137,8 +138,8 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
  * @param {number} id // The id of the semester to update
  * @param {Date} start_date // The new start_date of semester
  * @param {Date} end_date // The new end_date of semester
- * @param {Date} start_bidding_date // The new start_bidding_date of semester
- * @param {Date} end_bidding_date // The new end_bidding_date of semester
+ * 
+ * @returns {Promise<Semester>}
  */
 export async function updateSemesterDates(id, start_date, end_date, start_bidding_date, end_bidding_date) {
   let connection;
@@ -146,16 +147,19 @@ export async function updateSemesterDates(id, start_date, end_date, start_biddin
 
     // Get connection from pool
     connection = await pool.getConnection();
-
     await connection.query(`USE ${DB_NAME};`);
-
     await connection.query("UPDATE SEMESTER SET start_date = ?, end_date = ?, start_bidding_date = ?, end_bidding_date = ? WHERE id = ?", [start_date, end_date, start_bidding_date, end_bidding_date, id]);
-
-    // If there is a connection, release it
-    if (connection) connection.release();
+    
+    /** @type {Semester} */
+    const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
+    return semester;
 
   } catch (err) {
     console.error('Error executing query:', err);
+    return []
+  } finally {
+    // release connection
+    if (connection) connection.release();
   }
 }
 
@@ -164,6 +168,8 @@ export async function updateSemesterDates(id, start_date, end_date, start_biddin
  *
  * @param {number} id // The id of the semester to update
  * @param {boolean} is_semester_one // the new value
+ * 
+ * @returns {Promise<Semester>}
  */
 export async function updateIsSemesterOne(id, is_semester_one) {
   let connection;
@@ -171,16 +177,17 @@ export async function updateIsSemesterOne(id, is_semester_one) {
 
     // Get connection from pool
     connection = await pool.getConnection();
-
     await connection.query(`USE ${DB_NAME};`);
-
     await connection.query("UPDATE SEMESTER SET is_semester_one = ? WHERE id = ?", [is_semester_one, id]);
 
-    // If there is a connection, release it
-    if (connection) connection.release();
+    /** @type {Semester} */
+    const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
+    return semester;
 
   } catch (err) {
     console.error('Error executing query:', err);
+  } finally {
+    if (connection) connection.release();
   }
 }
 
@@ -188,19 +195,28 @@ export async function updateIsSemesterOne(id, is_semester_one) {
  * Deletes the semester with the given id
  *
  * @param {number} id the id of the semester to delete
+ * 
+ * @returns {Promise<Semester[]>} Returns remaining semester
  */
 export async function deleteSemester(id) {
   let connection;
 
-  // Get connection from pool
-  connection = await pool.getConnection();
-
-  await connection.query(`USE ${DB_NAME};`);
-
   try {
-    await connection.query("DELETE FROM SEMESTER WHERE id = ?", id);
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+    await connection.query("DELETE FROM SEMESTER WHERE id = ?", [id]);
+
+    /** @type {Semester} */
+    const [semesters] = await connection.query("SELECT * FROM SEMESTER"); 
+    return semesters;
+
   } catch (err) {
     console.error('Error executing query:', err);
+    return [];
+  }finally{
+    if (connection) connection.release();
   }
 }
 

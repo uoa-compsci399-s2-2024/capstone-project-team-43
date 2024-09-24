@@ -25,7 +25,9 @@ export async function fetchProjects(status) {
         return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    }
+        throw error;
+        return []; 
+    }
 };
 
 export async function updateStatus(id,status) {
@@ -37,10 +39,11 @@ export async function updateStatus(id,status) {
             },
             body: JSON.stringify({ status })
           })
-        return await response;
+        return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    }
+        throw error;    
+    }
 };
 /**
  * Fetches all teams for given semester
@@ -91,7 +94,7 @@ export async function updatePublish(status) {
             },
             body: JSON.stringify({ status })
           })
-        return await response;
+        return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
         throw error;}
@@ -144,13 +147,15 @@ export async function fetchSemesters() {
  */
 export async function fetchSemester(semesterID) {
     try {
+        console.log('fetching semester '+semesterID);
         const response = await fetch(`${BASE_URL}/api/semesters/${semesterID}`);
         console.log('Fetched semester:', response);  
         return await response.json();
 
     } catch (error) {
         console.error('Error fetching semester:', error);
-        throw error;  
+        throw error; 
+        return [];
     }
 };
 /**

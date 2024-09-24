@@ -155,6 +155,9 @@ export async function editProject(id, title, description, special_requirements, 
 
   } catch (err) {
     console.error('Error executing query/s:', err);
+  } finally {
+    if (connection) connection.release();
+
   }
 }
 
@@ -180,6 +183,8 @@ export async function updateProjectStatus(id, status) {
 
   } catch (err) {
     console.error('Error executing query:', err);
+  } finally {
+    if (connection) connection.release();
   }
 }
 
@@ -200,6 +205,8 @@ export async function deleteProject(id) {
     await connection.query("DELETE FROM PROJECT WHERE id = ?", id);
   } catch (err) {
     console.error('Error executing query:', err);
+  } finally{
+    if (connection) connection.release();
   }
 }
 
@@ -218,11 +225,12 @@ export async function publishProjects(status) {
     await connection.query(`USE ${DB_NAME};`);
     await connection.query("UPDATE `project` SET published = ?", [status]);
 
+  } catch (err) {
+    console.error('Error executing query:', err);
+  } finally{
     // If there is a connection, release it
     if (connection) connection.release();
 
-  } catch (err) {
-    console.error('Error executing query:', err);
   }
 }
 /**

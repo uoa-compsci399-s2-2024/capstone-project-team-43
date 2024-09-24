@@ -39,7 +39,7 @@ CREATE TABLE SEMESTER (
     name VARCHAR(255) DEFAULT NULL
 
 );
--- trigger to fill value in name column of SEMESTER
+-- trigger to fill value in name & status column of SEMESTER
 CREATE TRIGGER before_insert_semester
 BEFORE INSERT ON SEMESTER
 FOR EACH ROW
@@ -50,6 +50,14 @@ BEGIN
         SET semester_num = 'One';
     ELSE
         SET semester_num = 'Two';
+    END IF;
+
+    IF NEW.end_date < CURRENT_TIMESTAMP THEN
+        SET NEW.status = 'retired';
+    ELSEIF NEW.start_date > CURRENT_TIMESTAMP THEN
+        SET NEW.status = 'upcoming';
+    ELSE
+        SET NEW.status = 'current';
     END IF;
 
     -- Set name as "Semester {1 or 2}, {start_date year}"
@@ -70,7 +78,9 @@ INSERT INTO PROJECT
 VALUES 
     ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false', '2025-08-01'),
     ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false', '2025-09-01'),
-    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false', '2025-10-01');
+    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false', '2025-10-01'),
+    ('retiredproj1','A old web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','5','rejected','3','43', 'false', '2025-09-01'),
+    ('retiredproj2','Maybe an older web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','6','pending','3','43', 'false', '2025-10-01');
 
 INSERT INTO USER  (role, email, password, first_name, last_name, team_id, company)
 VALUES 

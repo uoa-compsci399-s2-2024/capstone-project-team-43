@@ -3,17 +3,25 @@ import { getUsers, getUsersByTeam, createUser, deleteUser, deleteUserByRole, get
 
 const router = Router();
 
-// Retrieves all users or users of a specific role ('client','admin', or'student')
-router.get("/:role?", async (req, res) => {
+// Retrieves user with given ID
+router.get("/id/:id", async (req, res) => {
+    const { id } = req.params;
+    const user = await getUser(id);
+    return res.json(user);
+});
+
+// Retrieves all users of a specific role ('client','admin', or'student')
+router.get("/role/:role", async (req, res) => {
     const { role } = req.params;
-    let users; 
+    const users = await getUsers(role);
 
-    if (role) {
-        users = await getUsers(role);
-    } else {
-        users = await getUsers();
-    }
+    return res.json(users);
+});
 
+// Retrieves all users 
+router.get("/", async (req, res) => {
+    const { role } = req.params;
+    const users = await getUsers();
     return res.json(users);
 });
 

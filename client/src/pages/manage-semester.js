@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../App.js'
 import SemesterCSVUpload from '../components/semester-csv-upload.js';
 import { fetchSemester, fetchUsersByRole, fetchTeamsBySemester } from '../Api.js';
@@ -10,12 +10,17 @@ import uploadIcon from '../media/upload-icon.png';
 
 
 const ManageSemester = () => {
-    const { semesterID } = useParams();
 
-    const [semester, setSemester] = useState(null);
-    const [editingField, setEditingField] = useState(null);
+    // gets semesterID from URL or from previous dropdown selection
+    const { semesterID: semesterIDFromURL } = useParams();
+    const navigate = useNavigate(); 
+    const [semesterID, setSemesterID] = useState(semesterIDFromURL || null);
+
+
     const [students, setStudents] = useState([]);
     const [teams, setTeams] = useState([]);
+    const [semester, setSemester] = useState(null);
+    const [editingField, setEditingField] = useState(null);
 
     // Control visibility of student/teams upload functionality
     const [showStudentUpload, setShowStudentUpload] = useState(false);  
@@ -56,6 +61,8 @@ const ManageSemester = () => {
     // Get semester data from server
     useEffect(() => {
         async function getSemester() {
+            // only fetch if semesterID is set
+            if (!semesterID) return; 
             try {
                 const data = await fetchSemester(semesterID);
                 setSemester(data);
@@ -65,7 +72,7 @@ const ManageSemester = () => {
             }
         }
         getSemester();
-    }, [semesterID]);
+    }, [semesterID]); // refetch when semesterID changes (i.e. on drop down click)
 
     // Get semester's students 
     useEffect(() => {
@@ -96,8 +103,16 @@ const ManageSemester = () => {
         getTeams();
     }, [semesterID]);
 
+    // handles semester selection in dropdown menu
+    const handleSemesterSelect = (selectedSemesterID) => {
+        // set new semester to manage
+        setSemesterID(selectedSemesterID);
+        // update URL without reloading page
+        navigate(`/pages/manage-semester/${selectedSemesterID}`, { replace: true }); 
+    };
+
     if (!semester) {
-        return <div>Loading...</div>;  
+        return <h1>Loading...</h1>;  
     }
 
     return (
@@ -106,8 +121,9 @@ const ManageSemester = () => {
                 <h2>Manage {semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h2>
                 <div className='semester-heading'>
                     {semester && <h1>{semester.name}</h1>}
-                    <SemesterDropdown pathway={'manage'}></SemesterDropdown>
-                </div>
+                    {/* update semesterID when dropdown button is selected */}
+                    <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['retired']} />
+                    </div>
             </div>
             <div className='page-content'>
                 <div className='content-section'>
@@ -143,7 +159,7 @@ const ManageSemester = () => {
                         </div>
                         <div className='container-button'>
                             <button className = 'upload-button' onClick ={openStudentUpload}> 
-                                <img src= {uploadIcon} alt ='icon' class='upload-icon'></img> 
+                                <img src= {uploadIcon} alt ='icon' className='upload-icon'></img> 
                                 {students.length >= 1 ? 'Reupload' : 'Upload'} student data
                             </button>
                         </div>
@@ -168,7 +184,7 @@ const ManageSemester = () => {
                         </div>
                         <div className='container-button'>
                             <button className = 'upload-button' onClick={openTeamUpload}>
-                                <img src={uploadIcon} alt ='icon' class='upload-icon'></img> 
+                                <img src={uploadIcon} alt ='icon' className='upload-icon'></img> 
                                 {teams.length >= 1 ? 'Reupload' : 'Upload'} team data
                             </button>
                         </div>

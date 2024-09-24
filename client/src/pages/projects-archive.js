@@ -1,49 +1,71 @@
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import '../admin.css';
 import '../App.css';
 import '../index.js'
-import { fetchProjectsBySemester, fetchSemester } from '../Api.js'
+import { fetchProjects, fetchSemester } from '../Api.js'
 import Project from "../components/project.js";
 import SemesterDropdown from "../components/semester-dropdown.js";
 
 const ProjectsArchive = () => {
-    const { semesterID } = useParams();
+    const { semesterID: semesterIDFromURL } = useParams();
+    const navigate = useNavigate(); 
+    const [semesterID, setSemesterID] = useState(semesterIDFromURL || null);
 
     const [semester, setSemester] = useState(null);
     const [projects, setProjects] = useState([]);
 
-
-    // Get semester data from server
+    // Get the semester from server 
     useEffect(() => {
         async function getSemester() {
+            // only fetch if semesterID is set
+            if (!semesterID) return; 
             try {
                 const data = await fetchSemester(semesterID);
                 setSemester(data);
                 console.log('Fetched semester data:', data);  
+                // check semester is retired
+                if (data.status !== 'retired') {
+                    throw new Error('Semester is not retired.');
+                }            
             } catch (error) {
                 console.error('Failed to load semester:', error);
+                return; 
             }
         }
         getSemester();
     }, [semesterID]);
 
 
-    // get data on all projects 
+    // Get all projects in database
     useEffect(() => {
-        async function getProjectsBySemester() {
+        async function getProjects() {
             try {
-                const data = await fetchProjectsBySemester(semesterID);
+                const data = await fetchProjects();
                 setProjects(data);
                 console.log('projects:'+data);
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }
         }
-        getProjectsBySemester();
-    }, [semesterID]);
+        getProjects();
+    }, []);
 
+    // handles semester selection in dropdown menu
+    const handleSemesterSelect = (selectedSemesterID) => {
+        // set new semester to manage
+        setSemesterID(selectedSemesterID);
+        // update URL without reloading page
+        navigate(`/pages/projects-archive/${selectedSemesterID}`, { replace: true }); 
+    };
+
+    if (!semester) {
+        return <h1>Loading...</h1>;  
+    }
+
+    // projects for the given semester
+    const archivedProjects = projects.filter(project => project.semester_id === semesterID);
 
     return(
         <div className="projects-archive">
@@ -51,14 +73,25 @@ const ProjectsArchive = () => {
                 <h2>Project Archive</h2>
                 <div className='semester-heading'>
                     {semester && <h1>{semester.name}</h1>}
-                    <SemesterDropdown pathway={'archive'}></SemesterDropdown>
+                    {/* update semesterID when dropdown button is selected */}
+                    <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['current','upcoming']} />
                 </div>
             </div> 
             <div className = 'page-content display-projects'>
+                {/* display projects from semester */}
                 <div id="archivedProjects">
-                    {projects.length > 0 ? projects.map(project => (
-                        <Project id={project.id} name={project.title} description={project.description} />
-                    )):<p>There are no projects for this semester.</p>}
+                    {archivedProjects.length > 0 ? (
+                        archivedProjects.map(project => (
+                            <Project 
+                                key={project.id}
+                                id={project.id} 
+                                name={project.title} 
+                                description={project.description} 
+                            />
+                        ))
+                    ) : (
+                        <p>No projects have been archived for this semester.</p>
+                    )}
                 </div>  
             </div>
         </div>  

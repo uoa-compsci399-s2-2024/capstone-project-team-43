@@ -6,13 +6,9 @@ import { fetchTeam, fetchUser, updateUserDetails, deleteUser } from '../Api.js';
 import getUserID from '../components/get-user-id.js';
 import SignOutButton, { handleSignOut } from '../components/sign-out-button.js';
 
-/**
- * @todo Add option to delete account
- * @todo Add option to sign out account
- */
 
 // Formats user data & edit functionality
-const AccountDetail = ({ description, data, onEdit, isEditing, onSave, onCancel }) => {
+const AccountDetail = ({ description, data='None', onEdit, isEditing, onSave, onCancel, isStudent = false }) => {
     const [value, setValue] = useState(data);
 
     const handleInputChange = (e) => {
@@ -23,17 +19,19 @@ const AccountDetail = ({ description, data, onEdit, isEditing, onSave, onCancel 
         <div className='account-detail'>
             {isEditing ? (
                 <>
+                {/* Format when user is editing */}
                     <div className='data-container'>
                         <div className='container-text'>
                             <p className='account-data'>Edit {description.toLowerCase()}: {
                             <input 
                                 type="text" 
-                                value={value !== 'None' ? value : ''} 
+                                value={value} 
                                 onChange={handleInputChange} 
                                 className='edit-input' 
                                 style = {{width: `${value.length}ch`}}
                             />}</p>
                         </div>
+                        {/* save & cancel buttons */}
                         <div className='editing-button-container'>
                             <button onClick={() => onSave(value)} className='save-edit-button'>Save Changes</button>
                             <button onClick={onCancel} className='cancel-edit-button'>Cancel</button>
@@ -42,13 +40,14 @@ const AccountDetail = ({ description, data, onEdit, isEditing, onSave, onCancel 
 
                 </>
             ) : (
-                <>
+                    <>  
+                    {/* format when user isn't editing */}
                     <div className='data-container'>
                         <div className='container-text'>
                             <p className='account-data'>{description}: {data}</p>
                         </div>
-                        {/* Display edit option for all except team details */}
-                        {!description.startsWith('Team') && <button onClick={onEdit} className='edit-button'></button>}
+                        {/* Display edit option for all non-student users*/}
+                        {!isStudent && <button onClick={onEdit} className='edit-button'></button>}
                     </div> 
                 </>
             )}
@@ -66,7 +65,6 @@ const AccountSettings = ({ }) => {
     const [showDeletionWarning, setShowDeletionWarning] = useState(false);  
     const openDeletionWarning = () => setShowDeletionWarning(true);
     const closeDeletionWarning = () => setShowDeletionWarning(false);
-
 
     useEffect(() => {
         console.log("getting user id");
@@ -149,6 +147,8 @@ const AccountSettings = ({ }) => {
         }
     };
 
+    const isStudent = user.role === 'student'  
+
     return(
         <div className='AccountSettings'>
             <div className='page-header'>
@@ -158,70 +158,72 @@ const AccountSettings = ({ }) => {
             <div className='page-content'>
                 <div className='content-section'>
                     <h2>Your Account Details</h2>
-                    <p className='text-detail'>View and edit your details</p>
+                    <AccountDetail 
+                        description="First name" 
+                        data={user.first_name} 
+                        onEdit={() => handleEdit('first_name')} 
+                        isEditing={editingField === 'first_name'} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel}
+                        isStudent={isStudent}
+                    />
+                    <AccountDetail 
+                        description="Last name" 
+                        data={user.last_name} 
+                        onEdit={() => handleEdit('last_name')} 
+                        isEditing={editingField === 'last_name'} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel}
+                        isStudent={isStudent}
+                    />
+                    <AccountDetail 
+                        description="Email address" 
+                        data={user.email} 
+                        onEdit={() => handleEdit('email')} 
+                        isEditing={editingField === 'email'} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel}
+                        isStudent={isStudent}
+                    />
+                    {user.role === 'client' && (
                         <AccountDetail 
-                            description="First name" 
-                            data={user.first_name || 'None'} 
-                            onEdit={() => handleEdit('first_name')} 
-                            isEditing={editingField === 'first_name'} 
+                            description="Company name" 
+                            data={user.company} 
+                            onEdit={() => handleEdit('company')} 
+                            isEditing={editingField === 'company'} 
                             onSave={handleSave} 
                             onCancel={handleCancel}
-                        />
-                        <AccountDetail 
-                            description="Last name" 
-                            data={user.last_name || 'None'} 
-                            onEdit={() => handleEdit('last_name')} 
-                            isEditing={editingField === 'last_name'} 
-                            onSave={handleSave} 
-                            onCancel={handleCancel}
-                        />
-                        <AccountDetail 
-                            description="Email address" 
-                            data={user.email || 'None'} 
-                            onEdit={() => handleEdit('email')} 
-                            isEditing={editingField === 'email'} 
-                            onSave={handleSave} 
-                            onCancel={handleCancel}
-                        />
-                        {user.role === 'client' && (
-                            <AccountDetail 
-                                description="Company name" 
-                                data={user.company || 'None'} 
-                                onEdit={() => handleEdit('company')} 
-                                isEditing={editingField === 'company'} 
-                                onSave={handleSave} 
-                                onCancel={handleCancel}
-                            /> )} 
-                        {/* Display team name & number if user is student and in a team */ }
-                        { team && user.role === 'student' && (
-                            <div className='content-section'>
-                                <h2>Your Team</h2>
-                                <p className='text-detail'>View your team details</p>
-                                <>
-                                    <AccountDetail description="Team number" data={team.number} />
-                                    <AccountDetail description="Team name" data={team.name} />
-                                </>
-                            </div>
-
-
-                        )}
-                        {/* Add sign out & delete account options here*/}
-                        <div className='account-settings-buttons'>
-                            <SignOutButton></SignOutButton>
-                            <button className='delete-account-button' onClick={setShowDeletionWarning}>Delete Account</button>
+                            isStudent={isStudent}
+                        /> )} 
+                    {/* Display team name & number if user is student and in a team */ }
+                    { team && user.role === 'student' && (
+                        <div className='content-section'>
+                            <h2>Your Team</h2>
+                            <>
+                                <AccountDetail description="Team number" data={team.team_number} isStudent={isStudent}/>
+                                <AccountDetail description="Team name" data={team.team_name} isStudent={isStudent}/>
+                            </>
                         </div>
-                        { showDeletionWarning && (
-                            <div className='pop-up'>
-                                <div className='pop-up-header'>
-                                    <h3>Delete Account</h3>
-                                    <button className = 'quit-button' onClick={closeDeletionWarning}></button>
-                                </div>
-                                <div className='pop-up-text'>
-                                    <p className='warning'>Deleting your account will delete any project proposals you have submitted. This cannot be undone.</p>
-                                </div>
-                                <button className='confirm-delete-account-button' onClick={handleDeleteAccount}>Confirm Account Deletion</button>
-                            </div>                
-                        )}
+                    )}
+                    {/* Add sign out & delete account options here*/}
+                    <div className='account-settings-buttons'>
+                        <SignOutButton></SignOutButton>
+                        {/* no delete account option for students */}
+                        {!isStudent && <button className='delete-account-button' onClick={setShowDeletionWarning}>Delete Account</button>}
+                    </div>
+                    
+                    { showDeletionWarning && (
+                        <div className='pop-up'>
+                            <div className='pop-up-header'>
+                                <h3>Delete Account</h3>
+                                <button className = 'quit-button' onClick={closeDeletionWarning}></button>
+                            </div>
+                            <div className='pop-up-text'>
+                                <p className='warning'>Deleting your account will delete any project proposals you have submitted. This cannot be undone.</p>
+                            </div>
+                            <button className='confirm-delete-account-button' onClick={handleDeleteAccount}>Confirm Account Deletion</button>
+                        </div>                
+                    )}
                     </div>
                 </div>
             </div>

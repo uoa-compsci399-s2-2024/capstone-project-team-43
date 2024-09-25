@@ -1927,3 +1927,17 @@
   /* font-size: large; */
 }
 
+/*  ACCOUNT SETTINGS  */
+
+.account-settings-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+
+}
+
+.editing-button-container > button{
+  margin-left: 10px;
+}
+

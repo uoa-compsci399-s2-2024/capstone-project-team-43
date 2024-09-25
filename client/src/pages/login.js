@@ -70,7 +70,7 @@ const Login = () => {
                     last_name: lastName,
                     email: email,
                     password: password,
-                    company: "null",
+                    company: null,
                 }),
             });
             const resJson = await res.json();

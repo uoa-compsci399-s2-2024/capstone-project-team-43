@@ -1,3 +1,5 @@
+import axios from 'axios'; 
+
 const BASE_URL = "http://localhost:3001";
 
 /**
@@ -172,13 +174,88 @@ export async function fetchProjectsBySemester(semesterId) {
         console.error('Error fetching projects:', error);
         throw error;    }
 };
-
-export async function getUserByID(id) {
+/**
+ * Fetches a user from the server using user ID
+ * 
+ * @async
+ * @function fetchUser
+ * @param {number} [userId] 
+ * @returns {Promise<User>} A promise that resolves to a User object.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchUser(userId) {
     try {
-        const response = await fetch(`${BASE_URL}/api/users/${id}`);
-        console.log(response[0]);
+        console.log('fetching data for user:'+userId);
+        const response = await fetch(`${BASE_URL}/api/users/id/${userId}`);
+        console.log('Response:', response);  
         return await response.json();
+
     } catch (error) {
-        console.error('Error fetching projects:', error);
+        console.error('Error fetching user:', error);
+        throw error;    
+        return [];
+    }
+};
+/**
+ * Fetches a user's team from the server 
+ * 
+ * @async
+ * @function fetchTeam
+ * @param {number} [userId] 
+ * @returns {Promise<Team>} A promise that resolves to a Team object.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchTeam(userId) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/teams/user/id/${userId}`);
+        console.log('Response:', response);  
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error fetching team:', error);
         throw error;    }
+};
+/**
+ * Updates given attribute for User with given id
+ * 
+ * @async
+ * @function updateUserDetails
+ * @param {number} [userId] 
+ * @param {string} [attribute]
+ * @param {string} [newValue]
+ * @returns {Promise<User>} A promise that resolves to a User object.
+ *  
+ */
+export async function updateUserDetails(userId, attribute, newValue) {
+    try {
+        const response = await axios.put(`http://localhost:3001/api/users/edit/${userId}`, {
+            attribute, newValue
+        });
+        return response.data; // return the updated user data
+    } catch (error) {
+        console.error('Error updating user details:', error);
+        throw error; 
+    }
+};
+/**
+ * Deletes User's Account by deleting their projects and user record
+ * 
+ * @async
+ * @function deleteUser
+ * @param {number} [userID] 
+ * @returns {Promise<response>} 
+ *  
+ */
+export async function deleteUser(userID) {
+    try {
+        const response = await axios.delete(`http://localhost:3001/api/users/id/${userID}`);
+        return response.status; 
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw error; 
+    }
 };

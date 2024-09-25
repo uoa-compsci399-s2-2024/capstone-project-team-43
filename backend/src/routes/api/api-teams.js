@@ -1,12 +1,19 @@
 import { Router } from "express";
-import { createTeam, getTeam, getTeamsBySemester, deleteTeamBySemester, setTeamProject } from "../../data/teams-dao.js";
+import { createTeam, getTeam, getTeamByUser, getTeamsBySemester, deleteTeamBySemester, setTeamProject } from "../../data/teams-dao.js";
 
 const router = Router();
 
+
 // Retrieves the team with a given id
-router.get("/:id", async (req, res) => {
+router.get("/id/:id", async (req, res) => {
     const id = req.params.id;
     return res.json(await getTeam(id))
+});
+
+// Retrieves the team for a user with a given user id
+router.get("/user/id/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    return res.json(await getTeamByUser(userId))
 });
 
 // Retrieves the teams from a semester with a given semester_id
@@ -14,6 +21,7 @@ router.get("/semester/:semester_id", async (req, res) => {
     const semester_id = req.params.semester_id;
     return res.json(await getTeamsBySemester(semester_id))
 });
+
 
 // Creates a new team with given team_number, team_name, and semester_id
 router.post("/", async (req, res) => {

@@ -18,6 +18,7 @@ import Navbar from "./components/navbar";
 import ManageSemester from './pages/manage-semester';
 import ProjectsArchive from './pages/projects-archive';
 import ClientProjects from './pages/client-projects';
+import AccountSettings from './pages/account-settings';
 
 function App() {
 
@@ -35,6 +36,8 @@ function App() {
         <Route path='/pages/contact' Component={Contact} />
         <Route path='/pages/new-semster' Component={NewSemster} />
         <Route path='/pages/manage-semester/:semesterID' element={<ManageSemester />} />
+        <Route path='/pages/account-settings/' element={<AccountSettings />} />
+
         <Route path='/pages/client-projects' Component={ClientProjects} />
       </Routes>
       

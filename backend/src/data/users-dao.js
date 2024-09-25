@@ -262,3 +262,28 @@ export async function updateTeam(unikey, team_id) {
     console.error('Error executing query/s:', err);
   }
 }
+
+/**
+* Updates an attribute of a User with a given id
+*
+* @param {number} id the id of the User to update
+* @param {string} attribute the attribute to update
+* @param {string} newValue the new value
+*/
+export async function updateUser(id, attribute, newValue) {
+  try {
+    let connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+
+    const response = await pool.query("UPDATE USER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
+
+    /** @type {User} */
+    const updatedUser = await connection.query("SELECT * FROM USER WHERE id = ?", [id]); 
+
+    return updatedUser;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+    return[];
+  }
+}; 

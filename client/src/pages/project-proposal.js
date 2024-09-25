@@ -4,7 +4,7 @@ import { createProject } from '../Api.js'
 
 import '../App.css';
 import { projectinfo } from "../components/sortable_item.js";
-import { getUserByID } from "../Api.js";
+import { fetchUser } from "../Api.js";
 import { jwtDecode } from "jwt-decode";
 // import { archiveprojectinfo } from "./projects-archive.js";
 
@@ -58,7 +58,7 @@ const projectProposal = () => {
     const next = () =>{
 
         if(projectinfo !== null){
-            console.log(getUserByID(projectinfo.project.owner_id));
+            console.log(fetchUser(projectinfo.project.owner_id));
             //document.getElementById("clientname").value = projectinfo.project.owner_id;
             //document.getElementById("clientemail").value = projectinfo.project.owner_id;
             document.getElementById("projecttitle").value = projectinfo.project.title;

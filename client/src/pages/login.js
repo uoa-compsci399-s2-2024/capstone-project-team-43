@@ -104,7 +104,7 @@ const Login = () => {
     useEffect(() => {
         try {
             const token = localStorage.getItem("authToken");
-            if (token === "") {
+            if (token === "" || token === null || token === "null") {
                 login_form();
             } else {
                 const decoded = jwtDecode(token);

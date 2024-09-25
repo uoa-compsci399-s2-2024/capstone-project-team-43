@@ -362,7 +362,7 @@ router.get("/role", async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        return res.json({ role: "none" });
+        return res.status(401).json({ role: "none" });
     }
 });
 

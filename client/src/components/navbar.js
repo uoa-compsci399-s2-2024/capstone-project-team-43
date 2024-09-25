@@ -11,11 +11,6 @@ const Navbar = () => {
         // Changes to the user's role once the auth token has been verified
         let role = null;
 
-    const getLocation = () => {
-        const path = window.location.pathname;
-        return path;
-    }
-
     // Hides both register and login forms
     const form_close = () => {
         document.getElementById('loginright').style.display = "none";
@@ -23,11 +18,6 @@ const Navbar = () => {
     }
 
     const student_view = () => {
-        console.log("PATH: ", getLocation());
-        if (getLocation() === "/") {
-            console.log("form closing");
-            form_close();
-        }
         try {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "none";
@@ -41,9 +31,6 @@ const Navbar = () => {
     }
 
     const client_view = () => {
-        if (getLocation() === "/") {
-            form_close();
-        }
         try {
         document.getElementById('adminSideBar').style.display = "none";
         document.getElementById('clientSideBar').style.display = "block";
@@ -57,9 +44,6 @@ const Navbar = () => {
     }
 
     const admin_view = () => {
-        if (getLocation() === "/") {
-            form_close();
-        }
         try {
         document.getElementById('adminSideBar').style.display = "block";
         document.getElementById('clientSideBar').style.display = "none";
@@ -101,7 +85,7 @@ const Navbar = () => {
     try {
         const token = localStorage.getItem("authToken");
 
-        if (token === "" || token === null) {
+        if (token === "" || token === null || token === "null") {
             localStorage.setItem("authToken", "");
             //debugging_nav(); 
             not_logged_in(); //**uncomment for production and commment out debugging_nav()**
@@ -200,6 +184,8 @@ const Navbar = () => {
 
                     role = resJson.role;
 
+                    console.log(res.status);
+
                     if (res.status === 200) {
 
                         if (role === "client") {
@@ -217,10 +203,19 @@ const Navbar = () => {
                         } 
 
                     } else {
+                        // Clears local storage
+                        localStorage.setItem('authToken', "");
+                        Cookies.remove('authToken');
                         console.log("An error occurred during login");
+                        window.location.reload();
+                        
                     }
                 } catch (err) {
+                    // Clears local storage
+                    localStorage.setItem('authToken', "");
+                    Cookies.remove('authToken');
                     console.log(err);
+                    window.location.reload();
                 }
             } else {
                 //debugging_nav(); 

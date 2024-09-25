@@ -51,7 +51,6 @@ const ProjectsAdmin = () => {
     }, []);
 
 //Rejected projects
-
  let rejected = []
 
     projects
@@ -97,6 +96,9 @@ let approved = []
         items.rejected = [];
         items.unsorted = [];
         items.approved = [];
+        console.log(rejected);
+        console.log(unsorted);
+        console.log(approved);
       for (let i = 0; i < rejected.length; i++) {
         items.rejected.push(rejected[i]);
       };
@@ -270,6 +272,7 @@ let approved = []
       function handleDragEnd(event) {
         const {active, over} = event;
         const {id} = active;
+        console.log("ACTIVE ID: ", id[0].id);
         if (over === null) return;
         const {id: overId} = over;
     
@@ -300,16 +303,18 @@ let approved = []
     
         setActiveId(null);
         let newStatus = "pending";
-        if(event.collisions[1].id === "approved"){
+        console.log(event.collisions[0].id);
+        console.log(event.collisions[1].id);
+        if(event.collisions[0].id === "approved" || event.collisions[1].id === "approved"){
           newStatus = "accepted"
         }
-        else if(event.collisions[1].id === "rejected"){
+        else if(event.collisions[0].id === "rejected" || event.collisions[1].id === "rejected"){
           newStatus = "rejected"
         }
-        else if(event.collisions[1].id === "unsorted"){
+        else if(event.collisions[0].id === "unsorted" || event.collisions[0].id === "unsorted"){
           newStatus = "pending"
         }
-        const projectId = event.collisions[0].id[0].id;
+        const projectId = id[0].id;
       updateStatus(projectId, newStatus);
           }
 

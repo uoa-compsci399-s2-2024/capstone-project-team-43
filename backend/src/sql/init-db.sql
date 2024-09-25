@@ -2,6 +2,9 @@ CREATE TABLE PROJECT (
     id INT AUTO_INCREMENT PRIMARY KEY,
     project_number INTEGER NOT NULL,
     title VARCHAR(255) NOT NULL,
+    client_name VARCHAR(255) NOT NULL,
+    client_email VARCHAR(255) NOT NULL,
+    other_client_details VARCHAR(255),
     deliverable VARCHAR(255),
     description VARCHAR(255) NOT NULL,
     owner_id INTEGER NOT NULL,
@@ -74,13 +77,13 @@ CREATE TABLE TEAM (
 
 
 INSERT INTO PROJECT 
-    (title, description, owner_id, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry) 
+    (title, description, owner_id, other_client_details, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry, client_name, client_email) 
 VALUES 
-    ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false', '2025-08-01'),
-    ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false', '2025-09-01'),
-    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false', '2025-10-01'),
-    ('retiredproj1','A old web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','5','rejected','3','43', 'false', '2025-09-01'),
-    ('retiredproj2','Maybe an older web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','6','pending','3','43', 'false', '2025-10-01');
+    ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false', '2025-08-01', 'john', 'john@gmail.com'),
+    ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false', '2025-09-01', 'john', 'john@gmail.com'),
+    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false', '2025-10-01', 'john', 'john@gmail.com'),
+    ('retiredproj1','A old web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','5','rejected','3','43', 'false', '2025-09-01', 'john', 'john@gmail.com'),
+    ('retiredproj2','Maybe an older web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','6','pending','3','43', 'false', '2025-10-01', 'john', 'john@gmail.com');
 
 INSERT INTO USER  (role, email, password, first_name, last_name, team_id, company)
 VALUES 

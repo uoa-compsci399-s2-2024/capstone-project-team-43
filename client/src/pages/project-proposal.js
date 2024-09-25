@@ -5,17 +5,38 @@ import { createProject } from '../Api.js'
 import '../App.css';
 import { projectinfo } from "../components/sortable_item.js";
 import { getUserByID } from "../Api.js";
+import { jwtDecode } from "jwt-decode";
 // import { archiveprojectinfo } from "./projects-archive.js";
 
 
 
 const projectProposal = () => {
 
+    const getClientID = () => {
+        try {
+            const token = localStorage.getItem("authToken");
+            if (token === "" || token === null || token === "null") {
+                return -1;
+            } else {
+                const decoded = jwtDecode(token);
+                const id = decoded.userId;
+    
+                if (id === null) {
+                    return -1;
+                }
+                return id;
+            }
+    
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     const submit = () =>{
         try {
         let client_name = document.getElementById("clientname").value;
         let client_email = document.getElementById("clientemail").value;
-        let other_client_details = document.getElementById("clientname").value;
+        let other_client_details = document.getElementById("otherclientdetails").value;
         let title = document.getElementById("projecttitle").value;
         let description = document.getElementById("projectdescription").value;
         let project_deliverable = document.getElementById("desiredoutput").value;
@@ -24,21 +45,16 @@ const projectProposal = () => {
         let preferred_skills = document.getElementById("desiredskill").value;
         let available_resources = document.getElementById("availableresources").value;
         let expiry = document.getElementById("date").value;
-        let owner_id = 1;
+        let owner_id = getClientID();
         let currentDate = new Date();
         let created = currentDate.toISOString().split('T')[0];
-        console.log("created");
-        let status = "pending";
-        let project_number = 43;
 
-        createProject(title, description, 1, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", 2, 43, 1);
+        //Structure:  title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client details, client_name, client_email
+        createProject(title, description, owner_id, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", max_teams, -1, 1, other_client_details, client_name, client_email);
     } catch (err) {
         console.log("Error", err);
+        }
     }
-    }
-
-        //title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id
-
 
     const next = () =>{
 
@@ -154,7 +170,7 @@ const projectProposal = () => {
                 <label>
                     <h3>3. Other clients' details</h3>
                     <p>If there is anyone else involved in the project, please provide their names and emails</p>
-                    <textarea placeholder="Enter your answer" />
+                    <textarea placeholder="Enter your answer" id="otherclientdetails"/>
                 </label>
                 <label>
                     <h3>4. Project title* </h3>
@@ -191,10 +207,10 @@ const projectProposal = () => {
                     <input type="radio" id="html" value="" /> <input type="text" name="other" id="numberofteams"/> */}
                     <select name="languages" id="teams" required>
                         <option value="">Select</option>
-                        <option value="">1</option>
-                        <option value="">2</option>
-                        <option value="">3</option>
-                        <option value="">4</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
                     </select>
 
                 </label>

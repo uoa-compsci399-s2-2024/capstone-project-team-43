@@ -37,9 +37,9 @@ export async function updateStatus(id,status) {
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({ status })
+            body: JSON.stringify({ status }),
           })
-        return await response.json();
+        return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
         throw error;    
@@ -92,9 +92,9 @@ export async function updatePublish(status) {
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({ status })
+            body: JSON.stringify({ status }),
           })
-        return await response.json();
+        return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
         throw error;}
@@ -102,22 +102,16 @@ export async function updatePublish(status) {
 
 
 
-export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id) {
-    console.log("we are here");
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details, client_name, client_email) {
     try {
-        console.log("we are inside try statement");
          const response = await fetch(`${BASE_URL}/api/projects/`, {
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id}),
+            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details, client_name, client_email}),
           })
-          console.log();
 
-          const resJson = await response.json();
-
-          console.log("status: ", response.status);
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);

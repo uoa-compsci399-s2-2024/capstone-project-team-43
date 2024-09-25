@@ -62,7 +62,7 @@ router.get("/team/:id", async (req, res) => {
 // Gets users in team with given id 
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
-    const user = await getUsers(id);
+    const user = await getUser(id);
     return res.json(user);
 });
 

@@ -32,8 +32,7 @@ export async function getProjects() {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT');
-    console.log('Rows:', rows);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT');
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -44,6 +43,7 @@ export async function getProjects() {
     console.error('Error executing query/s:', err.message);
   }
 }
+
 /**
  * Gets all status projects
  * @param {string} status
@@ -56,7 +56,7 @@ export async function getStatusProject(status) {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
     console.log('Rows:', rows);
 
     // If there is a connection, release it
@@ -66,6 +66,30 @@ export async function getStatusProject(status) {
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
+  }
+}
+
+/**
+ * Get project by id
+ * 
+ * @param {number} id
+ * @return {Promise<Project>}
+ */
+export async function getProjectById(id) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME}`);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE id = ?', id);
+
+    return rows[0];
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally {
+    if (connection) connection.release();
   }
 }
 

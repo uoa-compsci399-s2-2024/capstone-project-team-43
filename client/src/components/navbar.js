@@ -163,7 +163,6 @@ const Navbar = () => {
     useEffect(() => {
         // Gets the token from the cookie sent from the google callback
         const getToken = async () => {
-            const token = Cookies.get('authToken');
 
             const stored_token = localStorage.getItem("authToken");
 
@@ -205,7 +204,6 @@ const Navbar = () => {
                     } else {
                         // Clears local storage
                         localStorage.setItem('authToken', "");
-                        Cookies.remove('authToken');
                         console.log("An error occurred during login");
                         window.location.reload();
                         
@@ -213,7 +211,6 @@ const Navbar = () => {
                 } catch (err) {
                     // Clears local storage
                     localStorage.setItem('authToken', "");
-                    Cookies.remove('authToken');
                     console.log(err);
                     window.location.reload();
                 }

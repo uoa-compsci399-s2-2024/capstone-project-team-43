@@ -1,5 +1,6 @@
 import { pool } from "./database.js";
 import dotenv from "dotenv";
+import { getUser } from "./users-dao.js";
 
 dotenv.config();
 
@@ -18,6 +19,18 @@ dotenv.config();
  * @property {number} project_number
  */
 
+/**
+ * @typedef {object} User
+ * @property {number} id
+ * @property {'admin'|'student'|'client'} role
+ * @property {string} email
+ * @property {string} first_name
+ * @property {string} last_name
+ * @property {string} company
+ * @property {Date} created
+ * @property {Date} last_login
+ */
+
 // Gets the database name from .env file
 const DB_NAME = process.env.DB_NAME;
 /**
@@ -33,7 +46,6 @@ export async function getProjects() {
 
     await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT');
-    console.log('Rows:', rows);
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -57,7 +69,6 @@ export async function getStatusProject(status) {
 
     await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
-    console.log('Rows:', rows);
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -86,7 +97,7 @@ export async function getStatusProject(status) {
  *
  * @return the newly created project
  */
-export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details, client_name, client_email) {
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details) {
   let connection;
   try {
 
@@ -94,6 +105,14 @@ export async function createProject(title, description, owner_id, special_requir
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
+
+    /** @type {User} */
+    const user = await getUser(owner_id);
+
+    console.log("THIS IS THE USER: ", user);
+
+    const client_name = user.first_name + " " + user.last_name;
+    const client_email = user.email;
 
     // Insert project into db
     const response = await connection.query(
@@ -144,7 +163,7 @@ export async function editProject(id, title, description, special_requirements, 
     // Insert project into db
     const response = await connection.query(
       
-      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ?, client_name = ?, client_email = ?, other_client_details = ? WHERE id = ?",
+      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ?, other_client_details = ?, client_name = ?, client_email = ?, WHERE id = ?",
       [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, semester_id, max_teams, project_number, expiry, other_client_details, client_name, client_email, id]);
 
     /** @type {Project} */
@@ -258,7 +277,6 @@ export async function getProjectsBySemester(semester_id) {
 
     await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT WHERE semester_id = ?', [semester_id]);
-    console.log('Here are the Rows:', rows);
 
     return rows;
 

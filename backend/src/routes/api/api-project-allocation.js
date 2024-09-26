@@ -28,6 +28,9 @@ router.get("/", async (req, res) => {
     // }
     let team_preferences = {};
 
+    // Maximum number of admin hours available
+    const max_hours = 10;
+
     // Sort preferences by created datetime
     preferences.sort(function (a, b) {
         return a.created - b.created;
@@ -65,7 +68,16 @@ router.get("/", async (req, res) => {
             if (allocated_teams.includes(team_id)) break;
 
             // Initialise array if the project does not exist in allocation dict
-            if (!allocation['allocation'][project_id]) allocation['allocation'][project_id] = [];
+            if (!allocation['allocation'][project_id]) {
+
+                // Check if total number of admin hours will be exceeded
+                if (Object.keys(allocation['allocation']).length < max_hours) {
+                    allocation['allocation'][project_id] = [];
+                } else {
+                    console.warn(`Cannot allocate team_id:${team_id} to project:${project_id} due to max hours exceeded`);
+                    continue;
+                }
+            }
 
             // Check if project max_teams capacity will be exeeded
             if (allocation['allocation'][project_id].length < project_capacity[project_id]) {

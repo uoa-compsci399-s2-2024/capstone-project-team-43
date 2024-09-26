@@ -8,8 +8,8 @@ import SignOutButton, { handleSignOut } from '../components/sign-out-button.js';
 
 
 // Formats user data & edit functionality
-const AccountDetail = ({ description, data='None', onEdit, isEditing, onSave, onCancel, isStudent = false }) => {
-    const [value, setValue] = useState(data);
+const AccountDetail = ({ description, data, onEdit, isEditing, onSave, onCancel, isStudent = false }) => {
+    const [value, setValue] = useState(data || 'None');
 
     const handleInputChange = (e) => {
         setValue(e.target.value);
@@ -44,7 +44,7 @@ const AccountDetail = ({ description, data='None', onEdit, isEditing, onSave, on
                     {/* format when user isn't editing */}
                     <div className='data-container'>
                         <div className='container-text'>
-                            <p className='account-data'>{description}: {data}</p>
+                            <p className='account-data'>{description}: {data ? data : 'None'}</p>
                         </div>
                         {/* Display edit option for all non-student users*/}
                         {!isStudent && <button onClick={onEdit} className='edit-button'></button>}
@@ -116,7 +116,7 @@ const AccountSettings = ({ }) => {
         console.log(`Saving ${editingField} with value: ${newValue}`);
         
         // update details in database
-        await updateUserDetails(userID, editingField, newValue);
+        await updateUserDetails(userID, editingField, newValue || null);
 
         // update details on page immediately
         setUser((prevUser) => ({

@@ -55,10 +55,11 @@ router.get("/", async (req, res) => {
         }
     }
 
-    console.log(team_preferences);
-    console.log(submission_order);
-    console.log(project_capacity);
+    // console.log(team_preferences);
+    // console.log(submission_order);
+    // console.log(project_capacity);
 
+    let message;
     // Allocate projects to teams based on order of submission time
     submission_order.forEach(team_id => {
         for (let i = 0; i < team_preferences[team_id].length; i++) {
@@ -92,9 +93,15 @@ router.get("/", async (req, res) => {
 
         // Check if team has not been allocated any of their preferences
         if (!allocated_teams.includes(team_id)) {
-            return res.status(400).json(`Project allocation algorithmm error: team_id:${team_id} were not allocated any of their 5 preferences`);
+            message = `Project allocation algorithmm error: team_id:${team_id} were not allocated any of their 5 preferences`;
+            console.error(message);
+            return;
         };
     });
+
+    if (message) {
+        return res.status(400).json(message);
+    }
     return res.json(allocation);
 });
 

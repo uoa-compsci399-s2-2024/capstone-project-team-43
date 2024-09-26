@@ -35,8 +35,8 @@ CREATE TABLE SEMESTER (
     id INT AUTO_INCREMENT PRIMARY KEY,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    start_bidding_date DATE NOT NULL,
-    end_bidding_date DATE NOT NULL,
+    start_bidding_date DATETIME NOT NULL,
+    end_bidding_date DATETIME NOT NULL,
     is_semester_one BOOL NOT NULL,
     status ENUM('retired', 'current', 'upcoming'),
     name VARCHAR(255) DEFAULT NULL
@@ -102,9 +102,9 @@ VALUES
 INSERT INTO SEMESTER 
     (start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) 
 VALUES 
-    (STR_TO_DATE('02-26-2025','%m-%d-%Y'), STR_TO_DATE('06-24-2025','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2025','%m-%d-%Y'), STR_TO_DATE('11-11-2025','%m-%d-%Y'), STR_TO_DATE('02-16-2025','%m-%d-%Y'), STR_TO_DATE('06-18-2025','%m-%d-%Y'), false),
-    (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), false),
-    (STR_TO_DATE('02-26-2023','%m-%d-%Y'), STR_TO_DATE('06-24-2023','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2023','%m-%d-%Y'), STR_TO_DATE('11-11-2023','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), false);
+    (STR_TO_DATE('02-26-2025','%m-%d-%Y'), STR_TO_DATE('06-24-2025','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), true), 
+    (STR_TO_DATE('07-15-2025','%m-%d-%Y'), STR_TO_DATE('11-11-2025','%m-%d-%Y'), ('2025-02-16 00:00:00'), ('2025-06-30 00:00:00'), false),
+    (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), true), 
+    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), false),
+    (STR_TO_DATE('02-26-2023','%m-%d-%Y'), STR_TO_DATE('06-24-2023','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), true), 
+    (STR_TO_DATE('07-15-2023','%m-%d-%Y'), STR_TO_DATE('11-11-2023','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), false);

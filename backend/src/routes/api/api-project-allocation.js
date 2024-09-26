@@ -8,7 +8,12 @@ router.get("/", async (req, res) => {
     const preferences = await getPreferences();
 
     // Final allocation
-    let allocation = {};
+    // allocation contains which teams have been allocated to each project
+    // team_preferences contains which preference each team has been allocated
+    let allocation = {
+        'allocation': {},
+        'team_preferences': {}
+    };
 
     // Keep track of each project's max_team capacity
     let project_capacity = {};
@@ -53,16 +58,25 @@ router.get("/", async (req, res) => {
 
     // Allocate projects to teams based on order of submission time
     submission_order.forEach(team_id => {
-        team_preferences[team_id].forEach(project_id => {
-            if (allocated_teams.includes(team_id)) return;
-            if (!allocation[project_id]) allocation[project_id] = [];
-            if (allocation[project_id].length < project_capacity[project_id]) {
-                allocation[project_id].push(team_id);
-                allocated_teams.push(team_id)
+        for (let i = 0; i < team_preferences[team_id].length; i++) {
+            const project_id = team_preferences[team_id][i];
+
+            // Break out of loop if team has already been allocated a project
+            if (allocated_teams.includes(team_id)) break;
+
+            // Initialise array if the project does not exist in allocation dict
+            if (!allocation['allocation'][project_id]) allocation['allocation'][project_id] = [];
+
+            // Check if project max_teams capacity will be exeeded
+            if (allocation['allocation'][project_id].length < project_capacity[project_id]) {
+                allocation['allocation'][project_id].push(team_id);
+                allocated_teams.push(team_id);
+                allocation['team_preferences'][team_id] = i + 1;
+                console.log(`team_id:${team_id} allocated ${i + 1} preference`);
             } else {
                 console.warn(`team_id:${team_id} - capacity exceeded for project_id:${project_id}`);
             }
-        });
+        }
     });
     return res.json(allocation);
 });

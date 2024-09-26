@@ -2,12 +2,58 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../App.js'
 import SemesterCSVUpload from '../components/semester-csv-upload.js';
-import { fetchSemester, fetchUsersByRole, fetchTeamsBySemester } from '../Api.js';
+import { fetchSemester, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester } from '../Api.js';
 import '../admin.css';
 import '../index.js';
 import SemesterDropdown from '../components/semester-dropdown.js';
 import uploadIcon from '../media/upload-icon.png';
 
+// Formats semester data & edit functionality
+const SemesterDetail = ({ description, data='None', onEdit, isEditing, onSave, onCancel }) => {
+    const [value, setValue] = useState(data);
+
+    const handleInputChange = (e) => {
+        setValue(e.target.value);
+    };
+
+    return (
+        <div className='semester-detail'>
+            {isEditing ? (
+                <>
+                {/* Format when user is editing */}
+                    <div className='data-container'>
+                        <div className='container-text'>
+                            <p className='semester-data'>Edit {description.toLowerCase()}: {
+                            <input 
+                                type="text" 
+                                value={value} 
+                                onChange={handleInputChange} 
+                                className='edit-input' 
+                                style = {{width: `${value.length}ch`}}
+                            />}</p>
+                        </div>
+                        {/* save & cancel buttons */}
+                        <div className='editing-button-container'>
+                            <button onClick={() => onSave(value)} className='save-edit-button'>Save Changes</button>
+                            <button onClick={onCancel} className='cancel-edit-button'>Cancel</button>
+                        </div>
+                    </div>
+
+                </>
+            ) : (
+                    <>  
+                    {/* format when user isn't editing */}
+                    <div className='data-container'>
+                        <div className='container-text'>
+                            <p className='account-data'>{description}: {data}</p>
+                        </div>
+                        <button onClick={onEdit} className='edit-button'></button>
+                    </div> 
+                </>
+            )}
+        </div>
+    );
+}
 
 const ManageSemester = () => {
 
@@ -20,6 +66,7 @@ const ManageSemester = () => {
     const [students, setStudents] = useState([]);
     const [teams, setTeams] = useState([]);
     const [semester, setSemester] = useState(null);
+    const [updatedSemester, setUpdatedSemester] = useState(null);
     const [editingField, setEditingField] = useState(null);
 
     // Control visibility of student/teams upload functionality
@@ -45,8 +92,10 @@ const ManageSemester = () => {
     };
 
     // Helper function to format the bidding start/end dates 
-    const formatBiddingDate = (dateString) => {
-        const date = new Date(dateString);
+    const formatBiddingDate = (biddingDate) => {
+        console.log(typeof biddingDate, biddingDate);
+
+        const date = new Date(biddingDate);
         const hours = date.getHours();
         const minutes = date.getMinutes().toString().padStart(2, '0');
         const ampm = hours >= 12 ? 'pm' : 'am';
@@ -111,9 +160,36 @@ const ManageSemester = () => {
         navigate(`/pages/manage-semester/${selectedSemesterID}`, { replace: true }); 
     };
 
+    // Handle entering edit mode
+    const handleEdit = (field) => {
+        setEditingField(field);
+    };
+    
+    // Handle saving edit changes
+    const handleSave = async (newValue) => {
+        console.log(`Saving ${editingField} with value: ${newValue}`);
+        
+        // update details in database
+        await updateSemesterDetails(semesterID, editingField, newValue);
+
+        // update details on page immediately
+        setUpdatedSemester((prevSemester) => ({
+            ...prevSemester,
+            [editingField]: newValue, 
+        }));
+
+        setEditingField(null); // Exit edit mode
+    };
+    
+    // Handle cancelling edit
+    const handleCancel = () => {
+        setEditingField(null); // Exit edit mode without saving
+    };
+
     if (!semester) {
         return <h1>Loading...</h1>;  
     }
+
 
     return (
         <div className='manage-semester'>
@@ -129,24 +205,49 @@ const ManageSemester = () => {
                 <div className='content-section'>
                     <h2>Semester Timeframe</h2>
                     <p className='text-detail'>View and edit the semester dates</p>
-                    <div className='data-container'>
+                    <SemesterDetail 
+                        description="Start date" 
+                        data={formatSemesterDate(semester.start_date)} 
+                        onEdit={() => handleEdit('start_date')} 
+                        isEditing={editingField === 'start_date'} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel}
+                    />
+                    <SemesterDetail 
+                        description="End date" 
+                        data={formatSemesterDate(semester.end_date)} 
+                        onEdit={() => handleEdit('end_date')} 
+                        isEditing={editingField === 'end_date'} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel}
+                    />
+                    {/* <div className='data-container'>
                         <div className='container-text'>
                             <p>Start date: {formatSemesterDate(semester.start_date)}</p>
                             <p>End date: {formatSemesterDate(semester.end_date)}</p>
                         </div>
                         <button className = 'edit-button'></button>
-                    </div>
+                    </div> */}
                 </div>
                 <div className='content-section'>
                     <h2>Project Bidding Timeframe</h2>
                     <p className='text-detail'>View and edit when teams are able to submit their project preferences</p>
-                        <div className='data-container'>
-                        <div className='container-text'>
-                            <p>Start date: {formatBiddingDate(semester.start_bidding_date)}</p>
-                            <p>End date: {formatBiddingDate(semester.end_bidding_date)}</p>
-                        </div>
-                        <button className = 'edit-button'></button>
-                    </div>
+                    <SemesterDetail 
+                        description="Start date" 
+                        data={formatBiddingDate(semester.start_bidding_date)} 
+                        onEdit={() => handleEdit('start_bidding_date')} 
+                        isEditing={editingField === 'start_bidding_date'} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel}
+                    />
+                    <SemesterDetail 
+                        description="End date" 
+                        data={formatBiddingDate(semester.end_bidding_date)} 
+                        onEdit={() => handleEdit('end_bidding_date')} 
+                        isEditing={editingField === 'end_bidding_date'} 
+                        onSave={handleSave} 
+                        onCancel={handleCancel}
+                    />
                 </div>
                 {/* Semester Student/Team Data */}
                 <div className='content-section'>

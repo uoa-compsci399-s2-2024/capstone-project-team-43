@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSemester, deleteSemester, getSemester, getSemesters } from "../../data/semesters-dao.js";
+import { createSemester, deleteSemester, getSemester, getSemesters, updateSemester } from "../../data/semesters-dao.js";
 import { getUsers, updateTeam, getUsersByTeam, createUser, createStudent, deleteUser, deleteUserByRole } from "../../data/users-dao.js";
 import { createTeam, deleteTeamBySemester } from "../../data/teams-dao.js";
 import multer from "multer";
@@ -118,6 +118,25 @@ router.delete("/:id", async (req, res) => {
     const id = req.params.id;
     const success = deleteSemester(id);
     res.sendStatus(success ? 204 : 404);
+});
+
+
+// Updates an attribute of the user with the given id 
+router.put("/edit/:id", async (req, res) => {
+    const id = req.params.id;
+    const { attribute, newValue } = req.body;
+
+    try {
+        // Update the attribute in the database
+        const [updatedSemester] = await updateSemester(id, attribute, newValue);
+
+        // Return success status
+        res.status(204).json(updatedSemester[0]);
+
+    } catch (error) {
+        console.error('Error updating attribute:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 export default router;

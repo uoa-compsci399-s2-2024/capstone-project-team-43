@@ -259,3 +259,25 @@ export async function deleteUser(userID) {
         throw error; 
     }
 };
+/**
+ * Updates given attribute for User with given id
+ * 
+ * @async
+ * @function updateSemesterDetails
+ * @param {number} [semesterID] 
+ * @param {string} [attribute]
+ * @param {string} [newValue]
+ * @returns {Promise<Semester>} 
+ *  
+ */
+export async function updateSemesterDetails(semesterID, attribute, newValue) {
+    try {
+        const response = await axios.put(`http://localhost:3001/api/semesters/edit/${semesterID}`, {
+            attribute, newValue
+        });
+        return response.data; // return the updated data
+    } catch (error) {
+        console.error('Error updating details:', error);
+        throw error; 
+    }
+};

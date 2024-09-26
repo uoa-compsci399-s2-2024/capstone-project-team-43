@@ -190,6 +190,30 @@ export async function updateIsSemesterOne(id, is_semester_one) {
     if (connection) connection.release();
   }
 }
+/**
+* Updates an attribute of a Semester with a given id
+*
+* @param {number} id the id of the semester to update
+* @param {string} attribute the attribute to update
+* @param {string} newValue the new value
+*/
+export async function updateSemester(id, attribute, newValue) {
+  try {
+    let connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+
+    const response = await pool.query("UPDATE SEMESTER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
+
+    /** @type {User} */
+    const updatedSemester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
+
+    return updatedSemester;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+    return[];
+  }
+}; 
 
 /**
  * Deletes the semester with the given id

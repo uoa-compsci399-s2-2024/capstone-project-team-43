@@ -19,12 +19,12 @@ router.get("/:id", async (req, res) => {
 
 // Create a new preference
 router.post("/", async (req, res) => {
-    const { project_id, team_id, preference } = req.body;
-    if (!project_id || !team_id || !preference) {
+    const { team_id, project_id, preference } = req.body;
+    if (!team_id || !project_id || !preference) {
         return res.sendStatus(422);
     }
 
-    const p = await createPreference(project_id, team_id, preference);
+    const p = await createPreference(team_id, project_id, preference);
     return res.location(`/api/preferences/${p.id}`).status(201).json(p);
 });
 

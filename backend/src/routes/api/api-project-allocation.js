@@ -89,6 +89,11 @@ router.get("/", async (req, res) => {
                 console.warn(`team_id:${team_id} - capacity exceeded for project_id:${project_id}`);
             }
         }
+
+        // Check if team has not been allocated any of their preferences
+        if (!allocated_teams.includes(team_id)) {
+            return res.status(400).json(`Project allocation algorithmm error: team_id:${team_id} were not allocated any of their 5 preferences`);
+        };
     });
     return res.json(allocation);
 });

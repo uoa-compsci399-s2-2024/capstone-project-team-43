@@ -75,6 +75,30 @@ CREATE TABLE TEAM (
     project_id INT
 );
 
+CREATE TABLE PREFERENCE (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    team_id INT NOT NULL,
+    project_id INT NOT NULL,
+    preference INT NOT NULL,
+    created TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3)
+);
+
+-- undecided on if we need the below views 
+
+-- CREATE VIEW CLIENTS AS
+-- SELECT *
+-- FROM USER
+-- WHERE role = 'client';
+
+-- CREATE VIEW ADMINS AS
+-- SELECT *
+-- FROM USER
+-- WHERE role = 'admin';
+
+-- CREATE VIEW STUDENTS AS
+-- SELECT *
+-- FROM USER
+-- WHERE role = 'student';
 
 INSERT INTO PROJECT 
     (title, description, owner_id, other_client_details, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry, client_name, client_email) 
@@ -108,3 +132,10 @@ VALUES
     (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), false),
     (STR_TO_DATE('02-26-2023','%m-%d-%Y'), STR_TO_DATE('06-24-2023','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), true), 
     (STR_TO_DATE('07-15-2023','%m-%d-%Y'), STR_TO_DATE('11-11-2023','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), false);
+    (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), true), 
+    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false);
+
+INSERT INTO PREFERENCE
+    (team_id, project_id, preference)
+VALUES
+    (1, 1, 1);

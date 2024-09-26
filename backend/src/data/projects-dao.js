@@ -45,7 +45,7 @@ export async function getProjects() {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT');
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT');
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -56,6 +56,7 @@ export async function getProjects() {
     console.error('Error executing query/s:', err.message);
   }
 }
+
 /**
  * Gets all status projects
  * @param {string} status
@@ -68,7 +69,8 @@ export async function getStatusProject(status) {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
+    console.log('Rows:', rows);
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -77,6 +79,30 @@ export async function getStatusProject(status) {
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
+  }
+}
+
+/**
+ * Get project by id
+ * 
+ * @param {number} id
+ * @return {Promise<Project>}
+ */
+export async function getProjectById(id) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME}`);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE id = ?', id);
+
+    return rows[0];
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally {
+    if (connection) connection.release();
   }
 }
 
@@ -162,7 +188,7 @@ export async function editProject(id, title, description, special_requirements, 
 
     // Insert project into db
     const response = await connection.query(
-      
+
       "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ?, other_client_details = ?, client_name = ?, client_email = ?, WHERE id = ?",
       [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, semester_id, max_teams, project_number, expiry, other_client_details, client_name, client_email, id]);
 
@@ -230,7 +256,7 @@ export async function deleteProject(id) {
     await connection.query("DELETE FROM PROJECT WHERE id = ?", id);
   } catch (err) {
     console.error('Error executing query:', err);
-  } finally{
+  } finally {
     if (connection) connection.release();
   }
 }
@@ -249,15 +275,15 @@ export async function publishProjects(status) {
     connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
 
-    if(status == "false") {
-    await connection.query("UPDATE `project` SET published = ?", [status]);
+    if (status == "false") {
+      await connection.query("UPDATE `project` SET published = ?", [status]);
     } else {
       await connection.query("UPDATE `project` SET published = ? WHERE status = \"accepted\"", [status]);
     }
 
   } catch (err) {
     console.error('Error executing query:', err);
-  } finally{
+  } finally {
     // If there is a connection, release it
     if (connection) connection.release();
 
@@ -271,7 +297,7 @@ export async function publishProjects(status) {
 export async function getProjectsBySemester(semester_id) {
   let connection;
   try {
-    console.log('semester',semester_id);
+    console.log('semester', semester_id);
     // Get connection from pool
     connection = await pool.getConnection();
 

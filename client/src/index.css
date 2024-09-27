@@ -2,10 +2,28 @@
 
 
 :root {
-  --theme-dark: #003998;
-  --theme-light: #2979FF;
+  --theme-dark: #4489FD;
+  --theme-light: #91CAFF;
   --theme-font: 'Inter', sans-serif;
 }
+
+header {
+  background-color: var(--theme-light);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 6vh;
+}
+
+.logo-container{
+  object-fit: contain; 
+
+}
+
+.logo-link img {
+  object-fit: contain; 
+} 
 
 
 .content-section h2{

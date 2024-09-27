@@ -13,22 +13,28 @@ import ProjectsAvailable from './pages/projects-available';
 import About from './pages/about';
 import Contact from './pages/contact';
 import NewSemster from './pages/new-semster';
+import Header from './components/header';
 
-import Navbar from "./components/navbar";
+
+// import Navbar from "./components/navbar";
 import ManageSemester from './pages/manage-semester';
 import ProjectsArchive from './pages/projects-archive';
 import ClientProjects from './pages/client-projects';
 import AccountSettings from './pages/account-settings';
+import LandingPage from './pages/landing-page';
 
 function App() {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Header />
       <Routes>
         <Route path='/pages/projects-admin' Component={Cornerstone} />
         <Route path='/pages/projects-available' Component={ProjectsAvailable} />
-        <Route path='/' Component={Login} />
+        <Route path='/' element={<LandingPage />} />
+        <Route path='/login' Component={Login} />
+
         <Route path='/pages/project-proposal' Component={ProjectProposalForm} />
         <Route path='/pages/project-preferences' Component={ProjectPreferences} />
         <Route path='/pages/projects-archive/:semesterID' element={<ProjectsArchive />} />

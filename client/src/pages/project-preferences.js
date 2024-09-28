@@ -2,66 +2,123 @@ import React, { Component } from "react";
 import '../App.css';
 import { Link } from "react-router-dom";
 import Project from "../components/project";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { fetchProjects, fetchSemester, fetchSemesters } from '../Api.js'
+import { useParams, useNavigate } from 'react-router-dom';
 
 const ProjectPreferences = ()=>{
 
+    const { semesterID: semesterIDFromURL } = useParams();
+    const [semesters, setSemesters] = useState([]);
+    const [semester, setSemester] = useState(null);
+    const [semesterID, setSemesterID] = useState(semesterIDFromURL || null);
     const [chosenproject, setchosenproject] = useState(new Array(5).fill(<Project/>));
+
+    let chosenp = new Array(5).fill(<Project/>);
     const choose = (element, index) =>{
-        const newchosen = [...chosenproject];
-        newchosen[index] = element;
-        setchosenproject(newchosen);
+        // const newchosen = [...chosenproject];
+        chosenp[index] = element;
+        // chosenp = [...newchosen];
+        // setchosenproject(newchosen);
     }
+
+    useEffect(() => {
+        async function getSemesters() {
+            try {
+                const data = await fetchSemesters();
+                setSemesters(data);
+            } catch (error) {
+                console.error('Failed to load semesters:', error);
+            }
+        }
+        getSemesters();
+    }, []);
+
+
+    useEffect(() => {
+        async function getSemester() {
+            // only fetch if semesterID is set
+            if (!semesterID) return; 
+            try {
+                const data = await fetchSemester(semesterID);
+                setSemester(data);
+                console.log('Fetched semester data:', data);  
+                // check semester is retired
+                if (data.status !== 'retired') {
+                    throw new Error('Semester is not retired.');
+                }            
+            } catch (error) {
+                console.error('Failed to load semester:', error);
+                return; 
+            }
+        }
+        getSemester();
+    }, [semesterID]);
+
+    const [projects, setProjects] = useState([]);
+
+    // get data onall accepted projects 
+    useEffect(() => {
+        async function getProjects() {
+            try {
+                const data = await fetchProjects('accepted');
+                setProjects(data);
+            } catch (error) {
+                console.error('Failed to load projects:', error);
+            }
+        }
+        getProjects();
+    }, []);
 
     const handleclick = (project) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
                 {choose(project, 0)};
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
-            options.innerHTML += project.props.name;
+            options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt1 = false;
             }
         }
         else if (opt2 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 1)};
             let options = document.getElementById('option2');
             options.innerHTML += "<p>";
-            options.innerHTML += project.props.name;
+            options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt2 = false;}
         }
         else if (opt3 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 2)};
             let options = document.getElementById('option3');
             options.innerHTML += "<p>";
-            options.innerHTML += project.props.name;
+            options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt3 = false;}
         }
         else if (opt4 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 3)};
             let options = document.getElementById('option4');
             options.innerHTML += "<p>";
-            options.innerHTML += project.props.name;
+            options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt4 = false;}
         }
         else if (opt5 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.props.name === project.props.name))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 4)};
             let options = document.getElementById('option5');
             options.innerHTML += "<p>";
-            options.innerHTML += project.props.name;
+            options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt5 = false;}
         }
@@ -73,15 +130,16 @@ const ProjectPreferences = ()=>{
     let opt4 = false;
     let opt5 = false;
 
-    let items=['Item 1','Item 2','Item 3','Item 4','Item 5'];
 
-    let itemList=[];
+    let project = projects.filter(project => project);
 
-    items.forEach((item)=>{
-      itemList.push(
-         <Project name={item}/>
-        )
-    })
+    let itemList = [];
+
+    // items.forEach((item)=>{
+    //   itemList.push(
+    //      <Project name={item}/>
+    //     )
+    // })
 
     const submit =() =>{
         if(document.getElementById("agreeupon").checked === true){
@@ -97,7 +155,8 @@ const ProjectPreferences = ()=>{
     }
 
     const confirmation = () =>{
-        if(chosenproject[0].props.name !== undefined && chosenproject[1].props.name !== undefined && chosenproject[2].props.name !== undefined && chosenproject[3].props.name !== undefined && chosenproject[4].props.name !== undefined){
+        
+        if(chosenp[0].title !== undefined && chosenp[1].title !== undefined && chosenp[2].title !== undefined && chosenp[3].title !== undefined && chosenp[4].title !== undefined){
         document.getElementById('projectpreferenceconfirm').style.display = "block";
         document.getElementById('projectPreferenceselements').style.background = "#003998";
         document.getElementById('projectPreferenceselements').style.opacity = "30%";
@@ -136,6 +195,9 @@ const ProjectPreferences = ()=>{
         }
     }
 
+    const biddingtime = semesters.filter(semester => semester.status === "current")[0].end_bidding_date
+
+
     return(
         <div className="projectPreferences">
             
@@ -146,9 +208,9 @@ const ProjectPreferences = ()=>{
             <h2>Are you sure you want to submit?</h2>
             <p>Please note that this submission will count for your entire group.</p>
             <div id="confirmprojects">
-            {chosenproject.map((chosen, index) =>
+             {chosenp.map((chosen, index) =>
                 <div>
-                {chosen ? chosen : <Project/ >}
+                {chosen}
                 </div>
             )}
             </div>
@@ -160,12 +222,20 @@ const ProjectPreferences = ()=>{
             </div>
 
             <div id = "projectPreferenceselements">
-                <h2 id="">Project Preferences</h2>
+                <h2 id="">Project Preferences
+                    <br></br>
+                {biddingtime}
+                </h2>
                 <div className="preferenceProjects">
-                {itemList.map((project) => 
+                    <ul>
+                    {projects.filter(project => project.published === 'true' && project.semester_id === 1).map(project => (
+                   (<div onClick={() => handleclick(project)}>
+                   <Project id={project.id} name={project.title} description={project.description}/> </div>)))}
+                {/* {itemList.map((project) => 
                     (<div onClick={() => handleclick(project)}>
                     {project}
-                    </div>))}
+                    </div>))} */}
+                    </ul>
                 </div>
                 <div id="sidebuttons">
                     <button id="option1" onClick={()=>{selecting("option1")}}>1</button>

@@ -1,4 +1,5 @@
 import axios from 'axios'; 
+import Cookies from 'js-cookie';
 
 const BASE_URL = "http://localhost:3001";
 
@@ -232,10 +233,26 @@ export async function fetchTeam(userId) {
  */
 export async function updateUserDetails(userId, attribute, newValue) {
     try {
-        const response = await axios.put(`http://localhost:3001/api/users/edit/${userId}`, {
-            attribute, newValue
+        console.log("RECEIVED ITEMS: ", attribute, newValue);
+
+        let res = await fetch(`http://localhost:3001/api/users/edit/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "attribute": attribute,
+                "newValue": newValue
+            })
         });
-        return response.data; // return the updated user data
+        const resJson = await res.json();
+
+
+        // Stores the resulting Auth Token
+        localStorage.setItem("authToken", resJson.token);
+
+
+        return
     } catch (error) {
         console.error('Error updating user details:', error);
         throw error; 

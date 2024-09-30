@@ -7,6 +7,7 @@ import '../admin.css';
 import '../index.js';
 import SemesterDropdown from '../components/semester-dropdown.js';
 import uploadIcon from '../media/upload-icon.png';
+import downloadIcon from '../media/download-icon.png';
 
 // Formats semester data & edit functionality
 const SemesterDetail = ({ description, data='None', onEdit, isEditing, onSave, onCancel }) => {
@@ -79,6 +80,15 @@ const ManageSemester = () => {
     // Required headers for csv uploads
     const studentHeaders = ['Student name', 'Student ID', 'Student SIS ID', 'Email', 'Section name'];
     const teamHeaders = ['name', 'canvas_user_id', 'user_id', 'login_id', 'sections', 'group_name', 'canvas_group_id', 'group_id'];
+
+    const studentDownload = () => {
+        //Code to download student CSV goes here 
+    }
+
+    
+    const teamDownload = () => {
+        //Code to download team CSV goes here 
+    }
 
     // Helper function for date formatting the semester start/end dates, validDate is a true/false flag that returns a valid date that the mySQL database can read
     const formatSemesterDate = (dateString, validDate=false) => {
@@ -336,6 +346,10 @@ const ManageSemester = () => {
                                 <img src= {uploadIcon} alt ='icon' className='upload-icon'></img> 
                                 {students.length >= 1 ? 'Reupload' : 'Upload'} student data
                             </button>
+                            <button className = 'upload-button' onClick ={studentDownload}> 
+                                <img src= {downloadIcon} alt ='icon' className='download-icon'></img> 
+                                Download Student data
+                            </button>
                         </div>
                     </div>
                     { showStudentUpload && (
@@ -360,6 +374,11 @@ const ManageSemester = () => {
                             <button className = 'upload-button' onClick={openTeamUpload}>
                                 <img src={uploadIcon} alt ='icon' className='upload-icon'></img> 
                                 {teams.length >= 1 ? 'Reupload' : 'Upload'} team data
+                            </button>
+
+                            <button className = 'upload-button' onClick={teamDownload}>
+                                <img src={downloadIcon} alt ='icon' className='download-icon'></img> 
+                                Download Team data
                             </button>
                         </div>
                     </div>

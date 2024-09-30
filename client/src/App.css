@@ -1014,6 +1014,24 @@
   display: none;
 }
 
+#help{
+  min-height: fit-content;
+  min-width: fit-content;
+  width: 50%;
+  top: 30%;
+  z-index: 1;
+  align-self: center;
+  margin: 0;
+  position: fixed;
+  text-align: center;
+  justify-self: center;
+  background-color: #2979FF;
+  color: white;
+  border: 1px solid #003998;
+  border-radius: 10px;
+  display: none;
+}
+
 #confirmprojects{
   height: 50%;
   width: 100%;

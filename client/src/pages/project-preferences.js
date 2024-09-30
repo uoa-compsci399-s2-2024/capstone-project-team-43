@@ -195,7 +195,33 @@ const ProjectPreferences = ()=>{
         }
     }
 
-    const biddingtime = semesters.filter(semester => semester.status === "current")[0].end_bidding_date
+    const biddingtime = semesters.filter(semester => semester.status === "current");
+
+    const formatBiddingDate = (biddingDate) => {
+        console.log(typeof biddingDate, biddingDate);
+        const date = new Date(biddingDate);
+        const hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'pm' : 'am';
+        const formattedHours = (hours % 12) || 12;
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const year = date.getFullYear().toString().slice(-2); 
+    
+        return `${formattedHours}:${minutes}${ampm} ${day}/${month}/${year}`;
+    };
+
+    const helppopup = () =>{
+        document.getElementById('help').style.display = "block";
+        document.getElementById('projectPreferenceselements').style.background = "#003998";
+        document.getElementById('projectPreferenceselements').style.opacity = "30%";
+    }
+
+    const helppopupclose = () =>{
+        document.getElementById('help').style.display = "none";
+        document.getElementById('projectPreferenceselements').style.background = "#2979FF";
+        document.getElementById('projectPreferenceselements').style.opacity = "100%";
+    }
 
 
     return(
@@ -221,10 +247,36 @@ const ProjectPreferences = ()=>{
             <br></br><br></br><br></br>
             </div>
 
+            <div id="help">
+                <p>
+                <br></br>
+            1. On the right hand side of the page there are 5 buttons numbered from 1 to 5, with 1 at the top and 5 at the bottom.
+            <br></br>
+            <br></br>
+            2. To select your preference click on the button that corresponds to the position you would like to rank the project.
+            <br></br>
+            <br></br>
+            3. After clicking on the button go to the left hand side of the page and click on which project you would like to be ranked in that position.
+            <br></br>
+            <br></br>
+            4. Repeat this process until you have five projects selected.
+            <br></br>
+            <br></br>
+            5. Once you have selected your five ranked preferences projects scroll down to click the submit button.
+            <br></br>
+            <br></br>
+            </p>
+            <button onClick={helppopupclose}>Close</button>
+            <br></br>
+            <br></br>
+            </div>
+
             <div id = "projectPreferenceselements">
                 <h2 id="">Project Preferences
-                    <br></br>
-                {biddingtime}
+                {console.log(formatBiddingDate(biddingtime[0].end_bidding_date))}
+                <br></br>
+                Form Will Close On: 
+                <br></br>{formatBiddingDate(biddingtime[0].end_bidding_date)}
                 </h2>
                 <div className="preferenceProjects">
                     <ul>
@@ -237,6 +289,7 @@ const ProjectPreferences = ()=>{
                     </div>))} */}
                     </ul>
                 </div>
+                <button id ="?" onClick={helppopup}>?</button>
                 <div id="sidebuttons">
                     <button id="option1" onClick={()=>{selecting("option1")}}>1</button>
                     <button id="option2" onClick={()=>{selecting("option2")}}>2</button>

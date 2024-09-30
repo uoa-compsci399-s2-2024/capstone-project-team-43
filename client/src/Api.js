@@ -233,7 +233,6 @@ export async function fetchTeam(userId) {
  */
 export async function updateUserDetails(userId, attribute, newValue) {
     try {
-        console.log("RECEIVED ITEMS: ", attribute, newValue);
 
         let res = await fetch(`http://localhost:3001/api/users/edit/${userId}`, {
             method: "PUT",
@@ -255,7 +254,6 @@ export async function updateUserDetails(userId, attribute, newValue) {
         return
     } catch (error) {
         console.error('Error updating user details:', error);
-        throw error; 
     }
 };
 /**
@@ -295,6 +293,6 @@ export async function updateSemesterDetails(semesterID, attribute, newValue) {
         return response.data; // return the updated data
     } catch (error) {
         console.error('Error updating details:', error);
-        throw error; 
+        return null;
     }
 };

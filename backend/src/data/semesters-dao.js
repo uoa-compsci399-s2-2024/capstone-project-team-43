@@ -202,16 +202,16 @@ export async function updateSemester(id, attribute, newValue) {
     let connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
 
-    const response = await pool.query("UPDATE SEMESTER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
+    const response = await connection.query("UPDATE SEMESTER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
 
-    /** @type {User} */
+    /** @type {Semester} */
     const updatedSemester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
 
     return updatedSemester;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
-    return[];
+    return null;
   }
 }; 
 

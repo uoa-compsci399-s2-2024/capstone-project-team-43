@@ -131,7 +131,6 @@ export async function passwordEncrypt(password) {
   try {
     let hashPassword = bcrypt.hash(password, saltRounds);
 
-      console.log("given hash : ", hashPassword);
       return hashPassword;
 
   } catch (err) {
@@ -217,8 +216,6 @@ export async function findUser(email) {
 
       /** @type {User} */
       const user = rows[0];
-
-      console.log("User:", user, " With Role: " + user.role);
 
       return user.role;
     }

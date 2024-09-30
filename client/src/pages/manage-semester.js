@@ -62,7 +62,6 @@ const ManageSemester = () => {
     const navigate = useNavigate(); 
     const [semesterID, setSemesterID] = useState(semesterIDFromURL || null);
 
-
     const [students, setStudents] = useState([]);
     const [teams, setTeams] = useState([]);
     const [semester, setSemester] = useState(null);
@@ -81,21 +80,76 @@ const ManageSemester = () => {
     const studentHeaders = ['Student name', 'Student ID', 'Student SIS ID', 'Email', 'Section name'];
     const teamHeaders = ['name', 'canvas_user_id', 'user_id', 'login_id', 'sections', 'group_name', 'canvas_group_id', 'group_id'];
 
-    // Helper function for date formatting the semester start/end dates
-    const formatSemesterDate = (dateString) => {
-        const date = new Date(dateString);
+    // Helper function for date formatting the semester start/end dates, validDate is a true/false flag that returns a valid date that the mySQL database can read
+    const formatSemesterDate = (dateString, validDate=false) => {
+        let date = new Date(dateString);
+        let dateData = null;
+        if (isNaN(date.getTime())) {
+            const data = dateString.split("/");
+            date = new Date(parseInt("20"+data[2]), parseInt(data[1]) - 1, parseInt(data[0]));
+
+            //Converts to a readable format for the mySQL database
+            dateData = `${"20"+data[2].padStart(2, '0')}-${data[1].padStart(2, '0')}-${data[0].padStart(2, '0')}`;
+        }
+
+        if(validDate) {
+
+            //User wants readable format for database
+            return dateData;
+
+        } else {
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
         const year = date.getFullYear().toString().slice(-2); 
-      
         return `${day}/${month}/${year}`;
+        }
     };
 
-    // Helper function to format the bidding start/end dates 
-    const formatBiddingDate = (biddingDate) => {
+    /** 
+     * Helper function to format the bidding start/end dates, validDate is a true/false flag, if set to true the function will return a valid date that the database can read, if false, will return a readable version of the date
+     */ 
+    const formatBiddingDate = (biddingDate, validDate=false) => {
         console.log(typeof biddingDate, biddingDate);
 
-        const date = new Date(biddingDate);
+        let date = new Date(biddingDate);
+        let dateStringResult;
+
+        // if date is invalid, need to manually format it
+        if (isNaN(date.getTime())) {
+            const data = biddingDate.split(" ");
+
+            let hours =  data[0].split(":")[0] % 12;
+
+            if (data[0].slice(-2) === "pm") {
+                hours += 12;
+
+            } else if (data[0].slice(-2) !== "am") {
+                // Not valid time
+                return null;
+            }
+
+            let minutes = parseInt(data[0].split(":")[1].slice(0, -2));
+
+            // If time given is not valid, return
+            if (minutes >= 60  || minutes < 0 || hours < 0 || hours > 23) {
+                return null;
+            }
+
+            let dateData = data[1].split("/");
+            date = new Date(parseInt("20"+dateData[2]), parseInt(dateData[1]) - 1, parseInt(dateData[0]), hours, minutes);
+
+            //Converts to a readable format for the mySQL database
+            dateStringResult = `${"20"+dateData[2].padStart(2, '0')}-${dateData[1].padStart(2, '0')}-${dateData[0].padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:00`;
+            
+        }
+
+        if(validDate) {
+
+            //User wants readable format for database
+            return dateStringResult;
+
+        } else {
+
         const hours = date.getHours();
         const minutes = date.getMinutes().toString().padStart(2, '0');
         const ampm = hours >= 12 ? 'pm' : 'am';
@@ -105,6 +159,7 @@ const ManageSemester = () => {
         const year = date.getFullYear().toString().slice(-2); 
     
         return `${formattedHours}:${minutes}${ampm} ${day}/${month}/${year}`;
+        }
     };
 
     // Get semester data from server
@@ -114,6 +169,7 @@ const ManageSemester = () => {
             if (!semesterID) return; 
             try {
                 const data = await fetchSemester(semesterID);
+                setUpdatedSemester(data);
                 setSemester(data);
                 console.log('Fetched semester data:', data);  
             } catch (error) {
@@ -168,9 +224,25 @@ const ManageSemester = () => {
     // Handle saving edit changes
     const handleSave = async (newValue) => {
         console.log(`Saving ${editingField} with value: ${newValue}`);
+
+        let formattedDate;
+
+        if (editingField === "start_date" || editingField === "end_date") {
+            console.log("GETTING NEW DATES WITH: ", newValue);
+            formattedDate = formatSemesterDate(newValue, true);
+        } else {
+            formattedDate = formatBiddingDate(newValue, true);
+        }
+
+        console.log("DATE RECEIVED: ", formattedDate);
+
+        if(formattedDate) {
+
+            console.log("DATE IS INVALID");
         
         // update details in database
-        await updateSemesterDetails(semesterID, editingField, newValue);
+        await updateSemesterDetails(semesterID, editingField, formattedDate);
+
 
         // update details on page immediately
         setUpdatedSemester((prevSemester) => ({
@@ -179,6 +251,7 @@ const ManageSemester = () => {
         }));
 
         setEditingField(null); // Exit edit mode
+    }
     };
     
     // Handle cancelling edit
@@ -207,7 +280,7 @@ const ManageSemester = () => {
                     <p className='text-detail'>View and edit the semester dates</p>
                     <SemesterDetail 
                         description="Start date" 
-                        data={formatSemesterDate(semester.start_date)} 
+                        data={formatSemesterDate(updatedSemester.start_date)} 
                         onEdit={() => handleEdit('start_date')} 
                         isEditing={editingField === 'start_date'} 
                         onSave={handleSave} 
@@ -215,7 +288,7 @@ const ManageSemester = () => {
                     />
                     <SemesterDetail 
                         description="End date" 
-                        data={formatSemesterDate(semester.end_date)} 
+                        data={formatSemesterDate(updatedSemester.end_date)} 
                         onEdit={() => handleEdit('end_date')} 
                         isEditing={editingField === 'end_date'} 
                         onSave={handleSave} 
@@ -234,7 +307,7 @@ const ManageSemester = () => {
                     <p className='text-detail'>View and edit when teams are able to submit their project preferences</p>
                     <SemesterDetail 
                         description="Start date" 
-                        data={formatBiddingDate(semester.start_bidding_date)} 
+                        data={formatBiddingDate(updatedSemester.start_bidding_date)} 
                         onEdit={() => handleEdit('start_bidding_date')} 
                         isEditing={editingField === 'start_bidding_date'} 
                         onSave={handleSave} 
@@ -242,7 +315,7 @@ const ManageSemester = () => {
                     />
                     <SemesterDetail 
                         description="End date" 
-                        data={formatBiddingDate(semester.end_bidding_date)} 
+                        data={formatBiddingDate(updatedSemester.end_bidding_date)} 
                         onEdit={() => handleEdit('end_bidding_date')} 
                         isEditing={editingField === 'end_bidding_date'} 
                         onSave={handleSave} 

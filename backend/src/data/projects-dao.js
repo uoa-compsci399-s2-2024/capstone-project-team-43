@@ -297,7 +297,6 @@ export async function publishProjects(status) {
 export async function getProjectsBySemester(semester_id) {
   let connection;
   try {
-    console.log('semester', semester_id);
     // Get connection from pool
     connection = await pool.getConnection();
 

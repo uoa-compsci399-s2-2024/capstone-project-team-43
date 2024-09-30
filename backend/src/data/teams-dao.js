@@ -141,13 +141,12 @@ export async function setTeamProject(id, project_id) {
  */
 export async function deleteTeamBySemester(semesterId) {
   let connection;
-  let result = 0;
   try {
     // Get connection from pool
     connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
 
-    const [result] = await connection.query("DELETE FROM TEAM WHERE semester_id = ?", [semesterId]);
+    await connection.query("DELETE FROM TEAM WHERE semester_id = ?", [semesterId]);
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);

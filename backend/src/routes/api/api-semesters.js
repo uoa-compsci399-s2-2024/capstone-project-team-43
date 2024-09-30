@@ -121,7 +121,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-// Updates an attribute of the user with the given id 
+// Updates an attribute of the semseter with the given id 
 router.put("/edit/:id", async (req, res) => {
     const id = req.params.id;
     const { attribute, newValue } = req.body;

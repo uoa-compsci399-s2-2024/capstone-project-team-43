@@ -1,24 +1,33 @@
 import { Router } from "express";
-import { getUsers, getUsersByTeam, createUser, deleteUser, deleteUserByRole, getUser } from "../../data/users-dao.js";
+import { getUsers, getUsersByTeam, createUser, deleteUser, updateUser, deleteUserByRole, getUser } from "../../data/users-dao.js";
+import { generateToken } from "../../data/authentication-dao.js";
 
 const router = Router();
 
-// Retrieves all users or users of a specific role ('client','admin', or'student')
-router.get("/:role?", async (req, res) => {
-    const { role } = req.params;
-    let users; 
+// Retrieves user with given ID
+router.get("/id/:id", async (req, res) => {
+    const { id } = req.params;
+    const user = await getUser(id);
+    return res.json(user);
+});
 
-    if (role) {
-        users = await getUsers(role);
-    } else {
-        users = await getUsers();
-    }
+// Retrieves all users of a specific role ('client','admin', or'student')
+router.get("/role/:role", async (req, res) => {
+    const { role } = req.params;
+    const users = await getUsers(role);
 
     return res.json(users);
 });
 
+// Retrieves all users 
+router.get("/", async (req, res) => {
+    const { role } = req.params;
+    const users = await getUsers();
+    return res.json(users);
+});
+
 // Deletes all users of a specific role ('client','admin', or'student')
-router.delete("/:role", async (req, res) => {
+router.delete("/role/:role", async (req, res) => {
     const { role } = req.params;
     console.log(`Deleting users with role ${role}`);
     const users = await deleteUserByRole(role);
@@ -38,7 +47,7 @@ router.post("/", async (req, res) => {
 });
 
 // Deletes the user with the given ID
-router.delete("/:id", async (req, res) => {
+router.delete("/id/:id", async (req, res) => {
     const id = req.params.id;
     const success = deleteUser(id);
     res.sendStatus(success ? 204 : 404);
@@ -54,8 +63,37 @@ router.get("/team/:id", async (req, res) => {
 // Gets users in team with given id 
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
-    const user = await getUsers(id);
+    const user = await getUser(id);
     return res.json(user);
+});
+
+// Updates an attribute of the user with the given id 
+router.put("/edit/:id", async (req, res) => {
+    const id = req.params.id;
+    const { attribute, newValue } = req.body;
+
+    try {
+        // Update the attribute in the database
+        const [updatedUser] = await updateUser(id, attribute, newValue);
+
+        console.log(updatedUser[0].email);
+
+            // checks if user has valid credentials
+    const token = await generateToken(updatedUser[0].email, updatedUser[0].password, false);
+
+    if (token == null) {
+        //Access denied, not valid user
+        res.status(401);
+    }
+
+
+        // Return success status
+       return res.status(200).json({token: token});
+
+    } catch (error) {
+        console.error('Error updating user:', error);
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
 
 export default router;

@@ -185,8 +185,14 @@ export async function createStudent(email, first_name, last_name) {
  * @param {number} id the id of the User to delete
  */
 export async function deleteUser(id) {
+  let connection;
   try {
-    await pool.query("DELETE FROM USER WHERE id = ?", id);
+
+        // Get connection from pool
+        connection = await pool.getConnection();
+        await connection.query(`USE ${DB_NAME};`);
+    await connection.query("DELETE FROM USER WHERE id = ?", id);
+
   } catch (err) {
     console.error('Error executing query/s:', err);
   }
@@ -200,17 +206,18 @@ export async function deleteUser(id) {
  */
 export async function deleteUserByRole(role) {
   let connection;
-  let result = 0;
   try {
+
     // Get connection from pool
     connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
 
-    const [result] = await connection.query("DELETE FROM USER WHERE role = ?", [role]);
+    await connection.query("DELETE FROM USER WHERE role = ?", [role]);
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
   } finally {
+    
     // If there is a connection, release it
     if (connection) connection.release();
   }
@@ -224,8 +231,13 @@ export async function deleteUserByRole(role) {
  * @param {string} email the new email 
  */
 export async function updateUserEmail(id, email) {
+  let connection;
   try {
-    await pool.query("UPDATE USER SET email = ? WHERE id = ?", [email, id]);
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+    await connection.query("UPDATE USER SET email = ? WHERE id = ?", [email, id]);
 
   } catch (err) {
     console.error('Error executing query/s:', err);
@@ -240,8 +252,13 @@ export async function updateUserEmail(id, email) {
 * @param {string} last_name the new first name
 */
 export async function updateUserName(id, first_name, last_name) {
+  let connection;
   try {
-    await pool.query("UPDATE USER SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+    await connection.query("UPDATE USER SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
 
   } catch (err) {
     console.error('Error executing query/s:', err);
@@ -256,9 +273,38 @@ export async function updateUserName(id, first_name, last_name) {
 */
 export async function updateTeam(unikey, team_id) {
   try {
-    await pool.query("UPDATE USER SET team_id = ? WHERE email LIKE ?", [team_id, `${unikey}%`]);
+
+    // Get connection from pool
+    let connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+    await connection.query("UPDATE USER SET team_id = ? WHERE email LIKE ?", [team_id, `${unikey}%`]);
 
   } catch (err) {
     console.error('Error executing query/s:', err);
   }
 }
+
+/**
+* Updates an attribute of a User with a given id
+*
+* @param {number} id the id of the User to update
+* @param {string} attribute the attribute to update
+* @param {string} newValue the new value
+*/
+export async function updateUser(id, attribute, newValue) {
+  try {
+    let connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+
+    const response = await connection.query("UPDATE USER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
+
+    /** @type {User} */
+    const updatedUser = await connection.query("SELECT * FROM USER WHERE id = ?", [id]); 
+
+    return updatedUser;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+    return[];
+  }
+}; 

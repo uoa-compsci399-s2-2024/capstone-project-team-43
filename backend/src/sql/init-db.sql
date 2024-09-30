@@ -2,6 +2,9 @@ CREATE TABLE PROJECT (
     id INT AUTO_INCREMENT PRIMARY KEY,
     project_number INTEGER NOT NULL,
     title VARCHAR(255) NOT NULL,
+    client_name VARCHAR(255) NOT NULL,
+    client_email VARCHAR(255) NOT NULL,
+    other_client_details VARCHAR(255),
     deliverable VARCHAR(255),
     description VARCHAR(255) NOT NULL,
     owner_id INTEGER NOT NULL,
@@ -32,11 +35,37 @@ CREATE TABLE SEMESTER (
     id INT AUTO_INCREMENT PRIMARY KEY,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    start_bidding_date DATE NOT NULL,
-    end_bidding_date DATE NOT NULL,
+    start_bidding_date DATETIME NOT NULL,
+    end_bidding_date DATETIME NOT NULL,
     is_semester_one BOOL NOT NULL,
-    status ENUM('retired', 'current', 'upcoming')
+    status ENUM('retired', 'current', 'upcoming'),
+    name VARCHAR(255) DEFAULT NULL
+
 );
+-- trigger to fill value in name & status column of SEMESTER
+CREATE TRIGGER before_insert_semester
+BEFORE INSERT ON SEMESTER
+FOR EACH ROW
+BEGIN
+    DECLARE semester_num VARCHAR(3);
+
+    IF NEW.is_semester_one = 1 THEN
+        SET semester_num = 'One';
+    ELSE
+        SET semester_num = 'Two';
+    END IF;
+
+    IF NEW.end_date < CURRENT_TIMESTAMP THEN
+        SET NEW.status = 'retired';
+    ELSEIF NEW.start_date > CURRENT_TIMESTAMP THEN
+        SET NEW.status = 'upcoming';
+    ELSE
+        SET NEW.status = 'current';
+    END IF;
+
+    -- Set name as "Semester {1 or 2}, {start_date year}"
+    SET NEW.name = CONCAT('Semester ', semester_num, ', ', YEAR(NEW.start_date));
+END; 
 
 CREATE TABLE TEAM (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,13 +75,39 @@ CREATE TABLE TEAM (
     project_id INT
 );
 
+CREATE TABLE PREFERENCE (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    team_id INT NOT NULL,
+    project_id INT NOT NULL,
+    preference INT NOT NULL,
+    created TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3)
+);
+
+-- undecided on if we need the below views 
+
+-- CREATE VIEW CLIENTS AS
+-- SELECT *
+-- FROM USER
+-- WHERE role = 'client';
+
+-- CREATE VIEW ADMINS AS
+-- SELECT *
+-- FROM USER
+-- WHERE role = 'admin';
+
+-- CREATE VIEW STUDENTS AS
+-- SELECT *
+-- FROM USER
+-- WHERE role = 'student';
 
 INSERT INTO PROJECT 
-    (title, description, owner_id, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry) 
+    (title, description, owner_id, other_client_details, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry, client_name, client_email) 
 VALUES 
-    ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false', '2025-08-01'),
-    ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false', '2025-09-01'),
-    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false', '2025-10-01');
+    ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','1','accepted','3','43', 'false', '2025-08-01', 'john', 'john@gmail.com'),
+    ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false', '2025-09-01', 'john', 'john@gmail.com'),
+    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','1','pending','3','43', 'false', '2025-10-01', 'john', 'john@gmail.com'),
+    ('retiredproj1','A old web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','5','rejected','3','43', 'false', '2025-09-01', 'john', 'john@gmail.com'),
+    ('retiredproj2','Maybe an older web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','6','pending','3','43', 'false', '2025-10-01', 'john', 'john@gmail.com');
 
 INSERT INTO USER  (role, email, password, first_name, last_name, team_id, company)
 VALUES 
@@ -71,9 +126,16 @@ VALUES
 INSERT INTO SEMESTER 
     (start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) 
 VALUES 
-    (STR_TO_DATE('02-26-2025','%m-%d-%Y'), STR_TO_DATE('06-24-2025','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2025','%m-%d-%Y'), STR_TO_DATE('11-11-2025','%m-%d-%Y'), STR_TO_DATE('02-16-2025','%m-%d-%Y'), STR_TO_DATE('06-18-2025','%m-%d-%Y'), false),
-    (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), false),
-    (STR_TO_DATE('02-26-2023','%m-%d-%Y'), STR_TO_DATE('06-24-2023','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), true), 
-    (STR_TO_DATE('07-15-2023','%m-%d-%Y'), STR_TO_DATE('11-11-2023','%m-%d-%Y'), STR_TO_DATE('02-28-2025','%m-%d-%Y'), STR_TO_DATE('06-30-2025','%m-%d-%Y'), false);
+    (STR_TO_DATE('02-26-2025','%m-%d-%Y'), STR_TO_DATE('06-24-2025','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), true), 
+    (STR_TO_DATE('07-15-2025','%m-%d-%Y'), STR_TO_DATE('11-11-2025','%m-%d-%Y'), ('2025-02-16 00:00:00'), ('2025-06-30 00:00:00'), false),
+    (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), true), 
+    (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), false),
+    (STR_TO_DATE('02-26-2023','%m-%d-%Y'), STR_TO_DATE('06-24-2023','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), true), 
+    (STR_TO_DATE('07-15-2023','%m-%d-%Y'), STR_TO_DATE('11-11-2023','%m-%d-%Y'), ('2025-02-28 00:00:00'), ('2025-06-30 00:00:00'), false);
+    -- (STR_TO_DATE('02-26-2024','%m-%d-%Y'), STR_TO_DATE('06-24-2024','%m-%d-%Y'), true), 
+    -- (STR_TO_DATE('07-15-2024','%m-%d-%Y'), STR_TO_DATE('11-11-2024','%m-%d-%Y'), false);
+
+INSERT INTO PREFERENCE
+    (team_id, project_id, preference)
+VALUES
+    (1, 1, 1);

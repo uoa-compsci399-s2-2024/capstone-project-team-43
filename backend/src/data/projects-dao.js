@@ -1,5 +1,6 @@
 import { pool } from "./database.js";
 import dotenv from "dotenv";
+import { getUser } from "./users-dao.js";
 
 dotenv.config();
 
@@ -18,6 +19,18 @@ dotenv.config();
  * @property {number} project_number
  */
 
+/**
+ * @typedef {object} User
+ * @property {number} id
+ * @property {'admin'|'student'|'client'} role
+ * @property {string} email
+ * @property {string} first_name
+ * @property {string} last_name
+ * @property {string} company
+ * @property {Date} created
+ * @property {Date} last_login
+ */
+
 // Gets the database name from .env file
 const DB_NAME = process.env.DB_NAME;
 /**
@@ -32,8 +45,7 @@ export async function getProjects() {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT');
-    console.log('Rows:', rows);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT');
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -44,6 +56,7 @@ export async function getProjects() {
     console.error('Error executing query/s:', err.message);
   }
 }
+
 /**
  * Gets all status projects
  * @param {string} status
@@ -56,7 +69,7 @@ export async function getStatusProject(status) {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
     console.log('Rows:', rows);
 
     // If there is a connection, release it
@@ -66,6 +79,30 @@ export async function getStatusProject(status) {
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
+  }
+}
+
+/**
+ * Get project by id
+ * 
+ * @param {number} id
+ * @return {Promise<Project>}
+ */
+export async function getProjectById(id) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME}`);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE id = ?', id);
+
+    return rows[0];
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally {
+    if (connection) connection.release();
   }
 }
 
@@ -82,10 +119,11 @@ export async function getStatusProject(status) {
  * @param {number} max_teams
  * @param {number} project_number
  * @param {Date} expiry
+ * @param {string} other_client_details
  *
  * @return the newly created project
  */
-export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id) {
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details) {
   let connection;
   try {
 
@@ -94,10 +132,18 @@ export async function createProject(title, description, owner_id, special_requir
 
     await connection.query(`USE ${DB_NAME};`);
 
+    /** @type {User} */
+    const user = await getUser(owner_id);
+
+    console.log("THIS IS THE USER: ", user);
+
+    const client_name = user.first_name + " " + user.last_name;
+    const client_email = user.email;
+
     // Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number, expiry]
+      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email]
     );
 
     /** @type {Project} */
@@ -127,10 +173,11 @@ export async function createProject(title, description, owner_id, special_requir
  * @param {number} max_teams
  * @param {number} project_number
  * @param {Date} expiry
+ * @param {string} other_client_details
  *
  * @return the newly created project
  */
-export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, project_number, semester_id) {
+export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, project_number, semester_id, other_client_details, client_name, client_email) {
   let connection;
   try {
 
@@ -141,9 +188,9 @@ export async function editProject(id, title, description, special_requirements, 
 
     // Insert project into db
     const response = await connection.query(
-      
-      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ? WHERE id = ?",
-      [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, semester_id, max_teams, project_number, expiry, id]);
+
+      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ?, other_client_details = ?, client_name = ?, client_email = ?, WHERE id = ?",
+      [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, semester_id, max_teams, project_number, expiry, other_client_details, client_name, client_email, id]);
 
     /** @type {Project} */
     const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
@@ -155,6 +202,9 @@ export async function editProject(id, title, description, special_requirements, 
 
   } catch (err) {
     console.error('Error executing query/s:', err);
+  } finally {
+    if (connection) connection.release();
+
   }
 }
 
@@ -168,6 +218,8 @@ export async function updateProjectStatus(id, status) {
   let connection;
   try {
 
+    console.log("GETTING UPDATED WHERE ID: ", id, " STATUS: ", status);
+
     // Get connection from pool
     connection = await pool.getConnection();
 
@@ -175,11 +227,15 @@ export async function updateProjectStatus(id, status) {
 
     await connection.query("UPDATE `project` SET status = ? WHERE id = ?", [status, id]);
 
+    console.log("PROJECT STATUS CHANGED");
+
     // If there is a connection, release it
     if (connection) connection.release();
 
   } catch (err) {
     console.error('Error executing query:', err);
+  } finally {
+    if (connection) connection.release();
   }
 }
 
@@ -200,6 +256,8 @@ export async function deleteProject(id) {
     await connection.query("DELETE FROM PROJECT WHERE id = ?", id);
   } catch (err) {
     console.error('Error executing query:', err);
+  } finally {
+    if (connection) connection.release();
   }
 }
 
@@ -207,7 +265,7 @@ export async function deleteProject(id) {
 /**
  * Sets all projects to published/unpublished
  *
- * @param {number} status // status is either true/false to publish/unpublish all projects
+ * @param {'true'|'false'} status // status is either true/false to publish/unpublish all projects
  */
 export async function publishProjects(status) {
   let connection;
@@ -216,12 +274,39 @@ export async function publishProjects(status) {
     // Get connection from pool
     connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
-    await connection.query("UPDATE `project` SET published = ?", [status]);
 
-    // If there is a connection, release it
-    if (connection) connection.release();
+    if (status == "false") {
+      await connection.query("UPDATE `project` SET published = ?", [status]);
+    } else {
+      await connection.query("UPDATE `project` SET published = ? WHERE status = \"accepted\"", [status]);
+    }
 
   } catch (err) {
     console.error('Error executing query:', err);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+  }
+}
+/**
+ * Gets all projects by semester
+ * @param {number} semester_id
+ * @returns {Promise<Project[]>}
+ */
+export async function getProjectsBySemester(semester_id) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE semester_id = ?', [semester_id]);
+
+    return rows;
+
+  } catch (err) {
+    if (connection) connection.release();
+    console.error('Error executing query/s:', err.message);
   }
 }

@@ -84,8 +84,6 @@ router.post("/login", async (req, res) => {
         res.status(401);
     }
 
-    console.log("Token generated: " + token);
-
     res.status(200).json({ token: token });
 });
 
@@ -105,8 +103,6 @@ router.post("/register", async (req, res) => {
     }
 
     token = await generateToken(email, password, false);
-
-    console.log("Token generated and User Registered: " + token);
 
     res.status(200).json({ token: token });
 });
@@ -152,8 +148,6 @@ router.post("/register/admin", async (req, res) => {
     }
 
     token = await generateToken(email, password, false);
-
-    console.log("Token generated and User Registered: " + token);
 
     res.status(201).send(token);
 });
@@ -265,11 +259,7 @@ router.get('/google/callback', async (req, res) => {
         const email = userInfo.email;
         const first_name = userInfo.given_name;
         const last_name = userInfo.family_name;
-
-        console.log('User email:', email);
-        console.log('User first name:', first_name);
-        console.log('User last name:', last_name);
-
+        
         // Checks if the user exists in the database, if so it returns the role, if not returns null
         const user_role = await findUser(email);
         let token = null
@@ -279,8 +269,6 @@ router.get('/google/callback', async (req, res) => {
             // User does not exist in the database must create a new client
             await createUser("client", email, null, userInfo.given_name, userInfo.family_name, null);
             token = await generateToken(email, null, true);
-
-            console.log("TOKEN GENERATED GOOGLE USER: " + token);
 
             res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
                 httpOnly: false, // Prevents JavaScript access to the cookie
@@ -297,8 +285,6 @@ router.get('/google/callback', async (req, res) => {
 
             //User is registered and exist in the database, can be logged in
             token = await generateToken(email, null, true);
-
-            console.log("TOKEN GENERATED GOOGLE USER: " + token);
 
             res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
                 httpOnly: false, // Prevents JavaScript access to the cookie
@@ -362,7 +348,7 @@ router.get("/role", async (req, res) => {
         }
     } catch (err) {
         console.log(err);
-        return res.json({ role: "none" });
+        return res.status(401).json({ role: "none" });
     }
 });
 

@@ -6,18 +6,26 @@ import '../App.css';
 function adminPop(props){
 
 
-    const submit =() =>{
-        document.getElementById('confirm').style.display = "none";
+    // const submit =() =>{
+    //     document.getElementById('confirm').style.display = "none";
+    //     document.getElementById('close').style.display = "none";
+    //     document.getElementById('edit').style.display = "none";
+    // }
+
+    // const submit =() =>{
+    //     document.getElementById('confirm').style.display = "none";
+    // }
+
+    const edit = () =>{
+        alert("done");
     }
-    const edit =() =>{
-        alert("edit");
-    }
+
 // console.log(props);
     return(
         <div id="popup">    
              
                     <br></br><br></br>
- 
+                    {/* <button id="close" onClick={submit}>&times;</button> */}
                     <table>
                         <tr id="top">
                             <td>{props.number}</td>
@@ -83,7 +91,6 @@ function adminPop(props){
                         </tr>
                     </table> 
                     <button id="edit" onClick={edit}>Edit</button>
-
 
                     <br></br><br></br><br></br>
                     </div>

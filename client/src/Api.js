@@ -1,3 +1,6 @@
+import axios from 'axios'; 
+import Cookies from 'js-cookie';
+
 const BASE_URL = "http://localhost:3001";
 
 /**
@@ -25,7 +28,9 @@ export async function fetchProjects(status) {
         return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    }
+        throw error;
+        return []; 
+    }
 };
 
 export async function updateStatus(id,status) {
@@ -35,14 +40,54 @@ export async function updateStatus(id,status) {
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({ status })
+            body: JSON.stringify({ status }),
           })
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
+        throw error;    
+    }
+};
+/**
+ * Fetches all teams for given semester
+ * 
+ * @async
+ * @function fetchTeamsBySemester
+ * @param {number} semesterID
+ * @returns {Promise<Team[]>} 
+ * 
+ */
+export async function fetchTeamsBySemester(semesterID) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/teams/semester/${semesterID}`);
+        console.log('Response:', response);  
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error fetching teams:', error);
         throw error;    }
 };
+/**
+ * Fetches all users from the server 
+ * 
+ * @async
+ * @function fetchUsersByRole
+ * @param {'student | admin | client'} role
+ * @returns {Promise<User[]>} 
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchUsersByRole(role) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/users/role/${role}`);
+        console.log('Response:', response);  
+        return await response.json();
 
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        throw error;    }
+};
 export async function updatePublish(status) {
     try {
          const response = await fetch(`${BASE_URL}/api/projects/publish/${status}`, {
@@ -50,7 +95,7 @@ export async function updatePublish(status) {
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({ status })
+            body: JSON.stringify({ status }),
           })
         return await response;
     } catch (error) {
@@ -58,26 +103,26 @@ export async function updatePublish(status) {
         throw error;}
 };
 
-export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number) {
-    console.log("we are here");
+
+
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details) {
     try {
-        console.log("we are inside try statement");
          const response = await fetch(`${BASE_URL}/api/projects/`, {
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number}),
+            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details}),
           })
 
-          const resJson = await response.json();
-
-          console.log("status: ", response.status);
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
         throw error;    }
-};export async function fetchSemesters() {
+};
+
+
+export async function fetchSemesters() {
     try {
         let response; 
         
@@ -87,4 +132,167 @@ export async function createProject(title, description, owner_id, special_requir
     } catch (error) {
         console.error('Error fetching semesters:', error);
         throw error;    }
+};
+/**
+ * Fetches a semester from the server 
+ * 
+ * @async
+ * @function fetchSemester
+ * @param {number} [semesterID] 
+ * @returns {Promise<Semester>} A promise that resolves to a Team object.
+ * 
+ */
+export async function fetchSemester(semesterID) {
+    try {
+        console.log('fetching semester '+semesterID);
+        const response = await fetch(`${BASE_URL}/api/semesters/${semesterID}`);
+        console.log('Fetched semester:', response);  
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error fetching semester:', error);
+        throw error; 
+        return [];
+    }
+};
+/**
+ * Fetches all projects from the server by semester
+ * 
+ * @async
+ * @function fetchProjectsBySemester
+ * @param {number} [semesterId] 
+ * @returns {Promise<Project[]>} A promise that resolves to an array of project objects.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchProjectsBySemester(semesterId) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/projects/semester/${semesterId}`);
+        console.log('project 1:',response[0])
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    }
+};
+/**
+ * Fetches a user from the server using user ID
+ * 
+ * @async
+ * @function fetchUser
+ * @param {number} [userId] 
+ * @returns {Promise<User>} A promise that resolves to a User object.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchUser(userId) {
+    try {
+        console.log('fetching data for user:'+userId);
+        const response = await fetch(`${BASE_URL}/api/users/id/${userId}`);
+        console.log('Response:', response);  
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        throw error;    
+        return [];
+    }
+};
+/**
+ * Fetches a user's team from the server 
+ * 
+ * @async
+ * @function fetchTeam
+ * @param {number} [userId] 
+ * @returns {Promise<Team>} A promise that resolves to a Team object.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchTeam(userId) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/teams/user/id/${userId}`);
+        console.log('Response:', response);  
+        return await response.json();
+
+    } catch (error) {
+        console.error('Error fetching team:', error);
+        throw error;    }
+};
+/**
+ * Updates given attribute for User with given id
+ * 
+ * @async
+ * @function updateUserDetails
+ * @param {number} [userId] 
+ * @param {string} [attribute]
+ * @param {string} [newValue]
+ * @returns {Promise<User>} A promise that resolves to a User object.
+ *  
+ */
+export async function updateUserDetails(userId, attribute, newValue) {
+    try {
+
+        let res = await fetch(`http://localhost:3001/api/users/edit/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "attribute": attribute,
+                "newValue": newValue
+            })
+        });
+        const resJson = await res.json();
+
+
+        // Stores the resulting Auth Token
+        localStorage.setItem("authToken", resJson.token);
+
+
+        return
+    } catch (error) {
+        console.error('Error updating user details:', error);
+    }
+};
+/**
+ * Deletes User's Account by deleting their projects and user record
+ * 
+ * @async
+ * @function deleteUser
+ * @param {number} [userID] 
+ * @returns {Promise<response>} 
+ *  
+ */
+export async function deleteUser(userID) {
+    try {
+        const response = await axios.delete(`http://localhost:3001/api/users/id/${userID}`);
+        return response.status; 
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        throw error; 
+    }
+};
+/**
+ * Updates given attribute for User with given id
+ * 
+ * @async
+ * @function updateSemesterDetails
+ * @param {number} [semesterID] 
+ * @param {string} [attribute]
+ * @param {string} [newValue]
+ * @returns {Promise<Semester>} 
+ *  
+ */
+export async function updateSemesterDetails(semesterID, attribute, newValue) {
+    try {
+        const response = await axios.put(`http://localhost:3001/api/semesters/edit/${semesterID}`, {
+            attribute, newValue
+        });
+        return response.data; // return the updated data
+    } catch (error) {
+        console.error('Error updating details:', error);
+        return null;
+    }
 };

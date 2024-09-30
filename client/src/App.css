@@ -25,7 +25,7 @@
   text-align: center;
   /*gap:2rem;*/
   padding: 0 1rem;
-  height: 15vh;
+  height: 18vh;
   max-height: 150px;
 
 }
@@ -43,31 +43,65 @@
 .navbar li {
   display: block;
   padding: 0 10px 0 10px;
+  margin-left: -0.75vw;
 }
 
 .navbar a{
   display: block;
   color: inherit;
   text-decoration: none;
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .navbar img {
   display: flex;
-  width: 10rem;
+  margin-top: 2vh;
+  width: 9rem;
   height: auto;
   align-items: center;
+  transition: 0.3s;
+}
+
+
+.navbar img:hover {
+
+  width: 10rem;
+  transition: 0.3s;
 }
 
 .sideBar {
   position: absolute;
+  width: 50px;
 }
 
 /**           NAV BAR(SIDE MENU)            **/
 
+.sideMenuButton{
+  background-image: url('../src/media/hamburger-menu-icon.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 50px;
+  height: 50px;
+  margin-left: 3vh;
+  background-color: inherit;
+  position: absolute;
+  transition: 0.3s;
+}
+
+.sideMenuButton:hover{
+  background-color: inherit;
+  width: 55px;
+  height: 55px;
+  transition: 0.3s;
+}
+
 .sidemenu{
   display: none;
-  min-height: 100vh;
-  width: 15vw;
+  max-height: 82vh;
+  width: 12vw;
   background-color: #003998;
   position: absolute;
   color: white;
@@ -75,12 +109,12 @@
   font-weight: bold;
 }
 .sidemenu ul{
+  margin-left: 30px;
   padding: 0;
-  margin: 0;
   list-style: none;
   display: flex;
   flex-direction: column;
-  margin-left: 10%;
+  /* margin-left: 10%; */
 }
 .sidemenu a{
   color: inherit;
@@ -92,15 +126,29 @@
   font-size: small;
 }
 
+.logoutButton{
+  background-color: inherit;
+  transition: 0.3s;
+  margin-left: -8px;
+
+}
+
+.logoutButton:hover{
+  background-color: inherit;
+  color: white;
+  transition: 0.3s;
+  
+}
+
 /**           LOGIN PAGE             **/
 
 
 .login-left{
   background-color: #2979FF;
   width: 50%;
+  height: 82vh;
   display: flex;
   float: left;
-  height: 100vh;
   justify-content: center;
   align-items: center;
 }
@@ -108,30 +156,50 @@
 .login-left #viewcap{
   background-color: white;
   align-items: center;
-  width: 70%;
+  width: 65%;
   height: 50%;
-  text-align: center;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  gap: 30px;
+}
+
+.login-button-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0; 
+  margin: 0px;
+  text-align: center;
+  margin-top: 0vh;
 }
 
 .login-left #viewcap button{
   color: white;
   background-color: #003998;
-  min-width: 25.85vw;
-  float:center;
-  padding: 2%;
-  border-radius: 3px;
+  /* min-width: 25.85vw; */
+  /* float:center; */
+  padding: 10px;
+  border-radius: 5px;
   border-style: hidden;
+  text-decoration: none;
+  width: 200px;
+  height: 40px;
+
 }
 .login-left #viewcap a{
   color: white;
   text-decoration: none;
 }
 
-.login-left button:hover{
-  min-width: 25.85vw;
-  float:center;
-  text-decoration: underline;
+.login-right{
+  background-color: white;
+  width: 50%;
+  height: 82vh;
+  float: right;
+  display: none;
   
 }
 
@@ -141,13 +209,26 @@
   margin-left: 23%;
 }
 
-.login-right{
-  background-color: white;
-  width: 50%;
-  float: right;
-  height: 100vh;
-  display: none;
-  
+
+.login-form-container{
+  text-align: center;
+  margin-top: -11.5vh;
+  margin-left: -5vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-google-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-google-button{
+  padding: 0px;
+  margin-bottom: -25px;
 }
 
 .login h1{
@@ -155,10 +236,6 @@
   margin-top: 20%;
 }
 
-.login-form{
-  float:center;
-  margin-left: 18%;
-}
 
 .login-form input, select{
   border: 1px, solid, black;
@@ -169,7 +246,6 @@
   padding: 4px;
   margin-top: 8px;
   width: 25vw;
-
 }
 
 .login-form input[type=text]{
@@ -182,32 +258,28 @@
 }
 
 .login-form input[type=password]{
-  width: 29vw;
+  width: 28.8vw;
   padding: 10px;
   margin-top: 8px;
   border: 1px, solid, #003998;
-  margin: 1%;
   border-radius: 3px;
 }
 
 .login-form input[type=email]{
-  width: 29vw;
+  width: 28.8vw;
   padding: 10px;
   margin-top: 8px;
   border: 1px, solid, #003998;
-  margin: 1%;
   border-radius: 3px;
 }
 
 .login-form label{
   text-align: center;
-  margin-left: 2%;
 }
 
 .login button[type=new]{
   float:center;
-  width: 30.3vw;
-  margin-left: 21%;
+  width: 30vw;
   background-color:#003998;
   border-radius: 3px;
   padding: 8px;
@@ -218,7 +290,7 @@
 }
 
 .login button[type=submit]{
-  width: 30.7vw;
+  width: 30vw;
   float:center;
   background-color:#2979FF;
   border-radius: 3px;
@@ -227,11 +299,10 @@
   transition-duration: 0.4s;
   border: 2px solid #2979FF;
   color: white;
-  margin-left: 3%;
 }
 
 .login button[type=new]:hover{
-  width: 30.3vw;
+  width: 30vw;
   float:center;
   background-color: white;
   color: black;
@@ -239,7 +310,7 @@
 }
 
 .login button[type=submit]:hover{
-  width: 30.7vw;
+  width: 30vw;
   float:center;
   background-color: white;
   color: black;
@@ -256,7 +327,6 @@
   transition-duration: 0.4s;
   border: 2px solid #003998;
   color: white;
-  margin-left: 3%;
 }
 
 #createacc{
@@ -463,7 +533,6 @@
 .projects #publishing{
   background-color: #dadada;
   width: 100%;
-  z-index: 99;
   bottom: 0px;
   position: absolute;
   padding-top: 2%;
@@ -642,17 +711,20 @@
   position: absolute;
 }
 
-.projectProposal #back, #next{
+.projectProposal #back{
   background-color:#2979FF;
   border: 2px solid #2979FF;
   margin-left: 45%;
 }
 
-
-
-.projectProposal #proposalButtons #submit{
-  margin-left: 50%;
+.projectProposal #next{
+  background-color:#2979FF;
+  border: 2px solid #2979FF;
+  margin-left: -5.1%;
+  position: absolute;
 }
+
+
 
 .projectProposal #back:hover, #next:hover{
   background-color:white;
@@ -924,7 +996,7 @@
   overflow: hidden;
 }
 
-#confirm{
+#projectpreferenceconfirm{
   min-height: fit-content;
   min-width: fit-content;
   width: 50%;
@@ -965,11 +1037,11 @@
   height: fit-content;
 }
 
-#confirm p{
+#projectpreferenceconfirm p{
   font-size: small;
 }
 
-#confirm button{
+#projectpreferenceconfirm button{
   background-color: #003998;
   margin: 1%;
   padding: 1%;
@@ -1853,5 +1925,19 @@
   border: none;
   z-index: 10;
   /* font-size: large; */
+}
+
+/*  ACCOUNT SETTINGS  */
+
+.account-settings-buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+
+}
+
+.editing-button-container > button{
+  margin-left: 10px;
 }
 

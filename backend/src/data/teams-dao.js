@@ -141,18 +141,47 @@ export async function setTeamProject(id, project_id) {
  */
 export async function deleteTeamBySemester(semesterId) {
   let connection;
-  let result = 0;
   try {
     // Get connection from pool
     connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
 
-    const [result] = await connection.query("DELETE FROM TEAM WHERE semester_id = ?", [semesterId]);
+    await connection.query("DELETE FROM TEAM WHERE semester_id = ?", [semesterId]);
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
   } finally {
     // If there is a connection, release it
     if (connection) connection.release();
+  }
+}
+/**
+ * Retrieves a team of a user given the user_id
+ * @param {id} userId
+ * @returns {Promise<Team>}
+ */
+export async function getTeamByUser(userId) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    const [team] = await connection.query(`
+      SELECT t.* 
+      FROM TEAM t
+      WHERE t.id = (SELECT team_id FROM USER WHERE id = ?)
+    `, [userId]);
+
+    return team[0];
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally {
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
   }
 }

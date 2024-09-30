@@ -10,12 +10,6 @@ const ProjectsAvailable = () => {
 
     const [projects, setProjects] = useState([]);
 
-
-
-
-
-   
-
     // get data onall accepted projects 
     useEffect(() => {
         async function getProjects() {
@@ -45,9 +39,6 @@ const ProjectsAvailable = () => {
       
     return(
         <div className="projectsAvailable">
-
-
- 
             <ul>
                 {projects.filter(project => project.published === 'true' && project.semester_id === 1).map(project => (
                    (<div onClick={() => handleclick(project)}>

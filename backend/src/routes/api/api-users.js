@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getUsers, getUsersByTeam, createUser, deleteUser, updateUser, deleteUserByRole, getUser } from "../../data/users-dao.js";
+import { generateToken } from "../../data/authentication-dao.js";
 
 const router = Router();
 
@@ -75,12 +76,23 @@ router.put("/edit/:id", async (req, res) => {
         // Update the attribute in the database
         const [updatedUser] = await updateUser(id, attribute, newValue);
 
+        console.log(updatedUser[0].email);
+
+            // checks if user has valid credentials
+    const token = await generateToken(updatedUser[0].email, updatedUser[0].password, false);
+
+    if (token == null) {
+        //Access denied, not valid user
+        res.status(401);
+    }
+
+
         // Return success status
-        res.status(204).json(updatedUser[0]);
+       return res.status(200).json({token: token});
 
     } catch (error) {
         console.error('Error updating user:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 

@@ -41,7 +41,7 @@ const ProjectPreferences = ()=>{
             if (!semesterID) return; 
             try {
                 const data = await fetchSemester(semesterID);
-                setSemester(data);
+                setSemester([...data]);
                 console.log('Fetched semester data:', data);  
                 // check semester is retired
                 if (data.status !== 'retired') {
@@ -69,6 +69,21 @@ const ProjectPreferences = ()=>{
         }
         getProjects();
     }, []);
+
+    useEffect(() => {
+        async function getSemester() {
+            // only fetch if semesterID is set
+            if (!semesters) return; 
+            try {
+                console.log("GETTING BIDDING DATE");
+                getBiddingDate();
+            } catch (error) {
+                console.error('Failed to load semester:', error);
+                return; 
+            }
+        }
+        getSemester();
+    }, [semesters]);
 
     const handleclick = (project) =>{
         if (opt1 === true){
@@ -195,9 +210,18 @@ const ProjectPreferences = ()=>{
         }
     }
 
-    const biddingtime = semesters.filter(semester => semester.status === "current");
+    let biddingtime;
+    const getBiddingDate = () => {
+    try {
+    const currentSemester = semesters.filter(semester => semester.status === "current");
+    biddingtime = currentSemester[0].end_bidding_date
+    //console.log("SET BIDDING TIME: ", biddingtime);
+    } catch (err) {}
+    }
 
     const formatBiddingDate = (biddingDate) => {
+        console.log("BIDDING DATE RECEIVED: ", biddingDate);
+        if(biddingDate) {
         console.log(typeof biddingDate, biddingDate);
         const date = new Date(biddingDate);
         const hours = date.getHours();
@@ -209,6 +233,11 @@ const ProjectPreferences = ()=>{
         const year = date.getFullYear().toString().slice(-2); 
     
         return `${formattedHours}:${minutes}${ampm} ${day}/${month}/${year}`;
+        } else {
+            getBiddingDate();
+            //console.log("UPDATED BIDDING DATE: ", biddingtime);
+            return null;
+        }
     };
 
     const helppopup = () =>{
@@ -273,10 +302,11 @@ const ProjectPreferences = ()=>{
 
             <div id = "projectPreferenceselements">
                 <h2 id="">Project Preferences
-                {console.log(formatBiddingDate(biddingtime[0].end_bidding_date))}
+                 {/* This console.log needs to stay so that it calls formatBiddingDate beforehand */}   
+                {console.log(formatBiddingDate(biddingtime))}
                 <br></br>
                 Form Will Close On: 
-                <br></br>{formatBiddingDate(biddingtime[0].end_bidding_date)}
+                <br></br>{formatBiddingDate(biddingtime)}
                 </h2>
                 <div className="preferenceProjects">
                     <ul>

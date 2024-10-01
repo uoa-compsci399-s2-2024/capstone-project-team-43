@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTeam, getTeam, getTeamByUser, getTeamsBySemester, deleteTeamBySemester, setTeamProject } from "../../data/teams-dao.js";
+import { createTeam, getTeam, getTeamByUser, getTeamsBySemester, deleteTeamBySemester, setTeamProject, getCSV } from "../../data/teams-dao.js";
 
 const router = Router();
 
@@ -52,6 +52,22 @@ router.delete("/:semesterId", async (req, res) => {
     console.log(`Deleting teams from semester with id ${semesterId}`);
     const teams = await deleteTeamBySemester(semesterId);
     return res.json(teams);
+});
+
+// Gets teams in db structured as a CSV
+router.post("/download", async (req, res) => {
+    try {
+    const { semesterID } = req.body;
+    const teams = await getTeamsBySemester(semesterID);
+    const CSVData = await getCSV(teams);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment('teamsData.csv');
+    return res.status(200).send(CSVData);
+    } catch (err){
+        console.log("Error Downloading CSV ", err);
+        return res.status(204);
+    }
 });
 
 export default router;

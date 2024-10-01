@@ -185,3 +185,24 @@ export async function getTeamByUser(userId) {
 
   }
 }
+
+/**
+* Returns a CSV structure style string based on users in database
+*
+* @param {Array<Object>} teams teams array
+*/
+export async function getCSV(teams) {
+  try {
+    let CSVData = "Team name,Team Number,Project ID\n";
+    for (let i = 0; i < teams.length; i++) {
+      
+        CSVData += teams[i].team_name + "," + teams[i].team_number + "," + teams[i].project_id + "\n";
+      }
+
+      return CSVData;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+    return[];
+  }
+}

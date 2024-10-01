@@ -1,5 +1,5 @@
 import axios from 'axios'; 
-import Cookies from 'js-cookie';
+import { saveAs } from 'file-saver';
 
 const BASE_URL = "http://localhost:3001";
 
@@ -48,6 +48,58 @@ export async function updateStatus(id,status) {
         throw error;    
     }
 };
+
+export async function downloadCSV() {
+    try {
+         const response = await fetch(`${BASE_URL}/api/users/download`, {
+            method: "GET",
+            headers: {
+                "Content-Type" : "application/json"
+            }, 
+          })
+        if(response.ok) {
+        const csvData = await response.text();
+        const url = window.URL.createObjectURL(new Blob([csvData]));
+        console.log(response);
+        var blob = new Blob([csvData], {
+          type: "text/plain;charset=utf-8",
+        });
+        saveAs(blob, `Students.csv`);
+    }
+
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    
+    }
+};
+
+export async function downloadCSVTeams(semesterID) {
+    try {
+         const response = await fetch(`${BASE_URL}/api/teams/download`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({ semesterID }),
+          }) 
+        if(response.ok) {
+        const csvData = await response.text();
+        const url = window.URL.createObjectURL(new Blob([csvData]));
+        console.log(response);
+        var blob = new Blob([csvData], {
+          type: "text/plain;charset=utf-8",
+        });
+        saveAs(blob, `Teams.csv`);
+    }
+
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    
+    }
+};
+
 /**
  * Fetches all teams for given semester
  * 

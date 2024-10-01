@@ -5,12 +5,13 @@ import { fetchProjects, fetchSemesters } from '../Api.js'
 import Project from "../components/project";
 import PopUp from "../components/project-pop-up-admin.js";
 import { jwtDecode } from "jwt-decode";
+import Cookies from 'js-cookie';
 
 const ClientProjects = () => {
 
     let id;
     try {
-        const token = localStorage.getItem("authToken");
+        const token = Cookies.get("authToken");
         if (token === "") {
             console.log("User not logged in");
         } else {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { jwtDecode } from "jwt-decode";
+import Cookies from 'js-cookie';
 
 import '../App.css';
 
@@ -37,8 +38,8 @@ const Login = () => {
 
             const resJson = await res.json();
 
-            // Stores the resulting Auth Token
-            localStorage.setItem("authToken", resJson.token);
+            // Stores the resulting Auth Token in a cookie
+            Cookies.set("authToken", resJson.token);
             console.log("Token stored:", resJson.token);
 
             if (res.status === 200) {
@@ -75,8 +76,8 @@ const Login = () => {
             });
             const resJson = await res.json();
 
-            // Stores the resulting Auth Token
-            localStorage.setItem("authToken", resJson.token);
+            // Stores the resulting Auth Token in a cookie
+            Cookies.set("authToken", resJson.token);
             console.log("Token stored:", resJson.token);
 
             if (res.status === 200) {
@@ -103,8 +104,8 @@ const Login = () => {
 
     useEffect(() => {
         try {
-            const token = localStorage.getItem("authToken");
-            if (token === "" || token === null || token === "null") {
+            const token = Cookies.get("authToken");
+            if (!token) {
                 login_form();
             } else {
                 const decoded = jwtDecode(token);

@@ -266,6 +266,8 @@ router.get('/google/callback', async (req, res) => {
 
         if (user_role == null && role == "client") {
 
+
+
             // User does not exist in the database must create a new client
             await createUser("client", email, null, userInfo.given_name, userInfo.family_name, null);
             token = await generateToken(email, null, true);
@@ -273,7 +275,7 @@ router.get('/google/callback', async (req, res) => {
             res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
                 httpOnly: false, // Prevents JavaScript access to the cookie
                 secure: false, // Once in production, must set to "true", only works over https
-                maxAge: 60 * 60 * 1, // Cookie only valid for 1 hour
+                maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
                 sameSite: 'Strict',
                 path: '/'
             }));
@@ -289,7 +291,7 @@ router.get('/google/callback', async (req, res) => {
             res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
                 httpOnly: false, // Prevents JavaScript access to the cookie
                 secure: false, // Once in production, must set to "true", only works over https
-                maxAge: 60 * 60 * 1, // Cookie only valid for 1 hour
+                maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
                 sameSite: 'Strict',
                 path: '/'
             }));
@@ -303,7 +305,7 @@ router.get('/google/callback', async (req, res) => {
             res.setHeader('Set-Cookie', cookie.serialize('authToken', "null", {
                 httpOnly: false, // Prevents JavaScript access to the cookie
                 secure: false, // Once in production, must set to "true", only works over https
-                maxAge: 60 * 60 * 1, // Cookie only valid for 1 hour
+                maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
                 sameSite: 'Strict',
                 path: '/'
             }));
@@ -347,7 +349,7 @@ router.get("/role", async (req, res) => {
             return res.status(401);
         }
     } catch (err) {
-        console.log(err);
+        console.log("Token is invalid, unauthorized to login");
         return res.status(401).json({ role: "none" });
     }
 });

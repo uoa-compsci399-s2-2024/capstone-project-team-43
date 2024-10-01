@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
-import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import cornerstone_logo from '../media/cornerstone_logo.png';
+import Cookies from 'js-cookie';
 
 import '../App.css';
 
@@ -86,7 +86,6 @@ const Navbar = () => {
         const token = localStorage.getItem("authToken");
 
         if (token === "" || token === null || token === "null") {
-            localStorage.setItem("authToken", "");
             //debugging_nav(); 
             not_logged_in(); //**uncomment for production and commment out debugging_nav()**
         } else {
@@ -151,8 +150,7 @@ const Navbar = () => {
             }
 
             // Clears local storage
-            localStorage.setItem('authToken', "");
-            Cookies.remove('authToken');
+            Cookies.remove("authToken");
             console.log("Successfully Logged out!");
             window.location.href = '/';
         } catch (err) {
@@ -163,12 +161,10 @@ const Navbar = () => {
     useEffect(() => {
         // Gets the token from the cookie sent from the google callback
         const getToken = async () => {
+            const stored_token = Cookies.get('authToken');
+            console.log("TOKEN COOKIE: ", stored_token);
 
-            const stored_token = localStorage.getItem("authToken");
-
-            console.log("token: ", stored_token);
-
-            if (stored_token !== "") {
+            if (stored_token) {
 
                 try {
                     let res = await fetch("http://localhost:3001/api/auth/role", {
@@ -202,15 +198,15 @@ const Navbar = () => {
                         } 
 
                     } else {
-                        // Clears local storage
-                        localStorage.setItem('authToken', "");
+                        // Clears authToken cookie
+                        Cookies.remove("authToken");
                         console.log("An error occurred during login");
                         window.location.reload();
                         
                     }
                 } catch (err) {
-                    // Clears local storage
-                    localStorage.setItem('authToken', "");
+                    // Clears the authToken cookie
+                    Cookies.remove("authToken");
                     console.log(err);
                     window.location.reload();
                 }

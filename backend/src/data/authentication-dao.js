@@ -44,7 +44,7 @@ export async function generateToken(email, password, googleAuth) {
       userId: user.id,
       email: user.email,
       role: user.role, 
-    }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' }); // Token is valid for 1 hour
+    }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' }); // Token is valid for 1 day
 
   return token
 }

@@ -292,6 +292,8 @@ export async function updateTeam(unikey, team_id) {
 * @param {string} newValue the new value
 */
 export async function updateUser(id, attribute, newValue) {
+  console.log("ATTRIBUTE: ", attribute);
+  console.log("NEW VALUE: ", newValue);
   try {
     let connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);

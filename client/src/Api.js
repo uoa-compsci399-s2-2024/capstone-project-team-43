@@ -246,6 +246,7 @@ export async function updateUserDetails(userId, attribute, newValue) {
         });
         const resJson = await res.json();
 
+        console.log("NEW TOKEN: ", resJson.token);
 
         // Stores the resulting Auth Token
         localStorage.setItem("authToken", resJson.token);

@@ -223,6 +223,14 @@ export async function updateProjectStatus(id, status) {
     // Get connection from pool
     connection = await pool.getConnection();
 
+    if(status == "pending" || status == "rejected") {
+
+
+      await connection.query(`USE ${DB_NAME};`);
+  
+      await connection.query("UPDATE `project` SET published = 'false' WHERE id = ?", [id]);
+    }
+
     await connection.query(`USE ${DB_NAME};`);
 
     await connection.query("UPDATE `project` SET status = ? WHERE id = ?", [status, id]);
@@ -297,6 +305,7 @@ export async function publishProjects(status) {
 export async function getProjectsBySemester(semester_id) {
   let connection;
   try {
+    console.log('semester', semester_id);
     // Get connection from pool
     connection = await pool.getConnection();
 

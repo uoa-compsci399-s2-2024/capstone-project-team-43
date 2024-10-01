@@ -86,6 +86,7 @@ router.put("/edit/:id", async (req, res) => {
         res.status(401);
     }
 
+    console.log("Token generated for new details: " + token);
 
         // Return success status
        return res.status(200).json({token: token});

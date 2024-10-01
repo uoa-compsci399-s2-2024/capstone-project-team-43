@@ -788,13 +788,13 @@
 
 .projectPreferences #projectPreferenceselements h2{
   color: white;
-  margin-left: 3vw;
+  margin-right: 80vw;
 }
 
 .preferenceProjects{
   background-color: white;
   max-width: 80%;
-  min-height: 70%;
+  min-height: 65%;
   min-width: 80%;
   position:static;
   margin: 0;
@@ -809,12 +809,12 @@
 
 .projectPreferences #sidebuttons{
   width: 10%;
-  height: 80%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   position: absolute;
-  margin-left: 88%;
-  top: 7vh;
+  margin-left: 87%;
+  top: 0vh;
 }
 
 .projectPreferences #sidebuttons button:hover{
@@ -856,9 +856,9 @@
   min-width:min-content;
   max-width: 12vw;
   height: 9%;
-  left: 88.5%;
+  left: 87.5%;
   position:relative;
-  top:10vh;
+  top: 7vh;
 }
 
 .projectPreferences #preferencesubmit button{
@@ -997,6 +997,24 @@
 }
 
 #projectpreferenceconfirm{
+  min-height: fit-content;
+  min-width: fit-content;
+  width: 50%;
+  top: 30%;
+  z-index: 1;
+  align-self: center;
+  margin: 0;
+  position: fixed;
+  text-align: center;
+  justify-self: center;
+  background-color: #2979FF;
+  color: white;
+  border: 1px solid #003998;
+  border-radius: 10px;
+  display: none;
+}
+
+#help{
   min-height: fit-content;
   min-width: fit-content;
   width: 50%;

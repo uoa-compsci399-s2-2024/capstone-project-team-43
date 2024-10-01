@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../App.js'
 import SemesterCSVUpload from '../components/semester-csv-upload.js';
-import { fetchSemester, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester } from '../Api.js';
+import { fetchSemester, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams } from '../Api.js';
 import '../admin.css';
 import '../index.js';
 import SemesterDropdown from '../components/semester-dropdown.js';
 import uploadIcon from '../media/upload-icon.png';
+import downloadIcon from '../media/download-icon.png';
 
 // Formats semester data & edit functionality
 const SemesterDetail = ({ description, data='None', onEdit, isEditing, onSave, onCancel }) => {
@@ -79,6 +80,17 @@ const ManageSemester = () => {
     // Required headers for csv uploads
     const studentHeaders = ['Student name', 'Student ID', 'Student SIS ID', 'Email', 'Section name'];
     const teamHeaders = ['name', 'canvas_user_id', 'user_id', 'login_id', 'sections', 'group_name', 'canvas_group_id', 'group_id'];
+
+    // Function calls backend API to create a CSV structure of all students in database and downloads in browser
+    const studentDownload = () => {
+        downloadCSV();
+    }
+
+    
+    const teamDownload = () => {
+        console.log("Fetching teams from semester with ID: ", semesterID);
+        downloadCSVTeams(semesterID);
+    }
 
     // Helper function for date formatting the semester start/end dates, validDate is a true/false flag that returns a valid date that the mySQL database can read
     const formatSemesterDate = (dateString, validDate=false) => {
@@ -336,6 +348,10 @@ const ManageSemester = () => {
                                 <img src= {uploadIcon} alt ='icon' className='upload-icon'></img> 
                                 {students.length >= 1 ? 'Reupload' : 'Upload'} student data
                             </button>
+                            <button className = 'upload-button' onClick ={studentDownload}> 
+                                <img src= {downloadIcon} alt ='icon' className='download-icon'></img> 
+                                Download Student data
+                            </button>
                         </div>
                     </div>
                     { showStudentUpload && (
@@ -360,6 +376,11 @@ const ManageSemester = () => {
                             <button className = 'upload-button' onClick={openTeamUpload}>
                                 <img src={uploadIcon} alt ='icon' className='upload-icon'></img> 
                                 {teams.length >= 1 ? 'Reupload' : 'Upload'} team data
+                            </button>
+
+                            <button className = 'upload-button' onClick={teamDownload}>
+                                <img src={downloadIcon} alt ='icon' className='download-icon'></img> 
+                                Download Team data
                             </button>
                         </div>
                     </div>

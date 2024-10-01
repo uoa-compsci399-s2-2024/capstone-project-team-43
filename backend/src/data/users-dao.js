@@ -309,4 +309,26 @@ export async function updateUser(id, attribute, newValue) {
     console.error('Error executing query/s:', err);
     return[];
   }
-}; 
+}
+
+
+/**
+* Returns a CSV structure style string based on users in database
+*
+* @param {Array<Object>} users users array
+*/
+export async function getCSV(users) {
+  try {
+    let CSVData = "Student name,Email,Team ID\n";
+    for (let i = 0; i < users.length; i++) {
+
+        CSVData += users[i].first_name + " " + users[i].last_name + "," + users[i].email + "," + users[i].team_id + "\n";
+      }
+
+      return CSVData;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+    return[];
+  }
+}

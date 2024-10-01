@@ -109,10 +109,12 @@ h1 {
 
 .upload-button{
     background-color: lightgray;
+    margin-left: 10px;
 }
 
 .upload-button:hover {
     background-color: #4d8eff; 
+    cursor: pointer;
 }
 
 .upload-button{
@@ -123,6 +125,12 @@ h1 {
     /* background-image: ; */
     max-width: 20px;
     margin: -5px 3px -5px 0px;
+}
+
+.download-icon{
+    /* background-image: ; */
+    max-width: 25px;
+    margin: -5px 3px -2px 0px;
 }
 
 .file-form-container {
@@ -136,6 +144,14 @@ h1 {
     align-items: center;
     padding: 0; 
     margin: 0;
+}
+
+.data-container {
+    width: 41vw;
+}
+
+.container-button button {
+    margin-top: 5px;
 }
 
 .select-file-container {

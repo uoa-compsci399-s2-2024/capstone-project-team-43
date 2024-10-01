@@ -60,7 +60,7 @@ router.post("/:id/upload/:fileContent", upload.single("myFile"), async (req, res
                 for (const row of rows) {
                     let fname = row['Student name'].split(' ')[0];
                     let lname = row['Student name'].split(' ')[1];
-                    let email =  row['Email']
+                    let email =  row['Email'];
 
                     await createStudent(email, fname, lname);
                 }

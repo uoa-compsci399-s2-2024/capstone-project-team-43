@@ -1,20 +1,21 @@
-
-import React from "react";
-import { createProject } from '../Api.js'
-
 import '../App.css';
+import { createProject, editProject } from '../Api.js';
 import { projectinfo } from "../components/sortable_item.js";
 import { fetchUser } from "../Api.js";
 import { jwtDecode } from "jwt-decode";
+import React from "react";
+import Cookies from 'js-cookie';
 // import { archiveprojectinfo } from "./projects-archive.js";
 
 
 
 const projectProposal = () => {
 
+    let project_id = -1;
+
     const getClientID = () => {
         try {
-            const token = localStorage.getItem("authToken");
+            const token = Cookies.get("authToken");
             if (token === "" || token === null || token === "null") {
                 return -1;
             } else {
@@ -48,8 +49,17 @@ const projectProposal = () => {
         let currentDate = new Date();
         let created = currentDate.toISOString().split('T')[0];
 
+        if (owner_id !== -1) {
+            if (project_id === -1) {
+            console.log("CREATING NEW PROJECT");
+
         //Structure:  title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client details
         createProject(title, description, owner_id, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", max_teams, -1, 1, other_client_details);
+            } else {
+                console.log("UPDATING EXISTING PROJECT WITH ID: ", project_id);
+                editProject(project_id, title, description, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details);
+            }
+        }
     } catch (err) {
         console.log("Error", err);
         }
@@ -58,15 +68,31 @@ const projectProposal = () => {
     const next = () =>{
 
         if(projectinfo !== null){
+            // Must keep this comment here to fetch projectinfo data
             console.log(fetchUser(projectinfo.project.owner_id));
             //document.getElementById("clientname").value = projectinfo.project.owner_id;
             //document.getElementById("clientemail").value = projectinfo.project.owner_id;
+            document.getElementById("otherclientdetails").value = projectinfo.project.other_client_details;
             document.getElementById("projecttitle").value = projectinfo.project.title;
             document.getElementById("projectdescription").value = projectinfo.project.description;
             document.getElementById("desiredoutput").value = projectinfo.project.deliverable;
             document.getElementById("specialequipment").value = projectinfo.project.special_requirements;
             document.getElementById("desiredskill").value = projectinfo.project.preferred_skills;
-            document.getElementById("date").value = projectinfo.project.expiry;   
+            document.getElementById("teams").value = projectinfo.project.max_teams;
+            document.getElementById("availableresources").value = projectinfo.project.available_resources;
+            project_id = projectinfo.project.id;
+            try {
+            if (projectinfo.project.special_requirements.length > 0) {
+                document.getElementById("yes").checked = true;
+            } else {
+                document.getElementById("no").checked = true;
+            }
+        } catch {
+            document.getElementById("no").checked = true;
+        }
+
+            const date = projectinfo.project.expiry.split("T");
+            document.getElementById("date").value = date[0];   
             // console.log(document.getElementById("clientname"));
             // document.getElementById("clientname").value = projectinfo.owner_id;
         }
@@ -181,8 +207,8 @@ const projectProposal = () => {
                         If yes, please specify the required equipment.<br />
                         Note: We can only accept a limited number of projects with special equipment needs.
                     </p>
-                    <input type="radio" id="html" name="fav_language" value="HTML" /> No<br />
-                    <input type="radio" id="html" name="fav_language" value="HTML" /> Yes<br />
+                    <input type="radio" id="no" name="fav_language" value="HTML" /> No<br />
+                    <input type="radio" id="yes" name="fav_language" value="HTML" /> Yes<br />
                     <textarea placeholder="Please specify" id = "specialequipment"/>
                 </label>
                 <label>

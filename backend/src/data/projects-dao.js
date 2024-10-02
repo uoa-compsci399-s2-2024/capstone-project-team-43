@@ -131,7 +131,7 @@ export async function createProject(title, description, owner_id, special_requir
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-
+    console.log("USER ID RECEIVED: ", owner_id);
     /** @type {User} */
     const user = await getUser(owner_id);
 
@@ -177,7 +177,7 @@ export async function createProject(title, description, owner_id, special_requir
  *
  * @return the newly created project
  */
-export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, project_number, semester_id, other_client_details, client_name, client_email) {
+export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details) {
   let connection;
   try {
 
@@ -189,8 +189,8 @@ export async function editProject(id, title, description, special_requirements, 
     // Insert project into db
     const response = await connection.query(
 
-      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ?, other_client_details = ?, client_name = ?, client_email = ?, WHERE id = ?",
-      [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, semester_id, max_teams, project_number, expiry, other_client_details, client_name, client_email, id]);
+      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, max_teams = ?, expiry = ?, other_client_details = ? WHERE id = ?",
+      [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, max_teams, expiry, other_client_details, id]);
 
     /** @type {Project} */
     const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.

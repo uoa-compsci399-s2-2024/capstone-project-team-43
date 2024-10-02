@@ -44,15 +44,15 @@ router.post("/", async (req, res) => {
 // Creates a new project with given name and desc.
 router.post("/update/:id", async (req, res) => {
     const id = req.params.id;
-    const { title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, semester_id, other_client_details } = req.body;
+    const { title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details } = req.body;
 
-    if (!id || !title || !description || !expiry|| !max_teams || !semester_id) {
+    if (!id || !title || !description || !expiry || !max_teams || !project_deliverable) {
         console.log("Not Valid Project Details");
         return res.status(422);
     }
 
     // Details are valid and now passed to editProject function to query into database
-    const project = await editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, semester_id, other_client_details);
+    const project = await editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details);
     return res.location(`/api/projects/${project.id}`).status(201).json(project);
 });
 

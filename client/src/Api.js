@@ -174,6 +174,22 @@ export async function createProject(title, description, owner_id, special_requir
 };
 
 
+export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/projects/update/${id}`, {
+           method: "POST",
+           headers: {
+               "Content-Type" : "application/json"
+           },
+           body: JSON.stringify({title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details}),
+         })
+
+       return await response;
+   } catch (error) {
+       console.error('Error fetching projects:', error);
+       throw error;    }
+};
+
 export async function fetchSemesters() {
     try {
         let response; 

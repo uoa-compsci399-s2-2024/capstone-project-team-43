@@ -140,14 +140,16 @@ export async function fetchUsersByRole(role) {
         console.error('Error fetching users:', error);
         throw error;    }
 };
-export async function updatePublish(status) {
+export async function updatePublish(status, approved_projects = []) {
+
+    console.log("ITEMS: ", approved_projects);
     try {
          const response = await fetch(`${BASE_URL}/api/projects/publish/${status}`, {
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({ status }),
+            body: JSON.stringify({ status, approved_projects }),
           })
         return await response;
     } catch (error) {

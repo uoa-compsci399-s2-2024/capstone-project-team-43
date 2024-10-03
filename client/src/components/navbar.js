@@ -83,10 +83,15 @@ const Navbar = () => {
     }
 
     try {
-        const token = localStorage.getItem("authToken");
+        const token = Cookies.get('authToken');
 
-        if (token === "" || token === null || token === "null") {
+        if (!token) {
             //debugging_nav(); 
+            const currentPath = window.location.pathname;
+            const paths = ["/", "/pages/about", "/pages/contact"];
+            if (!paths.includes(currentPath)) {
+                window.location.pathname = '/';
+            }
             not_logged_in(); //**uncomment for production and commment out debugging_nav()**
         } else {
         const decoded = jwtDecode(token);
@@ -135,7 +140,7 @@ const Navbar = () => {
     const Logout = async (e) => {
         e.preventDefault();
         try {
-            const token = localStorage.getItem('authToken');
+            const token = Cookies.get('authToken');
             console.log("TAKING TOKEN: ", token);
             let res = await fetch("http://localhost:3001/api/auth/logout", {
                 method: "POST",

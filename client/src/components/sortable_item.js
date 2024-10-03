@@ -51,7 +51,7 @@ return (
       
  (<div onClick={handleclick}>
   {/* <button >read</button> */}
-     <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry}/>
+     <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry} number={project.project.project_number}/>
      <div id="confirm">
 
           <PopUp id={project.project.id} 

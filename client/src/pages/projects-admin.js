@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef  } from "react";
 import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../Api.js'
+import lodash from 'lodash';
 
 
 import {
@@ -49,7 +50,7 @@ const ProjectsAdmin = () => {
                 console.error('Failed to load projects:', error);
             }
         };
-        getProjects();     
+        getProjects();
     }, []);
 
 
@@ -212,8 +213,13 @@ const ProjectsAdmin = () => {
             </ul> */}
             <Container id="approved" items={items.approved} />
             <div id="publishing">
+            
         <button onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
-        <button onClick={()=>updatePublish(true)} id="publish">Publish</button>
+        <button onClick={() => {
+          updatePublish(true, items.approved).then(() => {
+          load();
+        });
+      }} id="publish">Publish</button>
         </div>
         </div>
         <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>

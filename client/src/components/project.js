@@ -6,8 +6,6 @@ import '../App.css';
 
 function Projects(props){
 
-
-
         let today = new Date();
         let formatDate = today.toISOString();
 
@@ -25,7 +23,7 @@ function Projects(props){
     return(
         <div className="project">
             <div id="projectNum">
-            {props.id}
+            {props.number}
             </div>
             <div id="projectClient">
             Client Name <br />

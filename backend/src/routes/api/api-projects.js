@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject, publishProjects, editProject, getProjectsBySemester } from "../../data/projects-dao.js";
+import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject, publishProjects, editProject, getProjectsBySemester, allocateNumbers } from "../../data/projects-dao.js";
 
 const router = Router();
 
@@ -31,7 +31,8 @@ router.post("/:id", async (req, res) => {
 // Creates a new project with given name and desc.
 router.post("/", async (req, res) => {
     const { title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details } = req.body;
-    if (!title || !owner_id || !description || !created || !expiry || !status || !max_teams || !semester_id) {
+    console.log(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details);
+    if (!title || !owner_id || !description || !created || !expiry || !status || !max_teams) {
         console.log("Not Valid Project Details");
         return res.status(422);
     }
@@ -41,7 +42,7 @@ router.post("/", async (req, res) => {
     return res.location(`/api/projects/${project.id}`).status(201).json(project);
 });
 
-// Creates a new project with given name and desc.
+// Creates a updates a project with given name and desc.
 router.post("/update/:id", async (req, res) => {
     const id = req.params.id;
     const { title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details } = req.body;
@@ -66,8 +67,11 @@ router.delete("/:id", async (req, res) => {
 // Sets all approved projects to published and if false then unpublish all projects
 router.post("/publish/:status", async (req, res) => {
 
+    const { approved_projects } = req.body;
+
     const status = req.params.status;
     console.log(status);
+    allocateNumbers(approved_projects);
     return res.json(await publishProjects(status))
 });
 

@@ -327,14 +327,21 @@ const ProjectsAdmin = () => {
         let newStatus = "pending";
         console.log(event.collisions[0].id);
         console.log(event.collisions[1].id);
-        if(event.collisions[0].id === "approved" || event.collisions[1].id === "approved"){
-          newStatus = "accepted"
-        }
-        else if(event.collisions[0].id === "rejected" || event.collisions[1].id === "rejected"){
-          newStatus = "rejected"
-        }
-        else if(event.collisions[0].id === "unsorted" || event.collisions[0].id === "unsorted"){
-          newStatus = "pending"
+        try{
+          if(event.collisions[0].id === "approved" || event.collisions[1].id === "approved"){
+            newStatus = "accepted"
+          }
+          else if(event.collisions[0].id === "rejected" || event.collisions[1].id === "rejected"){
+            newStatus = "rejected"
+          }
+          else if(event.collisions[0].id === "unsorted" || event.collisions[0].id === "unsorted"){
+            newStatus = "pending"
+          }
+          const projectId = id[0].id;
+        updateStatus(projectId, newStatus);
+  
+        } catch(error){
+          console.log('Error with Drag-end, try again.');
         }
         const projectId = id[0].id;
       updateStatus(projectId, newStatus);

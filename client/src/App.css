@@ -786,6 +786,7 @@
   position: absolute;
 }
 
+
 .projectPreferences #projectPreferenceselements h2{
   color: white;
   margin-right: 80vw;
@@ -884,19 +885,29 @@
   max-width: 18vw;
   max-height: 28vh;
   min-width: 200px;
-  min-height: 100px;
+  /* min-height: 100px; */
   height: fit-content;
   flex: 1 1 auto;
   flex-wrap: wrap;
+  height: 20%;
+  /* display: grid;
+  grid-template-columns: auto auto auto auto; */
+}
+
+.projectPreferences .preferenceProjects #proj{
+  height:20%;
 }
 
 .projectPreferences .preferenceProjects .project #projectDescription{
   margin-left: 5%;
+  height:20%;
+  max-height: 10%;
   font-size:small;
-  overflow: auto;
-  width:fit-content;
+  overflow: hidden;
+
+  /* width:fit-content; */
   min-width: 90%;
-  min-height: 100%;
+  /* min-height: 100%; */
 }
 
 .projectPreferences .preferenceProjects #projectNum{
@@ -1032,6 +1043,10 @@
   display: none;
 }
 
+#confirmingprojects{
+  background-color: yellow;
+}
+
 #confirmprojects{
   height: 50%;
   width: 100%;
@@ -1053,6 +1068,10 @@
   min-width: 80px;
   min-height: 80px;
   height: fit-content;
+}
+
+#confirmprojects .project #projectNum{
+display: block;
 }
 
 #projectpreferenceconfirm p{

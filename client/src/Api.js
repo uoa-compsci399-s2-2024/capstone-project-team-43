@@ -367,3 +367,21 @@ export async function updateSemesterDetails(semesterID, attribute, newValue) {
         return null;
     }
 };
+
+
+export async function updatePreferences(team_id, project_id, preference) {
+
+    // console.log("TEAM PREFERENCE: ", preferences);
+    try {
+         const response = await fetch(`${BASE_URL}/api/preferences`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({ team_id, project_id, preference }),
+          })
+        return await response;
+    } catch (error) {
+        console.error('Error updating project preferences:', error);
+        throw error;}
+};

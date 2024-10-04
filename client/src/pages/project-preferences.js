@@ -3,8 +3,9 @@ import '../App.css';
 import { Link } from "react-router-dom";
 import Project from "../components/project";
 import { useState, useEffect } from "react";
-import { fetchProjects, fetchSemester, fetchSemesters } from '../Api.js'
+import { fetchProjects, fetchSemester, fetchSemesters, updatePreferences, fetchUser } from '../Api.js'
 import { useParams, useNavigate } from 'react-router-dom';
+import getUserID from '../components/get-user-id.js';
 
 const ProjectPreferences = ()=>{
 
@@ -12,14 +13,87 @@ const ProjectPreferences = ()=>{
     const [semesters, setSemesters] = useState([]);
     const [semester, setSemester] = useState(null);
     const [semesterID, setSemesterID] = useState(semesterIDFromURL || null);
-    const [chosenproject, setchosenproject] = useState(new Array(5).fill(<Project/>));
+    const [chosenproject, setChosenProject] = useState(new Array(5).fill(<Project/>));
+
+    const [userID, setUserID] = useState(null);
+    const [user, setUser] = useState(null);
+    useEffect(() => {
+        console.log("getting user id");
+        const id = getUserID();
+        console.log("user id"+id);
+        setUserID(id);
+    }, []);
+
+        // Get user data
+        useEffect(() => {
+            async function getUser() {
+                try {
+                    const data = await fetchUser(userID);
+                    setUser(data);
+                    console.log('Fetched user data:', data);  
+                } catch (error) {
+                    console.error('Failed to load user:', error);
+                }
+            }
+            getUser();
+        }, [userID]);
+
+    // const [chosenproject, setChosenProject] = useState({
+    //     0: <Project/>,
+    //     1: <Project/>,
+    //     2: <Project/>,
+    //     3: <Project/>,
+    //     4: <Project/>
+    // }   
+    // );
 
     let chosenp = new Array(5).fill(<Project/>);
+    // let chosenp = [<Project/>,<Project/>,<Project/>,<Project/>,<Project/>];
+    // let chosenp = {
+    //     0: <Project/>,
+    //     1: <Project/>,
+    //     2: <Project/>,
+    //     3: <Project/>,
+    //     4: <Project/>
+    // };
+    let array = []
     const choose = (element, index) =>{
         // const newchosen = [...chosenproject];
+        // console.log('index');
+        // console.log(index);
         chosenp[index] = element;
+
+        // const newchosen = chosenp.map(chosen => {
+        //     if (index !== 0) {
+
+        //       return chosen;
+        //     } else {
+
+        //       return element;
+        //     }
+        //   });
+
         // chosenp = [...newchosen];
+        // let array = [<Project/>,<Project/>,<Project/>,<Project/>,<Project/>];
+            // setchosenproject(chosenproject =>
+            // ({ ...chosenproject,
+            //     ...chosenp
+            // })
+            // );
+            // setchosenproject(newchosen);
+   
         // setchosenproject(newchosen);
+
+        // setchosenproject(prev => ({... prev, 0: element}) )
+        console.log(chosenp);
+        // setChosenProject(chosenproject => ({
+        //     ...chosenproject,
+        //     ...chosenp
+        //   }));
+        // setchosenproject(chosenp);;
+
+
+
     }
 
     useEffect(() => {
@@ -88,54 +162,58 @@ const ProjectPreferences = ()=>{
     const handleclick = (project) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.title === project.title))){
+            // if (!(chosenproject.some((item) => item.title === project.title))){
                 {choose(project, 0)};
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt1 = false;
-            }
+            // }
         }
         else if (opt2 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.title === project.title))){
+            // if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 1)};
             let options = document.getElementById('option2');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
-            opt2 = false;}
+            opt2 = false;
+        // }
         }
         else if (opt3 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.title === project.title))){
+            // if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 2)};
             let options = document.getElementById('option3');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
-            opt3 = false;}
+            opt3 = false;
+        // }
         }
         else if (opt4 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.title === project.title))){
+            // if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 3)};
             let options = document.getElementById('option4');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
-            opt4 = false;}
+            opt4 = false;
+        // }
         }
         else if (opt5 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenproject.some((item) => item.title === project.title))){
+            // if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 4)};
             let options = document.getElementById('option5');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
-            opt5 = false;}
+            opt5 = false;
+        // }
         }
     }
 
@@ -150,6 +228,8 @@ const ProjectPreferences = ()=>{
 
     let itemList = [];
 
+
+
     // items.forEach((item)=>{
     //   itemList.push(
     //      <Project name={item}/>
@@ -160,7 +240,15 @@ const ProjectPreferences = ()=>{
         if(document.getElementById("agreeupon").checked === true){
         document.getElementById('projectPreferenceselements').style.display = "none";
         document.getElementById('onsubmission').style.display = "block";
-        document.getElementById('projectpreferenceconfirm').style.display = "none";}
+        document.getElementById('projectpreferenceconfirm').style.display = "none";
+        let team = user.team_id;
+        for (let i = 0; i < chosenp.length; i++){
+            // let team = 12;
+            let proj = chosenp[i].id;
+            let pref = i+1;
+            updatePreferences(team, proj, pref);
+        };
+    }
     }
 
     const cancel = () =>{
@@ -175,7 +263,27 @@ const ProjectPreferences = ()=>{
         document.getElementById('projectpreferenceconfirm').style.display = "block";
         document.getElementById('projectPreferenceselements').style.background = "#003998";
         document.getElementById('projectPreferenceselements').style.opacity = "30%";
+
+        // let confirm = document.getElementById('confirmprojects');
+        //     let confirmarray = [];
+        // for (let i = 0; i < chosenproject.length; i++){
+        //     confirmarray.push(chosenproject[i].title);
+        // }
+
+        // confirm.innerHTML = confirmarray.join(" ");
+
+
+        // chosenproject.map((chosen) =>
+        //     <div id="confirmingprojects">
+        //     {chosen}
+
+        //     </div>
+        // )
+
         }
+        // console.log('chosenproj');
+        // console.log(chosenproject);
+
     }
 
     const selecting = (option) =>{
@@ -253,6 +361,17 @@ const ProjectPreferences = ()=>{
     }
 
 
+
+    // const sendPreferences = () =>{
+    //     // let user = fetchUser(userID);
+    //     let team = user.team_id;
+    //     for (let i = 0; i < chosenp.length; i++){
+    //         // let team = 12;
+    //         let proj = chosenp[i].id;
+    //         let pref = i+1;
+    //         updatePreferences(team, proj, pref);
+    //     };
+    // }
     return(
         <div className="projectPreferences">
             
@@ -263,11 +382,40 @@ const ProjectPreferences = ()=>{
             <h2>Are you sure you want to submit?</h2>
             <p>Please note that this submission will count for your entire group.</p>
             <div id="confirmprojects">
-             {chosenp.map((chosen, index) =>
-                <div>
-                {chosen}
+
+             {/* {chosenp.map((chosen) =>
+                <div id="confirmingprojects">
+                {chosen.name}
                 </div>
-            )}
+            )} */}
+
+            {/* {
+            Object.entries(chosenproject)
+            .map( ([index, project]) => 
+            <div>
+                {project}
+            </div>
+            )
+            } */}
+
+            {/* {chosenproject[1].map((chosen) =>
+                <div id="confirmingprojects">
+                {chosen.name}
+                </div>
+            )}           */}
+
+{/* <ul>
+        {Object.keys(chosenproject).map((key, index)=>(
+          <li key={index}>{chosenproject[index]}</li>
+        ))}
+      </ul>  */}
+
+      {/* <ul>
+        <li>{chosenproject[0]}</li>
+      </ul> */}
+
+            
+
             </div>
             <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n" required></input>
             <label for="agreeupon"> Do all team members agree on the order of the projects provided above?*</label>
@@ -301,6 +449,9 @@ const ProjectPreferences = ()=>{
             </div>
 
             <div id = "projectPreferenceselements">
+                {/* <button onClick={sendPreferences}>
+                    send prefs
+                </button> */}
                 <h2 id="">Project Preferences
                  {/* This console.log needs to stay so that it calls formatBiddingDate beforehand */}   
                 {console.log(formatBiddingDate(biddingtime))}
@@ -309,15 +460,17 @@ const ProjectPreferences = ()=>{
                 <br></br>{formatBiddingDate(biddingtime)}
                 </h2>
                 <div className="preferenceProjects">
-                    <ul>
+                    {/* <ul> */}
+
                     {projects.filter(project => project.published === 'true' && project.semester_id === 1).map(project => (
-                   (<div onClick={() => handleclick(project)}>
+                   (<div onClick={() => handleclick(project)} id="proj">
                    <Project id={project.id} name={project.title} description={project.description}/> </div>)))}
+
                 {/* {itemList.map((project) => 
                     (<div onClick={() => handleclick(project)}>
                     {project}
                     </div>))} */}
-                    </ul>
+                    {/* </ul> */}
                 </div>
                 <button id ="?" onClick={helppopup}>?</button>
                 <div id="sidebuttons">
@@ -334,11 +487,11 @@ const ProjectPreferences = ()=>{
             <div id = "onsubmission">
                 <h2>Your project preferences have been submitted!</h2>
                 <div id = "chosenProjects">
-                {chosenproject.map((chosen, index) =>
+                {/* {chosenproject.map((chosen, index) =>
                 <div>
                 {chosen ? chosen : <Project/ >}
                 </div>
-            )}
+            )} */}
                 </div>
                 <div id = "return">
                 <Link to="/pages/projects-available"><button>Return to Projects</button></Link>

@@ -3,7 +3,7 @@ import '../App.css';
 import { Link } from "react-router-dom";
 import Project from "../components/project";
 import { useState, useEffect } from "react";
-import { fetchProjects, fetchSemester, fetchSemesters, updatePreferences, fetchUser } from '../Api.js'
+import { fetchProjects, fetchSemester, fetchSemesters, updatePreferences, fetchUser, fetchPreferences, deletePreferences } from '../Api.js'
 import { useParams, useNavigate } from 'react-router-dom';
 import getUserID from '../components/get-user-id.js';
 
@@ -20,43 +20,23 @@ const ProjectPreferences = ()=>{
     useEffect(() => {
         console.log("getting user id");
         const id = getUserID();
-        console.log("user id"+id);
+        console.log("user id "+id);
         setUserID(id);
-    }, []);
-
-        // Get user data
-        useEffect(() => {
-            async function getUser() {
-                try {
-                    const data = await fetchUser(userID);
-                    setUser(data);
-                    console.log('Fetched user data:', data);  
-                } catch (error) {
-                    console.error('Failed to load user:', error);
-                }
+        async function getUser() {
+            try {
+                const data = await fetchUser(userID);
+                setUser(data);
+                console.log('Fetched user data:', data);  
+            } catch (error) {
+                console.error('Failed to load user:', error);
             }
-            getUser();
-        }, [userID]);
+        }
+        getUser();
+    }, [userID]);
 
-    // const [chosenproject, setChosenProject] = useState({
-    //     0: <Project/>,
-    //     1: <Project/>,
-    //     2: <Project/>,
-    //     3: <Project/>,
-    //     4: <Project/>
-    // }   
-    // );
 
     let chosenp = new Array(5).fill(<Project/>);
-    // let chosenp = [<Project/>,<Project/>,<Project/>,<Project/>,<Project/>];
-    // let chosenp = {
-    //     0: <Project/>,
-    //     1: <Project/>,
-    //     2: <Project/>,
-    //     3: <Project/>,
-    //     4: <Project/>
-    // };
-    let array = []
+
     const choose = (element, index) =>{
         // const newchosen = [...chosenproject];
         // console.log('index');
@@ -159,6 +139,21 @@ const ProjectPreferences = ()=>{
         getSemester();
     }, [semesters]);
 
+    const [preferences, setPreferences] = useState([]);
+
+    // get data onall accepted projects 
+    useEffect(() => {
+        async function getPreferences() {
+            try {
+                const data = await fetchPreferences();
+                setPreferences(data);
+            } catch (error) {
+                console.error('Failed to load preferences:', error);
+            }
+        }
+        getPreferences();
+    }, []);
+
     const handleclick = (project) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
@@ -242,8 +237,19 @@ const ProjectPreferences = ()=>{
         document.getElementById('onsubmission').style.display = "block";
         document.getElementById('projectpreferenceconfirm').style.display = "none";
         let team = user.team_id;
+        let exists = [];
+         exists = preferences.filter(preference => preference.team_id === team);
+        
+        if (exists.length !== 0){
+            for (let i = 0; i < exists.length; i++){
+                console.log("DELETE");
+                deletePreferences(exists[i].id);
+            };
+        }
+
+
+
         for (let i = 0; i < chosenp.length; i++){
-            // let team = 12;
             let proj = chosenp[i].id;
             let pref = i+1;
             updatePreferences(team, proj, pref);
@@ -381,6 +387,7 @@ const ProjectPreferences = ()=>{
             <br></br><br></br>
             <h2>Are you sure you want to submit?</h2>
             <p>Please note that this submission will count for your entire group.</p>
+            <p>The most recent team submission will be the valid one.</p>
             <div id="confirmprojects">
 
              {/* {chosenp.map((chosen) =>

@@ -371,7 +371,6 @@ export async function updateSemesterDetails(semesterID, attribute, newValue) {
 
 export async function updatePreferences(team_id, project_id, preference) {
 
-    // console.log("TEAM PREFERENCE: ", preferences);
     try {
          const response = await fetch(`${BASE_URL}/api/preferences`, {
             method: "POST",
@@ -384,4 +383,29 @@ export async function updatePreferences(team_id, project_id, preference) {
     } catch (error) {
         console.error('Error updating project preferences:', error);
         throw error;}
+};
+
+export async function fetchPreferences() {
+    console.log('Fetch student preferences');
+    try {
+        let response; 
+        response = await fetch(`${BASE_URL}/api/preferences/`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching preferences:', error);
+        throw error;
+        return []; 
+    }
+};
+
+export async function deletePreferences(id) {
+    console.log('Fetch student preferences');
+    try {
+        let response; 
+        response = await axios.delete(`${BASE_URL}/api/preferences/${id}`);
+        return response.status; 
+    } catch (error) {
+        console.error('Error deleting preference:', error);
+        throw error;
+    }
 };

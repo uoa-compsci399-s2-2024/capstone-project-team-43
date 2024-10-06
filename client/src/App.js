@@ -12,6 +12,7 @@ import ProjectPreferences from './pages/project-preferences';
 import ProjectsAvailable from './pages/projects-available';
 import About from './pages/about';
 import Contact from './pages/contact';
+import faq from './pages/faq';
 import NewSemster from './pages/new-semster';
 
 import Navbar from "./components/navbar";
@@ -34,6 +35,7 @@ function App() {
         <Route path='/pages/projects-archive/:semesterID' element={<ProjectsArchive />} />
         <Route path='/pages/about' Component={About} />
         <Route path='/pages/contact' Component={Contact} />
+        <Route path='/pages/faq' Component={faq} />
         <Route path='/pages/new-semster' Component={NewSemster} />
         <Route path='/pages/manage-semester/:semesterID' element={<ManageSemester />} />
         <Route path='/pages/account-settings/' element={<AccountSettings />} />

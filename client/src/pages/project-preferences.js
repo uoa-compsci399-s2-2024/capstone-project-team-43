@@ -13,7 +13,8 @@ const ProjectPreferences = ()=>{
     const [semesters, setSemesters] = useState([]);
     const [semester, setSemester] = useState(null);
     const [semesterID, setSemesterID] = useState(semesterIDFromURL || null);
-    const [chosenproject, setChosenProject] = useState(new Array(5).fill(<Project/>));
+    // const [chosenproject, setChosenProject] = useState(new Array(5).fill(<Project/>));
+    const [chosenproject, setChosenProject] = useState([]);
 
     const [userID, setUserID] = useState(null);
     const [user, setUser] = useState(null);
@@ -35,45 +36,11 @@ const ProjectPreferences = ()=>{
     }, [userID]);
 
 
-    let chosenp = new Array(5).fill(<Project/>);
+    // let chosenp = new Array(5).fill(<Project/>);
 
     const choose = (element, index) =>{
-        // const newchosen = [...chosenproject];
-        // console.log('index');
-        // console.log(index);
-        chosenp[index] = element;
-
-        // const newchosen = chosenp.map(chosen => {
-        //     if (index !== 0) {
-
-        //       return chosen;
-        //     } else {
-
-        //       return element;
-        //     }
-        //   });
-
-        // chosenp = [...newchosen];
-        // let array = [<Project/>,<Project/>,<Project/>,<Project/>,<Project/>];
-            // setchosenproject(chosenproject =>
-            // ({ ...chosenproject,
-            //     ...chosenp
-            // })
-            // );
-            // setchosenproject(newchosen);
-   
-        // setchosenproject(newchosen);
-
-        // setchosenproject(prev => ({... prev, 0: element}) )
-        console.log(chosenp);
-        // setChosenProject(chosenproject => ({
-        //     ...chosenproject,
-        //     ...chosenp
-        //   }));
-        // setchosenproject(chosenp);;
-
-
-
+        // chosenp[index] = element;
+        setChosenProject(oldArray => [...oldArray,element] );
     }
 
     useEffect(() => {
@@ -157,7 +124,7 @@ const ProjectPreferences = ()=>{
     const handleclick = (project) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenp.some((item) => item.title === project.title))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
                 {choose(project, 0)};
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
@@ -168,7 +135,7 @@ const ProjectPreferences = ()=>{
         }
         else if (opt2 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenp.some((item) => item.title === project.title))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 1)};
             let options = document.getElementById('option2');
             options.innerHTML += "<p>";
@@ -179,7 +146,7 @@ const ProjectPreferences = ()=>{
         }
         else if (opt3 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenp.some((item) => item.title === project.title))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 2)};
             let options = document.getElementById('option3');
             options.innerHTML += "<p>";
@@ -190,7 +157,7 @@ const ProjectPreferences = ()=>{
         }
         else if (opt4 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenp.some((item) => item.title === project.title))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 3)};
             let options = document.getElementById('option4');
             options.innerHTML += "<p>";
@@ -201,7 +168,7 @@ const ProjectPreferences = ()=>{
         }
         else if (opt5 === true){
             //let projectdes = itemList[2].props.name;
-            if (!(chosenp.some((item) => item.title === project.title))){
+            if (!(chosenproject.some((item) => item.title === project.title))){
             {choose(project, 4)};
             let options = document.getElementById('option5');
             options.innerHTML += "<p>";
@@ -217,19 +184,6 @@ const ProjectPreferences = ()=>{
     let opt3 = false;
     let opt4 = false;
     let opt5 = false;
-
-
-    let project = projects.filter(project => project);
-
-    let itemList = [];
-
-
-
-    // items.forEach((item)=>{
-    //   itemList.push(
-    //      <Project name={item}/>
-    //     )
-    // })
 
     const submit =() =>{
         if(document.getElementById("agreeupon").checked === true){
@@ -249,8 +203,8 @@ const ProjectPreferences = ()=>{
 
 
 
-        for (let i = 0; i < chosenp.length; i++){
-            let proj = chosenp[i].id;
+        for (let i = 0; i < chosenproject.length; i++){
+            let proj = chosenproject[i].id;
             let pref = i+1;
             updatePreferences(team, proj, pref);
         };
@@ -265,30 +219,15 @@ const ProjectPreferences = ()=>{
 
     const confirmation = () =>{
         
-        if(chosenp[0].title !== undefined && chosenp[1].title !== undefined && chosenp[2].title !== undefined && chosenp[3].title !== undefined && chosenp[4].title !== undefined){
+        if(chosenproject.length !== 5){
+            return;
+        }
+
+        if(chosenproject[0].title !== undefined && chosenproject[1].title !== undefined && chosenproject[2].title !== undefined && chosenproject[3].title !== undefined && chosenproject[4].title !== undefined){
         document.getElementById('projectpreferenceconfirm').style.display = "block";
         document.getElementById('projectPreferenceselements').style.background = "#003998";
         document.getElementById('projectPreferenceselements').style.opacity = "30%";
-
-        // let confirm = document.getElementById('confirmprojects');
-        //     let confirmarray = [];
-        // for (let i = 0; i < chosenproject.length; i++){
-        //     confirmarray.push(chosenproject[i].title);
-        // }
-
-        // confirm.innerHTML = confirmarray.join(" ");
-
-
-        // chosenproject.map((chosen) =>
-        //     <div id="confirmingprojects">
-        //     {chosen}
-
-        //     </div>
-        // )
-
         }
-        // console.log('chosenproj');
-        // console.log(chosenproject);
 
     }
 
@@ -366,18 +305,6 @@ const ProjectPreferences = ()=>{
         document.getElementById('projectPreferenceselements').style.opacity = "100%";
     }
 
-
-
-    // const sendPreferences = () =>{
-    //     // let user = fetchUser(userID);
-    //     let team = user.team_id;
-    //     for (let i = 0; i < chosenp.length; i++){
-    //         // let team = 12;
-    //         let proj = chosenp[i].id;
-    //         let pref = i+1;
-    //         updatePreferences(team, proj, pref);
-    //     };
-    // }
     return(
         <div className="projectPreferences">
             
@@ -390,36 +317,17 @@ const ProjectPreferences = ()=>{
             <p>The most recent team submission will be the valid one.</p>
             <div id="confirmprojects">
 
-             {/* {chosenp.map((chosen) =>
-                <div id="confirmingprojects">
-                {chosen.name}
-                </div>
-            )} */}
 
-            {/* {
-            Object.entries(chosenproject)
-            .map( ([index, project]) => 
-            <div>
-                {project}
+            {/* display projects here */}
+            
+        {chosenproject.map((chosen) =>
+            <div id="confirmingprojects">
+            {chosen.project_number}
+            . 
+            {chosen.title}
+
             </div>
-            )
-            } */}
-
-            {/* {chosenproject[1].map((chosen) =>
-                <div id="confirmingprojects">
-                {chosen.name}
-                </div>
-            )}           */}
-
-{/* <ul>
-        {Object.keys(chosenproject).map((key, index)=>(
-          <li key={index}>{chosenproject[index]}</li>
-        ))}
-      </ul>  */}
-
-      {/* <ul>
-        <li>{chosenproject[0]}</li>
-      </ul> */}
+        )}
 
             
 

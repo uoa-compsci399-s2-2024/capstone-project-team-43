@@ -157,58 +157,58 @@ const ProjectPreferences = ()=>{
     const handleclick = (project) =>{
         if (opt1 === true){
             //let projectdes = itemList[2].props.name;
-            // if (!(chosenproject.some((item) => item.title === project.title))){
+            if (!(chosenp.some((item) => item.title === project.title))){
                 {choose(project, 0)};
             let options = document.getElementById('option1');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt1 = false;
-            // }
+            }
         }
         else if (opt2 === true){
             //let projectdes = itemList[2].props.name;
-            // if (!(chosenproject.some((item) => item.title === project.title))){
+            if (!(chosenp.some((item) => item.title === project.title))){
             {choose(project, 1)};
             let options = document.getElementById('option2');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt2 = false;
-        // }
+        }
         }
         else if (opt3 === true){
             //let projectdes = itemList[2].props.name;
-            // if (!(chosenproject.some((item) => item.title === project.title))){
+            if (!(chosenp.some((item) => item.title === project.title))){
             {choose(project, 2)};
             let options = document.getElementById('option3');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt3 = false;
-        // }
+        }
         }
         else if (opt4 === true){
             //let projectdes = itemList[2].props.name;
-            // if (!(chosenproject.some((item) => item.title === project.title))){
+            if (!(chosenp.some((item) => item.title === project.title))){
             {choose(project, 3)};
             let options = document.getElementById('option4');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt4 = false;
-        // }
+        }
         }
         else if (opt5 === true){
             //let projectdes = itemList[2].props.name;
-            // if (!(chosenproject.some((item) => item.title === project.title))){
+            if (!(chosenp.some((item) => item.title === project.title))){
             {choose(project, 4)};
             let options = document.getElementById('option5');
             options.innerHTML += "<p>";
             options.innerHTML += project.title;
             options.innerHTML += "</p>";
             opt5 = false;
-        // }
+        }
         }
     }
 

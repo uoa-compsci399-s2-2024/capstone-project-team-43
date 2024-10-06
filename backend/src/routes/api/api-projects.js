@@ -67,11 +67,14 @@ router.delete("/:id", async (req, res) => {
 // Sets all approved projects to published and if false then unpublish all projects
 router.post("/publish/:status", async (req, res) => {
 
-    const { approved_projects } = req.body;
-
     const status = req.params.status;
     console.log(status);
+    
+    if(status == "true") {
+    const { approved_projects } = req.body;
+
     allocateNumbers(approved_projects);
+    }
     return res.json(await publishProjects(status))
 });
 

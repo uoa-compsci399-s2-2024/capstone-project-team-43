@@ -217,7 +217,7 @@ const ProjectsAdmin = () => {
         <button onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
         <button onClick={() => {
           updatePublish(true, items.approved).then(() => {
-          load();
+          window.location.reload();
         });
       }} id="publish">Publish</button>
         </div>

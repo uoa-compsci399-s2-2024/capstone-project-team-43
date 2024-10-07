@@ -55,7 +55,7 @@ const ClientProjects = () => {
             }
         }
         getProjects();
-    }, []);
+    });
 
 
     const handleclick = () =>{

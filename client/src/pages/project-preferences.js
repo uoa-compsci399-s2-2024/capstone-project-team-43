@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useRef } from "react";
 import '../App.css';
 import { Link } from "react-router-dom";
 import Project from "../components/project";
@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { fetchProjects, fetchSemester, fetchSemesters, updatePreferences, fetchUser, fetchPreferences, deletePreferences } from '../Api.js'
 import { useParams, useNavigate } from 'react-router-dom';
 import getUserID from '../components/get-user-id.js';
+
+
 
 const ProjectPreferences = ()=>{
 
@@ -98,6 +100,7 @@ const ProjectPreferences = ()=>{
             try {
                 console.log("GETTING BIDDING DATE");
                 getBiddingDate();
+
             } catch (error) {
                 console.error('Failed to load semester:', error);
                 return; 
@@ -105,6 +108,8 @@ const ProjectPreferences = ()=>{
         }
         getSemester();
     }, [semesters]);
+
+
 
     const [preferences, setPreferences] = useState([]);
 
@@ -120,6 +125,79 @@ const ProjectPreferences = ()=>{
         }
         getPreferences();
     }, []);
+
+    const [displayPage, setDisplayPage] = useState(false);
+
+    // Variables to check whether starting and ending dates have been loaded
+    const loadedS = useRef(0);
+    const loadedE = useRef(0);
+    
+
+    let bs;
+    useEffect(() => {
+        async function getBiddingStart () {
+            try {
+            const currentSemester = semesters.filter(semester => semester.status === "current");
+            bs = currentSemester[0].start_bidding_date;
+            loadedS.current = 1;
+            } catch (err) {
+                console.log('an error loading bidding start' + err)
+            }
+            }          
+            getBiddingStart();
+        }, [semesters]);
+
+        let be;
+        useEffect(() => {
+            async function getBiddingEnd () {
+                try {
+                    const currentSemester = semesters.filter(semester => semester.status === "current");
+
+                    be =currentSemester[0].end_bidding_date;
+
+                    loadedE.current = 1;
+                    } catch (err) {
+                        console.log('an error loading bidding end' + err)
+                    }
+                    }   
+                    getBiddingEnd();
+            }, [semesters]);
+
+            //Keep calling untill bidding dates have been collected and if statements to check dates can be valid
+    const display = () => {
+        let today = new Date();
+        //temp date within valid range for testing
+        today = new Date('20 June 2025 14:48 UTC');
+        today = today.toISOString();
+
+        console.log('start:' + bs)
+        console.log('end:' + be)
+        console.log('today:' + today)
+        if(today >= bs && be >= today){
+            //display page
+            console.log("DISPLAY PREFERENCES")
+            setDisplayPage(true);
+        }else{
+            //display locked page
+            console.log("HIDE PREFERENCES")
+            setDisplayPage(false);
+        }
+        }
+
+    //Check whether dates have been loaded, if so call display()
+    useEffect(() => {
+        if(bs === undefined || be === undefined){
+            loadedE.current = 0;
+            loadedS.current = 0;
+        }else{
+            if(loadedE.current === 1 && loadedS.current === 1){
+                display();
+            }else{
+                return;
+            }
+        }
+        });
+
 
     const handleclick = (project) =>{
         if (opt1 === true){
@@ -262,13 +340,12 @@ const ProjectPreferences = ()=>{
             options.innerHTML = "5";
         }
     }
-
+    
     let biddingtime;
     const getBiddingDate = () => {
     try {
     const currentSemester = semesters.filter(semester => semester.status === "current");
     biddingtime = currentSemester[0].end_bidding_date
-    //console.log("SET BIDDING TIME: ", biddingtime);
     } catch (err) {}
     }
 
@@ -284,11 +361,11 @@ const ProjectPreferences = ()=>{
         const day = date.getDate().toString().padStart(2, '0');
         const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
         const year = date.getFullYear().toString().slice(-2); 
-    
+            
         return `${formattedHours}:${minutes}${ampm} ${day}/${month}/${year}`;
         } else {
             getBiddingDate();
-            //console.log("UPDATED BIDDING DATE: ", biddingtime);
+            // console.log("UPDATED BIDDING DATE: ", biddingtime);
             return null;
         }
     };
@@ -304,6 +381,17 @@ const ProjectPreferences = ()=>{
         document.getElementById('projectPreferenceselements').style.background = "#2979FF";
         document.getElementById('projectPreferenceselements').style.opacity = "100%";
     }
+
+
+    // if todays date out of valid range - display locked page, else display preferences page
+    if(displayPage === false){
+        return(
+            <div className="preferenceHide">
+            Project preference submission currently locked.
+            </div>
+        )
+    };
+    
 
     return(
         <div className="projectPreferences">
@@ -413,7 +501,6 @@ const ProjectPreferences = ()=>{
                 </div>
             </div>
         </div>
-    );
-};
+    )};
 
 export default ProjectPreferences;

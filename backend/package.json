@@ -7,7 +7,11 @@
     "start": "node ./src/app.js",
     "client": "cd ../client && npm start",
     "dev": "concurrently \"npm run client\" \"npm run backend\"",
-    "backend": "nodemon ./src/app.js"
+    "backend": "nodemon ./src/app.js",
+    "build": "cd ../client && npm install && npm run build"
+  },
+  "engines": {
+    "node": "20.16.0"
   },
   "keywords": [],
   "author": "",

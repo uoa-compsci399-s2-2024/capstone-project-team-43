@@ -16,7 +16,8 @@ export function Item(props) {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    border: "1px solid black",
+    border: "none",
+    borderRadius: "5px",
     margin: "10px 0",
     background: "white",
     position: "absolute"

@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useCallback, useRef  } from "react";
-import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../Api.js'
+import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../../Api.js';
+import Project from "../../components/project/project.js";
 import lodash from 'lodash';
+import SemesterDropdown from "../../components/semester-dropdown/semester-dropdown.js";
+
+import './projects-admin.css'
 
 
 import {
@@ -14,16 +18,15 @@ import {
   } from '@dnd-kit/core';
   import {arrayMove, sortableKeyboardCoordinates} from '@dnd-kit/sortable';
   
-  import Container from '../components/container';
-  import {Item} from '../components/sortable_item.js';
-  import Header from "../components/admin-semester-header.js";
-  import '../App.css';
-  import PopUp from "../components/project-pop-up-admin.js";
+  import Container from '../../components/container.js';
+  import {Item} from '../../components/sortable_item.js';
+  import Header from "../../components/admin-semester-header.js";
+  import PopUp from "../../components/project-pop-up-admin.js";
 
-const ProjectsAdmin = () => {
+const AdminProjectsView = () => {
   const [semesters, setSemesters] = useState([]);
 
-  // get data onall semesters
+  // get data on all semesters
   useEffect(() => {
       async function getSemesters() {
           try {
@@ -152,84 +155,92 @@ const ProjectsAdmin = () => {
         );
 
     return(
-        <div className="projects">
-            <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/>
-            {/* <button onClick={load} id="load">Load all</button> */}
-            
-        <div id="sorting">
-        <DndContext
-        sensors={sensors}
-        collisionDetection={rectIntersection}
-        onDragStart={handleDragStart}
-        onDragOver={handleDragOver}
-        onDragEnd={handleDragEnd}
-      >
-        <div id="left">
-            <h2>Rejected</h2>
-            {/* List rejected projects
-            <ul>
-                {projects
-                .filter(project => project.status === 'rejected')
-                .map(project => (
-                    // <li key={project.id}>
-                    //     <h2>{project.title}</h2>
-                    //     <p>{project.description}</p>
-                    // </li>
-                    <Project id={project.id} name={project.title} description={project.description} />
-                ))}
-            </ul> */}
-            <Container id="rejected" items={items.rejected} />
-        </div>
-        <div id="center">
-            <h2>Unsorted</h2>
-            {/* List unsorted projects */}
-            {/* <ul>
-                {projects
-                .filter(project => project.status === 'pending')
-                .map(project => (
-                    // <li key={project.id}>
-                    //     <h2>{project.title}</h2>
-                    //     <p>{project.description}</p>
-                    // </li>
-                    <Project id={project.id} name={project.title} description={project.description} />
-                ))}
-                    
-            </ul> */}
-            <Container id="unsorted" items={items.unsorted} />
-        </div>
-        <div id="right">
-            <h2>Approved</h2>
-            {/* List approved projects */}
-            {/* <ul>
-                {projects
-                .filter(project => project.status === 'accepted')
-                .map(project => (
-                    // <li key={project.id}>
-                    //     <h2>{project.title}</h2>
-                    //     <p>{project.description}</p>
-                    // </li>
-                    <Project id={project.id} name={project.title} description={project.description} />
-                ))}
-            </ul> */}
-            <Container id="approved" items={items.approved} />
-            <div id="publishing">
-            
-        <button onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
-        <button onClick={() => {
-          updatePublish(true, items.approved).then(() => {
-          window.location.reload();
-        });
-      }} id="publish">Publish</button>
-        </div>
-        </div>
-        <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
-        </DndContext>
-        </div>
+        <main className="projects-admin-page">
+          <h1>Manage Projects</h1>
+          <div className="container-headers">
+            <div><h2>Rejected</h2></div>
+            <div><h2>Unsorted</h2></div>
+            <div><h2>Accepted</h2></div>
+            <div className="publish-buttons">
+                <button className = 'main-button' onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
+                  <button className = 'main-button' onClick={() => {
+                    updatePublish(true, items.approved).then(() => {
+                    window.location.reload();
+                  });
+                }} id="publish">Publish</button>
+            </div>
+          </div>
+            <div className="content">
+              {/* <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/> */}
+              {/* <button onClick={load} id="load">Load all</button> */}
+              
+          <div id="sorting">
+          <DndContext
+          sensors={sensors}
+          collisionDetection={rectIntersection}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+        >
+          <div className='container rejected-container' id="left">
+              {/* <h2>Rejected</h2> */}
+              {/* List rejected projects
+              <ul>
+                  {projects
+                  .filter(project => project.status === 'rejected')
+                  .map(project => (
+                      // <li key={project.id}>
+                      //     <h2>{project.title}</h2>
+                      //     <p>{project.description}</p>
+                      // </li>
+                      <Project id={project.id} name={project.title} description={project.description} />
+                  ))}
+              </ul> */}
+              <Container id="rejected" items={items.rejected} />
+          </div>
+          <div className='container unsorted-container' id="center">
+              {/* <h2>Unsorted</h2> */}
+              {/* List unsorted projects */}
+              {/* <ul>
+                  {projects
+                  .filter(project => project.status === 'pending')
+                  .map(project => (
+                      // <li key={project.id}>
+                      //     <h2>{project.title}</h2>
+                      //     <p>{project.description}</p>
+                      // </li>
+                      <Project id={project.id} name={project.title} description={project.description} />
+                  ))}
+                      
+              </ul> */}
+              <Container id="unsorted" items={items.unsorted} />
+          </div>
+          <div id='right' className='container unsorted-container'>
+              {/* <h2>Approved</h2> */}
 
+              {/* List approved projects */}
+              {/* <ul>
+                  {projects
+                  .filter(project => project.status === 'accepted')
+                  .map(project => (
+                      // <li key={project.id}>
+                      //     <h2>{project.title}</h2>
+                      //     <p>{project.description}</p>
+                      // </li>
+                      <Project id={project.id} name={project.title} description={project.description} />
+                  ))}
+              </ul> */}
+              <Container id="approved" items={items.approved} />
+              <div id="publishing">
+          </div>
+          </div>
+          <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
+          </DndContext>
+          </div>
 
         </div>
+    </main>);
 
-    );
     function findContainer(id) {
         if (id in items) {
           return id;
@@ -349,4 +360,4 @@ const ProjectsAdmin = () => {
 
 };
 
-export default ProjectsAdmin;
+export default AdminProjectsView;

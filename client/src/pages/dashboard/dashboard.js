@@ -13,7 +13,7 @@ const Dashboard = () => {
     console.log('user id:',userId);
     console.log('logged in', loggedin);
 
-    // if user is client & hasn't submitted project
+    // if user is client 
     // redirect to  project proposal form
     useEffect(() => {
         if(isLoggedIn() && userRole === 'client') {
@@ -25,13 +25,8 @@ const Dashboard = () => {
     return(
         <main>
             <h1>Semester 2, 2024</h1>
-            <p>Id{userId}</p>
-            {/* {userRole==='client' && (
-                <div className="dashboard-item">
-
-                </div>
-
-            )} */}
+            <p>{userId}</p>
+            <p>{userRole}</p>
         </main>
     );
 };

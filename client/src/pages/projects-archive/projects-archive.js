@@ -1,9 +1,10 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchProjects, fetchSemester } from '../Api.js';
-import Project from "../components/project/project.js";
-import SemesterDropdown from "../components/semester-dropdown/semester-dropdown.js";
+import { fetchProjects, fetchSemester } from '../../Api.js';
+import Project from "../../components/project/project.js";
+import SemesterDropdown from "../../components/semester-dropdown/semester-dropdown.js";
+import './projects-archive.css';
 
 const ProjectsArchive = () => {
     const { semesterID: semesterIDFromURL } = useParams();
@@ -54,7 +55,7 @@ const ProjectsArchive = () => {
         // set new semester to manage
         setSemesterID(selectedSemesterID);
         // update URL without reloading page
-        navigate(`/pages/projects-archive/${selectedSemesterID}`, { replace: true }); 
+        navigate(`/projects/archive/${selectedSemesterID}`, { replace: true }); 
     };
 
     if (!semester) {
@@ -65,33 +66,36 @@ const ProjectsArchive = () => {
     const archivedProjects = projects.filter(project => project.semester_id === semesterID);
 
     return(
-        <div className="projects-archive">
-            <div className='page-header'>
-                <h2>Project Archive</h2>
-                <div className='semester-heading'>
-                    {semester && <h1>{semester.name}</h1>}
-                    {/* update semesterID when dropdown button is selected */}
-                    <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['current','upcoming']} />
+        <main className="projects-archive">
+            <div className='content'>
+                <div className='page-header'>
+                    <div className='semester-heading'>
+                        {semester && <h1>{semester.name}</h1>}
+                        {/* update semesterID when dropdown button is selected */}
+                        <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['current','upcoming']} />
+                    </div>
+                    <h2>Project Archive</h2>
+
+                </div> 
+                <div className = 'content display-projects'>
+                    {/* display projects from semester */}
+                    <div id="archivedProjects">
+                        {archivedProjects.length > 0 ? (
+                            archivedProjects.map(project => (
+                                <Project 
+                                    view = 'admin'
+                                    number={project.number} 
+                                    name={project.title} 
+                                    description={project.description} 
+                                />
+                            ))
+                        ) : (
+                            <p>No projects have been archived for this semester.</p>
+                        )}
+                    </div>  
                 </div>
-            </div> 
-            <div className = 'page-content display-projects'>
-                {/* display projects from semester */}
-                <div id="archivedProjects">
-                    {archivedProjects.length > 0 ? (
-                        archivedProjects.map(project => (
-                            <Project 
-                                key={project.id}
-                                id={project.id} 
-                                name={project.title} 
-                                description={project.description} 
-                            />
-                        ))
-                    ) : (
-                        <p>No projects have been archived for this semester.</p>
-                    )}
-                </div>  
             </div>
-        </div>  
+        </main>  
     );
 }
 

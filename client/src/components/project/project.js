@@ -3,19 +3,18 @@ import { getUserRole } from '../../utils/auth.js';
 
 import './project.css';
 
-const Project = ({ number, name, description, status, expiry }) => {
+const Project = ({ view, number, name, description, status, expiry }) => {
     let today = new Date();
     let formatDate = today.toISOString();
     let available = "Unavailable";
-    const userRole = getUserRole();
 
     if(formatDate < expiry){
         available = "Available"
     }
 
     return(
-        <div className={`project-container ${userRole}`}>
-            {userRole==='client' &&
+        <div className={`project-container ${view}`}>
+            {view==='client' &&
             <div className="project-content">
                 <div className="project-header">
                     <h2>{name}</h2>
@@ -25,7 +24,7 @@ const Project = ({ number, name, description, status, expiry }) => {
                 </div>
             </div>}
 
-            {userRole==='student' &&
+            {view==='student' &&
             <div className="project-content">
                 <div className="project-number">
                         <p>Project {number}</p>
@@ -38,16 +37,17 @@ const Project = ({ number, name, description, status, expiry }) => {
                 </div>
             </div>}
             
-            {userRole==='admin' &&
+            {view==='admin' &&
             <div className="project-content">
-                <div className="number">
-                        <p>Project {number}</p>
-                </div>
                 <div className="name">
                     <p>{name}</p>
                 </div>
-                <div className="description">
-                    <p>Description: {description}</p>
+                <div className="desc-box">
+                    <div className="desc-container">
+                        <div className="desc-text">
+                            {description}
+                        </div>
+                    </div>
                 </div>
                 <div className="status">
                     {status}

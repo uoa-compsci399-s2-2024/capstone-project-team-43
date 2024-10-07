@@ -7,9 +7,8 @@ import './App.css';
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, navigate, useLocation } from "react-router-dom";
 import LandingPage from "./pages/landing-page/landing-page";
-import Cornerstone from "./pages/projects-admin";
+import Cornerstone from "./pages/admin-projects-view/projects-admin.js";
 import ProjectPreferences from './pages/project-preferences';
-import ProjectsAvailable from './pages/projects-available';
 
 import Dashboard from './pages/dashboard/dashboard';
 import { isLoggedIn } from './utils/auth';
@@ -18,15 +17,17 @@ import Layout from './components/layout/layout.js';
 
 import About from './pages/about/about.js';
 import Contact from './pages/contact/contact.js';
+import Faq from './pages/faq/faq.js';
+
 import AccountSettings from './pages/account-settings/account-settings.js';
 
 import ProjectProposalForm from "./pages/project-proposal/project-proposal.js";
 import ClientProjectsView from './pages/client-projects-view/client-projects.js';
 import ManageSemester from './pages/manage-semester/manage-semester.js';
-import ProjectsArchive from './pages/projects-archive';
+import ProjectsArchive from './pages/projects-archive/projects-archive.js';
 import CreateSemester from './pages/create-semester/create-semester.js';
-
-
+import ProjectsAvailable from './pages/student-projects-view/projects-available.js';
+import AdminProjectsView from './pages/admin-projects-view/projects-admin.js';
 
 function App() {
 
@@ -43,13 +44,15 @@ function App() {
         
 
           {/* Student Pages */}
-          <Route path='/projects' element={<ProjectsAvailable/>} />
-          <Route path='/project/preferences/submit' element={<ProjectPreferences/>} />
+          <Route path='/projects/available' element={<Layout><ProjectsAvailable/></Layout>} />
+          <Route path='/project/preferences/submit' element={<Layout><ProjectPreferences/></Layout>} />
 
           {/* Admin Pages  */}
           <Route path='/projects/archive/:semesterID' element={<Layout><ProjectsArchive /></Layout>} />
           <Route path='/manage/semester/:semesterID' element={<Layout><ManageSemester /></Layout>}/>
           <Route path='/create/semester' element={<Layout><CreateSemester /></Layout>}/>
+          <Route path='/projects/manage' element={<Layout><AdminProjectsView /></Layout>}/>
+
 
 
           {/* Client Pages */}
@@ -62,6 +65,8 @@ function App() {
           <Route path='/about' element={<Layout><About/></Layout>} />
           <Route path='/contact' element={<Layout><Contact/></Layout>} />
           <Route path='/account/settings' element={<Layout><AccountSettings /></Layout>} />
+          <Route path='/faq' element={<Layout><Faq /></Layout>} />
+
 
         </Routes>
       

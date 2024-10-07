@@ -17,7 +17,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
     ]
 
     const footerLinks = [
-        { name: "FAQ", path: "/"},
+        { name: "FAQ", path: "/faq"},
         { name: "About", path: "/about"},
         { name: 'Contact', path: "/contact"}
 

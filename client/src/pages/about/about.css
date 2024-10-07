@@ -5,3 +5,7 @@
 .about-page .content{
     max-width: 60%;
 }
+
+.about-page .content-section p{
+    font-size: 16px !important;
+}

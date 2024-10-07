@@ -54,15 +54,13 @@ const ClientProjectsView = () => {
             <div className='content'>
                 <h1>Your Projects</h1>
                 <div className='projects-container'>
-                    {projects.length === 0 && 
+                    {projects.filter(project => project.owner_id === userId).length === 0 &&
                         <p>
                             You haven't submitted any project proposals yet.
                         </p>
                     }
-                    {projects.length > 0 && (
-                        projects
-                        .filter(project => project.owner_id === userId)
-                        .map(project => (
+                    {(projects.filter(project => project.owner_id === userId).length > 0 &&
+                        projects.map(project => (
                             (<div onClick={() => handleclick(project)}>
                                 <Project 
                                     id={project.id} 

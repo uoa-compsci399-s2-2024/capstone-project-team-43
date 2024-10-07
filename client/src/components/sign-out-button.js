@@ -29,7 +29,7 @@ export const handleSignOut = async () => {
 // shows sign out button and handles sign out
 const SignOutButton = () => {
     return (
-        <button className='sign-out-button' onClick={handleSignOut}>Sign Out</button>
+        <button className='main-button sign-out-button' onClick={handleSignOut}>Sign Out</button>
     );
 };
 

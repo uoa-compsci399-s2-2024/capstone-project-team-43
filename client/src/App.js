@@ -1,54 +1,71 @@
 
+import './index.css';
 import './App.css';
 
 
 //import ReactDOM from "react-dom/client";
-import React from "react";
-import { Routes, Route} from "react-router-dom";
-import Login from "./pages/login";
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route, navigate, useLocation } from "react-router-dom";
+import LandingPage from "./pages/landing-page/landing-page";
 import Cornerstone from "./pages/projects-admin";
-import ProjectProposalForm from "./pages/project-proposal";
 import ProjectPreferences from './pages/project-preferences';
 import ProjectsAvailable from './pages/projects-available';
-import About from './pages/about';
-import Contact from './pages/contact';
-import NewSemster from './pages/new-semster';
-import Header from './components/header';
 
+import Dashboard from './pages/dashboard/dashboard';
+import { isLoggedIn } from './utils/auth';
 
-// import Navbar from "./components/navbar";
-import ManageSemester from './pages/manage-semester';
+import Layout from './components/layout/layout.js';
+
+import About from './pages/about/about.js';
+import Contact from './pages/contact/contact.js';
+import AccountSettings from './pages/account-settings/account-settings.js';
+
+import ProjectProposalForm from "./pages/project-proposal/project-proposal.js";
+import ClientProjectsView from './pages/client-projects-view/client-projects.js';
+import ManageSemester from './pages/manage-semester/manage-semester.js';
 import ProjectsArchive from './pages/projects-archive';
-import ClientProjects from './pages/client-projects';
-import AccountSettings from './pages/account-settings';
-import LandingPage from './pages/landing-page';
+import CreateSemester from './pages/create-semester/create-semester.js';
+
+
 
 function App() {
 
+  const isLoggedIn = !!localStorage.getItem('authToken')
+  const location = useLocation();
+
   return (
-    <div>
-      {/* <Navbar /> */}
-      <Header />
-      <Routes>
-        <Route path='/pages/projects-admin' Component={Cornerstone} />
-        <Route path='/pages/projects-available' Component={ProjectsAvailable} />
-        <Route path='/' element={<LandingPage />} />
-        <Route path='/login' Component={Login} />
+      <div>
+        <Routes>
+          <Route path="/" element={<LandingPage/>}/>;
 
-        <Route path='/pages/project-proposal' Component={ProjectProposalForm} />
-        <Route path='/pages/project-preferences' Component={ProjectPreferences} />
-        <Route path='/pages/projects-archive/:semesterID' element={<ProjectsArchive />} />
-        <Route path='/pages/about' Component={About} />
-        <Route path='/pages/contact' Component={Contact} />
-        <Route path='/pages/new-semster' Component={NewSemster} />
-        <Route path='/pages/manage-semester/:semesterID' element={<ManageSemester />} />
-        <Route path='/pages/account-settings/' element={<AccountSettings />} />
+          {/* home page */}
+          <Route path="/dashboard" element={<Layout><Dashboard/></Layout>}/>;
+        
 
-        <Route path='/pages/client-projects' Component={ClientProjects} />
-      </Routes>
+          {/* Student Pages */}
+          <Route path='/projects' element={<ProjectsAvailable/>} />
+          <Route path='/project/preferences/submit' element={<ProjectPreferences/>} />
+
+          {/* Admin Pages  */}
+          <Route path='/projects/archive/:semesterID' element={<Layout><ProjectsArchive /></Layout>} />
+          <Route path='/manage/semester/:semesterID' element={<Layout><ManageSemester /></Layout>}/>
+          <Route path='/create/semester' element={<Layout><CreateSemester /></Layout>}/>
+
+
+          {/* Client Pages */}
+          <Route path='/projects/submit' element={<Layout><ProjectProposalForm/></Layout>} />
+          <Route path='/projects/view' element={<Layout><ClientProjectsView/></Layout>} />
+
+
+          {/* General */}
+          {/* {<Route path="/dashboard"  element={ isLoggedIn ? <Dashboard/>:<LandingPage/> } />} */}
+          <Route path='/about' element={<Layout><About/></Layout>} />
+          <Route path='/contact' element={<Layout><Contact/></Layout>} />
+          <Route path='/account/settings' element={<Layout><AccountSettings /></Layout>} />
+
+        </Routes>
       
-
-    </div>
+      </div>
   );
 }
 

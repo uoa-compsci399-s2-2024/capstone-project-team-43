@@ -121,6 +121,26 @@ export async function createProject(title, description, owner_id, special_requir
 };
 
 
+export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {
+    try {
+         const response = await fetch(`${BASE_URL}/api/semesters/`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one}),
+          })
+        console.log(response)
+
+        return response;
+
+    } catch (error) {
+        console.error('Error creating semester:', error);
+        throw error;    
+    }
+};
+
+
 export async function fetchSemesters() {
     try {
         let response; 
@@ -172,6 +192,25 @@ export async function fetchProjectsBySemester(semesterId) {
         return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
+        throw error;    }
+};
+/**
+ * Fetches all projects from the server by user ID
+ * 
+ * @async
+ * @function fetchProjectsByUser
+ * @param {number} [userId] 
+ * @returns {Promise<Project[]>} A promise that resolves to an array of project objects.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchProjectsByUser(userId) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/projects/user/${userId}`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching user projects:', error);
         throw error;    }
 };
 /**

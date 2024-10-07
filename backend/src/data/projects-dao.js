@@ -336,15 +336,21 @@ export async function allocateNumbers(approved_projects) {
     let string_projects = JSON.stringify(approved_projects, null, 2);
 
     let projectIDS = string_projects.split("\"id\": ");
-    console.log();
+    let numberIDS = [];
 
     for (let i = 1; i < approved_projects.length + 1; i++) {
     
     /** @type {Project} */
     console.log("UPDATING PROJECT WITH ID: ", projectIDS[2 * i].split(",")[0]);
 
+    numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
+
     await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
     }
+
+    console.log(numberIDS);
+
+   await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
 
   } catch (err) {
     if (connection) connection.release();

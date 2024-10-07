@@ -88,7 +88,6 @@ export async function getSemester(id) {
     return semester;
 
   } catch (err) {
-    console.log("HERE IS ISSUE");
     console.error('Error executing query/s:', err.message);
     return [];
   } finally {

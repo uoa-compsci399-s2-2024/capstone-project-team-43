@@ -1,5 +1,6 @@
 import axios from 'axios'; 
 import { saveAs } from 'file-saver';
+import Cookies from 'js-cookie';
 
 const BASE_URL = "http://localhost:3001";
 
@@ -35,10 +36,14 @@ export async function fetchProjects(status) {
 
 export async function updateStatus(id,status) {
     try {
+
+        const token = Cookies.get("authToken");
+
          const response = await fetch(`${BASE_URL}/api/projects/${id}`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authToken" : token
             },
             body: JSON.stringify({ status }),
           })
@@ -140,14 +145,17 @@ export async function fetchUsersByRole(role) {
         console.error('Error fetching users:', error);
         throw error;    }
 };
+
 export async function updatePublish(status, approved_projects = []) {
 
-    console.log("ITEMS: ", approved_projects);
     try {
+        const token = Cookies.get("authToken");
+        
          const response = await fetch(`${BASE_URL}/api/projects/publish/${status}`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authToken" : token
             },
             body: JSON.stringify({ status, approved_projects }),
           })

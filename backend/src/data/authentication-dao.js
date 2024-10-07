@@ -227,4 +227,51 @@ export async function findUser(email) {
   }
 }
 
+// Validates that the token given in the header is a valid token
+export async function validateToken(token, jwtSecretKey, requested_role) {
+
+  try {
+
+      const result = await checkTokenBlacklist(token);
+
+      // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
+      if (result) {
+          throw new Error('Token is invalid');
+      }
+
+      const verifiedToken = jwt.verify(token, jwtSecretKey);
+
+      // Extract user's data
+      const user = {
+          id: verifiedToken.userId,
+          email: verifiedToken.email,
+          role: verifiedToken.role,
+      };
+
+      //Checks if the user is in the database, if so it returns their role
+      const user_role = await findUser(user.email);
+
+      /** 
+       * The following must occur for a user to be verified:
+       * The token is valid and not in the blacklist token (checked above)
+       * The role in the token is the same as the requested role
+       * The user's role in the database is the same as the requested role
+       * 
+       * If the above conditions are all true, the user is verified
+       */
+
+      if (verifiedToken && user.role == requested_role && requested_role == user_role) {
+          return true;
+      } else {
+          // Access Denied
+          return false;
+      }
+  } catch (error) {
+      console.log("Error validating token: ", error);
+      // Access Denied
+      return false;
+  }
+
+}
+
 

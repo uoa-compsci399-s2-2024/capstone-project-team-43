@@ -96,14 +96,33 @@ const Navbar = () => {
         } else {
         const decoded = jwtDecode(token);
         const role = decoded.role;
+        const defaultPaths = ["/", "/pages/contact", "/pages/about"];
 
         if (role === "student") {
-            student_view();
+            const authorizedPaths = ["/pages/projects-available", "/pages/project-preferences"];
+
+            if (authorizedPaths.includes(window.location.pathname) || defaultPaths.includes(window.location.pathname)) {
+                student_view();
+
+             } else {
+                window.location.pathname = '/pages/projects-available';
+             }
+
+            
         } else if (role === "client") {
-            client_view();
+            const authorizedPaths = ["/pages/client-projects", "/pages/client-projects"];
+
+            if (authorizedPaths.includes(window.location.pathname) || defaultPaths.includes(window.location.pathname)) {
+                client_view();
+
+             } else {
+                window.location.pathname = '/pages/client-projects';
+             }
         } else if (role === "admin") {
             admin_view();
         }
+
+        
     }
     } catch (err) {
         console.log(err);

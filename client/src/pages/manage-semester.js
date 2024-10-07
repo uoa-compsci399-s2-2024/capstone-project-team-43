@@ -240,13 +240,10 @@ const ManageSemester = () => {
         let formattedDate;
 
         if (editingField === "start_date" || editingField === "end_date") {
-            console.log("GETTING NEW DATES WITH: ", newValue);
             formattedDate = formatSemesterDate(newValue, true);
         } else {
             formattedDate = formatBiddingDate(newValue, true);
         }
-
-        console.log("DATE RECEIVED: ", formattedDate);
 
         if(formattedDate) {
 

@@ -1,0 +1,17 @@
+/* .main-content{
+    display: flex;
+    justify-content: space-between;
+    max-width: 100vw;
+    max-height: 90vh;
+    overflow: hidden;
+}
+ */
+
+
+.layout-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}

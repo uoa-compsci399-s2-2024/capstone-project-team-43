@@ -5,16 +5,33 @@ import { createProject } from '../../Api.js'
 import { projectinfo } from "../../components/sortable_item.js";
 import { fetchUser } from "../../Api.js";
 import { jwtDecode } from "jwt-decode";
+import { useNavigate, Link } from 'react-router-dom';
 
 import './project-proposal.css'
 
 const ProjectProposal = () => {
     const [showAttendanceConfirmation, setShowAttendanceConfirmation] = useState(false);
     const [showForm, setShowForm] = useState(false);
+    const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+    const [showEquipmentReqWindow, setShowEquipmentReqWindow] = useState(false);
+
+
     const [meetingAttendance, setMeetingAttendance] = useState(false);
     const [presentationAttendance, setPresentationAttendance] = useState(false);
     const openAttendanceConfirmation = () => setShowAttendanceConfirmation(true);
     const closeAttendanceConfirmation = () => setShowAttendanceConfirmation(false);
+
+    const handleEquipmentReqSelect = (event) => {
+        const value = event.target.value;
+        if (value === "1") {
+            setShowEquipmentReqWindow(true);
+        }
+        else{
+            setShowEquipmentReqWindow(false);
+        }
+    }
+
+    const navigate = useNavigate();
 
     const handleContinueToForm = (field) => {
         if (document.getElementById("check1").checked 
@@ -28,6 +45,10 @@ const ProjectProposal = () => {
 
     const handleGoBack = () => {
         setShowForm(false)
+    };
+
+    const handleSuccess = () => {
+        setShowSuccessMessage(true)
     };
 
     const getClientID = () => {
@@ -61,62 +82,28 @@ const ProjectProposal = () => {
         let max_teams = document.getElementById("teams").value;
         let preferred_skills = document.getElementById("desiredskill").value;
         let available_resources = document.getElementById("availableresources").value;
+        let available_from = document.getElementById("start_date").value;
         let expiry = document.getElementById("date").value;
         let owner_id = getClientID();
         let currentDate = new Date();
         let created = currentDate.toISOString().split('T')[0];
 
         //Structure:  title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client details
-        createProject(title, description, owner_id, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, expiry, "pending", max_teams, -1, 1, other_client_details);
+        createProject(title, description, owner_id, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, "pending", max_teams, -1, 1, other_client_details);
+        handleSuccess();
+
     } catch (err) {
         console.log("Error", err);
         }
     }
 
-    // const next = () =>{
-
-    //     if(projectinfo !== null){
-    //         console.log(fetchUser(projectinfo.project.owner_id));
-    //         document.getElementById("projecttitle").value = projectinfo.project.title;
-    //         document.getElementById("projectdescription").value = projectinfo.project.description;
-    //         document.getElementById("desiredoutput").value = projectinfo.project.deliverable;
-    //         document.getElementById("specialequipment").value = projectinfo.project.special_requirements;
-    //         document.getElementById("desiredskill").value = projectinfo.project.preferred_skills;
-    //         document.getElementById("date").value = projectinfo.project.expiry;   
-    //     }
-
-
-    //    if(document.getElementById("check1").checked === false || document.getElementById("check2").checked === false){
-    //         document.getElementById('pop').style.display = "block";
-    //    } else{
-    //         document.getElementById('next').style.display = "none";
-    //         document.getElementById('back').style.display = "block";
-    //         document.getElementById('proposalContent').style.display = "block";
-    //         document.getElementById('proposalInformation').style.display = "none";
-    //         document.getElementById("proposalHeader").scrollIntoView({ behavior: "smooth" });
-
-    //    }
-    // }
-
-    // const back = () =>{
-    //     document.getElementById('next').style.display = "inline";
-    //     document.getElementById('back').style.display = "none";
-    //     document.getElementById('proposalContent').style.display = "none";
-    //     document.getElementById('proposalInformation').style.display = "block";
-    // }
-
-    // const close = () => {
-    //     document.getElementById('pop').style.display = "none";
-    // }
-  
     return(
             <main className="project-proposal-page">
                 <div className="content">
                     <h1>Project Proposal Form</h1>
-                    {!showForm && <div className="content-section form-content form-intro">
+                    {(!showForm && !showSuccessMessage)&& <div className="content-section form-content form-intro">
                         <p>Please complete this form if you wish to propose a 
-                            project for the COMPSCI 399 Capstone Course in S2 2024. 
-                            The deadline for form submission is XXXXX.
+                            project for the COMPSCI 399 Capstone Course.
                         </p>
                         <h2>Submission Deadline</h2>
                         <p>Please note that while we accept applications throughout the year, 
@@ -220,9 +207,12 @@ const ProjectProposal = () => {
                             If yes, please specify the required equipment.<br />
                             Note: We can only accept a limited number of projects with special equipment needs.
                         </p>
-                        <input type="radio" id="html" name="fav_language" value="HTML" /> No<br />
-                        <input type="radio" id="html" name="fav_language" value="HTML" /> Yes<br />
-                        <textarea placeholder="Please specify" id = "specialequipment"/>
+                        <select id="yes-no-equipment" onChange = {handleEquipmentReqSelect}> 
+                            <option value="" disabled selected>Select</option>
+                            <option value="1">Yes, the project will require special equipment</option>
+                            <option value="0">No, the project will not require special equipment</option>
+                        </select>
+                        {showEquipmentReqWindow && <textarea placeholder="Please specify" id = "specialequipment"/>}
                     </label>
                     <label>
                         <h2>6. Number of Teams*</h2>
@@ -253,15 +243,27 @@ const ProjectProposal = () => {
                     </label>
                     <label>
                         <h2>9. Project Offering Timeframe*</h2>
-                        <p>Please specify the semester which you would like your project to be offered.</p>
+                        <p>Please specify the timeframe in which you would like the project to be offered</p>
+                        <p>Start date</p>
+                        <input type="date" id="start_date"/> 
+                        <p>End date</p>
                         <input type="date" id="date"/> 
                     </label>             
                         <div className = 'proposal-submission-buttons' id="proposalButtons">
-                        {/* <button className = 'main-button'onClick={handleNext} id="next">Next</button> */}
                         <button className = 'main-button' onClick={handleGoBack} id="back">Go Back</button>
                         <button className = 'main-button'id="submit" form="proposalForm" type="submit" onClick={submit}>Submit</button>
                     </div>
                 </form>} 
+                {showSuccessMessage && (<div className='success-message'>
+                        <h1>Thank you for submitting your project!</h1>
+                        <h2>You will be contacted by the course coordinators if your project is assigned to a student team</h2>
+                        <div className='redirect-to-proposal'>
+                            <Link to='/projects/view'>
+                                <span>View Your Projects</span>
+                            </Link>
+                        </div>
+                    </div>
+                )}
         </main>
     )
 }

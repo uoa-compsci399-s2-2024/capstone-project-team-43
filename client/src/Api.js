@@ -167,14 +167,14 @@ export async function updatePublish(status, approved_projects = []) {
 
 
 
-export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details) {
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details) {
     try {
          const response = await fetch(`${BASE_URL}/api/projects/`, {
             method: "POST",
             headers: {
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details}),
+            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, available_from, status, max_teams, project_number, semester_id, other_client_details}),
           })
 
         return await response;

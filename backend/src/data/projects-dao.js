@@ -14,7 +14,8 @@ dotenv.config();
  * @property {string} preferred_skills
  * @property {string} project_deliverable
  * @property {Date} created
- * @property {string} expiry
+ * @property {Date} available_from
+ * @property {Date} expiry
  * @property {'rejected'|'accepted'|'pending'} status
  * @property {number} max_teams
  * @property {number} project_number
@@ -119,12 +120,13 @@ export async function getProjectById(id) {
  * @param {'rejected'|'accepted'|'pending'} status
  * @param {number} max_teams
  * @param {number} project_number
+ * @param {Date} available_from
  * @param {Date} expiry
  * @param {string} other_client_details
  *
  * @return the newly created project
  */
-export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details) {
+export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details) {
   let connection;
   try {
     // Get connection from pool
@@ -137,6 +139,7 @@ export async function createProject(title, description, owner_id, special_requir
     const client_name = user.first_name + " " + user.last_name;
     const client_email = user.email;
 
+
     const semesters = await getSemesters();
 
     const current_semester = semesters.find(semester => semester.status === "current");
@@ -144,8 +147,8 @@ export async function createProject(title, description, owner_id, special_requir
 
     // Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, published) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \'false\')",
-      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, current_semester.id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email]
+      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, available_from, published) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \'false\')",
+      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, current_semester.id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, available_from]
     );
 
     /** @type {Project} */

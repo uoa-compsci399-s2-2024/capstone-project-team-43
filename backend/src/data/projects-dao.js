@@ -145,7 +145,7 @@ export async function createProject(title, description, owner_id, special_requir
 
     // Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, published) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \'false\')",
       [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, current_semester.id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email]
     );
 

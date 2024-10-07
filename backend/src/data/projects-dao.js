@@ -126,7 +126,6 @@ export async function getProjectById(id) {
 export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client_details) {
   let connection;
   try {
-
     // Get connection from pool
     connection = await pool.getConnection();
 
@@ -303,6 +302,28 @@ export async function getProjectsBySemester(semester_id) {
 
     await connection.query(`USE ${DB_NAME};`);
     const [rows] = await connection.query('SELECT * FROM PROJECT WHERE semester_id = ?', [semester_id]);
+
+    return rows;
+
+  } catch (err) {
+    if (connection) connection.release();
+    console.error('Error executing query/s:', err.message);
+  }
+}
+/**
+ * Gets all projects by owner's user id
+ * @param {number} user_id
+ * @returns {Promise<Project[]>}
+ */
+export async function getProjectsByUser(user_id) {
+  let connection;
+  try {
+    console.log('user', user_id);
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE owner_id = ?', [semester_id]);
 
     return rows;
 

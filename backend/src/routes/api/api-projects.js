@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject, publishProjects, editProject, getProjectsBySemester } from "../../data/projects-dao.js";
+import { getProjects, createProject, deleteProject, updateProjectStatus, getStatusProject, 
+    publishProjects, editProject, getProjectsBySemester, getProjectsByUser } from "../../data/projects-dao.js";
 
 const router = Router();
 
@@ -13,6 +14,13 @@ router.get("/status/:status_name", async (req, res) => {
 router.get("/semester/:semester_id", async (req, res) => {
     const semester_id = req.params.semester_id;
     return res.json(await getProjectsBySemester(semester_id))
+});
+
+
+// Retrieves all projects where owner has user_id
+router.get("/user/:user_id", async (req, res) => {
+    const user_id = req.params.user_id;
+    return res.json(await getProjectsByUser(user_id))
 });
 
 // Retrieves all projects

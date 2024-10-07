@@ -5,24 +5,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Creates a pool of connections to the database
-// const pool = mysql.createPool({
-//   host: 'localhost',
-//   user: 'root',
-//   password: 'password',
-//   multipleStatements: true
-// });
-
 const pool = mysql.createPool({
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.RDS_USERNAME,
-  password: process.env.RDS_PASSWORD,
-  port: process.env.RDS_PORT,
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
   multipleStatements: true
 });
 
 // Gets the database name and script path from .env file
-const DB_NAME = process.env.RDS_DB_NAME;
+const DB_NAME = process.env.DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
+const DB_DEMO_SCRIPT = process.env.DB_DEMO_SCRIPT;
 
 // Initializes the database, if no such database exists, it calls the create database function
 async function initializeDatabase() {
@@ -89,7 +82,7 @@ async function createTables() {
     // Selects the newly created database
     await connection.query(`USE ${DB_NAME};`);
 
-    // Creates tables and placeholder data
+    // Creates tables
     const createTablesQuery = fs.readFileSync(DB_INIT_SCRIPT, "utf8", (err, data) => {
       if (err) throw err;
       console.log(data);
@@ -102,8 +95,41 @@ async function createTables() {
     } catch (err) {
       console.error('Error initializing database: ', err.message);
     }
+
+    await insertDemoData();
+
   } catch (err) {
     console.error('Error creating database tables: ', err.message);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
+  }
+}
+
+async function insertDemoData() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    // Selects the newly created database
+    await connection.query(`USE ${DB_NAME};`);
+
+    // Inserts demo data
+    const demoQuery = fs.readFileSync(DB_DEMO_SCRIPT, "utf8", (err, data) => {
+      if (err) throw err;
+      console.log(data);
+    });
+
+    // Runs query, if query fails, returns error
+    try {
+      await connection.query(demoQuery);
+      console.log('Demo data inserted successfully');
+    } catch (err) {
+      console.error('Error initializing database: ', err.message);
+    }
+  } catch (err) {
+    console.error('Error inserting demo data: ', err.message);
   } finally {
     // If there is a connection, release it
     if (connection) connection.release();

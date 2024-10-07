@@ -1,0 +1,28 @@
+.faq-page h3{
+    font-size: 17px;
+
+}
+.faq-page h2{
+    font-size: 25px;
+    margin-bottom: -3vh;
+    margin-top: 5vh;
+}
+
+
+.faq-section p{
+    font-size: 14px;
+}
+
+.faq-section{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    background-color: var(--transparent);
+    margin: 4vh;
+}
+
+.faq-page .content{
+    width: 60%;
+
+}

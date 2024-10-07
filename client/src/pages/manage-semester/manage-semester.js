@@ -19,7 +19,7 @@ const SemesterDetail = ({ description, data='None', onEdit, isEditing, onSave, o
             {isEditing ? (
                 <>
                 {/* Format when user is editing */}
-                    <div className='data-container'>
+                    <div className='semester-data-container'>
                         <div className='container-text'>
                             <p className='semester-data'>Edit {description.toLowerCase()}: {
                             <input 
@@ -41,7 +41,7 @@ const SemesterDetail = ({ description, data='None', onEdit, isEditing, onSave, o
             ) : (
                     <>  
                     {/* format when user isn't editing */}
-                    <div className='data-container'>
+                    <div className='semester-data-container'>
                         <div className='container-text'>
                             <p className='account-data'>{description}: {data}</p>
                         </div>
@@ -324,7 +324,7 @@ const ManageSemester = () => {
                     <h2>Students and Teams</h2>
                     <p className='text-detail'>View, edit, and download the semester's students and teams</p>
                     {/* Displays student count & gives upload option */}
-                    <div className='data-container'>
+                    <div className='semester-data-container'>
                         <div className='container-text'>
                             <p> {students.length} student{students.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
                         </div>
@@ -353,7 +353,7 @@ const ManageSemester = () => {
                         </div>                
                     )}
                     {/* Displays team count & gives upload option */}
-                    <div className='data-container'> 
+                    <div className='semester-data-container'> 
                         <div className='container-text'>
                             <p>{teams.length} team{teams.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
                         </div>

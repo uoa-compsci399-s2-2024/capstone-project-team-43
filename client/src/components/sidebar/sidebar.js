@@ -13,7 +13,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
     console.log('user role for sidebar:',userRole);
 
     const primaryLinks = [
-        { name: "Home", path: "/dashboard" }
+        // { name: "Home", path: "/dashboard" }
     ]
 
     const footerLinks = [

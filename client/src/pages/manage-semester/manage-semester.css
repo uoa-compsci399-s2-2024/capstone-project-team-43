@@ -1,0 +1,159 @@
+.subheading {
+    text-transform: capitalize;
+    margin-top: -8vh;
+    margin-bottom: 5vh;
+}
+
+.manage-semester-page .content{
+    max-width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.manage-semester-page .content-section{
+    text-align: left;
+    width: 600px;
+    min-width: 300px;
+}
+
+/* small subeadings */
+.text-detail {
+    font-size: 15px;
+    margin-top: -1vh;
+}
+
+/* DROP DOWN MENU */
+
+.semester-heading{ 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.dropdown-button{
+    background-image: url('/../client/src/media/drop-icon.png');
+    background-size: 60% 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: inherit;
+    margin-top: 0px;
+    width: 25px;
+    height: 25px;
+    border: none;
+    cursor: pointer;
+    box-sizing: content-box;
+    position: relative;
+    filter: invert(1);
+}
+
+.dropdown-button:hover{
+    background-color: transparent !important;
+    width: 30px;
+    height: 29px;
+}
+
+.dropdown-menu{
+    text-decoration: none;
+    list-style-type: none;
+    display: none;
+    position: absolute;
+    background-color: white;
+    z-index: 100;
+    width: 200px;
+    padding: 0px;
+    margin-top: 10px;
+    margin-left: -80px;
+    border-radius: 10px;
+}
+
+.dropdown-menu-button{
+    background-color: inherit;
+    font-size: 18px;
+    padding: 5px;
+    text-decoration: none;
+    transition: 0s !important;
+
+}
+
+.dropdown-menu-button:hover{
+    background-color: inherit !important;
+    font-weight: 700;
+    transition: 0s !important;
+}
+
+/* UPLOADING/DOWNLOADING FILES  */
+
+
+.upload-button{
+    width: auto;
+}
+
+.upload-icon{
+    /* background-image: ; */
+    max-width: 20px;
+    margin: -5px 3px -5px 0px;
+}
+
+.file-form-container {
+    max-height: 30px;
+    border-radius: 5px;
+    overflow: visible;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    align-items: center;
+    padding: 0; 
+    margin: 0;
+}
+
+.select-file-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+}
+
+.upload-file-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    gap: 10px;
+    width: auto;
+}
+
+
+.select-file-default {
+    opacity: 0;
+    position: absolute;
+    z-index: -1; 
+}
+
+.file-name{
+    font-size: 15px;
+    margin: 0px;
+}.account-settings-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.editing-button-container > button{
+    margin-left: 10px;
+}
+
+
+
+.data-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    align-items: center;
+}
+

@@ -1,12 +1,9 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import '../admin.css';
-import '../App.css';
-import '../index.js'
-import { fetchProjects, fetchSemester } from '../Api.js'
-import Project from "../components/project.js";
-import SemesterDropdown from "../components/semester-dropdown.js";
+import { fetchProjects, fetchSemester } from '../Api.js';
+import Project from "../components/project/project.js";
+import SemesterDropdown from "../components/semester-dropdown/semester-dropdown.js";
 
 const ProjectsArchive = () => {
     const { semesterID: semesterIDFromURL } = useParams();

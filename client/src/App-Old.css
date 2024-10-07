@@ -1733,3 +1733,550 @@
   z-index: 10;
   /* font-size: large; */
 }
+
+
+.projectProposal #timeframe{
+  width: 100%;
+  padding: 4px;
+  margin-top: 8px;
+  margin-left: 1em;
+  height: 35px;
+  border: 2px, solid, #003998;
+  border-radius: 3px;
+}
+
+.projectProposal #teams{
+  width: 10%;
+  padding: 4px;
+  margin-top: 8px;
+  margin-left: 1em;
+  height: 35px;
+  border: 2px, solid, #003998;
+  border-radius: 3px;
+}
+
+.projectProposal input[type=radio]{
+  height: 14px;
+  width: 14px;
+  border-radius: 10%;
+}
+
+
+.projectProposal #proposalButtons{
+  /* text-align: center; */
+  /* margin-left: 15%; */
+  /* margin-right: 15%; */
+  padding-top:5%;
+  padding-bottom:5%;
+ 
+}
+
+.projectProposal button, #submit{
+  width: 5%;
+  height: 4%;
+  background-color:#003998;
+  border-radius: 10px;
+  padding: 4px;
+  margin-top: 8px;
+  transition-duration: 0.4s;
+  border: 2px solid #003998;
+  color: white;
+  position: absolute;
+}
+
+.projectProposal #back{
+  background-color:#2979FF;
+  border: 2px solid #2979FF;
+  margin-left: 45%;
+}
+
+.projectProposal #next{
+  background-color:#2979FF;
+  border: 2px solid #2979FF;
+  margin-left: -5.1%;
+  position: absolute;
+}
+
+
+
+.projectProposal #back:hover, #next:hover{
+  background-color:white;
+  color: black;
+}
+
+.projectProposal button:hover, #submit:hover{
+  background-color: white;
+  color: black;
+}
+
+.projectProposal #back{
+  display: none;
+}
+
+.projectProposal #pop{
+  position: absolute;
+  display: none;
+  z-index: 99;
+  background-color: #2979FF;
+  color: white;
+  width: 20%;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+  padding: 3.5%;
+  margin-left: 36.5%;
+  margin-top: 10%;
+}
+
+.projectProposal #popBack{
+  width: 50px;
+  height: fit-content;
+  background-color:#003998;
+  border-radius: 3px;
+  padding: 8px;
+  margin-top: 0;
+  transition-duration: 0.4s;
+  border: 2px solid #003998;
+  color: white;
+  position: absolute;
+  margin: auto;
+  /* margin-right:70%; */
+  border-radius: 10px;
+  margin-left: -25px;
+}
+.projectProposal #popBack:hover{
+  background-color: white;
+  color: black;
+}
+/**           PROJECT PREFERENCE FORM             **/
+
+.projectPreferences{
+  background-color: #2979FF;
+  display: grid;
+  width: 100%;
+  min-height: 100vh;
+  position: absolute;
+}
+
+.projectPreferences #projectPreferenceselements h2{
+  color: white;
+  margin-left: 3vw;
+}
+
+.preferenceProjects{
+  background-color: white;
+  max-width: 80%;
+  min-height: 70%;
+  min-width: 80%;
+  position:static;
+  margin: 0;
+  margin-left: 3vw;
+  border-radius: 10px;
+  overflow: auto;
+  flex-wrap: wrap;
+  display: flex;
+  gap: 10px;
+  align-content: flex-start;
+}
+
+.projectPreferences #sidebuttons{
+  width: 10%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  margin-left: 88%;
+  top: 7vh;
+}
+
+.projectPreferences #sidebuttons button:hover{
+  background-color: lightgray;
+  color: black;
+  
+}
+
+.projectPreferences #sidebuttons button{
+  border-radius: 10px;
+  padding: 8px;
+  width: 90%;
+  height: 100%;
+  text-align: center;
+  border: 0.5px solid gray;
+  border-bottom: 2px solid grey;
+  background-color: white;
+  margin-top: 10px;
+  position: relative;
+  margin-left: 0;
+  align-self: center;
+}
+
+.projectPreferences #preferencesubmit button{
+  border-radius: 10px;
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  border: 0.5px solid gray;
+  border-bottom: 2px solid grey;
+  background-color: white;
+  position: relative;
+  margin-left: 0;
+}
+
+.projectPreferences #preferencesubmit{
+  width: 9%;
+  min-width:min-content;
+  max-width: 12vw;
+  height: 9%;
+  left: 88.5%;
+  position:relative;
+  top:10vh;
+}
+
+.projectPreferences #preferencesubmit button{
+  height: 50%;
+  background-color: #003998;
+  color: white;
+  border-color: #003998;
+  position: relative;
+}
+
+.projectPreferences #agreeon{
+  margin-top: 35%;
+  position:absolute;
+  margin-left: 3vw;
+}
+
+.projectPreferences .preferenceProjects .project{
+  background-color: white;
+  margin: 1%;
+  border-radius: 10px;
+  border: 1px solid #003998;
+  text-align:left;
+  max-width: 18vw;
+  max-height: 28vh;
+  min-width: 200px;
+  min-height: 100px;
+  height: fit-content;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+}
+
+.projectPreferences .preferenceProjects .project #projectDescription{
+  margin-left: 5%;
+  font-size:small;
+  overflow: auto;
+  width:fit-content;
+  min-width: 90%;
+  min-height: 100%;
+}
+
+.projectPreferences .preferenceProjects #projectNum{
+  /* position: absolute; */
+  float:left;
+  display:inline-flex;
+  /* padding:2%; */
+  width: 20%;
+  min-height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  border-right: 1px solid #003998;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+
+  /* padding-top: 8px; */
+  /* padding-left: 8px; */
+}
+
+.projectPreferences .preferenceProjects #projectNum h2{
+  color: black;
+  margin-left: 0;
+}
+
+.projectPreferences .preferenceProjects #projectName{
+  /* position: absolute; */
+  display:inline-flex;
+  /* padding:2%; */
+  /* background-color: yellow; */
+  width: 79.5%;
+  height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  justify-content: center;
+  /* border-right: 1px solid #003998; */
+  /* margin-left: -4px; */
+  /* margin-top: -4px; */
+  /* padding-top: 8px; */
+  /* padding-left: 8px; */
+  /* width: 141px; */
+  /* padding-top: 2%; */
+  /* padding-bottom: 2%; */
+  text-align: center;
+  align-items: center;
+  float: right;
+  padding: 0;
+  margin: 0;
+
+}
+
+
+
+.projectPreferences #onsubmission{
+  background-color: #2979FF;
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+}
+
+.projectPreferences #onsubmission h2{
+  margin-left: 0;
+  position: relative;
+  color: white;
+}
+
+
+.projectPreferences #onsubmission #return button{
+  background-color: #003998;
+  color: white;
+  border: 1px solid #003998;
+  border-radius: 10px;
+  height: 5vh;
+  width: 10vw;
+}
+
+
+
+.projectPreferences #onsubmission #chosenProjects{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.projectPreferences #onsubmission #chosenProjects .project{
+  background-color: white;
+  margin: 3%;
+  margin-top: 30vh;
+  border-radius: 10px;
+  border: 1px solid #003998;
+  max-width: 20vw;
+  max-height: 18vh;
+  overflow: hidden;
+}
+
+#projectpreferenceconfirm{
+  min-height: fit-content;
+  min-width: fit-content;
+  width: 50%;
+  top: 30%;
+  z-index: 1;
+  align-self: center;
+  margin: 0;
+  position: fixed;
+  text-align: center;
+  justify-self: center;
+  background-color: #2979FF;
+  color: white;
+  border: 1px solid #003998;
+  border-radius: 10px;
+  display: none;
+}
+
+#confirmprojects{
+  height: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+#confirmprojects .project{
+  background-color: white;
+  color: black;
+  margin: 3%;
+  border-radius: 10px;
+  border: 1px solid #003998;
+  text-align:center;
+  max-width: 20vw;
+  max-height: 20vh;
+  min-width: 80px;
+  min-height: 80px;
+  height: fit-content;
+}
+
+#projectpreferenceconfirm p{
+  font-size: small;
+}
+
+#projectpreferenceconfirm button{
+  background-color: #003998;
+  margin: 1%;
+  padding: 1%;
+  width: 100px;
+  color: white;
+  border: solid 1px #003998;
+  border-radius: 10px;
+}
+
+#projectPreferenceselements{
+  opacity: 100%;
+  background-color: #2979FF;
+}
+
+
+
+
+
+
+/**           PROJECTS STUDENT VIEW           **/
+
+.projectsAvailable ul{
+  /* list-style-type: none; gets rid of bullet points */
+  height: 100%;
+  /* background-color: aquamarine; */
+  padding: 5%;
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+
+.projectsAvailable .project{
+  background-color: white;
+  margin: 1%;
+  border-radius: 10px;
+  border: 1px solid #003998;
+  text-align:left;
+  max-width: 18vw;
+  max-height: 28vh;
+  min-width: 200px;
+  min-height: 100px;
+  height: fit-content;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+}
+
+.projectsAvailable .project:hover{
+
+  border: 1px solid #2979FF;
+
+}
+
+.projectsAvailable #projectNum{
+  float:left;
+  display:inline-flex;
+  /* padding:2%; */
+  width: 20%;
+  height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  border-right: 1px solid #003998;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+}
+
+.projectsAvailable  #projectDescription{
+  margin-left: 5%;
+  font-size:small;
+  overflow: auto;
+  width:fit-content;
+  min-width: 90%;
+  min-height: 100%;
+}
+
+.projectsAvailable #projectName{
+  display:inline-flex;
+  /* padding:2%; */
+  /* background-color: yellow; */
+  width: 79.5%;
+  height: 50px;
+  max-height: 20vh;
+  border-bottom: 1px solid #003998;
+  justify-content: center;
+  /* border-right: 1px solid #003998; */
+  /* margin-left: -4px; */
+  /* margin-top: -4px; */
+  /* padding-top: 8px; */
+  /* padding-left: 8px; */
+  /* width: 141px; */
+  /* padding-top: 2%; */
+  /* padding-bottom: 2%; */
+  text-align: center;
+  align-items: center;
+  float: right;
+  padding: 0;
+  margin: 0;
+}
+
+
+.projectsAvailable #tableContent{
+  background-color: orange;
+  display:initial;
+}
+
+#overlay{
+  display:block;
+}
+
+#test{
+  background-color: aquamarine;
+  display: initial;
+}
+
+/* #overlay {
+	position:absolute;
+  width: 100%; 
+  height: 100%; 
+  top: 0;
+  bottom:0;
+  left: 0;
+  right:0;
+  background-color: rgba(0,0,0,0.5); 
+  z-index: 2;
+  
+}
+#overlay #projectInfo{
+  display: block;
+} */
+/**           About Page + Contact Page           **/
+
+.aboutuspage{
+  text-align: center;
+}
+
+.contactpage{
+  text-align: center;
+}
+
+#viewprevious{
+  font-weight: bold;
+  font-size: smaller;
+}
+
+#viewprevious button{
+  color: white;
+  background-color: #003998;
+  min-width: 26vw;
+  float:center;
+  padding: 1%;
+  border-radius: 3px;
+  border-style: hidden;
+}
+
+#viewprevious a{
+  color: white;
+  text-decoration: none;
+}
+
+#viewprevious button:hover{
+  min-width: 26vw;
+  float:center;
+  text-decoration: underline;
+}

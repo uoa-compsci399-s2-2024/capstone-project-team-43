@@ -1,4 +1,6 @@
 import axios from 'axios'; 
+import { saveAs } from 'file-saver';
+import Cookies from 'js-cookie';
 
 const BASE_URL = "http://localhost:3001";
 
@@ -34,10 +36,14 @@ export async function fetchProjects(status) {
 
 export async function updateStatus(id,status) {
     try {
+
+        const token = Cookies.get("authToken");
+
          const response = await fetch(`${BASE_URL}/api/projects/${id}`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authToken" : token
             },
             body: JSON.stringify({ status }),
           })
@@ -47,6 +53,58 @@ export async function updateStatus(id,status) {
         throw error;    
     }
 };
+
+export async function downloadCSV() {
+    try {
+         const response = await fetch(`${BASE_URL}/api/users/download`, {
+            method: "GET",
+            headers: {
+                "Content-Type" : "application/json"
+            }, 
+          })
+        if(response.ok) {
+        const csvData = await response.text();
+        const url = window.URL.createObjectURL(new Blob([csvData]));
+        console.log(response);
+        var blob = new Blob([csvData], {
+          type: "text/plain;charset=utf-8",
+        });
+        saveAs(blob, `Students.csv`);
+    }
+
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    
+    }
+};
+
+export async function downloadCSVTeams(semesterID) {
+    try {
+         const response = await fetch(`${BASE_URL}/api/teams/download`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({ semesterID }),
+          }) 
+        if(response.ok) {
+        const csvData = await response.text();
+        const url = window.URL.createObjectURL(new Blob([csvData]));
+        console.log(response);
+        var blob = new Blob([csvData], {
+          type: "text/plain;charset=utf-8",
+        });
+        saveAs(blob, `Teams.csv`);
+    }
+
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    
+    }
+};
+
 /**
  * Fetches all teams for given semester
  * 
@@ -87,14 +145,19 @@ export async function fetchUsersByRole(role) {
         console.error('Error fetching users:', error);
         throw error;    }
 };
-export async function updatePublish(status) {
+
+export async function updatePublish(status, approved_projects = []) {
+
     try {
+        const token = Cookies.get("authToken");
+        
          const response = await fetch(`${BASE_URL}/api/projects/publish/${status}`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type" : "application/json",
+                "authToken" : token
             },
-            body: JSON.stringify({ status }),
+            body: JSON.stringify({ status, approved_projects }),
           })
         return await response;
     } catch (error) {
@@ -140,6 +203,22 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
     }
 };
 
+
+export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/projects/update/${id}`, {
+           method: "POST",
+           headers: {
+               "Content-Type" : "application/json"
+           },
+           body: JSON.stringify({title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details}),
+         })
+
+       return await response;
+   } catch (error) {
+       console.error('Error fetching projects:', error);
+       throw error;    }
+};
 
 export async function fetchSemesters() {
     try {
@@ -271,13 +350,28 @@ export async function fetchTeam(userId) {
  */
 export async function updateUserDetails(userId, attribute, newValue) {
     try {
-        const response = await axios.put(`http://localhost:3001/api/users/edit/${userId}`, {
-            attribute, newValue
+
+        let res = await fetch(`http://localhost:3001/api/users/edit/${userId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "attribute": attribute,
+                "newValue": newValue
+            })
         });
-        return response.data; // return the updated user data
+        const resJson = await res.json();
+
+        console.log("NEW TOKEN: ", resJson.token);
+
+        // Stores the resulting Auth Token
+        localStorage.setItem("authToken", resJson.token);
+
+
+        return
     } catch (error) {
         console.error('Error updating user details:', error);
-        throw error; 
     }
 };
 /**
@@ -317,6 +411,48 @@ export async function updateSemesterDetails(semesterID, attribute, newValue) {
         return response.data; // return the updated data
     } catch (error) {
         console.error('Error updating details:', error);
-        throw error; 
+        return null;
+    }
+};
+
+
+export async function updatePreferences(team_id, project_id, preference) {
+
+    try {
+         const response = await fetch(`${BASE_URL}/api/preferences`, {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({ team_id, project_id, preference }),
+          })
+        return await response;
+    } catch (error) {
+        console.error('Error updating project preferences:', error);
+        throw error;}
+};
+
+export async function fetchPreferences() {
+    console.log('Fetch student preferences');
+    try {
+        let response; 
+        response = await fetch(`${BASE_URL}/api/preferences/`);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching preferences:', error);
+        throw error;
+        return []; 
+    }
+};
+
+export async function deletePreferences(id) {
+    console.log('Fetch student preferences');
+    try {
+        let response; 
+        response = await axios.delete(`${BASE_URL}/api/preferences/${id}`);
+        return response.status; 
+    } catch (error) {
+        console.error('Error deleting preference:', error);
+        throw error;
     }
 };

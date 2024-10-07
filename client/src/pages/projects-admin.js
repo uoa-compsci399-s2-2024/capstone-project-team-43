@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef  } from "react";
 import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../Api.js'
+import lodash from 'lodash';
 
 
 import {
@@ -37,93 +38,109 @@ const ProjectsAdmin = () => {
 
     const [projects, setProjects] = useState([]);
 
+
     // get projects
     useEffect(() => {
         async function getProjects() {
             try {
                 const data = await fetchProjects();
                 setProjects(data);
+
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }
-        }
+        };
         getProjects();
     }, []);
 
-//Rejected projects
- let rejected = []
 
-    projects
-    .filter(project => project.status === 'rejected')
-    .filter(project => project.semester_id === 1)
-    .map(project => (
-      rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
+      //Rejected projects
+      let rejected = [];
 
-    ))
+      projects
+      .filter(project => project.status === 'rejected')
+      .filter(project => project.semester_id === 1)
+      .map(project => (
+        rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
-//Unsorted projects
-let unsorted = []
+      ));
 
-    projects
-    .filter(project => project.status === 'pending')
-    .filter(project => project.semester_id === 1)
-    .map(project => (
-      unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
+      //Unsorted projects
+      let unsorted = [];
 
-    ))
+      projects
+      .filter(project => project.status === 'pending')
+      .filter(project => project.semester_id === 1)
+      .map(project => (
+        unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
-//Approved projects
-let approved = []
+      ));
 
-    projects
-    .filter(project => project.status === 'accepted')
-    .filter(project => project.semester_id === 1)
-    .map(project => (
-      approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
+      //Approved projects
+      let approved = [];
 
-    ))
+      projects
+      .filter(project => project.status === 'accepted')
+      .filter(project => project.semester_id === 1)
+      .map(project => (
+        approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
-    const [items, setItems] = useState({
+      ));
+
+      const [items, setItems] = useState({
         rejected:[],
         unsorted: [],
         approved: [],
       });
 
+      // let loaded = false;
+      const loaded = useRef(0);
+        //DEFINE LOAD
+        const load = () => {
+          let updatedItems = {};
+          items.rejected = [];
+          items.unsorted = [];
+          items.approved = [];
+          // console.log(rejected);
+          // console.log(unsorted);
+          // console.log(approved);
+        for (let i = 0; i < rejected.length; i++) {
+          items.rejected.push(rejected[i]);
+        };
 
+        for (let i = 0; i < unsorted.length; i++) {
+          items.unsorted.push(unsorted[i]);
+        };
 
-      const load = () => {
-        let updatedItems = {};
-        items.rejected = [];
-        items.unsorted = [];
-        items.approved = [];
-        console.log(rejected);
-        console.log(unsorted);
-        console.log(approved);
-      for (let i = 0; i < rejected.length; i++) {
-        items.rejected.push(rejected[i]);
-      };
+        for (let i = 0; i < approved.length; i++) {
+          items.approved.push(approved[i]);
+        };
 
-      for (let i = 0; i < unsorted.length; i++) {
-        items.unsorted.push(unsorted[i]);
-      };
+        updatedItems = {
+          rejected: items.rejected,
+          unsorted: items.unsorted,
+          approved: items.approved,
+        };
 
-      for (let i = 0; i < approved.length; i++) {
-        items.approved.push(approved[i]);
-      };
+        setItems(items =>
+        ({  ...items,
+        ...updatedItems})
+        );
+        loaded.current = loaded.current + 1;
+        };
 
-      updatedItems = {
-        rejected: items.rejected,
-        unsorted: items.unsorted,
-        approved: items.approved,
-      };
-
-      setItems(items =>
-      ({  ...items,
-    ...updatedItems})
-        
-      );
-      };
-      
+//Check whether need to call load/re-render
+        useEffect(() => {
+          if(rejected.length === 0 && unsorted.length === 0 && approved.length === 0){
+            loaded.current = 0;
+          }else{
+            if(loaded.current === 0){
+              load();
+            }else{
+              return;
+            }
+          }
+      });
 
         const [activeId, setActiveId] = useState();
       
@@ -137,7 +154,7 @@ let approved = []
     return(
         <div className="projects">
             <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/>
-            <button onClick={load} id="load">Load all</button>
+            {/* <button onClick={load} id="load">Load all</button> */}
             
         <div id="sorting">
         <DndContext
@@ -196,8 +213,13 @@ let approved = []
             </ul> */}
             <Container id="approved" items={items.approved} />
             <div id="publishing">
+            
         <button onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
-        <button onClick={()=>updatePublish(true)} id="publish">Publish</button>
+        <button onClick={() => {
+          updatePublish(true, items.approved).then(() => {
+          window.location.reload();
+        });
+      }} id="publish">Publish</button>
         </div>
         </div>
         <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
@@ -305,14 +327,21 @@ let approved = []
         let newStatus = "pending";
         console.log(event.collisions[0].id);
         console.log(event.collisions[1].id);
-        if(event.collisions[0].id === "approved" || event.collisions[1].id === "approved"){
-          newStatus = "accepted"
-        }
-        else if(event.collisions[0].id === "rejected" || event.collisions[1].id === "rejected"){
-          newStatus = "rejected"
-        }
-        else if(event.collisions[0].id === "unsorted" || event.collisions[0].id === "unsorted"){
-          newStatus = "pending"
+        try{
+          if(event.collisions[0].id === "approved" || event.collisions[1].id === "approved"){
+            newStatus = "accepted"
+          }
+          else if(event.collisions[0].id === "rejected" || event.collisions[1].id === "rejected"){
+            newStatus = "rejected"
+          }
+          else if(event.collisions[0].id === "unsorted" || event.collisions[0].id === "unsorted"){
+            newStatus = "pending"
+          }
+          const projectId = id[0].id;
+        updateStatus(projectId, newStatus);
+  
+        } catch(error){
+          console.log('Error with Drag-end, try again.');
         }
         const projectId = id[0].id;
       updateStatus(projectId, newStatus);

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSortable, PointerEvent } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import Project from "./project";
+import Project from './project/project.js'
 import PopUp from "../components/project-pop-up-admin.js";
 import { useNavigate } from "react-router-dom";
 
@@ -51,7 +51,7 @@ return (
       
  (<div onClick={handleclick}>
   {/* <button >read</button> */}
-     <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry}/>
+     <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry} number={project.project.project_number}/>
      <div id="confirm">
 
           <PopUp id={project.project.id} 

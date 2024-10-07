@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import '../App.css';
 import { fetchProjects } from '../Api.js'
-import Project from "../components/project";
+import Project from "../components/project/project";
 import PopUp from "../components/project-pop-up-student.js";
 
 const ProjectsAvailable = () => {

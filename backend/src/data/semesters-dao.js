@@ -116,16 +116,89 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
     await connection.query(`USE ${DB_NAME};`);
 
     // Insert semester into db
-    const response = await connection.query(
+    const [response] = await connection.query(
       "INSERT INTO SEMESTER (start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) VALUES (?, ?, ?, ?, ?)", [start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one]);
 
+    await updateSemesterStatus();
+
     /** @type {Semester} */
-    const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [response.insertId]); // insertId is the auto-generated Primary Key value
+    const [semester] = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [await response.insertId]); // insertId is the auto-generated Primary Key value
+
+    await checkProjectsExpiry();
+
     return semester;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
     return [];
+  } finally {
+    // release connection
+    if (connection) connection.release();
+  }
+}
+
+async function updateSemesterStatus() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+
+    /** @type {Semester[]} */
+    const [semesters] = await connection.query('SELECT * FROM SEMESTER');
+
+    // Calculate the semesters' status using current date & start, end dates
+    const currentDate = new Date();
+    const semestersWithStatus = await Promise.all(semesters.map(async (semester) => {
+      const { start_date, end_date } = semester;
+
+      if (currentDate < new Date(start_date)) {
+        await connection.query('UPDATE SEMESTER SET status = \'upcoming\' WHERE id = ?', semester.id);
+      } else if (currentDate >= new Date(start_date) && currentDate <= new Date(end_date)) {
+        await connection.query('UPDATE SEMESTER SET status = \'current\' WHERE id = ?', semester.id);
+      } else {
+        await connection.query('UPDATE SEMESTER SET status = \'retired\' WHERE id = ?', semester.id);
+      }
+    }));
+
+  } catch (err) { 
+    console.error('Error executing query/s:', err.message);
+  } finally {
+    // release connection
+    if (connection) connection.release();
+  }
+}
+
+/**
+ *  This function checks all projects in the database if they are valid for the next upcoming semester (given by the semester_id).
+ *  If a project's expiry is before the start_date of the semester, then that project ID won't be changed, if the expiry is after the start_date,
+ *  then the project's ID is set to the new current semester.
+ */
+async function checkProjectsExpiry() {
+  let connection;
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    const [current_semester] = await connection.query("SELECT * FROM SEMESTER WHERE status = \'current\'");
+
+    // Get all projects
+    const response = await connection.query("SELECT * FROM PROJECT");
+
+    const date = new Date (current_semester[0].start_date);
+
+    for (const project of response[0]) {
+
+      if (date < project.expiry) {
+        await connection.query("UPDATE PROJECT SET semester_id = ? WHERE id = ?", [current_semester[0].id, project.id]);
+      }
+    }
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
   } finally {
     // release connection
     if (connection) connection.release();
@@ -202,16 +275,16 @@ export async function updateSemester(id, attribute, newValue) {
     let connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
 
-    const response = await pool.query("UPDATE SEMESTER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
+    const response = await connection.query("UPDATE SEMESTER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
 
-    /** @type {User} */
+    /** @type {Semester} */
     const updatedSemester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
 
     return updatedSemester;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
-    return[];
+    return null;
   }
 }; 
 

@@ -60,7 +60,7 @@ router.post("/:id/upload/:fileContent", upload.single("myFile"), async (req, res
                 for (const row of rows) {
                     let fname = row['Student name'].split(' ')[0];
                     let lname = row['Student name'].split(' ')[1];
-                    let email =  row['Email']
+                    let email =  row['Email'];
 
                     await createStudent(email, fname, lname);
                 }
@@ -105,9 +105,13 @@ router.post("/:id/dates", async (req, res) => {
 // Creates a new semester with start and end dates
 router.post("/", async (req, res) => {
     const { start_date, end_date, is_semester_one, start_bidding_date, end_bidding_date } = req.body;
-    if (!start_date || !end_date || !is_semester_one || !start_bidding_date || !end_bidding_date) {
+
+    if (!start_date || !end_date || !start_bidding_date || !end_bidding_date) {
+        console.log("Invalid semester details");
         return res.status(422);
     }
+
+
     // Details are valid and now passed to createSemester function to query into database
     const semester = await createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one);
     return res.status(201).json(semester);
@@ -121,7 +125,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 
-// Updates an attribute of the user with the given id 
+// Updates an attribute of the semseter with the given id 
 router.put("/edit/:id", async (req, res) => {
     const id = req.params.id;
     const { attribute, newValue } = req.body;

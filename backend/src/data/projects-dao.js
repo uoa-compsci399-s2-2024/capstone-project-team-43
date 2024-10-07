@@ -1,6 +1,7 @@
 import { pool } from "./database.js";
 import dotenv from "dotenv";
 import { getUser } from "./users-dao.js";
+import { getSemesters } from "./semesters-dao.js";
 
 dotenv.config();
 
@@ -45,7 +46,7 @@ export async function getProjects() {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows, fields] = await connection.query('SELECT * FROM PROJECT');
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT ORDER BY project_number');
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -69,7 +70,7 @@ export async function getStatusProject(status) {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ?', [status]);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ? ORDER BY project_number', [status]);
     console.log('Rows:', rows);
 
     // If there is a connection, release it
@@ -130,19 +131,21 @@ export async function createProject(title, description, owner_id, special_requir
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-
     /** @type {User} */
     const user = await getUser(owner_id);
-
-    console.log("THIS IS THE USER: ", user);
 
     const client_name = user.first_name + " " + user.last_name;
     const client_email = user.email;
 
+    const semesters = await getSemesters();
+
+    const current_semester = semesters.find(semester => semester.status === "current");
+
+
     // Insert project into db
     const response = await connection.query(
-      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email]
+      "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, published) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \'false\')",
+      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, current_semester.id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email]
     );
 
     /** @type {Project} */
@@ -176,7 +179,7 @@ export async function createProject(title, description, owner_id, special_requir
  *
  * @return the newly created project
  */
-export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, project_number, semester_id, other_client_details, client_name, client_email) {
+export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details) {
   let connection;
   try {
 
@@ -188,8 +191,8 @@ export async function editProject(id, title, description, special_requirements, 
     // Insert project into db
     const response = await connection.query(
 
-      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, semester_id = ?, max_teams = ?, project_number = ?, expiry = ?, other_client_details = ?, client_name = ?, client_email = ?, WHERE id = ?",
-      [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, semester_id, max_teams, project_number, expiry, other_client_details, client_name, client_email, id]);
+      "UPDATE project SET title = ?, description = ?, special_requirements = ?, available_resources = ?, preferred_skills = ?, deliverable = ?, max_teams = ?, expiry = ?, other_client_details = ? WHERE id = ?",
+      [title, description, special_requirements, available_resources, preferred_skills, project_deliverable, max_teams, expiry, other_client_details, id]);
 
     /** @type {Project} */
     const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
@@ -217,10 +220,16 @@ export async function updateProjectStatus(id, status) {
   let connection;
   try {
 
-    console.log("GETTING UPDATED WHERE ID: ", id, " STATUS: ", status);
-
     // Get connection from pool
     connection = await pool.getConnection();
+
+    if(status == "pending" || status == "rejected") {
+
+
+      await connection.query(`USE ${DB_NAME};`);
+  
+      await connection.query("UPDATE `project` SET published = 'false' WHERE id = ?", [id]);
+    }
 
     await connection.query(`USE ${DB_NAME};`);
 
@@ -304,6 +313,43 @@ export async function getProjectsBySemester(semester_id) {
     const [rows] = await connection.query('SELECT * FROM PROJECT WHERE semester_id = ?', [semester_id]);
 
     return rows;
+
+  } catch (err) {
+    if (connection) connection.release();
+    console.error('Error executing query/s:', err.message);
+  }
+}
+
+/**
+ * Allocates project numbers that were approved
+ */
+export async function allocateNumbers(approved_projects) {
+  let connection;
+  try {
+
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    let string_projects = JSON.stringify(approved_projects, null, 2);
+
+    let projectIDS = string_projects.split("\"id\": ");
+    let numberIDS = [];
+
+    for (let i = 1; i < approved_projects.length + 1; i++) {
+    
+    /** @type {Project} */
+    console.log("UPDATING PROJECT WITH ID: ", projectIDS[2 * i].split(",")[0]);
+
+    numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
+
+    await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
+    }
+
+    console.log(numberIDS);
+
+   await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
 
   } catch (err) {
     if (connection) connection.release();

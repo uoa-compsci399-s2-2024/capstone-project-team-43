@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { getUsers, getUsersByTeam, createUser, deleteUser, updateUser, deleteUserByRole, getUser } from "../../data/users-dao.js";
+import { getUsers, getUsersByTeam, createUser, deleteUser, updateUser, deleteUserByRole, getUser, getCSV } from "../../data/users-dao.js";
+import { generateToken } from "../../data/authentication-dao.js";
 
 const router = Router();
 
@@ -59,8 +60,8 @@ router.get("/team/:id", async (req, res) => {
     return res.json(users);
 });
 
-// Gets users in team with given id 
-router.get("/:id", async (req, res) => {
+// Gets user with given id 
+router.get("/id/:id", async (req, res) => {
     const id = req.params.id;
     const user = await getUser(id);
     return res.json(user);
@@ -75,12 +76,39 @@ router.put("/edit/:id", async (req, res) => {
         // Update the attribute in the database
         const [updatedUser] = await updateUser(id, attribute, newValue);
 
+        console.log(updatedUser[0].email);
+
+            // checks if user has valid credentials
+    const token = await generateToken(updatedUser[0].email, updatedUser[0].password, false);
+
+    if (token == null) {
+        //Access denied, not valid user
+        res.status(401);
+    }
+
+    console.log("Token generated for new details: " + token);
+
         // Return success status
-        res.status(204).json(updatedUser[0]);
+       return res.status(200).json({token: token});
 
     } catch (error) {
         console.error('Error updating user:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Gets students in db structured as a CSV
+router.get("/download", async (req, res) => {
+    try {
+    const students = await getUsers("student");
+    const CSVData = await getCSV(students);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment('studentsData.csv');
+    return res.status(200).send(CSVData);
+    } catch (err){
+        console.log("Error Downloading CSV ", err);
+        return res.status(204);
     }
 });
 

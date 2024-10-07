@@ -1,8 +1,8 @@
-// import React, { useEffect } from 'react';
-// import Cookies from 'js-cookie';
-// import { Link } from 'react-router-dom';
-// import { jwtDecode } from "jwt-decode";
-// import cornerstone_logo from '../media/cornerstone_logo.png';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import cornerstone_logo from '../media/cornerstone_logo.png';
+import Cookies from 'js-cookie';
 
 // import '../App.css';
 
@@ -82,28 +82,51 @@
         
 //     }
 
-//     try {
-//         const token = localStorage.getItem("authToken");
+    try {
+        const token = Cookies.get('authToken');
 
-//         if (token === "" || token === null || token === "null") {
-//             localStorage.setItem("authToken", "");
-//             //debugging_nav(); 
-//             not_logged_in(); //**uncomment for production and commment out debugging_nav()**
-//         } else {
-//         const decoded = jwtDecode(token);
-//         const role = decoded.role;
+        if (!token) {
+            //debugging_nav(); 
+            const currentPath = window.location.pathname;
+            const paths = ["/", "/pages/about", "/pages/contact"];
+            if (!paths.includes(currentPath)) {
+                window.location.pathname = '/';
+            }
+            not_logged_in(); //**uncomment for production and commment out debugging_nav()**
+        } else {
+        const decoded = jwtDecode(token);
+        const role = decoded.role;
+        const defaultPaths = ["/", "/pages/contact", "/pages/about"];
 
-//         if (role === "student") {
-//             student_view();
-//         } else if (role === "client") {
-//             client_view();
-//         } else if (role === "admin") {
-//             admin_view();
-//         }
-//     }
-//     } catch (err) {
-//         console.log(err);
-//     }
+        if (role === "student") {
+            const authorizedPaths = ["/pages/projects-available", "/pages/project-preferences"];
+
+            if (authorizedPaths.includes(window.location.pathname) || defaultPaths.includes(window.location.pathname)) {
+                student_view();
+
+             } else {
+                window.location.pathname = '/pages/projects-available';
+             }
+
+            
+        } else if (role === "client") {
+            const authorizedPaths = ["/pages/client-projects", "/pages/client-projects"];
+
+            if (authorizedPaths.includes(window.location.pathname) || defaultPaths.includes(window.location.pathname)) {
+                client_view();
+
+             } else {
+                window.location.pathname = '/pages/client-projects';
+             }
+        } else if (role === "admin") {
+            admin_view();
+        }
+
+        
+    }
+    } catch (err) {
+        console.log(err);
+    }
 
 //     const showsidemenu = () => {
 //         if (document.getElementById('sidemenu').style.display === "block") {
@@ -132,43 +155,40 @@
 //         }
 //     }
 
-//     // Logs the user out by blacklisting the token and clearing the users local storage token
-//     const Logout = async (e) => {
-//         e.preventDefault();
-//         try {
-//             const token = localStorage.getItem('authToken');
-//             console.log("TAKING TOKEN: ", token);
-//             let res = await fetch("http://localhost:3001/api/auth/logout", {
-//                 method: "POST",
-//                 headers: {
-//                     "Content-Type": "application/json",
-//                     "authToken": `${token}`,
-//                 },
-//             });
+    // Logs the user out by blacklisting the token and clearing the users local storage token
+    const Logout = async (e) => {
+        e.preventDefault();
+        try {
+            const token = Cookies.get('authToken');
+            console.log("TAKING TOKEN: ", token);
+            let res = await fetch("http://localhost:3001/api/auth/logout", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authToken": `${token}`,
+                },
+            });
 
 //             if (res.status !== 200) {
 //                 throw new Error('Logout was Unsuccessful');
 //             }
 
-//             // Clears local storage
-//             localStorage.setItem('authToken', "");
-//             Cookies.remove('authToken');
-//             console.log("Successfully Logged out!");
-//             window.location.href = '/';
-//         } catch (err) {
-//             console.log(err);
-//         }
-//     };
+            // Clears local storage
+            Cookies.remove("authToken");
+            console.log("Successfully Logged out!");
+            window.location.href = '/';
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
-//     useEffect(() => {
-//         // Gets the token from the cookie sent from the google callback
-//         const getToken = async () => {
+    useEffect(() => {
+        // Gets the token from the cookie sent from the google callback
+        const getToken = async () => {
+            const stored_token = Cookies.get('authToken');
+            console.log("TOKEN COOKIE: ", stored_token);
 
-//             const stored_token = localStorage.getItem("authToken");
-
-//             console.log("token: ", stored_token);
-
-//             if (stored_token !== "") {
+            if (stored_token) {
 
 //                 try {
 //                     let res = await fetch("http://localhost:3001/api/auth/role", {
@@ -201,23 +221,23 @@
 //                             not_logged_in();  //**uncomment for production and commment out debugging_nav()**
 //                         } 
 
-//                     } else {
-//                         // Clears local storage
-//                         localStorage.setItem('authToken', "");
-//                         console.log("An error occurred during login");
-//                         window.location.reload();
+                    } else {
+                        // Clears authToken cookie
+                        Cookies.remove("authToken");
+                        console.log("An error occurred during login");
+                        window.location.reload();
                         
-//                     }
-//                 } catch (err) {
-//                     // Clears local storage
-//                     localStorage.setItem('authToken', "");
-//                     console.log(err);
-//                     window.location.reload();
-//                 }
-//             } else {
-//                 //debugging_nav(); 
-//                 not_logged_in(); //**uncomment for production and commment out debugging_nav()**
-//             }
+                    }
+                } catch (err) {
+                    // Clears the authToken cookie
+                    Cookies.remove("authToken");
+                    console.log(err);
+                    window.location.reload();
+                }
+            } else {
+                //debugging_nav(); 
+                not_logged_in(); //**uncomment for production and commment out debugging_nav()**
+            }
 
 
 //         };

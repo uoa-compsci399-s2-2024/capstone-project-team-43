@@ -26,6 +26,4 @@ router.use("/preferences", preferencesRoute);
 
 router.use("/project-allocation", projectAllocationRoute);
 
-// TODO Add API routes here
-
 export default router;

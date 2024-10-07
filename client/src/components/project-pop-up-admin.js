@@ -1,13 +1,50 @@
 import React from "react";
-
+import { useState, useEffect } from "react";
 import '../App.css';
-import { deleteProject } from '../Api.js'
+import { deleteProject, fetchSemesters } from '../Api.js'
 import { useNavigate } from "react-router-dom";
 
 
 export let projectinfoP = null;
 
 function AdminPop(props){
+    const [semesters, setSemesters] = useState([]);
+
+    useEffect(() => {
+        async function getSemesters() {
+            try {
+                const data = await fetchSemesters();
+                setSemesters(data);
+            } catch (error) {
+                console.error('Failed to load semesters:', error);
+            }
+        }
+        getSemesters();
+    }, []);
+
+        useEffect(() => {
+        async function getSemester() {
+            // only fetch if semesterID is set
+            if (!semesters) return; 
+            try {
+                console.log("GETTING PROPOSAL DATE");
+                getProposalDate();
+
+            } catch (error) {
+                console.error('Failed to load semester:', error);
+                return; 
+            }
+        }
+        getSemester();
+    }, [semesters]);
+
+    let biddingtime;
+    const getProposalDate = () => {
+    try {
+    const currentSemester = semesters.filter(semester => semester.status === "current");
+    biddingtime = currentSemester[0].end_bidding_date
+    } catch (err) {}
+    }
 
 const Navigate = useNavigate();
     

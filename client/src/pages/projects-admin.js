@@ -1,8 +1,6 @@
-import React, { useState, useEffect, useCallback, useRef  } from "react";
+import React, { useState, useEffect, useCallback, useRef, PointerEvent} from "react";
 import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../Api.js'
 import lodash from 'lodash';
-
-
 import {
     DndContext,
     DragOverlay,
@@ -19,6 +17,8 @@ import {
   import Header from "../components/admin-semester-header.js";
   import '../App.css';
   import PopUp from "../components/project-pop-up-admin.js";
+
+
 
 const ProjectsAdmin = () => {
   const [semesters, setSemesters] = useState([]);
@@ -143,9 +143,16 @@ const ProjectsAdmin = () => {
       });
 
         const [activeId, setActiveId] = useState();
+
+        const pointerSensor = useSensor(PointerSensor, {
+          activationConstraint: {
+            distance: 0.01
+          }
+        })
       
         const sensors = useSensors(
-          useSensor(PointerSensor),
+          // useSensor(PointerSensor),
+          pointerSensor,
           useSensor(KeyboardSensor, {
             coordinateGetter: sortableKeyboardCoordinates,
           }),

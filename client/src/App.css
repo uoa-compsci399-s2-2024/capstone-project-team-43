@@ -582,7 +582,7 @@
   color: black;
 }
 
-.sortable #close{
+/* .sortable #close{
   width: 25px;
   height: 25px;
   background-color: #2979FF;
@@ -594,7 +594,7 @@
   border: none;
   z-index: 5;
   font-size: large;
-}
+} */
 /* .sortable #edit{
   width: 25px;
   height: 25px;
@@ -608,6 +608,10 @@
   z-index: 10;
   
 } */
+
+.sortable #confirm{
+  margin-left: 0;
+}
 
 /**           PROJECT PROPOSAL FORM             **/
 
@@ -1945,20 +1949,20 @@ display: block;
   /* font-size: large;
 } */
 
-#close{
+/* #close{
   width: 25px;
   height: 25px;
   background-color: #2979FF;
   color: white;
-  /* position: absolute; */
+  position: absolute; 
   margin-top: -7.5%;
   margin-left: 85%;
   display: none;
   border: none;
   z-index: 5;
   font-size: large;
-}
-#edit{
+} */
+/* #edit{
   width: 25px;
   height: 25px;
   background-color: #2979FF;
@@ -1969,8 +1973,8 @@ display: block;
   display: none;
   border: none;
   z-index: 10;
-  /* font-size: large; */
-}
+
+} */
 
 /*  ACCOUNT SETTINGS  */
 

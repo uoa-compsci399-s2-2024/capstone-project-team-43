@@ -1,9 +1,10 @@
 import React from "react";
-import { useSortable, PointerEvent } from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Project from "./project";
 import PopUp from "../components/project-pop-up-admin.js";
 import { useNavigate } from "react-router-dom";
+
 
 export let projectinfo = null;
 
@@ -24,16 +25,16 @@ export function Item(props) {
 
   const Navigate = useNavigate();
   const handleclick = () =>{
-    console.log('id000')
-    console.log(id[0]);
-    projectinfo = (id[0]);
-    Navigate('/pages/project-proposal');
+    // projectinfo = (id[0]);
+    // Navigate('/pages/project-proposal');
+    document.getElementById('confirm').style.display = "block";
   };
 
-      const submit =() =>{
+      const close =() =>{
+        console.log('close');
+        // document.getElementById('close').style.display = "none";
+        // document.getElementById('edit').style.display = "none";
         document.getElementById('confirm').style.display = "none";
-        document.getElementById('close').style.display = "none";
-        document.getElementById('edit').style.display = "none";
     }
 
     // const edit = () =>{
@@ -43,19 +44,11 @@ export function Item(props) {
 const i = props.project;
 
 return (
- 
     <div className="sortable">
-
-      {/* <div style={style}> */}
-      {/* <Project id={id.id} name={id.name} description ={id.description} />  */}
   {id.map((project) => (   
-
-      
- (<div onClick={handleclick}>
-  {/* <button >read</button> */}
+ <div onDoubleClick={handleclick}>
      <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry} number={project.project.project_number}/>
      <div id="confirm">
-
           <PopUp id={project.project.id} 
           name={project.project.title} 
           description={project.project.description}
@@ -69,15 +62,12 @@ return (
           teams = {project.project.max_teams}
           number = {project.project.project_number}
           />
+           <button id="close" onClick={close}>&times;</button>
           </div>
-          <button id="close" onClick={submit}>&times;</button>
-          {/* <button id="edit" onClick={edit}>Edit</button> */}
 
-     </div>)
-         
+     </div>)  
 
-        ))}
-        
+        )}
   </div>);
 }
 
@@ -96,10 +86,6 @@ export default function SortableItem(props) {
     transform: CSS.Transform.toString(transform),
     transition
   };
-//  const item = <Project id={props.id} name={props.name} description={props.description} />;
-// console.log("sorte");
-// console.log(props);
-
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <Item id={props.id} />

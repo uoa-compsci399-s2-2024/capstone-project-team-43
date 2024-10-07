@@ -59,6 +59,7 @@ const ClientProjects = () => {
 
 
     const handleclick = () =>{
+        console.log('close');
         document.getElementById('confirm').style.display = "block";
         document.getElementById('close').style.display = "block";
         document.getElementById('edit').style.display = "block";

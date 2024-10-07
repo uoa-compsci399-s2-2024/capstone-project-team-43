@@ -109,7 +109,7 @@ router.post("/", async (req, res) => {
         return res.status(422);
     }
     // Details are valid and now passed to createSemester function to query into database
-    const semester = await createSemester(start_date, end_date, is_semester_one);
+    const semester = await createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one);
     return res.status(201).json(semester);
 });
 

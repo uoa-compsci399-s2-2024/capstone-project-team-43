@@ -1,0 +1,118 @@
+.content-section p{
+    font-size: 13px;
+}
+
+
+
+.create-semester-page.form-content h1{
+    color: var(--text-color-dark) !important;
+    font-size: 20px;
+}
+
+.create-semester-page h2{
+    margin-bottom: -2vh !important;
+    margin-top: 1vh;
+}
+
+.create-semester-page .content{
+    max-width: 50%;
+    min-width: 50%;
+    padding-bottom: 5vh;
+}
+
+.form-content{
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;    
+    border-radius: 5px;
+    min-width: 60%;
+    /* max-width: 90%; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    overflow: wrap;
+}
+
+
+.create-semester-page.form-content h2{
+    color: var(--text-color-dark) !important;
+    font-size: 20px;
+}
+
+.create-semester.form-content label{
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 2vh;
+    align-items: center;
+
+}
+
+.create-semester-page button{
+    margin: 10px;
+    margin-top: +3vh;
+    background-color: var(--theme-mid);
+}
+
+.create-semester-page .form-fill label{
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 2vh;
+    max-width: 80%;
+}
+
+.create-semester-page input,
+.create-semester-page textarea,
+.date-input select{
+    background-color: white;
+    border-radius: 5px;
+    border-color: transparent;
+    font-family: var(--theme-font);
+    padding: 10px;
+    height: 10%;
+    width: 150px;
+    color: rgba(0, 0, 0, 0.495);
+    font-weight: 600;
+}
+
+.create-semester-page textarea::placeholder,
+.create-semester-page input::placeholder{
+    color: rgba(0, 0, 0, 0.495);
+    font-weight: 600;
+}
+
+
+.date-input-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:0.5vw;
+    width: 100%;
+}
+
+.date-input{
+    display: flex;
+    gap: 2vw;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.date-input select{
+    border-radius: 5px;
+    border: none;
+    font-family: var(--theme-font);
+}
+
+
+
+
+

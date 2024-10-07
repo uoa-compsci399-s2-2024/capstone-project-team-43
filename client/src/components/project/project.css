@@ -1,0 +1,24 @@
+.project-container{
+    display: flex;
+    direction: column;
+    text-align: center;
+    justify-content: center;
+    background-color: var(--transparent);
+    border-radius: 10px;
+    width: 250px;
+    height: 200px;
+}
+
+.project-container h2{
+    padding-top: 2vh;
+    font-size: 22px;
+    color: var(--text-color-light) !important;
+}
+
+.project-container h2{
+    margin: 0;
+}
+
+.project-container p{
+    font-size: 13px;
+}

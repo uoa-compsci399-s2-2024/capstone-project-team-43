@@ -14,7 +14,7 @@ const PORT = process.env.PORT ?? 3000;
 const app = express();
 
 const __dirname = path.resolve();
-const BUILD_PATH = '../client/build';
+const BUILD_PATH = 'client/build';
 
 // Configure middleware (CORS support, JSON parsing support, static files support)
 app.use(cors({

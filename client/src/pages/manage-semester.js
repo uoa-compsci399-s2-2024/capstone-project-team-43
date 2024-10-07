@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import '../App.js'
 import SemesterCSVUpload from '../components/semester-csv-upload.js';
-import { fetchSemester, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams } from '../Api.js';
+import { fetchSemester, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams, downloadAllocation } from '../Api.js';
 import '../admin.css';
 import '../index.js';
 import SemesterDropdown from '../components/semester-dropdown.js';
@@ -90,6 +90,11 @@ const ManageSemester = () => {
     const teamDownload = () => {
         console.log("Fetching teams from semester with ID: ", semesterID);
         downloadCSVTeams(semesterID);
+    }
+
+    const allocationDownload = () => {
+        console.log("Fetching allocation results");
+        downloadAllocation();
     }
 
     // Helper function for date formatting the semester start/end dates, validDate is a true/false flag that returns a valid date that the mySQL database can read
@@ -379,8 +384,13 @@ const ManageSemester = () => {
                                 <img src={downloadIcon} alt ='icon' className='download-icon'></img> 
                                 Download Team data
                             </button>
+
                         </div>
                     </div>
+                    <button className = 'upload-button' onClick ={downloadAllocation}> 
+                                <img src= {downloadIcon} alt ='icon' className='download-icon'></img> 
+                                Download Allocation Results
+                            </button>
                     { showTeamUpload && (
                         <div className='pop-up'>
                             <div className='pop-up-header'>

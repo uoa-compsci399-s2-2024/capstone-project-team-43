@@ -112,3 +112,37 @@ export async function deletePreference(id) {
         if (connection) connection.release();
     }
 }
+let allocationResult;
+
+export async function storeAllocations(allocation) {
+    allocationResult = allocation;
+}
+
+export async function getAllocations() {
+    console.log("FETCHING ALLOCATIONS: ", allocationResult);
+    try {
+        let CSVData = "Project Number,Teams,Preference\n";
+        Object.keys(allocationResult.allocation).forEach(key => {
+            let team_preferences = "";
+            for (let i = 0; i < allocationResult.allocation[key].length; i++) {
+                console.log(parseInt(allocationResult.allocation[key][i]));
+                team_preferences += allocationResult.team_preferences[parseInt(allocationResult.allocation[key][i])];
+                if (i < allocationResult.allocation[key].length - 1) {
+                    team_preferences += ",";
+                }
+            }
+
+            console.log("Team Preferences: ", team_preferences);
+            CSVData += key + ",\"" + allocationResult.allocation[key] + "\",\"" + team_preferences + "\"\n";
+          });
+    
+            
+    
+          return CSVData;
+    
+      } catch (err) {
+        console.error('Error executing query/s:', err);
+        return[];
+      }
+    return allocationResult;
+}

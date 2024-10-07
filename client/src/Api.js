@@ -105,6 +105,31 @@ export async function downloadCSVTeams(semesterID) {
     }
 };
 
+export async function downloadAllocation() {
+    try {
+         const response = await fetch(`${BASE_URL}/api/project-allocation/download`, {
+            method: "GET",
+            headers: {
+                "Content-Type" : "application/json"
+            }, 
+          })
+        if(response.ok) {
+        const csvData = await response.text();
+        const url = window.URL.createObjectURL(new Blob([csvData]));
+        console.log(response);
+        var blob = new Blob([csvData], {
+          type: "text/plain;charset=utf-8",
+        });
+        saveAs(blob, `Allocations.csv`);
+    }
+
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    
+    }
+};
+
 /**
  * Fetches all teams for given semester
  * 

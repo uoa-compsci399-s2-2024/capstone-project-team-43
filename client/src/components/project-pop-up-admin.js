@@ -1,28 +1,40 @@
 import React from "react";
 
 import '../App.css';
+import { deleteProject } from '../Api.js'
+import { useNavigate } from "react-router-dom";
 
 
-function adminPop(props){
+export let projectinfoP = null;
 
+function AdminPop(props){
 
-    // const submit =() =>{
-    //     document.getElementById('confirm').style.display = "none";
-    //     document.getElementById('close').style.display = "none";
-    //     document.getElementById('edit').style.display = "none";
-    // }
-
-    // const submit =() =>{
-    //     document.getElementById('confirm').style.display = "none";
-    // }
-
+const Navigate = useNavigate();
+    
     const edit = () =>{
-        alert("done");
-    }
+        console.log(props.project)
+        projectinfoP = (props.project);
+        Navigate('/pages/project-proposal');
 
-// console.log(props);
+      };
+
+      const withdraw= () =>{
+        document.getElementById('deleteConfirm').style.display = "block";
+      };
+
+      const cancel= () =>{
+        document.getElementById('deleteConfirm').style.display = "none";
+      };
+      const confirm= () =>{
+        deleteProject(props.id);
+      };
+
     return(
         <div id="popup">    
+        <div id = 'deleteConfirm'>
+            <button onClick={confirm}>Confirm</button>
+            <button onClick={cancel}>Cancel</button>
+        </div>
              
                     <br></br><br></br>
                     {/* <button id="close" onClick={submit}>&times;</button> */}
@@ -91,11 +103,12 @@ function adminPop(props){
                         </tr>
                     </table> 
                     <button id="edit" onClick={edit}>Edit</button>
+                    <button id="delete" onClick={withdraw}>Withdraw</button>
 
                     <br></br><br></br><br></br>
                     </div>
     )
 }
 
-export default adminPop;
+export default AdminPop;
 

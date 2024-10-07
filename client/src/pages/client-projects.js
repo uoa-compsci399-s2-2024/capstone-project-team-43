@@ -81,7 +81,9 @@ const ClientProjects = () => {
                      <Project id={project.id} name={project.title} description={project.description} expiry={project.expiry}/>
                      <div id="confirm">
 
-             <PopUp id={project.id} 
+             <PopUp 
+             project = {project}
+             id={project.id} 
              name={project.title} 
              description={project.description}
              // owner id

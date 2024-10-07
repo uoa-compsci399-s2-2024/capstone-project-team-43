@@ -1,6 +1,7 @@
 import '../App.css';
 import { createProject, editProject } from '../Api.js';
 import { projectinfo } from "../components/sortable_item.js";
+import { projectinfoP } from "../components/project-pop-up-admin.js";
 import { fetchUser } from "../Api.js";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
@@ -66,6 +67,12 @@ const projectProposal = () => {
     }
 
     const next = () =>{
+        // let projectinfo
+        // if(projectinfoP !== null){
+        //     projectinfo = projectinfoP;
+        // }else if(projectinfoS !== null){
+        //     projectinfo = projectinfoS;
+        // };
 
         if(projectinfo !== null){
             // Must keep this comment here to fetch projectinfo data

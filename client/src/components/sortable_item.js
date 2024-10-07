@@ -24,6 +24,8 @@ export function Item(props) {
 
   const Navigate = useNavigate();
   const handleclick = () =>{
+    console.log('id000')
+    console.log(id[0]);
     projectinfo = (id[0]);
     Navigate('/pages/project-proposal');
   };

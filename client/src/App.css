@@ -9,9 +9,12 @@
 
 .project #projectAvailable{
   display: none;
-  /* background-color: yellow; */
 }
 
+#popup #deleteConfirm{
+  display: none;
+  background-color: lightgray;
+}
 
 
 /**           NAV BAR            **/

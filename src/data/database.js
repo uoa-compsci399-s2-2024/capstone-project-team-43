@@ -5,15 +5,23 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Creates a pool of connections to the database
+// const pool = mysql.createPool({
+//   host: 'localhost',
+//   user: 'root',
+//   password: 'password',
+//   multipleStatements: true
+// });
+
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
+  host: process.env.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  port: process.env.RDS_PORT,
   multipleStatements: true
 });
 
 // Gets the database name and script path from .env file
-const DB_NAME = process.env.DB_NAME;
+const DB_NAME = process.env.RDS_DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
 
 // Initializes the database, if no such database exists, it calls the create database function
@@ -33,6 +41,13 @@ async function initializeDatabase() {
       await createDatabase();
 
     } else {
+
+      // Check if tables exist in database
+      const [rows, fields] = await connection.query(`USE ${DB_NAME}; SHOW TABLES;`);
+      if (rows[1].length === 0) {
+        await createTables();
+      }
+
       console.log(`Database ${DB_NAME} already exists.`);
     }
   } catch (err) {
@@ -55,6 +70,22 @@ async function createDatabase() {
 
     console.log(`Database ${DB_NAME} created successfully.`);
 
+    await createTables();
+
+  } catch (err) {
+    console.error('Error creating database: ', err.message);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
+  }
+}
+
+async function createTables() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
     // Selects the newly created database
     await connection.query(`USE ${DB_NAME};`);
 
@@ -71,9 +102,8 @@ async function createDatabase() {
     } catch (err) {
       console.error('Error initializing database: ', err.message);
     }
-
   } catch (err) {
-    console.error('Error creating database: ', err.message);
+    console.error('Error creating database tables: ', err.message);
   } finally {
     // If there is a connection, release it
     if (connection) connection.release();

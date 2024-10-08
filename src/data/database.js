@@ -22,6 +22,7 @@ const pool = mysql.createPool({
   multipleStatements: true
 });
 
+console.log(`\n\nprocess.env: ${JSON.stringify(process.env)}\n\n`);
 // Gets the database name and script path from .env file
 const DB_NAME = process.env.RDS_DB_NAME;
 // const DB_NAME = process.env.DB_NAME;

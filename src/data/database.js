@@ -5,17 +5,29 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Creates a pool of connections to the database
+// const pool = mysql.createPool({
+//   host: 'awseb-e-huazsmxezu-stack-awsebrdsdatabase-tkhcd1kkcmwl.c7doezidupu4.ap-southeast-2.rds.amazonaws.com',
+//   user: 'cornerstone',
+//   password: 'error404',
+//   port: '3306',
+//   multipleStatements: true
+// });
+
+console.log(`\n\nprocess.env: ${process.env}\n\n`);
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'password',
+  host: process.env.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  port: process.env.RDS_PORT,
   multipleStatements: true
 });
 
 // Gets the database name and script path from .env file
-const DB_NAME = process.env.DB_NAME;
+const DB_NAME = process.env.RDS_DB_NAME;
+// const DB_NAME = process.env.DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
 const DB_DEMO_SCRIPT = process.env.DB_DEMO_SCRIPT;
+
 
 // Initializes the database, if no such database exists, it calls the create database function
 async function initializeDatabase() {
@@ -93,7 +105,7 @@ async function createTables() {
       await connection.query(createTablesQuery);
       console.log('Tables/Data inserted successfully');
     } catch (err) {
-      console.error('Error initializing database: ', err.message);
+      console.error('Error creating database tables: ', err.message);
     }
 
     await insertDemoData();
@@ -126,7 +138,7 @@ async function insertDemoData() {
       await connection.query(demoQuery);
       console.log('Demo data inserted successfully');
     } catch (err) {
-      console.error('Error initializing database: ', err.message);
+      console.error('Error inserting demo data: ', err.message);
     }
   } catch (err) {
     console.error('Error inserting demo data: ', err.message);

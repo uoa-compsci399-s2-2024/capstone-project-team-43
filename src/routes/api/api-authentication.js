@@ -231,7 +231,7 @@ router.get('/google/role/:role', async (req, res) => {
         res.redirect(authorizeUrl);
     } catch (error) {
         console.log("Error authenticating: " + error);
-        res.status(500).redirect('http://localhost:3000/');
+        res.status(500).redirect('http://localhost:3001/');
     }
 });
 
@@ -242,7 +242,7 @@ router.get('/google/callback', async (req, res) => {
         const { state: role } = req.query;
 
         if (!Authcode) {
-            return res.status(400).redirect('http://localhost:3000/');
+            return res.status(400).redirect('http://localhost:3001/');
         }
 
         // Exchange Google's authorization code to get tokens
@@ -259,7 +259,7 @@ router.get('/google/callback', async (req, res) => {
         const email = userInfo.email;
         const first_name = userInfo.given_name;
         const last_name = userInfo.family_name;
-        
+
         // Checks if the user exists in the database, if so it returns the role, if not returns null
         const user_role = await findUser(email);
         let token = null
@@ -280,7 +280,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('http://localhost:3000/');
+            return res.status(200).redirect('http://localhost:3001/');
 
 
         } else if (user_role != null && role == user_role) {
@@ -296,7 +296,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('http://localhost:3000/');
+            return res.status(200).redirect('http://localhost:3001/');
 
         } else {
 
@@ -310,7 +310,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(401).redirect('http://localhost:3000/');
+            return res.status(401).redirect('http://localhost:3001/');
         }
 
     } catch (error) {

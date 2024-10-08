@@ -13,7 +13,6 @@ dotenv.config();
 //   multipleStatements: true
 // });
 
-console.log(`\n\nprocess.env: ${process.env}\n\n`);
 const pool = mysql.createPool({
   host: process.env.RDS_HOSTNAME,
   user: process.env.RDS_USERNAME,
@@ -22,10 +21,8 @@ const pool = mysql.createPool({
   multipleStatements: true
 });
 
-console.log(`\n\nprocess.env: ${JSON.stringify(process.env)}\n\n`);
 // Gets the database name and script path from .env file
 const DB_NAME = process.env.RDS_DB_NAME;
-// const DB_NAME = process.env.DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
 const DB_DEMO_SCRIPT = process.env.DB_DEMO_SCRIPT;
 

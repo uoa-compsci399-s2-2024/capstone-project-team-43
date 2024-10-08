@@ -1,10 +1,7 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-// Gets the database name from .env file
-const DB_NAME = process.env.DB_NAME;
 
 /**
  * @typedef {object} User
@@ -69,12 +66,12 @@ export async function getUsersByTeam(team_id) {
 
     await connection.query(`USE ${DB_NAME};`);
     const [users] = await connection.query('SELECT * FROM USER WHERE team_id = ?', team_id);
-    
+
     return users;
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
-  } finally { 
+  } finally {
     // If there is a connection, release it
     if (connection) connection.release();
   }
@@ -94,12 +91,12 @@ export async function getUser(id) {
 
     await connection.query(`USE ${DB_NAME};`);
     const [users] = await connection.query('SELECT * FROM USER WHERE id = ?', id);
-    
+
     return users[0];
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
-  } finally { 
+  } finally {
     // If there is a connection, release it
     if (connection) connection.release();
   }
@@ -188,9 +185,9 @@ export async function deleteUser(id) {
   let connection;
   try {
 
-        // Get connection from pool
-        connection = await pool.getConnection();
-        await connection.query(`USE ${DB_NAME};`);
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
     await connection.query("DELETE FROM USER WHERE id = ?", id);
 
   } catch (err) {
@@ -217,7 +214,7 @@ export async function deleteUserByRole(role) {
   } catch (err) {
     console.error('Error executing query/s:', err.message);
   } finally {
-    
+
     // If there is a connection, release it
     if (connection) connection.release();
   }
@@ -301,13 +298,13 @@ export async function updateUser(id, attribute, newValue) {
     const response = await connection.query("UPDATE USER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
 
     /** @type {User} */
-    const updatedUser = await connection.query("SELECT * FROM USER WHERE id = ?", [id]); 
+    const updatedUser = await connection.query("SELECT * FROM USER WHERE id = ?", [id]);
 
     return updatedUser;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
-    return[];
+    return [];
   }
 }
 
@@ -322,13 +319,13 @@ export async function getCSV(users) {
     let CSVData = "Student name,Email,Team ID\n";
     for (let i = 0; i < users.length; i++) {
 
-        CSVData += users[i].first_name + " " + users[i].last_name + "," + users[i].email + "," + users[i].team_id + "\n";
-      }
+      CSVData += users[i].first_name + " " + users[i].last_name + "," + users[i].email + "," + users[i].team_id + "\n";
+    }
 
-      return CSVData;
+    return CSVData;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
-    return[];
+    return [];
   }
 }

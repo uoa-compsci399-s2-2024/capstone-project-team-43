@@ -1,12 +1,9 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; // Will use this for password hashing
 
 dotenv.config();
-
-// Gets the database name from .env file
-const DB_NAME = process.env.DB_NAME;
 
 const saltRounds = 10; // Typically a value between 10 and 12
 
@@ -43,7 +40,7 @@ export async function generateToken(email, password, googleAuth) {
       time: Date.now(),
       userId: user.id,
       email: user.email,
-      role: user.role, 
+      role: user.role,
     }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' }); // Token is valid for 1 day
 
   return token
@@ -93,11 +90,11 @@ async function validateUser(email, password, googleAuth) {
         return user;
 
       } else {
-          /** @type {User} */
-          const user = rows[0];
+        /** @type {User} */
+        const user = rows[0];
         try {
-        // Need to check hashed password
-        let result = bcrypt.compare(password, user.password);
+          // Need to check hashed password
+          let result = bcrypt.compare(password, user.password);
 
           if (result) {
             // Passwords match, authentication successful
@@ -127,11 +124,11 @@ async function validateUser(email, password, googleAuth) {
 }
 
 export async function passwordEncrypt(password) {
-    
+
   try {
     let hashPassword = bcrypt.hash(password, saltRounds);
 
-      return hashPassword;
+    return hashPassword;
 
   } catch (err) {
     console.log("Error creating hash");

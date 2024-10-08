@@ -1,4 +1,4 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 import { getUser } from "./users-dao.js";
 import { getSemesters } from "./semesters-dao.js";
@@ -32,8 +32,6 @@ dotenv.config();
  * @property {Date} last_login
  */
 
-// Gets the database name from .env file
-const DB_NAME = process.env.DB_NAME;
 /**
  * Gets all projects
  *
@@ -224,11 +222,11 @@ export async function updateProjectStatus(id, status) {
     // Get connection from pool
     connection = await pool.getConnection();
 
-    if(status == "pending" || status == "rejected") {
+    if (status == "pending" || status == "rejected") {
 
 
       await connection.query(`USE ${DB_NAME};`);
-  
+
       await connection.query("UPDATE `project` SET published = 'false' WHERE id = ?", [id]);
     }
 
@@ -339,18 +337,18 @@ export async function allocateNumbers(approved_projects) {
     let numberIDS = [];
 
     for (let i = 1; i < approved_projects.length + 1; i++) {
-    
-    /** @type {Project} */
-    console.log("UPDATING PROJECT WITH ID: ", projectIDS[2 * i].split(",")[0]);
 
-    numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
+      /** @type {Project} */
+      console.log("UPDATING PROJECT WITH ID: ", projectIDS[2 * i].split(",")[0]);
 
-    await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
+      numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
+
+      await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
     }
 
     console.log(numberIDS);
 
-   await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
+    await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
 
   } catch (err) {
     if (connection) connection.release();

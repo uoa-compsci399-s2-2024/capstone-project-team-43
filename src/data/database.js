@@ -149,4 +149,4 @@ async function insertDemoData() {
 initializeDatabase();
 
 
-export { pool };
+export { pool, DB_NAME };

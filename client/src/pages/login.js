@@ -25,7 +25,7 @@ const Login = () => {
         console.log("Email: ", email);
         console.log("Password: ", password);
         try {
-            let res = await fetch("http://localhost:3001/api/auth/login", {
+            let res = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -61,7 +61,7 @@ const Login = () => {
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
-            let res = await fetch("http://localhost:3001/api/auth/register", {
+            let res = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,9 +98,9 @@ const Login = () => {
 
     // Hides register form, shows register form
     const login_form = () => {
-    document.getElementById('loginright').style.display = "block";
-    document.getElementById('createacc').style.display = "none";
-}
+        document.getElementById('loginright').style.display = "block";
+        document.getElementById('createacc').style.display = "none";
+    }
 
     useEffect(() => {
         try {
@@ -110,12 +110,12 @@ const Login = () => {
             } else {
                 const decoded = jwtDecode(token);
                 const role = decoded.role;
-    
+
                 if (role === null) {
                     login_form();
                 }
             }
-    
+
         } catch (err) {
             console.log(err);
         }
@@ -151,11 +151,11 @@ const Login = () => {
                             </form>
                             <br></br>
                             <div className='login-google-container'>
-                                <button type="new" className = 'login-google-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/student"}>Google Sign in as Student</button><br></br>
-                                <button type="new" className = 'login-google-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>Google Sign in as Client</button><br></br>
-                                <button type="new" className = 'login-google-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/admin"}>Google Sign in as Admin</button><br></br>
+                                <button type="new" className='login-google-button' onClick={() => window.location.href = "/api/auth/google/role/student"}>Google Sign in as Student</button><br></br>
+                                <button type="new" className='login-google-button' onClick={() => window.location.href = "/api/auth/google/role/client"}>Google Sign in as Client</button><br></br>
+                                <button type="new" className='login-google-button' onClick={() => window.location.href = "/api/auth/google/role/admin"}>Google Sign in as Admin</button><br></br>
                             </div>
-                        
+
                             <br></br>
                             <hr></hr>
                             <br></br>

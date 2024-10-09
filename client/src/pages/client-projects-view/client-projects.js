@@ -8,7 +8,7 @@ import './client-projects.css'
 
 const ClientProjectsView = () => {
     const [projects, setProjects] = useState([]);
-    const userId = getUserID();
+    const [userID, setUserID] = useState([]);
     
     // useEffect(() => {
     //     async function getProjectsByUser() {
@@ -34,6 +34,13 @@ const ClientProjectsView = () => {
         getProjects();
     }, []);
 
+    useEffect(() => {
+        console.log("getting user id");
+        const id = getUserID();
+        console.log("user id"+id);
+        setUserID(id);
+    }, []);
+
     const handleclick = () =>{
         //document.getElementById('confirm').style.display = "block";
         //document.getElementById('close').style.display = "block";
@@ -45,7 +52,7 @@ const ClientProjectsView = () => {
         document.getElementById('edit').style.display = "none";
     }
 
-    const userProjects = projects.filter(project => project.owner_id === userId);
+    const userProjects = projects.filter(project => project.owner_id === userID);
 
     console.log("USER PROJECTS: ", userProjects);
 
@@ -63,16 +70,9 @@ const ClientProjectsView = () => {
                     {userProjects.length > 0 && userProjects.map(project => (
                             <div key={project.id} onClick={() => handleclick(project)}>
                                 <Project 
-                                    id={project.id} 
+                                    view = 'client'
                                     name={project.title} 
                                     description={project.description}
-                                    requirements = {project.special_requirements}
-                                    resources = {project.resources}
-                                    skills = {project.preferred_skills}
-                                    deliverable = {project.project_deliverable}
-                                    created = {project.created}
-                                    expiry= {project.expiry}
-                                    teams = {project.max_teams}
                                     number = {project.project_number}
                                 />  
                             </div>

@@ -7,6 +7,8 @@ import './manage-semester.css';
 import SemesterDropdown from '../../components/semester-dropdown/semester-dropdown.js';
 import uploadIcon from '../../media/upload-icon.png';
 
+import { downloadAllocation } from '../../Api.js';
+
 // Formats semester data & edit functionality
 const SemesterDetail = ({ description, data='None', onEdit, isEditing, onSave, onCancel }) => {
     const [value, setValue] = useState(data);

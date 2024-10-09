@@ -8,8 +8,8 @@ import '../App.css';
 
 const Navbar = () => {
 
-        // Changes to the user's role once the auth token has been verified
-        let role = null;
+    // Changes to the user's role once the auth token has been verified
+    let role = null;
 
     // Hides both register and login forms
     const form_close = () => {
@@ -19,55 +19,55 @@ const Navbar = () => {
 
     const student_view = () => {
         try {
-        document.getElementById('adminSideBar').style.display = "none";
-        document.getElementById('clientSideBar').style.display = "none";
-        document.getElementById('studentSideBar').style.display = "block";
-        document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectProposalNav').style.display = "none";
-        document.getElementById('projectPreferencesNav').style.display = "block";
-        document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('clientProjectNav').style.display = "none";
-        } catch (err) {}
+            document.getElementById('adminSideBar').style.display = "none";
+            document.getElementById('clientSideBar').style.display = "none";
+            document.getElementById('studentSideBar').style.display = "block";
+            document.getElementById('projectSortNav').style.display = "none";
+            document.getElementById('projectProposalNav').style.display = "none";
+            document.getElementById('projectPreferencesNav').style.display = "block";
+            document.getElementById('projectsAvailableNav').style.display = "block";
+            document.getElementById('clientProjectNav').style.display = "none";
+        } catch (err) { }
     }
 
     const client_view = () => {
         try {
-        document.getElementById('adminSideBar').style.display = "none";
-        document.getElementById('clientSideBar').style.display = "block";
-        document.getElementById('studentSideBar').style.display = "none";
-        document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectProposalNav').style.display = "block";
-        document.getElementById('projectPreferencesNav').style.display = "none";
-        document.getElementById('projectsAvailableNav').style.display = "none";
-        document.getElementById('clientProjectNav').style.display = "block";
-        } catch (err) {}
+            document.getElementById('adminSideBar').style.display = "none";
+            document.getElementById('clientSideBar').style.display = "block";
+            document.getElementById('studentSideBar').style.display = "none";
+            document.getElementById('projectSortNav').style.display = "none";
+            document.getElementById('projectProposalNav').style.display = "block";
+            document.getElementById('projectPreferencesNav').style.display = "none";
+            document.getElementById('projectsAvailableNav').style.display = "none";
+            document.getElementById('clientProjectNav').style.display = "block";
+        } catch (err) { }
     }
 
     const admin_view = () => {
         try {
-        document.getElementById('adminSideBar').style.display = "block";
-        document.getElementById('clientSideBar').style.display = "none";
-        document.getElementById('studentSideBar').style.display = "none";
-        document.getElementById('projectSortNav').style.display = "block";
-        document.getElementById('projectsArchiveNav').style.display = "block";
-        document.getElementById('projectProposalNav').style.display = "none";
-        document.getElementById('projectPreferencesNav').style.display = "none";
-        document.getElementById('projectsAvailableNav').style.display = "block";
-        document.getElementById('clientProjectNav').style.display = "none";
-        } catch (err) {}
+            document.getElementById('adminSideBar').style.display = "block";
+            document.getElementById('clientSideBar').style.display = "none";
+            document.getElementById('studentSideBar').style.display = "none";
+            document.getElementById('projectSortNav').style.display = "block";
+            document.getElementById('projectsArchiveNav').style.display = "block";
+            document.getElementById('projectProposalNav').style.display = "none";
+            document.getElementById('projectPreferencesNav').style.display = "none";
+            document.getElementById('projectsAvailableNav').style.display = "block";
+            document.getElementById('clientProjectNav').style.display = "none";
+        } catch (err) { }
     }
 
     const not_logged_in = () => {
         try {
-        document.getElementById('adminSideBar').style.display = "none";
-        document.getElementById('clientSideBar').style.display = "none";
-        document.getElementById('studentSideBar').style.display = "none";
-        document.getElementById('projectSortNav').style.display = "none";
-        document.getElementById('projectProposalNav').style.display = "none";
-        document.getElementById('projectsAvailableNav').style.display = "none";
-        document.getElementById('projectPreferencesNav').style.display = "none";
-        document.getElementById('clientProjectNav').style.display = "none";
-        } catch (err) {}
+            document.getElementById('adminSideBar').style.display = "none";
+            document.getElementById('clientSideBar').style.display = "none";
+            document.getElementById('studentSideBar').style.display = "none";
+            document.getElementById('projectSortNav').style.display = "none";
+            document.getElementById('projectProposalNav').style.display = "none";
+            document.getElementById('projectsAvailableNav').style.display = "none";
+            document.getElementById('projectPreferencesNav').style.display = "none";
+            document.getElementById('clientProjectNav').style.display = "none";
+        } catch (err) { }
     }
 
     const debugging_nav = () => {
@@ -79,7 +79,7 @@ const Navbar = () => {
         document.getElementById('projectsAvailableNav').style.display = "block";
         document.getElementById('projectPreferencesNav').style.display = "block";
         document.getElementById('clientProjectNav').style.display = "block";
-        
+
     }
 
     try {
@@ -94,17 +94,17 @@ const Navbar = () => {
             }
             not_logged_in(); //**uncomment for production and commment out debugging_nav()**
         } else {
-        const decoded = jwtDecode(token);
-        const role = decoded.role;
+            const decoded = jwtDecode(token);
+            const role = decoded.role;
 
-        if (role === "student") {
-            student_view();
-        } else if (role === "client") {
-            client_view();
-        } else if (role === "admin") {
-            admin_view();
+            if (role === "student") {
+                student_view();
+            } else if (role === "client") {
+                client_view();
+            } else if (role === "admin") {
+                admin_view();
+            }
         }
-    }
     } catch (err) {
         console.log(err);
     }
@@ -142,7 +142,7 @@ const Navbar = () => {
         try {
             const token = Cookies.get('authToken');
             console.log("TAKING TOKEN: ", token);
-            let res = await fetch("http://localhost:3001/api/auth/logout", {
+            let res = await fetch("/api/auth/logout", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -172,7 +172,7 @@ const Navbar = () => {
             if (stored_token) {
 
                 try {
-                    let res = await fetch("http://localhost:3001/api/auth/role", {
+                    let res = await fetch("/api/auth/role", {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
@@ -200,14 +200,14 @@ const Navbar = () => {
                         } else {
                             //debugging_nav();
                             not_logged_in();  //**uncomment for production and commment out debugging_nav()**
-                        } 
+                        }
 
                     } else {
                         // Clears authToken cookie
                         Cookies.remove("authToken");
                         console.log("An error occurred during login");
                         window.location.reload();
-                        
+
                     }
                 } catch (err) {
                     // Clears the authToken cookie
@@ -229,31 +229,31 @@ const Navbar = () => {
     return (
         <div>
             <nav className="navbar">
-                <button className = 'sideMenuButton' onClick={showsidemenu} id="studentSideBar"></button>
-                <button className = 'sideMenuButton' onClick={showadminsidemenu} id="adminSideBar"></button>
-                <button className = 'sideMenuButton' onClick={showclientsidemenu} id="clientSideBar"></button>
+                <button className='sideMenuButton' onClick={showsidemenu} id="studentSideBar"></button>
+                <button className='sideMenuButton' onClick={showadminsidemenu} id="adminSideBar"></button>
+                <button className='sideMenuButton' onClick={showclientsidemenu} id="clientSideBar"></button>
                 <ul>
                     <li>
                         <Link to='/pages/projects-available' id="projectsAvailableNav" state={{ user: "student" }}> Projects Available </Link> <br />
                     </li>
-                    
+
                     <li>
-                            <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
-                        </li>
-                        <li>
+                        <Link to='/pages/project-proposal' id="projectProposalNav" state={{ user: role }}> Project Proposal Form </Link> <br />
+                    </li>
+                    <li>
                         <Link to='/pages/about' state={{ user: role }} id="aboutNav"> About </Link> <br />
                     </li>
-                    
+
                     <li>
-                        <Link to='/' state={{ user: role }}> 
+                        <Link to='/' state={{ user: role }}>
                             <img id="cornerstone_logo" src={cornerstone_logo} alt="Cornerstone" />
                         </Link> <br />
                     </li>
-                    
+
                     <li>
                         <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                     </li>
-                    
+
                     <li>
                         <Link to='/pages/project-preferences' id="projectPreferencesNav" state={{ user: "student" }}> Project Preferences </Link> <br />
                     </li>
@@ -261,7 +261,7 @@ const Navbar = () => {
                         <Link to='/pages/projects-admin' id="projectSortNav" state={{ user: "admin" }}> Projects </Link> <br />
                     </li>
                     <li>
-                    <Link to="/pages/client-projects" id="clientProjectNav">Client Projects</Link> <br />
+                        <Link to="/pages/client-projects" id="clientProjectNav">Client Projects</Link> <br />
                     </li>
 
                 </ul>
@@ -283,7 +283,7 @@ const Navbar = () => {
                             <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                         </li>
                         <li>
-                            <button className = 'logoutButton' onClick={Logout}>Sign Out</button>
+                            <button className='logoutButton' onClick={Logout}>Sign Out</button>
                         </li>
                     </ul>
                 </div>
@@ -317,7 +317,7 @@ const Navbar = () => {
                             <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                         </li>
                         <li>
-                            <button className = 'logoutButton' onClick={Logout}>Sign Out</button>
+                            <button className='logoutButton' onClick={Logout}>Sign Out</button>
                         </li>
                     </ul>
                 </div>
@@ -339,7 +339,7 @@ const Navbar = () => {
                             <Link to='/pages/contact' state={{ user: role }}> Contact </Link> <br />
                         </li>
                         <li>
-                            <button className = 'logoutButton' onClick={Logout}>Sign Out</button>
+                            <button className='logoutButton' onClick={Logout}>Sign Out</button>
                         </li>
                     </ul>
                 </div>

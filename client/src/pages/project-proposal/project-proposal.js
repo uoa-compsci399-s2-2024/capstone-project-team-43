@@ -7,10 +7,12 @@ import { fetchUser } from "../../Api.js";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { getUserID } from '../../utils/auth.js';
 
 import './project-proposal.css'
 
 const ProjectProposal = () => {
+    const [userID, setUserID] = useState(null);
     const [showAttendanceConfirmation, setShowAttendanceConfirmation] = useState(false);
     const [showForm, setShowForm] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -52,52 +54,54 @@ const ProjectProposal = () => {
         setShowSuccessMessage(true)
     };
 
-    const getClientID = () => {
+
+    useEffect(() => {
+        console.log("getting user id");
+        const id = getUserID();
+        console.log("user id"+id);
+        setUserID(id);
+    }, []);
+
+
+    const submit = (e) =>{
         try {
-            const token = Cookies.get("authToken");
-            if (token === "" || token === null || token === "null") {
-                return -1;
-            } else {
-                const decoded = jwtDecode(token);
-                console.log(decoded);
-                const id = decoded.userId;
-    
-                if (id === null) {
-                    return -1;
-                }
-                return id;
-            }
-    
+            e.preventDefault(); 
+
+            let other_client_details = document.getElementById("otherclientdetails").value;
+            let title = document.getElementById("projecttitle").value;
+            let description = document.getElementById("projectdescription").value;
+            let project_deliverable = document.getElementById("desiredoutput").value;
+            let special_equipment_requirment = document.getElementById("specialequipment").value;
+            let max_teams = document.getElementById("teams").value;
+            let preferred_skills = document.getElementById("desiredskill").value;
+            let available_resources = document.getElementById("availableresources").value;
+            let available_from = document.getElementById("start_date").value;
+            let expiry = document.getElementById("date").value;
+            let owner_id = userID;
+            let currentDate = new Date();
+            let created = currentDate.toISOString().split('T')[0];
+
+            // Log all the collected values
+            console.log("Other Client Details:", other_client_details);
+            console.log("Project Title:", title);
+            console.log("Project Description:", description);
+            console.log("Project Deliverable:", project_deliverable);
+            console.log("Special Equipment Requirement:", special_equipment_requirment);
+            console.log("Max Teams:", max_teams);
+            console.log("Preferred Skills:", preferred_skills);
+            console.log("Available Resources:", available_resources);
+            console.log("Available From:", available_from);
+            console.log("Expiry Date:", expiry);
+            console.log("Owner ID:", owner_id);
+            console.log("Created Date:", created);
+
+            //Structure:  title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client details
+            createProject(title, description, owner_id, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, "pending", max_teams, -1, 1, other_client_details);
+
         } catch (err) {
-            console.log(err);
+            console.log("Error", err);
+            }
         }
-    }
-
-    const submit = () =>{
-        try {
-
-        let other_client_details = document.getElementById("otherclientdetails").value;
-        let title = document.getElementById("projecttitle").value;
-        let description = document.getElementById("projectdescription").value;
-        let project_deliverable = document.getElementById("desiredoutput").value;
-        let special_equipment_requirment = document.getElementById("specialequipment").value;
-        let max_teams = document.getElementById("teams").value;
-        let preferred_skills = document.getElementById("desiredskill").value;
-        let available_resources = document.getElementById("availableresources").value;
-        let available_from = document.getElementById("start_date").value;
-        let expiry = document.getElementById("date").value;
-        let owner_id = getClientID();
-        let currentDate = new Date();
-        let created = currentDate.toISOString().split('T')[0];
-
-        //Structure:  title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client details
-        createProject(title, description, owner_id, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, "pending", max_teams, -1, 1, other_client_details);
-        handleSuccess();
-
-    } catch (err) {
-        console.log("Error", err);
-        }
-    }
 
     return(
             <main className="project-proposal-page">
@@ -182,7 +186,7 @@ const ProjectProposal = () => {
                     </div>}
             </div>
             
-            {showForm && <form className="content-section form-content form-fill" id="proposalForm">
+            {showForm && <form onSubmit={submit} className="content-section form-content form-fill" id="proposalForm">
                     <label>
                         <h2>1. Other Clients' Details</h2>
                         <p>If there is anyone else involved in the project, please provide their names and emails</p>
@@ -253,7 +257,7 @@ const ProjectProposal = () => {
                     </label>             
                         <div className = 'proposal-submission-buttons' id="proposalButtons">
                         <button className = 'main-button' onClick={handleGoBack} id="back">Go Back</button>
-                        <button className = 'main-button'id="submit" form="proposalForm" type="submit" onClick={submit}>Submit</button>
+                        <button className = 'main-button'id="submit" form="proposalForm" type="submit">Submit</button>
                     </div>
                 </form>} 
                 {showSuccessMessage && (<div className='success-message'>

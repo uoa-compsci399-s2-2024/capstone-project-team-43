@@ -273,14 +273,11 @@ const ManageSemester = () => {
         setEditingField(null); // Exit edit mode without saving
     };
 
-    if (!semester) {
-        return <h1>Loading...</h1>;  
-    }
 
 
     return (
         <main className='manage-semester-page'>
-            <div className='content'>
+            {semester && <div className='content'>
                 <div className='semester-heading'>
                     {semester && <h1>{semester.name}</h1>}
                     {/* update semesterID when dropdown button is selected */}
@@ -395,7 +392,7 @@ const ManageSemester = () => {
                             </div>
                         )}
                 </div>
-            </div>
+            </div>}
         </main>
     );
 }

@@ -58,16 +58,12 @@ const ProjectsArchive = () => {
         navigate(`/projects/archive/${selectedSemesterID}`, { replace: true }); 
     };
 
-    if (!semester) {
-        return <h1>Loading...</h1>;  
-    }
-
     // projects for the given semester
     const archivedProjects = projects.filter(project => project.semester_id === semesterID);
 
     return(
         <main className="projects-archive">
-            <div className='content'>
+            {semester && <div className='content'>
                 <div className='page-header'>
                     <div className='semester-heading'>
                         {semester && <h1>{semester.name}</h1>}
@@ -94,7 +90,7 @@ const ProjectsArchive = () => {
                         )}
                     </div>  
                 </div>
-            </div>
+            </div>}
         </main>  
     );
 }

@@ -86,8 +86,6 @@ const LandingPage = () => {
                 credentials: 'include',
             });
 
-            console.log(res.status);
-
             if (res.status === 200) {
                 // If login is successful, clears the text in form
                 setEmail("");
@@ -118,6 +116,7 @@ const LandingPage = () => {
                     password: password,
                     company: null,
                 }),
+                credentials: 'include',
             });
 
             if (res.status === 200) {
@@ -255,7 +254,7 @@ const LandingPage = () => {
                         </button>
                         <button onClick={handleGoBack} className='main-button form-button'>
                             Go Back
-                        </button>                
+                        </button>        
                     </div>
                     <div className='capitalise-container'>
                         <p>Want to view previous Capstone projects?</p>
@@ -279,7 +278,7 @@ const LandingPage = () => {
                             <input type="password" placeholder="Password*" value={password} onChange={(e) => setPassword(e.target.value)} required />
                         </label>
                         <div className='form-button-container'>
-                            <button onClick={handleGoBack} className='main-button form-button'>
+                            <button type="button" onClick={handleGoBack} className='main-button form-button'>
                                 Go Back
                             </button>
                             <button type="submit" className='main-button form-button'>

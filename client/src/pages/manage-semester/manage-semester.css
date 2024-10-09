@@ -1,6 +1,6 @@
 .subheading {
     text-transform: capitalize;
-    margin-top: -8vh;
+    margin-top: -40px;
     margin-bottom: 5vh;
 }
 
@@ -15,6 +15,7 @@
     text-align: left;
     width: 600px;
     min-width: 300px;
+    margin-top: -1vh+20px;
 }
 
 /* small subeadings */

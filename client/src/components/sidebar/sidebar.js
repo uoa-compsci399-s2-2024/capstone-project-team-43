@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './sidebar.css';
 import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
+import { fetchSemesters } from '../../Api';
 
 const Sidebar = ({ userRole, showSidebar }) => {
 
@@ -31,7 +32,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
         ],
         
         admin: [
-            { name: "Current Projects", path: "/projects/published" },
+            { name: "Current Projects", path: "/projects/available" },
             { name: "Projects", path: "/projects/manage" },
             { name: "Project Archive", path: "/projects/archive" },
             { name: "Manage Semesters", path: "/manage/semester/" },

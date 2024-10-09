@@ -110,7 +110,7 @@ export const checkPath = async () => {
         } else {
             const decoded = jwtDecode(token);
             const role = decoded.role;
-            const defaultPaths = ["/", "/contact", "/about", "/faq", "/dashboard"];
+            const defaultPaths = ["/contact", "/about", "/faq", "/dashboard"];
 
             if (role === "student") {
                 const authorizedPaths = ["/projects/available", "/project/preferences/submit"];

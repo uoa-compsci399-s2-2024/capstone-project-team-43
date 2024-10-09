@@ -56,7 +56,19 @@ router.post("/register", async (req, res) => {
 
     token = await generateToken(email, password, false);
 
-    res.status(200).json({ token: token });
+    if (token == null) {
+        //Access denied, not valid user
+        return res.status(401).end();
+    }
+
+    res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
+        httpOnly: false, // Prevents JavaScript access to the cookie
+        secure: false, // Once in production, must set to "true", only works over https
+        maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
+        sameSite: 'Strict',
+        path: '/'
+    }));
+    return res.status(200).end();
 });
 
 // Gets user details and attempts to register admin
@@ -290,8 +302,6 @@ router.get("/role", async (req, res) => {
         let jwtSecretKey = process.env.JWT_SECRET_KEY;
         const token = req.header(tokenHeaderKey);
 
-        console.log(token);
-
         const verifiedToken = jwt.verify(token, jwtSecretKey);
 
         const result = await checkTokenBlacklist(token);
@@ -309,8 +319,6 @@ router.get("/role", async (req, res) => {
         };
 
         const db_role = await findUser(user.email);
-
-        console.log("EMAIL FOUND: ", user.email);
 
         let DEVAuthorizedUsers = ['eblu301@aucklanduni.ac.nz']; // **MUST REMOVE BEFORE DEPLOYMENT ***
         if (user.email.includes(DEVAuthorizedUsers)) {

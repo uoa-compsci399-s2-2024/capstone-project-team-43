@@ -27,7 +27,7 @@ const saltRounds = 10; // Typically a value between 10 and 12
  * @param {string} password // encrypted password of user
  * @param {boolean} googleAuth // toggle if google authentication was used
 */
-export async function generateToken(email, password, googleAuth) {
+export async function generateToken(email, password, googleAuth, role = null) {
 
   // Validate user here
   /** @type {User} */
@@ -35,6 +35,21 @@ export async function generateToken(email, password, googleAuth) {
 
   if (user == null) {
     return null;
+  }
+
+  let DEVAuthorizedUsers = ['eblu301@aucklanduni.ac.nz']; // **MUST REMOVE BEFORE DEPLOYMENT ***
+  if (user.email.includes(DEVAuthorizedUsers)) {
+      console.log("DEV giving token with role: ", role);
+        // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
+  const token = jwt.sign(
+    {
+      time: Date.now(),
+      userId: user.id,
+      email: user.email,
+      role: role, 
+    }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' }); // Token is valid for 1 day
+
+  return token
   }
 
   // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
@@ -65,20 +80,8 @@ async function validateUser(email, password, googleAuth) {
 
     await connection.query(`USE ${DB_NAME};`);
 
-    let [rows] = []
-
-    if (googleAuth) {
-
-      // Google authentication has been used, need to just check if email is in the database
-      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
-
-    } else {
-
-
-      // Need to check if user with given details is in the system
-      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
-
-    }
+    // Checking if email is in the database
+    let [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
 
     // If there is a connection, release it
     if (connection) connection.release();

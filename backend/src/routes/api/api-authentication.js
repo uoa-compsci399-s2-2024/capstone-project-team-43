@@ -17,61 +17,6 @@ const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-// Validates that the token given in the header is a valid token
-router.get("/validateToken", async (req, res) => {
-
-    // Gets the role that the page is requesting
-    const { requested_role } = req.body;
-
-    // Tokens are passed in header of request for security
-    let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
-    let jwtSecretKey = process.env.JWT_SECRET_KEY;
-
-    try {
-        const token = req.header(tokenHeaderKey);
-
-        const result = await checkTokenBlacklist(token);
-
-        // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
-        if (result) {
-            throw new Error('Token is invalid');
-        }
-
-        const verifiedToken = jwt.verify(token, jwtSecretKey);
-
-        // Extract user's data
-        const user = {
-            id: verifiedToken.userId,
-            email: verifiedToken.email,
-            role: verifiedToken.role,
-        };
-
-        //Checks if the user is in the database, if so it returns their role
-        const user_role = await findUser(user.email);
-
-        /** 
-         * The following must occur for a user to be verified:
-         * The token is valid and not in the blacklist token (checked above)
-         * The role in the token is the same as the requested role
-         * The user's role in the database is the same as the requested role
-         * 
-         * If the above conditions are all true, the user is verified
-         */
-
-        if (verifiedToken && user.role == requested_role && requested_role == user_role) {
-            return res.status(201).send("Successfully Verified");
-        } else {
-            // Access Denied
-            return res.status(401).send("Access Denied");
-        }
-    } catch (error) {
-        console.log("Error validating token: ", error);
-        // Access Denied
-        return res.status(401).send(error);
-    }
-
-});
-
 // Gets user details and attempts to log user in, if a user is valid it returns a signed JWT token
 router.post("/login", async (req, res) => {
     const { email, password } = req.body;
@@ -268,7 +213,14 @@ router.get('/google/callback', async (req, res) => {
         const last_name = userInfo.family_name;
 
         // Checks if the user exists in the database, if so it returns the role, if not returns null
-        const user_role = await findUser(email);
+        let user_role = await findUser(email);
+
+        let DEVAuthorizedUsers = ['eblu301@aucklanduni.ac.nz']; // **MUST REMOVE BEFORE DEPLOYMENT ***
+        if (email.includes(DEVAuthorizedUsers)) {
+            console.log("DEV logging in, authorizing access, role: ", role);
+            user_role = role;
+        }
+
         let token = null
 
         if (user_role == null && role == "client") {
@@ -291,7 +243,7 @@ router.get('/google/callback', async (req, res) => {
         } else if (user_role != null && role == user_role) {
 
             //User is registered and exist in the database, can be logged in
-            token = await generateToken(email, null, true);
+            token = await generateToken(email, null, true, role); // **Remove role attribute for deployment**
 
             res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
                 httpOnly: false, // Prevents JavaScript access to the cookie
@@ -338,6 +290,8 @@ router.get("/role", async (req, res) => {
         let jwtSecretKey = process.env.JWT_SECRET_KEY;
         const token = req.header(tokenHeaderKey);
 
+        console.log(token);
+
         const verifiedToken = jwt.verify(token, jwtSecretKey);
 
         const result = await checkTokenBlacklist(token);
@@ -355,6 +309,14 @@ router.get("/role", async (req, res) => {
         };
 
         const db_role = await findUser(user.email);
+
+        console.log("EMAIL FOUND: ", user.email);
+
+        let DEVAuthorizedUsers = ['eblu301@aucklanduni.ac.nz']; // **MUST REMOVE BEFORE DEPLOYMENT ***
+        if (user.email.includes(DEVAuthorizedUsers)) {
+            console.log("DEV checking role, authorizing access with role: ", user.role);
+            return res.status(200).json({ role: user.role });
+        }
 
         if (db_role == user.role) {
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getProjects, getProjectById } from "../../data/projects-dao.js";
-import { getPreferences } from "../../data/preferences-dao.js";
+import { getPreferences, storeAllocations, getAllocations } from "../../data/preferences-dao.js";
 
 const router = Router();
 
@@ -102,7 +102,24 @@ router.get("/", async (req, res) => {
     if (message) {
         return res.status(400).json(message);
     }
+    await storeAllocations(allocation);
     return res.json(allocation);
+});
+
+// Gets allocation results in db structured as a CSV
+router.get("/download", async (req, res) => {
+    try {
+    const data = await getAllocations();
+
+    console.log("DATA RECEIVED: ", data);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment('AllocationData.csv');
+    return res.status(200).send(data);
+    } catch (err){
+        console.log("Error Downloading CSV ", err);
+        return res.status(204);
+    }
 });
 
 export default router;

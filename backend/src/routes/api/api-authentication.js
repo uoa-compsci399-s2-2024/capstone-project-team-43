@@ -26,7 +26,7 @@ router.post("/login", async (req, res) => {
 
     if (token == null) {
         //Access denied, not valid user
-        return res.status(401);
+        return res.status(401).end();
     }
 
     res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
@@ -71,7 +71,7 @@ router.post("/register/admin", async (req, res) => {
 
     // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
     if (result) {
-        return res.status(401);
+        return res.status(401).end();
     }
 
     const verifiedToken = jwt.verify(token, jwtSecretKey);
@@ -87,7 +87,7 @@ router.post("/register/admin", async (req, res) => {
     const user_role = await findUser(user.email);
 
     if (user_role != "admin") {
-        return res.status(401);
+        return res.status(401).end();
     }
 
     let hashPassword = await passwordEncrypt(password);
@@ -114,7 +114,7 @@ router.post("/delete/admin", async (req, res) => {
 
     // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
     if (result) {
-        return res.status(401);
+        return res.status(401).end();
     }
 
     const verifiedToken = jwt.verify(token, jwtSecretKey);
@@ -130,12 +130,12 @@ router.post("/delete/admin", async (req, res) => {
     const user_role = await findUser(user.email);
 
     if (user_role != "admin") {
-        return res.status(401);
+        return res.status(401).end();
     }
 
     await deleteUser(user.id);
 
-    res.status(200);
+    res.status(200).end();
 });
 
 router.post("/logout", async (req, res) => {
@@ -272,7 +272,7 @@ router.get('/google/callback', async (req, res) => {
 
     } catch (error) {
         console.error('Error during Google OAuth callback:', error);
-        return res.status(500);
+        return res.status(500).end();
     }
 });
 

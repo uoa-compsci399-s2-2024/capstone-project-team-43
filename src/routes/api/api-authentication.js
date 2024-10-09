@@ -231,7 +231,7 @@ router.get('/google/role/:role', async (req, res) => {
         res.redirect(authorizeUrl);
     } catch (error) {
         console.log("Error authenticating: " + error);
-        res.status(500).redirect('http://localhost:3001/');
+        res.status(500).redirect('/');
     }
 });
 
@@ -242,7 +242,7 @@ router.get('/google/callback', async (req, res) => {
         const { state: role } = req.query;
 
         if (!Authcode) {
-            return res.status(400).redirect('http://localhost:3001/');
+            return res.status(400).redirect('/');
         }
 
         // Exchange Google's authorization code to get tokens
@@ -280,7 +280,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('http://localhost:3001/');
+            return res.status(200).redirect('/');
 
 
         } else if (user_role != null && role == user_role) {
@@ -296,7 +296,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('http://localhost:3001/');
+            return res.status(200).redirect('/');
 
         } else {
 
@@ -310,7 +310,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(401).redirect('http://localhost:3001/');
+            return res.status(401).redirect('/');
         }
 
     } catch (error) {

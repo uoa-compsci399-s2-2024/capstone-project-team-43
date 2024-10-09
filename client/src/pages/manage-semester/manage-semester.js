@@ -89,6 +89,11 @@ const ManageSemester = () => {
         downloadCSVTeams(semesterID);
     }
 
+    const allocationDownload = () => {
+        console.log("Fetching allocation results");
+        downloadAllocation();
+    }
+
     // Helper function for date formatting the semester start/end dates, validDate is a true/false flag that returns a valid date that the mySQL database can read
     const formatSemesterDate = (dateString, validDate=false) => {
         let date = new Date(dateString);
@@ -369,6 +374,10 @@ const ManageSemester = () => {
                             </button>
                         </div>}
                     </div>
+                    <button className = 'upload-button' onClick ={downloadAllocation}> 
+                                <img src= {downloadIcon} alt ='icon' className='download-icon'></img> 
+                                Download Allocation Results
+                            </button>
                     { showTeamUpload && (
                         <div className='pop-up'>
                             <div className='pop-up-header'>

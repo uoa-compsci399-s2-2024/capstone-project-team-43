@@ -1,14 +1,13 @@
 import React, {useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
-import { getUserId, getUserRole, isLoggedIn } from '../../utils/auth';
-import SignOutButton from "../../components/sign-out-button";
+import { getUserID, getUserRole, isLoggedIn } from '../../utils/auth';
 
 const Dashboard = () => {
 
     const navigate = useNavigate(); 
 
-    const userId = getUserId();
-    const userRole = getUserRole();
+    let userId;
+    let userRole;
     const loggedin = isLoggedIn();
     console.log('user id:',userId);
     console.log('logged in', loggedin);
@@ -16,10 +15,17 @@ const Dashboard = () => {
     // if user is client 
     // redirect to  project proposal form
     useEffect(() => {
-        if(isLoggedIn() && userRole === 'client') {
-            console.log('client user!')
-            navigate("/projects/submit");
+        async function checkLoggedIn() {
+            userId = await getUserID();
+            userRole = await getUserRole();
+            if(await isLoggedIn() && userRole === 'client') {
+                console.log('client user!')
+                navigate("/projects/submit");
+            }
         }
+
+        checkLoggedIn();
+
     }, [navigate]);
 
     return(

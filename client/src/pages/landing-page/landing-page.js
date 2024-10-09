@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { jwtDecode } from "jwt-decode";
 import { isLoggedIn } from '../../utils/auth';
 import './landing-page.css';
 import { ReactComponent as CapitaliseLogo } from './../../media/capitalise.svg';
@@ -21,11 +20,19 @@ const LandingPage = () => {
 
     // redirect to dashboard if user not signed in
     useEffect(() => {
-        if(isLoggedIn()) {
-            console.log('logged in!')
-            navigate("/dashboard");
+        async function checkLoggedIn() {
+            try {
+                if(await isLoggedIn()) {
+                    console.log('logged in!')
+                    navigate("/dashboard");
+                }
+                console.log('not logged in!');
+                navigate("/");
+            } catch (error) {
+                console.error('Failed to login:', error);
+            }
         }
-        console.log('not logged in!')
+        checkLoggedIn();
     }, [navigate]);
 
     // handles subheading change when hovering over user type buttons
@@ -76,13 +83,10 @@ const LandingPage = () => {
                     email: email,
                     password: password,
                 }),
+                credentials: 'include',
             });
 
-            const resJson = await res.json();
-
-            // Stores the resulting Auth Token
-            localStorage.setItem("authToken", resJson.token);
-            console.log("Token stored:", resJson.token);
+            console.log(res.status);
 
             if (res.status === 200) {
                 // If login is successful, clears the text in form
@@ -115,11 +119,6 @@ const LandingPage = () => {
                     company: null,
                 }),
             });
-            const resJson = await res.json();
-
-            // Stores the resulting Auth Token
-            localStorage.setItem("authToken", resJson.token);
-            console.log("Token stored:", resJson.token);
 
             if (res.status === 200) {
 
@@ -162,7 +161,11 @@ const LandingPage = () => {
         }, 5000);
     }
 
-    console.log("logged in?",isLoggedIn())
+    // Only used for console debugging
+    const checkLogin = async() => {
+    console.log('Logged in: ', await isLoggedIn());
+    }
+    checkLogin();
 
     return (
          <div className="landing-page" id="fill">
@@ -218,8 +221,8 @@ const LandingPage = () => {
                     </button>
                 </div>
             </div>}
-            {/*  Redirect Students and Admins to google sign in   */}
-            {(userType==='student'||userType==='admin') && (
+            {/*  Redirect Students to google sign in   */}
+            {(userType==='student') && (
                 <div className='content-container student-admin-login'>
                     <div className='form'>
                         <h3>Sign in</h3>
@@ -241,10 +244,33 @@ const LandingPage = () => {
                     </div>
                 </div>
             )}
+                        {/*  Redirect Admins to google sign in   */}
+                        {(userType==='admin') && (
+                <div className='content-container student-admin-login'>
+                    <div className='form'>
+                        <h3>Sign in</h3>
+                        <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/admin"}>
+                            <img src= {googleIcon} alt ='icon' className='upload-icon'></img> 
+                            Sign in with your UoA Google account
+                        </button>
+                        <button onClick={handleGoBack} className='main-button form-button'>
+                            Go Back
+                        </button>                
+                    </div>
+                    <div className='capitalise-container'>
+                        <p>Want to view previous Capstone projects?</p>
+                        <button className='capitalise-button'
+                            onClick={() => window.open('https://www.capitalise.space/', '')}>
+                                Visit <CapitaliseLogo className='capitalise-logo'/>
+                                {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
+                        </button>
+                    </div>
+                </div>
+            )}
             {/* Redirect Clients to create an account or sign in with google */}
             {(userType==='client' && isLogin) && (
                 <div className='content-container login'>
-                    <form className="form login" onSubmit={handleSubmitLogin}>
+                    <form className="form login" onSubmit={handleSubmitLogin} method="POST">
                         <h3>Sign in</h3>
                         <label>
                             <input type="email" placeholder="Email Address*" value={email} onChange={(e) => setEmail(e.target.value)} required />
@@ -262,7 +288,7 @@ const LandingPage = () => {
                         </div>
                         <div className='google-container login'>
                             <p>Or</p>
-                            <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/student"}>
+                            <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>
                                 <img src= {googleIcon} alt ='icon' className='upload-icon'></img> 
                                 Sign in with Google
                             </button>
@@ -275,7 +301,7 @@ const LandingPage = () => {
                 </div>)}
             {(userType==='client' && !isLogin) && (
                 <div className='content-container register'>
-                    <form className="form register" onSubmit={handleSubmitRegister}>
+                    <form className="form register" onSubmit={handleSubmitRegister} method="POST">
                         <h3>Create an Account</h3>
                         <label>
                             <input type="text" placeholder="First Name*" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
@@ -299,7 +325,7 @@ const LandingPage = () => {
                         </div>
                         <div className='google-container register'>
                             <p>Or</p>
-                            <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/student"}>
+                            <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>
                                 <img src= {googleIcon} alt ='icon' className='upload-icon'></img> 
                                 Sign in with Google
                             </button>

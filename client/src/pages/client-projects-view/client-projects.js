@@ -3,16 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchProjects, fetchProjectsByUser } from '../../Api.js'
 import Project from "../../components/project/project.js";
-import PopUp from "../../components/project-pop-up-admin.js";
-import { jwtDecode } from "jwt-decode";
-import { getUserId } from '../../utils/auth.js';
-
+import { getUserID } from '../../utils/auth.js';
 import './client-projects.css'
-import { data } from 'framer-motion/client';
 
 const ClientProjectsView = () => {
     const [projects, setProjects] = useState([]);
-    const userId = getUserId();
+    const userId = getUserID();
     
     // useEffect(() => {
     //     async function getProjectsByUser() {

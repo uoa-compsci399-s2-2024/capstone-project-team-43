@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react';
-
-import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
-import logo from '../../media/logo.png';
-import GetUserRole from '../get-user-role.js';
-import Sidebar from '../sidebar/sidebar.js';
-import SignOutButton from '../sign-out-button.js';
 
 import './header.css'
-import { getUserRole } from '../../utils/auth.js';
 
 const Header = ({toggleSidebar, showDropdown, hideDropdown, showingDropdown, setDropdownButtonHover}) => {
 

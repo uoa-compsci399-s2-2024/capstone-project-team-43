@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { fetchTeam, fetchUser, updateUserDetails, deleteUser } from '../../Api.js';
-import { getUserId }from '../../utils/auth.js';
+import { getUserID }from '../../utils/auth.js';
 import SignOutButton, { handleSignOut } from '../../components/sign-out-button.js';
 
 import './account-settings.css';
@@ -67,7 +66,7 @@ const AccountSettings = ({ }) => {
 
     useEffect(() => {
         console.log("getting user id");
-        const id = getUserId();
+        const id = getUserID();
         console.log("user id"+id);
         setUserID(id);
     }, []);

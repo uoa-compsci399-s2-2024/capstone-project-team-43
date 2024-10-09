@@ -81,10 +81,17 @@ router.post("/login", async (req, res) => {
 
     if (token == null) {
         //Access denied, not valid user
-        res.status(401);
+        return res.status(401);
     }
 
-    res.status(200).json({ token: token });
+    res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
+        httpOnly: false, // Prevents JavaScript access to the cookie
+        secure: false, // Once in production, must set to "true", only works over https
+        maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
+        sameSite: 'Strict',
+        path: '/'
+    }));
+    return res.status(200).end();
 });
 
 // Gets user details and attempts to register client
@@ -259,14 +266,12 @@ router.get('/google/callback', async (req, res) => {
         const email = userInfo.email;
         const first_name = userInfo.given_name;
         const last_name = userInfo.family_name;
-        
+
         // Checks if the user exists in the database, if so it returns the role, if not returns null
         const user_role = await findUser(email);
         let token = null
 
         if (user_role == null && role == "client") {
-
-
 
             // User does not exist in the database must create a new client
             await createUser("client", email, null, userInfo.given_name, userInfo.family_name, null);
@@ -280,7 +285,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('http://localhost:3000/');
+            return res.status(200).redirect('http://localhost:3000/dashboard');
 
 
         } else if (user_role != null && role == user_role) {
@@ -296,7 +301,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('http://localhost:3000/');
+            return res.status(200).redirect('http://localhost:3000/dashboard');
 
         } else {
 
@@ -319,7 +324,13 @@ router.get('/google/callback', async (req, res) => {
     }
 });
 
-// Gets users role
+/** 
+* Gets users role 
+* The following must occur for a user to be verified:
+* The token is verfied and not in the token blacklist (checked above)
+* The user's role in the database is the same as the role in the token
+* If the above conditions are all true, the user is verified
+*/
 router.get("/role", async (req, res) => {
 
     try {
@@ -328,6 +339,13 @@ router.get("/role", async (req, res) => {
         const token = req.header(tokenHeaderKey);
 
         const verifiedToken = jwt.verify(token, jwtSecretKey);
+
+        const result = await checkTokenBlacklist(token);
+
+        // Checks if the token is in the token blacklist (if a user has logged out and is trying to use that token again)
+        if (result) {
+            throw new Error('Token is invalid');
+        }
 
         // Extract user's data
         const user = {
@@ -346,10 +364,10 @@ router.get("/role", async (req, res) => {
 
             // If the role in the database and token don't match, then the token has been tampered with
             console.log("JWT Token has been changed!");
-            return res.status(401);
+            return res.status(401).json({ role: "none" });
         }
     } catch (err) {
-        console.log("Token is invalid, unauthorized to login");
+        console.log("Token is invalid, unauthorized to get role");
         return res.status(401).json({ role: "none" });
     }
 });

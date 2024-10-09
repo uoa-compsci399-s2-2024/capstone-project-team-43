@@ -5,7 +5,7 @@ import Project from "../components/project/project.js";
 import { useState, useEffect } from "react";
 import { fetchProjects, fetchSemester, fetchSemesters, updatePreferences, fetchUser, fetchPreferences, deletePreferences } from '../Api.js'
 import { useParams, useNavigate } from 'react-router-dom';
-import getUserID from '../components/get-user-id.js';
+import { getUserID } from "../utils/auth.js";
 
 
 

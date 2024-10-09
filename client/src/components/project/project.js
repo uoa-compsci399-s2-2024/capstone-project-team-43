@@ -1,5 +1,4 @@
 import React from "react";
-import { getUserRole } from '../../utils/auth.js';
 
 import './project.css';
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../header/header.js';
 import Sidebar from '../sidebar/sidebar.js';
-import GetUserRole from '../get-user-role.js';
+import { getUserRole } from '../../utils/auth.js';
 import AccountDropdown from '../account-dropdown/account-dropdown.js';
 
 const Layout = ({ children }) => {
@@ -14,12 +14,18 @@ const Layout = ({ children }) => {
     const [dropdownButtonHover, setDropdownButtonHover] = useState(false);
     const [dropdownHover, setDropdownHover] = useState(false);
 
-    // get user role (student, admin etc.)
-    useEffect(() => {
-        const role = GetUserRole();
-        console.log('role header:',role);
-        setUserRole(role);
-    }, []);
+    // get user role (student, admin etc.) when the page loads
+    let role;
+    async function getRole() {
+        try {
+            role = await getUserRole();
+            setUserRole(role);
+            console.log('role header:',role);
+        } catch (error) {
+            console.error('Failed to get user role:', error);
+        }
+    }
+    getRole();
 
     const toggleSidebar = () => {
         if (!showSidebar){

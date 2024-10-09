@@ -1,10 +1,5 @@
-import React, { useEffect, useState } from 'react';
-
-import Cookies from 'js-cookie';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
-import SideBar from './sidebar.js';
-
 import './sidebar.css';
 import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
 
@@ -26,7 +21,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
     const linksByRole = {
         student : [
             { name: "Available Projects", path: "/projects/available"},
-            { name: "Project Preference Form", path: "/projects/preferences" },
+            { name: "Project Preference Form", path: "/project/preferences/submit" },
         ],
         
         client : [
@@ -37,8 +32,11 @@ const Sidebar = ({ userRole, showSidebar }) => {
         
         admin: [
             { name: "Current Projects", path: "/projects/published" },
-            { name: "Projects", path: "/projects/published" },
+            { name: "Projects", path: "/projects/manage" },
             { name: "Project Archive", path: "/projects/archive" },
+            { name: "Manage Semesters", path: "/manage/semester/" },
+            { name: "Your Projects", path: "/projects/view" },
+            { name: "Propose a Project", path: "/projects/submit" },
         ]
     }
 

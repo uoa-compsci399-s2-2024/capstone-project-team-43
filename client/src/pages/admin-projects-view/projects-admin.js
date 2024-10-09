@@ -1,8 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef  } from "react";
 import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../../Api.js';
-import Project from "../../components/project/project.js";
-import lodash from 'lodash';
-import SemesterDropdown from "../../components/semester-dropdown/semester-dropdown.js";
 
 import './projects-admin.css'
 

@@ -31,7 +31,6 @@ import AdminProjectsView from './pages/admin-projects-view/projects-admin.js';
 
 function App() {
 
-  const isLoggedIn = !!localStorage.getItem('authToken')
   const location = useLocation();
 
   return (

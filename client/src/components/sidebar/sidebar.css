@@ -26,6 +26,10 @@
     transform: translate3d(-110%, 0, 0);
 }
 
+.sidebar-button:hover {
+    cursor: pointer;
+}
+
 
 @keyframes slideIn {
     0% {
@@ -104,6 +108,10 @@
 
 .role-link a{
     color: var(--text-color-light);
+}
+
+a:hover {
+    cursor: pointer;
 }
 
 .main-link {

@@ -9,6 +9,7 @@ button {
 
 button:hover{
     background-color: white !important;
+    cursor: pointer;
 } 
 
 .main-button {

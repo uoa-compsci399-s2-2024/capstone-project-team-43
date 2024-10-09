@@ -227,12 +227,12 @@ export async function updateProjectStatus(id, status) {
 
       await connection.query(`USE ${DB_NAME};`);
 
-      await connection.query("UPDATE `project` SET published = 'false' WHERE id = ?", [id]);
+      await connection.query("UPDATE PROJECT SET published = 'false' WHERE id = ?", [id]);
     }
 
     await connection.query(`USE ${DB_NAME};`);
 
-    await connection.query("UPDATE `project` SET status = ? WHERE id = ?", [status, id]);
+    await connection.query("UPDATE PROJECT SET status = ? WHERE id = ?", [status, id]);
 
     console.log("PROJECT STATUS CHANGED");
 
@@ -283,9 +283,9 @@ export async function publishProjects(status) {
     await connection.query(`USE ${DB_NAME};`);
 
     if (status == "false") {
-      await connection.query("UPDATE `project` SET published = ?", [status]);
+      await connection.query("UPDATE PROJECT SET published = ?", [status]);
     } else {
-      await connection.query("UPDATE `project` SET published = ? WHERE status = \"accepted\"", [status]);
+      await connection.query("UPDATE PROJECT SET published = ? WHERE status = \"accepted\"", [status]);
     }
 
   } catch (err) {
@@ -343,12 +343,12 @@ export async function allocateNumbers(approved_projects) {
 
       numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
 
-      await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
+      await connection.query('UPDATE PROJECT SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
     }
 
     console.log(numberIDS);
 
-    await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
+    await connection.query('UPDATE PROJECT SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
 
   } catch (err) {
     if (connection) connection.release();

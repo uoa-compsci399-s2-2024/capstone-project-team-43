@@ -8,7 +8,6 @@ import { jwtDecode } from "jwt-decode";
 import { getUserId } from '../../utils/auth.js';
 
 import './client-projects.css'
-import { data } from 'framer-motion/client';
 
 const ClientProjectsView = () => {
     const [projects, setProjects] = useState([]);

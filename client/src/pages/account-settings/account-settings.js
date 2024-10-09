@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchTeam, fetchUser, updateUserDetails, deleteUser } from '../../Api.js';
-import { getUserID }from '../../utils/auth.js';
+import { getUserID, getUserRole }from '../../utils/auth.js';
 import SignOutButton, { handleSignOut } from '../../components/sign-out-button.js';
 
 import './account-settings.css';
@@ -56,6 +56,7 @@ const AccountDetail = ({ description, data, onEdit, isEditing, onSave, onCancel,
 const AccountSettings = ({ }) => {
     const [userID, setUserID] = useState(null);
     const [user, setUser] = useState(null);
+    const [userRole, setUserRole] = useState(null);
     const [team, setTeam] = useState(null);
     const [editingField, setEditingField] = useState(null);
     const [deleteAccount, setDeleteAccount] = useState(null);
@@ -69,6 +70,13 @@ const AccountSettings = ({ }) => {
         const id = getUserID();
         console.log("user id"+id);
         setUserID(id);
+    }, []);
+
+    useEffect(() => {
+        console.log("getting user role");
+        const role = getUserRole();
+        console.log("user role"+role);
+        setUserRole(userRole);
     }, []);
 
     // Get user data
@@ -100,9 +108,9 @@ const AccountSettings = ({ }) => {
     }, [userID]);
 
     // Show loading screen when fetching data
-    if (!user) {
-        return <div>Loading...</div>;  
-    }
+    // if (!user) {
+    //     return <div>Loading...</div>;  
+    // }
 
     // Handle entering edit mode
     const handleEdit = (field) => {
@@ -145,11 +153,11 @@ const AccountSettings = ({ }) => {
         }
     };
 
-    const isStudent = user.role === 'student'  
+    const isStudent = userRole === 'student';
 
     return(
         <main className='account-settings-page'>
-            <div className='content'>
+            {user && <div className='content'>
                 <h1>Account Settings</h1>
                 <h2>Your Account Details</h2>
                 <div className='content-section'>
@@ -221,7 +229,7 @@ const AccountSettings = ({ }) => {
                             </div>                
                         )}
                         </div>
-                </div>
+                </div>}
         </main>
     );
 }

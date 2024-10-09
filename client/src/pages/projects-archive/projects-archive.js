@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchProjects, fetchSemester } from '../../Api.js';
+import { fetchProjects, fetchSemester, fetchSemesters } from '../../Api.js';
 import Project from "../../components/project/project.js";
 import SemesterDropdown from "../../components/semester-dropdown/semester-dropdown.js";
 import './projects-archive.css';

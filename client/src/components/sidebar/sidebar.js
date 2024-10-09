@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import './sidebar.css';
 import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
@@ -7,6 +7,26 @@ import { fetchSemesters } from '../../Api';
 const Sidebar = ({ userRole, showSidebar }) => {
 
     console.log('user role for sidebar:',userRole);
+
+    
+    const [currentSemester, setCurrentSemester] = useState(null);
+
+        // check if dropdown should be hidden
+        useEffect(() => {
+            const semester = localStorage.getItem('currentSemester');
+                const getSemesters = async () => {
+                    const semesters = await fetchSemesters();
+                    setCurrentSemester(semesters.find(semester => semester.status === 'current'));
+                }
+                getSemesters();
+        }, []);
+
+        //Prevents page rendering until the current semester is fetched
+        if (!currentSemester) {
+            return <div>Loading...</div>;
+        }
+
+    //currentSemester = semesters.find(semester => semester.status === 'current');
 
     const primaryLinks = [
         // { name: "Home", path: "/dashboard" }
@@ -34,8 +54,8 @@ const Sidebar = ({ userRole, showSidebar }) => {
         admin: [
             { name: "Current Projects", path: "/projects/available" },
             { name: "Projects", path: "/projects/manage" },
-            { name: "Project Archive", path: "/projects/archive" },
-            { name: "Manage Semesters", path: "/manage/semester/" },
+            { name: "Project Archive", path: `/projects/archive/${currentSemester.id}` },
+            { name: "Manage Semesters", path: `/manage/semester/${currentSemester.id}` },
             { name: "Your Projects", path: "/projects/view" },
             { name: "Propose a Project", path: "/projects/submit" },
         ]

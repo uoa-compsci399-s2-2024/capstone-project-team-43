@@ -35,9 +35,9 @@ const ClientProjectsView = () => {
     }, []);
 
     const handleclick = () =>{
-        document.getElementById('confirm').style.display = "block";
-        document.getElementById('close').style.display = "block";
-        document.getElementById('edit').style.display = "block";
+        //document.getElementById('confirm').style.display = "block";
+        //document.getElementById('close').style.display = "block";
+        //document.getElementById('edit').style.display = "block";
       };
       const submit =() =>{
         document.getElementById('confirm').style.display = "none";
@@ -45,19 +45,23 @@ const ClientProjectsView = () => {
         document.getElementById('edit').style.display = "none";
     }
 
+    const userProjects = projects.filter(project => project.owner_id === userId);
+
+    console.log("USER PROJECTS: ", userProjects);
+
+
     return(
         <main className="client-projects-view-page">
             <div className='content'>
                 <h1>Your Projects</h1>
                 <div className='projects-container'>
-                    {projects.filter(project => project.owner_id === userId).length === 0 &&
+                    {userProjects.length === 0 && (
                         <p>
                             You haven't submitted any project proposals yet.
                         </p>
-                    }
-                    {(projects.filter(project => project.owner_id === userId).length > 0 &&
-                        projects.map(project => (
-                            (<div onClick={() => handleclick(project)}>
+                    )}
+                    {userProjects.length > 0 && userProjects.map(project => (
+                            <div key={project.id} onClick={() => handleclick(project)}>
                                 <Project 
                                     id={project.id} 
                                     name={project.title} 
@@ -71,9 +75,8 @@ const ClientProjectsView = () => {
                                     teams = {project.max_teams}
                                     number = {project.project_number}
                                 />  
-                            </div>)  
-                        ))
-                    )}                   
+                            </div>
+                    ))}                   
                             {/* <div id="confirm"> */}
                             {/* <PopUp id={project.id} 
                                 name={project.title} 

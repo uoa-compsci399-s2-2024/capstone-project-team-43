@@ -6,6 +6,7 @@ import { projectinfo } from "../../components/sortable_item.js";
 import { fetchUser } from "../../Api.js";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 import './project-proposal.css'
 
@@ -53,11 +54,12 @@ const ProjectProposal = () => {
 
     const getClientID = () => {
         try {
-            const token = localStorage.getItem("authToken");
+            const token = Cookies.get("authToken");
             if (token === "" || token === null || token === "null") {
                 return -1;
             } else {
                 const decoded = jwtDecode(token);
+                console.log(decoded);
                 const id = decoded.userId;
     
                 if (id === null) {
@@ -163,7 +165,7 @@ const ProjectProposal = () => {
                             and must be attended in person.
                         </p>
                         <div className='attendance-confirmation-check'>
-                                <label for="check1" >
+                                <label htmlFor="check1" >
                                     <input className = 'checkbox' type="checkbox" id="check2" value="check" name = "check1" required/>
                                     I confirm that I will be able to attend final presentation in-person.
                                 </label>

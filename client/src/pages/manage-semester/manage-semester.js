@@ -12,20 +12,6 @@ import { downloadAllocation, fetchSemesters } from '../../Api.js';
 // Formats semester data & edit functionality
 const SemesterDetail = ({ description, data='None', onEdit, isEditing, onSave, onCancel }) => {
 
-    let currentSemester;
-
-    const getCurrentSemester = async() =>{
-        const semesters = await fetchSemesters();
-        currentSemester = semesters.find(semester => semester.status === 'current');
-        console.log("Current Semester ", currentSemester);
-        if (window.location.pathname === "/manage/semester/1") {
-            window.location.href = `/manage/semester/${currentSemester.id}`;
-        }
-    }
-
-    getCurrentSemester();
-
-
     const [value, setValue] = useState(data);
     const handleInputChange = (e) => {
         setValue(e.target.value);

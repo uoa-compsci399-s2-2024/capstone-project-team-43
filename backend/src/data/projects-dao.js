@@ -136,6 +136,8 @@ export async function createProject(title, description, owner_id, special_requir
     /** @type {User} */
     const user = await getUser(owner_id);
 
+    console.log("USER: ", user);
+
     const client_name = user.first_name + " " + user.last_name;
     const client_email = user.email;
 

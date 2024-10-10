@@ -481,3 +481,13 @@ export async function deletePreferences(id) {
         throw error;
     }
 };
+
+export async function deleteProject(id) {
+    try {
+        const response = await axios.delete(`http://localhost:3001/api/projects/${id}`);
+        return response.status; 
+    } catch (error) {
+        console.error('Error deleting project:', error);
+        throw error; 
+    }
+};

@@ -21,3 +21,7 @@
 .redirect-to-proposal{
     padding:20px;
 }
+
+#close{
+    display: none;
+}

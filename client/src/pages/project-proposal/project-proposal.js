@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { createProject } from '../../Api.js'
 
-import { projectinfo } from "../../components/sortable_item.js";
+// import { projectinfo } from "../../components/sortable_item.js";
+import { projectinfo } from "../../components/pop-up admin/project-pop-up-admin.js";
 import { fetchUser } from "../../Api.js";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, Link } from 'react-router-dom';
@@ -36,7 +37,14 @@ const ProjectProposal = () => {
 
     const navigate = useNavigate();
 
+
+    
     const handleContinueToForm = (field) => {
+        
+        if(projectinfo !== null){
+            populate();
+        }
+
         if (document.getElementById("check1").checked 
             && document.getElementById("check2").checked) {
             setShowForm(true);
@@ -101,6 +109,39 @@ const ProjectProposal = () => {
         } catch (err) {
             console.log("Error", err);
             }
+        }
+
+        const populate = () => {
+            // Must keep this comment here to fetch projectinfo data
+            console.log(fetchUser(projectinfo.owner_id));
+            console.log(projectinfo)
+    
+            //document.getElementById("clientname").value = projectinfo.project.owner_id;
+            //document.getElementById("clientemail").value = projectinfo.project.owner_id;
+    
+
+            // document.getElementById("otherclientdetails").value = projectinfo.other_client_details;
+            // document.getElementById("projecttitle").value = projectinfo.project.title;
+            // document.getElementById("projectdescription").value = projectinfo.description;
+            // document.getElementById("desiredoutput").value = projectinfo.deliverable;
+            // document.getElementById("specialequipment").value = projectinfo.special_requirements;
+            // document.getElementById("desiredskill").value = projectinfo.preferred_skills;
+            // document.getElementById("teams").value = projectinfo.max_teams;
+            // document.getElementById("availableresources").value = projectinfo.project.available_resources;
+            // project_id = projectinfo.id;
+            //     try {
+            //     if (projectinfo.special_requirements.length > 0) {
+            //         document.getElementById("yes-no-equipment").checked = 1;
+            //     } else {
+            //         document.getElementById("yes-no-equipment").checked = 0;
+            //     }
+            // } catch {
+            //     document.getElementById("yes-no-equipment").checked = 0;
+            // }
+    
+            // const date = projectinfo.expiry.split("T");
+            // document.getElementById("date").value = date[0]; 
+            
         }
 
     return(
@@ -272,6 +313,7 @@ const ProjectProposal = () => {
                 )}
         </main>
     )
+
 }
 
 

@@ -1,7 +1,7 @@
 import React from "react";
 
 import '../App.css';
-
+import './pop-up admin/project-pop-up-admin.css';
 // /api/semesters/
 
 function adminPop(props){
@@ -19,38 +19,38 @@ function adminPop(props){
                     
                     <table>
                         <tr id="top">
-                            <td>{props.number}</td>
-                            <td>{props.name}
+                            <td>{props.project.project_number}</td>
+                            <td>{props.project.title}
         
                             </td>
                         </tr>
                         <tr>
                             <td>Project Description</td>
-                            <td>{props.description}
+                            <td>{props.project.description}
                             
                             </td>
                         </tr>
                         <tr>
                             <td>skills</td>
-                            <td>{props.skills}
+                            <td>{props.project.preferred_skills}
                             
                             </td>
                         </tr>
                         <tr>
                             <td>deliverable</td>
-                            <td>{props.deliverable}
+                            <td>{props.project.deliverable}
                             
                             </td>
                         </tr>
                         <tr>
                             <td>Special requirements</td>
-                            <td>{props.requirements}
+                            <td>{props.project.special_requirements}
                             
                             </td>
                         </tr>
                         <tr>
                             <td>Resources Available</td>
-                            <td>{props.resources}
+                            <td>{props.project.available_resources}
                             
                             </td>
                         </tr>

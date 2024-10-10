@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchProjects, fetchProjectsByUser } from '../../Api.js'
 import Project from "../../components/project/project.js";
+import PopUp from "../../components/pop-up admin/project-pop-up-admin.js";
 import { getUserID } from '../../utils/auth.js';
 import './client-projects.css'
 
@@ -42,10 +43,14 @@ const ClientProjectsView = () => {
     }, []);
 
     const handleclick = () =>{
-        //document.getElementById('confirm').style.display = "block";
-        //document.getElementById('close').style.display = "block";
+        document.getElementById('popup').style.display = "block";
+        document.getElementById('close').style.display = "block";
         //document.getElementById('edit').style.display = "block";
       };
+      const close =() =>{
+        document.getElementById('popup').style.display = "none";
+        document.getElementById('close').style.display = "none";
+    }
       const submit =() =>{
         document.getElementById('confirm').style.display = "none";
         document.getElementById('close').style.display = "none";
@@ -68,28 +73,21 @@ const ClientProjectsView = () => {
                         </p>
                     )}
                     {userProjects.length > 0 && userProjects.map(project => (
-                            <div key={project.id} onClick={() => handleclick(project)}>
+                            <div key={project.id} onClick={() => handleclick()}>
                                 <Project 
                                     view = 'client'
                                     name={project.title} 
                                     description={project.description}
                                     number = {project.project_number}
                                 />  
+                                {/* <div id="confirm"> */}
+                            <PopUp project= {project} />
+                           
                             </div>
-                    ))}                   
-                            {/* <div id="confirm"> */}
-                            {/* <PopUp id={project.id} 
-                                name={project.title} 
-                                description={project.description}
-                                requirements = {project.special_requirements}
-                                resources = {project.resources}
-                                skills = {project.preferred_skills}
-                                deliverable = {project.project_deliverable}
-                                created = {project.created}
-                                expiry= {project.expiry}
-                                teams = {project.max_teams}
-                                number = {project.project_number}
-                            /> */}
+                            
+                    ))}
+                     <button id="close" onClick={close}>&times;</button>                   
+                            
                 </div>
                 <div className='redirect-to-proposal'>
                     <Link to='/projects/submit'>

@@ -2,7 +2,7 @@ import React from "react";
 import { useSortable, PointerEvent } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Project from './project/project.js'
-import PopUp from "../components/project-pop-up-admin.js";
+import PopUp from "./pop-up admin/project-pop-up-admin.js";
 import { useNavigate } from "react-router-dom";
 
 export let projectinfo = null;
@@ -28,7 +28,7 @@ export function Item(props) {
     projectinfo = (id[0]);
     Navigate('/pages/project-proposal');
   };
-
+ 
       const submit =() =>{
         document.getElementById('confirm').style.display = "none";
         document.getElementById('close').style.display = "none";
@@ -54,7 +54,7 @@ return (
   {/* <button >read</button> */}
      <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry} number={project.project.project_number}/>
      <div id="confirm">
-
+{/* 
           <PopUp id={project.project.id} 
           name={project.project.title} 
           description={project.project.description}
@@ -67,7 +67,7 @@ return (
           expiry= {project.project.expiry}
           teams = {project.project.max_teams}
           number = {project.project.project_number}
-          />
+          /> */}
           </div>
           <button id="close" onClick={submit}>&times;</button>
           {/* <button id="edit" onClick={edit}>Edit</button> */}

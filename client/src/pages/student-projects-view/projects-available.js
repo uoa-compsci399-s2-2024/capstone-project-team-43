@@ -21,16 +21,16 @@ const ProjectsAvailable = () => {
     }, []);
 
 
-      const handleclick = () =>{
-        document.getElementById('confirm').style.display = "block";
-        document.getElementById('close').style.display = "block";
-        // document.getElementById('edit').style.display = "block";
+      const handleclick = (project) =>{
+        document.getElementById('popup').style.display = "block";
+        document.getElementById('close').style.display = "block";       
       };
 
-      const submit =() =>{
-        document.getElementById('confirm').style.display = "none";
+
+
+      const close =() =>{
+        document.getElementById('popup').style.display = "none";
         document.getElementById('close').style.display = "none";
-        // document.getElementById('edit').style.display = "none";
     }
 
       
@@ -46,31 +46,17 @@ const ProjectsAvailable = () => {
                     }
                     {projects.filter(project => project.published === 'true' && project.semester_id === 1).length > 0 && 
                     projects.map(project => (
-                        <div key={project.id} onClick={() => handleclick(project)}>
+                        <div key={project.id} onClick={() => handleclick(project)} id="projectDisplay">
+                           
                             <Project 
                                 view='student'
                                 number={project.number} 
                                 name={project.title} 
                                 description={project.description}
                             />
-                            <div id="confirm">
-                                <PopUp 
-                                    id={project.id} 
-                                    name={project.title} 
-                                    description={project.description}
-                                    requirements={project.special_requirements}
-                                    resources={project.resources}
-                                    skills={project.preferred_skills}
-                                    deliverable={project.project_deliverable}
-                                    created={project.created}
-                                    teams={project.max_num_of_groups}
-                                    number={project.project_number}
-                                />
-                            </div>
+                             <PopUp project = {project}/>
                         </div>))}
-
-                
-                    {/* <button id="close" onClick={submit}>&times;</button> */}
+                        <button id="close" onClick={close}>&times;</button>
                 </div>
             </div>
         </main>    

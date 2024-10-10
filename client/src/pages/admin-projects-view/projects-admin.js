@@ -18,7 +18,7 @@ import {
   import Container from '../../components/container.js';
   import {Item} from '../../components/sortable_item.js';
   import Header from "../../components/admin-semester-header.js";
-  import PopUp from "../../components/project-pop-up-admin.js";
+  import PopUp from "../../components/pop-up admin/project-pop-up-admin.js";
 
 const AdminProjectsView = () => {
   const [semesters, setSemesters] = useState([]);

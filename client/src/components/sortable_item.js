@@ -9,19 +9,7 @@ export let projectinfo = null;
 
 export function Item(props) {
   const { id } = props;
-
-  const style = {
-    width: "100%",
-    height: 50,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    border: "none",
-    borderRadius: "5px",
-    margin: "10px 0",
-    background: "white",
-    position: "absolute"
-  };
+  console.log('in Item');
 
   const Navigate = useNavigate();
   const handleclick = () =>{
@@ -41,6 +29,8 @@ export function Item(props) {
 
 const i = props.project;
 
+console.log('project:',i);
+
 return (
  
     <div className="sortable">
@@ -52,7 +42,7 @@ return (
       
  (<div onClick={handleclick}>
   {/* <button >read</button> */}
-     <Project id={project.id} name={project.name} description={project.description} expiry={project.expiry} number={project.project.project_number}/>
+     <Project projectId={project.id} view='admin'/>
      <div id="confirm">
 {/* 
           <PopUp id={project.project.id} 

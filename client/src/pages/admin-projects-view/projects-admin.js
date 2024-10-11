@@ -21,37 +21,25 @@ import {
   import PopUp from "../../components/pop-up admin/project-pop-up-admin.js";
 
 const AdminProjectsView = () => {
-  const [semesters, setSemesters] = useState([]);
 
-  // get data on all semesters
+  const [projects, setProjects] = useState([]);
+
+
+  // get projects
   useEffect(() => {
-      async function getSemesters() {
+      async function getProjects() {
           try {
-              const data = await fetchSemesters();
-              setSemesters(data);
+            console.log('fetching all projects for sorting page:');
+            const data = await fetchProjects();
+            setProjects(data);
+            console.log('fetched projects:',data);
+
           } catch (error) {
-              console.error('Failed to load semesters:', error);
+            console.error('Failed to load projects:', error);
           }
-      }
-      getSemesters();
+      };
+      getProjects();
   }, []);
-
-    const [projects, setProjects] = useState([]);
-
-
-    // get projects
-    useEffect(() => {
-        async function getProjects() {
-            try {
-                const data = await fetchProjects();
-                setProjects(data);
-
-            } catch (error) {
-                console.error('Failed to load projects:', error);
-            }
-        };
-        getProjects();
-    }, []);
 
 
       //Rejected projects
@@ -153,7 +141,11 @@ const AdminProjectsView = () => {
 
     return(
         <main className="projects-admin-page">
-          <h1>Manage Projects</h1>
+          <div className="admin-content">
+          <div className="admin-page-heading">
+            <h1>Manage Projects</h1>
+          </div>
+          <div className="admin-page-content">
           <div className="container-headers">
             <div><h2>Rejected</h2></div>
             <div><h2>Unsorted</h2></div>
@@ -167,11 +159,11 @@ const AdminProjectsView = () => {
                 }} id="publish">Publish</button>
             </div>
           </div>
-            <div className="content">
+          {/* <div className="content"> */}
               {/* <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/> */}
               {/* <button onClick={load} id="load">Load all</button> */}
               
-          <div id="sorting">
+          <div className='project-sorting-wrapper' id="sorting">
           <DndContext
           sensors={sensors}
           collisionDetection={rectIntersection}
@@ -179,54 +171,13 @@ const AdminProjectsView = () => {
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
         >
-          <div className='container rejected-container' id="left">
-              {/* <h2>Rejected</h2> */}
-              {/* List rejected projects
-              <ul>
-                  {projects
-                  .filter(project => project.status === 'rejected')
-                  .map(project => (
-                      // <li key={project.id}>
-                      //     <h2>{project.title}</h2>
-                      //     <p>{project.description}</p>
-                      // </li>
-                      <Project id={project.id} name={project.title} description={project.description} />
-                  ))}
-              </ul> */}
+          <div className='sort-container rejected-container' id="left">
               <Container id="rejected" items={items.rejected} />
           </div>
-          <div className='container unsorted-container' id="center">
-              {/* <h2>Unsorted</h2> */}
-              {/* List unsorted projects */}
-              {/* <ul>
-                  {projects
-                  .filter(project => project.status === 'pending')
-                  .map(project => (
-                      // <li key={project.id}>
-                      //     <h2>{project.title}</h2>
-                      //     <p>{project.description}</p>
-                      // </li>
-                      <Project id={project.id} name={project.title} description={project.description} />
-                  ))}
-                      
-              </ul> */}
+          <div className='sort-container unsorted-container' id="center">
               <Container id="unsorted" items={items.unsorted} />
           </div>
-          <div id='right' className='container unsorted-container'>
-              {/* <h2>Approved</h2> */}
-
-              {/* List approved projects */}
-              {/* <ul>
-                  {projects
-                  .filter(project => project.status === 'accepted')
-                  .map(project => (
-                      // <li key={project.id}>
-                      //     <h2>{project.title}</h2>
-                      //     <p>{project.description}</p>
-                      // </li>
-                      <Project id={project.id} name={project.title} description={project.description} />
-                  ))}
-              </ul> */}
+          <div className='sort-container accepted-container' id='right'>
               <Container id="approved" items={items.approved} />
               <div id="publishing">
           </div>
@@ -234,8 +185,9 @@ const AdminProjectsView = () => {
           <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
           </DndContext>
           </div>
-
+          </div>
         </div>
+
     </main>);
 
     function findContainer(id) {

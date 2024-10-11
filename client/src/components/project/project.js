@@ -1,58 +1,80 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 
 import './project.css';
+import { fetchProjectById } from "../../Api";
 
-const Project = ({ view, number, name, description, status, expiry }) => {
+const Project = ({ projectId, view  }) => {
+    const [project, setProject] = useState(null);
     let today = new Date();
     let formatDate = today.toISOString();
     let available = "Unavailable";
 
-    if(formatDate < expiry){
-        available = "Available"
-    }
+    // fetch project data 
+    useEffect(() => {
+        async function getProjectById(projectId) {
+            try {
+                console.log('fetching project with id',projectId);
+                const data = await fetchProjectById(projectId);
+                setProject(data);
+                console.log('Fetched Project:'+ data);
+            } catch (error) {
+                console.error('Failed to load project:', error);
+            }
+        }
+        getProjectById(projectId);
+    }, []);
+
+    // if(formatDate < project.expiry){
+    //     available = "Available"
+    // }
 
     return(
         <div className={`project-container ${view}`}>
-            {view==='client' &&
+            {(project && view==='client') &&
             <div className="project-content">
                 <div className="project-header">
-                    <h2>{name}</h2>
+                    <h2>{project.title}</h2>
                 </div>
                 <div className="project-info">
-                    <p>{description}</p>
+                    <p>{project.description}</p>
                 </div>
             </div>}
 
-            {view==='student' &&
+            {(project && view==='student') &&
             <div className="project-content">
                 <div className="project-number">
-                        <p>Project {number}</p>
+                        <p>Project {project.number}</p>
                 </div>
                 <div className="project-name">
-                    <p>{name}</p>
+                    <p>{project.title}</p>
                 </div>
                 <div className="project-description">
-                    <p>Description: {description}</p>
+                    <p>Description: {project.description}</p>
                 </div>
             </div>}
             
-            {view==='admin' &&
+            {(project && view==='admin') &&
             <div className="project-content">
-                <div className="name">
-                    <p>{name}</p>
+                <div className="project-header">
+                    <p>{project.title}</p>
                 </div>
-                <div className="desc-box">
-                    <div className="desc-container">
-                        <div className="desc-text">
-                            {description}
+                <div className="project-info">
+                    {project.description && <div className="desc-box">
+                        <div className="desc-container">
+                            <h3>Description</h3>
+                            <div className="desc-text">
+                                <p>{project.description}</p>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="status">
-                    {status}
-                </div>
-                <div className="availability">
-                {available}
+                    </div>}
+                    {project.deliverable && <div className="deliverable-box">
+                        <div className="deliverable-container">
+                            <h3>Deliverable</h3>
+                            <div className="deliverable-text">
+                                <p>{project.deliverable}</p>
+                            </div>
+                        </div>
+                    </div>}
                 </div>
             </div>}                
         </div>

@@ -491,3 +491,25 @@ export async function deleteProject(id) {
         throw error; 
     }
 };
+
+/**
+ * Fetches a project from the server by ID
+ * 
+ * @async
+ * @function fetchProjectById
+ * @param {number} [projectId] 
+ * @returns {Promise<Project[]>} A promise that resolves to an array of project objects.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchProjectById(projectId) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/projects/${projectId}`);
+        console.log('project fetched:',response[0])
+        return await response.json();
+    } catch (error) {
+        console.error('Error deleting project:', error);
+        throw error; 
+    }   
+};

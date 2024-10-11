@@ -90,9 +90,9 @@ INSERT INTO PROJECT
 VALUES 
     ('testproj1','An amazing web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','2','accepted','3','43', 'false', '2025-08-01', 'john', 'john@gmail.com'),
     ('testproj2','A bad web solution!','1', NULL, NULL, NULL, NULL, NULL, '2024-08-01','1','rejected','3','43', 'false', '2025-09-01', 'john', 'john@gmail.com'),
-    ('testproj3','Maybe an amazing web solution!','1', NULL, NULL, 'Some knowledge on maths and stats would be good', NULL, NULL, '2024-08-01','4','pending','3','43', 'false', '2026-10-01', 'john', 'john@gmail.com'),
+    ('testproj3','Maybe an amazing web solution!','6', NULL, NULL, 'Some knowledge on maths and stats would be good', NULL, NULL, '2024-08-01','4','pending','3','43', 'false', '2026-10-01', 'john', 'john@gmail.com'),
     ('Performance enhancement of a Julia Monte Carlo code for melting simulations','Performance improvement of our Julia code (serial version) to achieve comparable efficiency as we had for the
-Fortran version. A plus would be to have a parallel version of the code that runs on NeSIs supercomputer','1', NULL, 'Needed skills can be acquired during the project; any prior experience with GitHub, Visual Studio Code, Julia
+Fortran version. A plus would be to have a parallel version of the code that runs on NeSIs supercomputer','6', NULL, 'Needed skills can be acquired during the project; any prior experience with GitHub, Visual Studio Code, Julia
 programming language or supercomputers is helpful but not a prerequisite', NULL, 'Julia documentation: https://docs.julialang.org/en/v1/
 Julia tutorials: https://julialang.org/learning/tutorials/
 Monte Carlo melting code: https://github.com/ElkePahl/ParallelTemperingMonteCarlo.jl', NULL, '2024-08-01','6','pending','3','43', 'false', '2026-10-01', 'john', 'john@gmail.com'),
@@ -148,9 +148,8 @@ INSERT INTO USER  (role, email, password, first_name, last_name, team_id, compan
 VALUES 
     ('student', 'student@gmail.com', '$2b$10$NV6/DbSVhVwXwuT2uu1vmO4IaGYKvrn6/thoHnPAgmSM/WrwZWqam', 'fname1', 'lname1', 1, NULL),
     ('admin', 'admin@gmail.com', '$2b$10$l8GwZZ3c/PB2Oq2m82RdT.jdUJXVgrvUBxTV3pxF3WzZriEWPms2.', 'fname2', 'lname2', NULL, NULL),
-    ('client', 'client@gmail.com', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'fname3', 'lname3', NULL, 'testcompany'),
-    ('admin', 'mcow145@aucklanduni.ac.nz', '', 'melissa', 'cowie', NULL, NULL);
-
+    ('client', 'client@gmail.com', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'fname3', 'lname3', NULL, 'testcompany');
+  
 INSERT INTO TEAM 
     (team_number, team_name, semester_id)
 VALUES 

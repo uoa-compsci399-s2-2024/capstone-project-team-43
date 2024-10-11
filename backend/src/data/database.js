@@ -15,6 +15,8 @@ const pool = mysql.createPool({
 // Gets the database name and script path from .env file
 const DB_NAME = process.env.DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
+const DEV_EMAIL = process.env.DEV_EMAIL;
+const TESTING = process.env.TESTING;
 
 // Initializes the database, if no such database exists, it calls the create database function
 async function initializeDatabase() {
@@ -27,9 +29,14 @@ async function initializeDatabase() {
     // Check if the database exists
     const [rows] = await connection.query(`SHOW DATABASES LIKE '${DB_NAME}';`);
     if (rows.length === 0) {
-      console.log(`Database ${DB_NAME} does not exist.`);
+      console.log(`Database ${DB_NAME} does not exist`);
 
       // Database doesn't exist so it calls a function to create one
+      await createDatabase();
+
+    } else if (TESTING) {
+      console.log(`TESTING is true, deleting and recreating database`);
+      await connection.query(`DROP DATABASE ${DB_NAME};`);
       await createDatabase();
 
     } else {
@@ -63,11 +70,24 @@ async function createDatabase() {
       if (err) throw err;
       console.log(data);
     });
-
+      
     // Runs query, if query fails, returns error
     try {
       await connection.query(createTablesQuery);
+
+      if (TESTING) {
+        try {
+          await connection.query(`INSERT INTO USER (role, email, password, first_name, last_name, team_id, company) VALUES 
+              ('admin', '${DEV_EMAIL}', '$2b$10$l8GwZZ3c/PB2Oq2m82RdT.jdUJXVgrvUBxTV3pxF3WzZriEWPms2.', 'Firstname', 'Lastname', NULL, NULL),
+              ('student', '${DEV_EMAIL}', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'Firstname', 'Lastname',  NULL, NULL),
+              ('client', '${DEV_EMAIL}', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'Firstname', 'Lastname',  NULL, 'CompanyTest');`
+            );
+        } catch (err){
+          console.log('Error adding DEV users to database:',err);
+        };
+      };
       console.log('Tables/Data inserted successfully');
+
     } catch (err) {
       console.error('Error initializing database: ', err.message);
     }

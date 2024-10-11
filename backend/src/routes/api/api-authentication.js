@@ -14,6 +14,8 @@ dotenv.config();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
+const DEV_EMAIL = process.env.DEV_EMAIL;
+const DEV_USER_ROLE = process.env.DEV_USER_ROLE;
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -227,10 +229,10 @@ router.get('/google/callback', async (req, res) => {
         // Checks if the user exists in the database, if so it returns the role, if not returns null
         let user_role = await findUser(email);
 
-        let DEVAuthorizedUsers = ['eblu301@aucklanduni.ac.nz']; // **MUST REMOVE BEFORE DEPLOYMENT ***
+        let DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
         if (email.includes(DEVAuthorizedUsers)) {
-            console.log("DEV logging in, authorizing access, role: ", role);
-            user_role = role;
+            user_role = DEV_USER_ROLE;
+            console.log("DEV logging in, authorizing access, role: ", user_role);
         }
 
         let token = null
@@ -320,7 +322,7 @@ router.get("/role", async (req, res) => {
 
         const db_role = await findUser(user.email);
 
-        let DEVAuthorizedUsers = ['eblu301@aucklanduni.ac.nz']; // **MUST REMOVE BEFORE DEPLOYMENT ***
+        let DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
         if (user.email.includes(DEVAuthorizedUsers)) {
             console.log("DEV checking role, authorizing access with role: ", user.role);
             return res.status(200).json({ role: user.role });

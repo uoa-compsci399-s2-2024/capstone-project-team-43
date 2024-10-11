@@ -7,6 +7,9 @@ dotenv.config();
 
 // Gets the database name from .env file
 const DB_NAME = process.env.DB_NAME;
+const DEV_EMAIL = process.env.DEV_EMAIL;
+const DEV_USER_ROLE = process.env.DEV_USER_ROLE;
+const TESTING = process.env.TESTING;
 
 const saltRounds = 10; // Typically a value between 10 and 12
 
@@ -37,10 +40,12 @@ export async function generateToken(email, password, googleAuth, role = null) {
     return null;
   }
 
-  let DEVAuthorizedUsers = ['eblu301@aucklanduni.ac.nz']; // **MUST REMOVE BEFORE DEPLOYMENT ***
+  const DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
   if (user.email.includes(DEVAuthorizedUsers)) {
-      console.log("DEV giving token with role: ", role);
-        // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
+      role = DEV_USER_ROLE;
+      console.log("DEV givin token with role: ", role);
+      
+      // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
   const token = jwt.sign(
     {
       time: Date.now(),
@@ -81,7 +86,12 @@ async function validateUser(email, password, googleAuth) {
     await connection.query(`USE ${DB_NAME};`);
 
     // Checking if email is in the database
-    let [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+    let [rows]=[];
+    if (TESTING) {
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND role = ?', [email, DEV_USER_ROLE]);
+    } else {
+      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
+    }
 
     // If there is a connection, release it
     if (connection) connection.release();

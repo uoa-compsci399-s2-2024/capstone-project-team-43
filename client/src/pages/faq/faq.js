@@ -6,8 +6,10 @@ const Faq = () =>{
     return(
         <main id="faq" className="faq-page">
             <div className="content">
-            <h1>Frequently Asked Questions</h1>
-
+                <div className="page-heading">
+                    <h1>Frequently Asked Questions</h1>
+                </div>
+                <div className="page-content">
             <div className="faq-section">
                 <h3>I forgot my password. How can I reset it?</h3>
                 <p>You can reset your password by clicking on the "Forgot Password" link on the login page. 
@@ -112,6 +114,7 @@ const Faq = () =>{
                 <p>
                     The project allocations will be uploaded to canvas by the lecturers after they are looked over and approved.
                 </p>
+            </div>
             </div>
         </div>
     </main>

@@ -65,7 +65,10 @@ const ClientProjectsView = () => {
     return(
         <main className="client-projects-view-page">
             <div className='content'>
-                <h1>Your Projects</h1>
+                <div className='page-heading'>
+                    <h1>Your Projects</h1>
+                </div>
+                <div className='page-content'>
                 <div className='projects-container'>
                     {userProjects.length === 0 && (
                         <p>
@@ -93,6 +96,7 @@ const ClientProjectsView = () => {
                     <Link to='/projects/submit'>
                         <span>Go to Project Proposal Form</span>
                     </Link>
+                </div>
                 </div>
             </div> 
         </main>  

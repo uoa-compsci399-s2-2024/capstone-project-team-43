@@ -64,16 +64,15 @@ const ProjectsArchive = () => {
     return(
         <main className="projects-archive">
             {semester && <div className='content'>
-                <div className='page-header'>
+                <div className='page-heading'>
                     <div className='semester-heading'>
-                        {semester && <h1>{semester.name}</h1>}
+                        {semester && <h1>Project Archive</h1>}
                         {/* update semesterID when dropdown button is selected */}
                         <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['current','upcoming']} />
                     </div>
-                    <h2>Project Archive</h2>
-
-                </div> 
-                <div className = 'content display-projects'>
+                    <h2 className='page-subheading'>{semester.name}</h2>
+                </div>
+                <div className = 'page-content display-projects'>
                     {/* display projects from semester */}
                     <div id="archivedProjects">
                         {archivedProjects.length > 0 ? (

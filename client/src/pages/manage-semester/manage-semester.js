@@ -278,12 +278,15 @@ const ManageSemester = () => {
     return (
         <main className='manage-semester-page'>
             {semester && <div className='content'>
-                <div className='semester-heading'>
-                    {semester && <h1>{semester.name}</h1>}
-                    {/* update semesterID when dropdown button is selected */}
-                    <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['retired']} />
+                <div className='page-heading'>
+                    <div className='semester-heading'>
+                        {semester && <h1>Manage {semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h1>}
+                        {/* update semesterID when dropdown button is selected */}
+                        <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['retired']} />
+                    </div>
+                    <h2 className='page-subheading'>{semester.name}</h2>
                 </div>
-                <h2 className='subheading'>Manage {semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h2>
+                <div className='page-content'>
                 <div className='content-section'>
                     <h2>Semester Timeframe</h2>
                     <p className='text-detail'>View and edit the semester dates</p>
@@ -391,6 +394,7 @@ const ManageSemester = () => {
                             <SemesterCSVUpload semesterID={semesterID} fileContent='teams' />
                             </div>
                         )}
+                </div>
                 </div>
             </div>}
         </main>

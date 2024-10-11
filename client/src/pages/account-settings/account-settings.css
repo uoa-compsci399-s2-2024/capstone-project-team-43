@@ -23,6 +23,12 @@
     align-items: center;
 }
 
-.account-settings-page .content{
-    max-width: 60%;
+/* .account-settings-page .content{
+    max-width: 0%;
+} */
+
+.account-detail{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

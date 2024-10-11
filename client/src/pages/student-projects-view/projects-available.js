@@ -37,7 +37,10 @@ const ProjectsAvailable = () => {
     return(
         <main className="students-projects-view-page">
             <div className='content'>
-                <h1>Available Projects</h1>
+                <div className='page-heading'>
+                    <h1>Available Projects</h1>
+                </div>
+                <div className='page-content'>
                 <div className='projects-container'>
                     {projects.filter(project => project.published === 'true' && project.semester_id === 1).length === 0 && 
                         <p>
@@ -57,6 +60,7 @@ const ProjectsAvailable = () => {
                              <PopUp project = {project}/>
                         </div>))}
                         <button id="close" onClick={close}>&times;</button>
+                </div>
                 </div>
             </div>
         </main>    

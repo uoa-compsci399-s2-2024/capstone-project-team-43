@@ -5,7 +5,7 @@
 .faq-page h2{
     font-size: 25px;
     margin-bottom: -3vh;
-    margin-top: 5vh;
+    margin-top: 1vh;
 }
 
 
@@ -14,15 +14,10 @@
 }
 
 .faq-section{
+    max-width: 100%;
     padding: 20px;
     display: flex;
     flex-direction: column;
     text-align: left;
     background-color: var(--transparent);
-    margin: 4vh;
-}
-
-.faq-page .content{
-    width: 60%;
-
 }

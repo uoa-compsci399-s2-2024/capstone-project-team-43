@@ -147,8 +147,10 @@ const ProjectProposal = () => {
     return(
             <main className="project-proposal-page">
                 <div className="content">
-                    <h1>Project Proposal Form</h1>
-                    {(!showForm && !showSuccessMessage)&& <div className="content-section form-content form-intro">
+                    <div className='page-heading'>
+                        <h1>Project Proposal Form</h1>
+                    </div>
+                    {(!showForm && !showSuccessMessage)&& <div className="page-content form-content form-intro">
                         <p>Please complete this form if you wish to propose a 
                             project for the COMPSCI 399 Capstone Course.
                         </p>
@@ -216,18 +218,20 @@ const ProjectProposal = () => {
                                 </label>
                         </div>
                         {showAttendanceConfirmation && <div className='pop-up attendance-confirmation' id="pop">
+                            <div className="pop-up-header">
+                                <div className='quit-button-container'>
+                                    <button className = 'quit-button' onClick={closeAttendanceConfirmation}></button>
+                                </div>
+                            </div>
                             <p className="pop-up-text">
                                 Please confirm meeting attendance and final presentation attendance before continuing to the project proposal form.
                             </p>
-                            <div className="pop-up-header">
-                                <button className = 'quit-button' onClick={closeAttendanceConfirmation}></button>
-                            </div>
                         </div>}
                     <button onClick={handleContinueToForm} className='main-button'>Continue to Project Proposal Form</button>
                     </div>}
             </div>
             
-            {showForm && <form onSubmit={submit} className="content-section form-content form-fill" id="proposalForm">
+            {showForm && <form onSubmit={submit} className="page-content form-content form-fill" id="proposalForm">
                     <label>
                         <h2>1. Other Clients' Details</h2>
                         <p>If there is anyone else involved in the project, please provide their names and emails</p>

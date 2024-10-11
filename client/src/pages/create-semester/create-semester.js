@@ -37,8 +37,10 @@ const CreateSemester = () =>{
 
     return(
         <main id="create-semester-page" className="create-semester-page">
-            <h1>Create a New Semester</h1>
-            <form className="content-section form-content form-fill" id="proposalForm">
+            <div className="page-heading">
+                <h1>Create a New Semester</h1>
+            </div>
+            <form className="page-content content-section form-content form-fill" id="proposalForm">
                     <label className="form-section">
                         <h2>1. Semester Dates</h2>
                         <p>Enter the start and end date of the semester </p>

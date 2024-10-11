@@ -1,3 +1,43 @@
+
+.content{
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    height: 100%;
+    flex-grow: 1;
+}
+  
+.page-content{
+    flex-grow: 1;
+    min-width: 50vw;
+    max-width: 40vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 10vh;
+    align-items: center;
+    gap: 6vh;
+}
+  
+.page-heading{
+    margin-top: 4vh;
+    padding-bottom: 5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+}
+.page-subheading{
+    margin-top: auto;
+    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
 /* BUTTONS */
 
 button {
@@ -37,15 +77,17 @@ button:hover{
 
 .pop-up {
     border-radius: 5px;
-    padding: 15px;
     margin: 15px 0px 0px 0px;
     background-color: rgba(255, 255, 255, 0.45);
     width: 70%;
     margin: 10px;
     margin-left: 15%;
+    display: flex;
+    flex-direction: column;
 }
 
 .pop-up p{
+    padding: 20px;
     font-size: 13px;
     font-weight: 400;
 }
@@ -76,17 +118,33 @@ button:hover{
     color: white;
 }
 
+.quit-button-container{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin-top: 1vh;
+    margin-right: 1vh;
+    width: 20px; 
+    height: 20px;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    background-color: inherit !important;
+}
+
 .quit-button{
     background-image: url('./media/quit-icon.png');
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     background-color: inherit; 
-    width: 15px; 
-    height: 15px;
+    min-width: 100%;
+    padding: 0px !important;
+    margin: 0px !important;
+    /* min-height: 100%; */
     border: none;
     cursor: pointer;
-    box-sizing: content-box;
+    box-sizing: border-box;
     background-color: inherit !important;
 }
 

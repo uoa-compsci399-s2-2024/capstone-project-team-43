@@ -1,3 +1,6 @@
+
 .contact-page .content-section p{
     font-size: 16px !important;
+    min-width: 100%;
+    text-align: center;
 }

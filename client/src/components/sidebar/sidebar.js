@@ -56,6 +56,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
             { name: "Projects", path: "/projects/manage" },
             { name: "Project Archive", path: `/projects/archive/${currentSemester.id}` },
             { name: "Manage Semesters", path: `/manage/semester/${currentSemester.id}` },
+            { name: "Create Semester", path: "/create/semester "},
             { name: "Your Projects", path: "/projects/view" },
             { name: "Propose a Project", path: "/projects/submit" },
         ]

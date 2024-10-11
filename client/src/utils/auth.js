@@ -110,7 +110,7 @@ export const checkPath = async () => {
         } else {
             const decoded = jwtDecode(token);
             const role = decoded.role;
-            const defaultPaths = ["/contact", "/about", "/faq", "/dashboard"];
+            const defaultPaths = ["/contact", "/about", "/faq", "/dashboard", "/account/settings"];
 
             if (role === "student") {
                 const authorizedPaths = ["/projects/available", "/project/preferences/submit"];
@@ -122,7 +122,7 @@ export const checkPath = async () => {
 
             } else if (role === "client") {
 
-                const authorizedPaths = ["/projects/view", "/projects/submit", "/account/settings"];
+                const authorizedPaths = ["/projects/view", "/projects/submit"];
                 if (!authorizedPaths.includes(window.location.pathname) && !defaultPaths.includes(window.location.pathname)) {
                     window.location.pathname = '/projects/view';
                 }

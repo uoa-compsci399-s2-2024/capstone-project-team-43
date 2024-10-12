@@ -5,22 +5,21 @@
     margin-top: -1vh;
     margin-bottom: 2vh;
     font-family: var(--theme-font);
-    font-size: 60px;
-    color: white;
+    font-size: calc(2.5vw + 4vh);
     font-weight: 600;
 }
 
 .landing-header{
-    padding: 5px;
-    padding-top: 3.5vh;
+    padding: 3.5vh;
+    /* padding-top: 3.5vh; */
     text-align: center;
     z-index: 10;
+    width: 100%;
 }
 
 .landing-header h2{
-    font-size: 18px;
-    color: white;
-    margin-top: -4vh;
+    font-size: calc(0.8vw + 1.5vh);
+    margin-top: -3vh;
     margin-bottom: -2vh;
 }
 

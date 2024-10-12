@@ -13,6 +13,8 @@ const ProjectsArchive = () => {
 
     const [semester, setSemester] = useState(null);
     const [projects, setProjects] = useState([]);
+    const [expandedProjects, setExpandedProjects] = useState({});
+
 
     // Get the semester from server 
     useEffect(() => {
@@ -58,6 +60,10 @@ const ProjectsArchive = () => {
         navigate(`/projects/archive/${selectedSemesterID}`, { replace: true }); 
     };
 
+    const expandProject = (projectId) => {
+        setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
+    }
+
     // projects for the given semester
     const archivedProjects = projects.filter(project => project.semester_id === semesterID);
 
@@ -77,12 +83,14 @@ const ProjectsArchive = () => {
                     <div id="archivedProjects">
                         {archivedProjects.length > 0 ? (
                             archivedProjects.map(project => (
-                                <Project 
-                                    view = 'admin'
-                                    number={project.number} 
-                                    name={project.title} 
-                                    description={project.description} 
-                                />
+                                <div key={project.id} onClick={() => expandProject(project.id)}>
+                                    <Project className = 'project'
+                                        view='admin'
+                                        projectId={project.id}
+                                        expanded={expandedProjects[project.id]}
+                                        expandProject = {expandProject}
+                                    />
+                                </div>
                             ))
                         ) : (
                             <p>No projects have been archived for this semester.</p>

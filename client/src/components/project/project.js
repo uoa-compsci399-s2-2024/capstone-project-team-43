@@ -3,10 +3,9 @@ import React,{ useState, useEffect, useRef } from "react";
 import './project.css';
 import { fetchProjectById } from "../../Api";
 
-const Project = ({ projectId, view, expanded, expandProject  }) => {
+const Project = ({ projectId, view, expanded=false, expandProject=null  }) => {
     const [project, setProject] = useState(null);
     const [projectButtons, setProjectButtons] = useState(false);
-
     const isStudent = view ==='student';
     const isAdmin = view ==='admin';
     const isClient = view ==='client';
@@ -48,7 +47,7 @@ const Project = ({ projectId, view, expanded, expandProject  }) => {
             ref={projectRef}
             onMouseEnter={showProjectButtons} 
             onMouseLeave = {hideProjectButtons} 
-            className={`project-container ${expanded ? 'expanded':'collapsed'} ${view}`}
+            className={`project-container ${expanded ? 'expanded':'collapsed'}`}
             >
             {project &&
             <div className="project-content">

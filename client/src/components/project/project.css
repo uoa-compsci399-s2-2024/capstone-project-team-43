@@ -63,7 +63,7 @@
     /* mask-image: linear-gradient(to bottom, black 50%, transparent 100%);   */
 }
 
-.collapsed.project-data{
+.collapsed .project-data{
     -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 

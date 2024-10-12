@@ -23,6 +23,11 @@ import {
 const AdminProjectsView = () => {
 
   const [projects, setProjects] = useState([]);
+  const [expandedProjects, setExpandedProjects] = useState({});
+
+  const expandProject = (projectId) => {
+    setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
+  }
 
 
   // get projects
@@ -47,7 +52,6 @@ const AdminProjectsView = () => {
 
       projects
       .filter(project => project.status === 'rejected')
-      .filter(project => project.semester_id === 1)
       .map(project => (
         rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -58,7 +62,6 @@ const AdminProjectsView = () => {
 
       projects
       .filter(project => project.status === 'pending')
-      .filter(project => project.semester_id === 1)
       .map(project => (
         unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -69,7 +72,6 @@ const AdminProjectsView = () => {
 
       projects
       .filter(project => project.status === 'accepted')
-      .filter(project => project.semester_id === 1)
       .map(project => (
         approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -152,7 +154,7 @@ const AdminProjectsView = () => {
             <div><h2>Accepted</h2></div>
             <div className="publish-buttons">
                 <button className = 'main-button' onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
-                  <button className = 'main-button' onClick={() => {
+                <button className = 'main-button' onClick={() => {
                     updatePublish(true, items.approved).then(() => {
                     window.location.reload();
                   });
@@ -172,7 +174,7 @@ const AdminProjectsView = () => {
           onDragEnd={handleDragEnd}
         >
           <div className='sort-container rejected-container' id="left">
-              <Container id="rejected" items={items.rejected} />
+              <Container id="rejected" items={items.rejected} expandProject={expandProject}/>
           </div>
           <div className='sort-container unsorted-container' id="center">
               <Container id="unsorted" items={items.unsorted} />

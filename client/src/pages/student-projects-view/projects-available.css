@@ -1,22 +1,52 @@
-.students-projects-view-page .content{
-    max-width: 80%;
-    justify-content: center;
-    overflow: wrap;
+.students-projects-view-page .page-content{
+    min-width: 90vw;
+    justify-content: start;
 }
 
 
-.projects-container{
+.students-projects-view-page .projects-container{
+    max-height: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     gap:15px;
 }
 
-.Project{
+
+.students-projects-view-page .project-container.collapsed{
+    width: calc(280px + 5vh);
+    height: calc(250px + 5vh);
+} 
+
+.students-projects-view-page .project-container.expanded{
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    padding: 2vh;
+    width: 60vw;
+    min-width: 60vw;
+    margin-left: 10vw;
+    margin-right: 10vw;
+    max-height: none;
+    background-color: white;
+}
+
+
+/* 
+.students-projects-view-page .project-header p{
+    color: var(--text-color-light) !important;
+    font-size: 18px !important;
+} */
+
+
+
+/* .Project{
     width: 100%;
     height: 100%;
-}
+} */
 
 .redirect-to-proposal{
     padding:20px;

@@ -4,8 +4,11 @@ import { fetchProjects } from '../../Api.js'
 import Project from "../../components/project/project.js";
 import PopUp from "../../components/project-pop-up-student.js";
 
+import './projects-available.css'
+
 const ProjectsAvailable = () => {
     const [projects, setProjects] = useState([]);
+    const [expandedProjects, setExpandedProjects] = useState({});
 
     // get data on all accepted projects 
     useEffect(() => {
@@ -20,18 +23,23 @@ const ProjectsAvailable = () => {
         getProjects();
     }, []);
 
-
-      const handleclick = (project) =>{
-        document.getElementById('popup').style.display = "block";
-        document.getElementById('close').style.display = "block";       
-      };
-
-
-
-      const close =() =>{
-        document.getElementById('popup').style.display = "none";
-        document.getElementById('close').style.display = "none";
+    const expandProject = (projectId) => {
+        setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
     }
+
+
+
+    //   const handleclick = (project) =>{
+    //     document.getElementById('popup').style.display = "block";
+    //     document.getElementById('close').style.display = "block";       
+    //   };
+
+
+
+    //   const close =() =>{
+    //     document.getElementById('popup').style.display = "none";
+    //     document.getElementById('close').style.display = "none";
+    // }
 
       
     return(
@@ -42,24 +50,25 @@ const ProjectsAvailable = () => {
                 </div>
                 <div className='page-content'>
                 <div className='projects-container'>
-                    {projects.filter(project => project.published === 'true' && project.semester_id === 1).length === 0 && 
+                    {projects.filter(project => project.published === 'true').length === 0 && 
                         <p>
                             There are currently no available projects.
                         </p>
                     }
-                    {projects.filter(project => project.published === 'true' && project.semester_id === 1).length > 0 && 
+                    {projects.filter(project => project.published === 'true').length > 0 && 
                     projects.map(project => (
-                        <div key={project.id} onClick={() => handleclick(project)} id="projectDisplay">
-                           
-                            <Project 
+                        // expand project when user clicks
+                        <div key={project.id} onClick={() => expandProject(project.id)}>
+                
+                            <Project className = 'project'
                                 view='student'
-                                number={project.number} 
-                                name={project.title} 
-                                description={project.description}
+                                projectId={project.id}
+                                expanded={expandedProjects[project.id]}
+                                expandProject = {expandProject}
                             />
-                             <PopUp project = {project}/>
+                             {/* {false &&<PopUp project = {project}/>} */}
                         </div>))}
-                        <button id="close" onClick={close}>&times;</button>
+                        {/* <button id="close" onClick={close}>&times;</button> */}
                 </div>
                 </div>
             </div>

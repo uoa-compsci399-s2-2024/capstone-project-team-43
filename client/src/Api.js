@@ -33,6 +33,28 @@ export async function fetchProjects(status) {
         return []; 
     }
 };
+/**
+ * Fetches projects from the server, optionally filtered by status.
+ * 
+ * @async
+ * @function fetchPublishedProjects - The status of projects to filter by ('accepted', 'pending', or 'rejected'). 
+ *                            If not provided, all projects will be fetched.
+ * @returns {Promise<Object[]>} A promise that resolves to an array of project objects.
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchPublishedProjects() {
+    try {
+        const response = await fetch(`${BASE_URL}/api/projects/published`);
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching published projects:', error);
+        throw error;
+        return []; 
+    }
+};
 
 export async function updateStatus(id,status) {
     try {
@@ -509,7 +531,7 @@ export async function fetchProjectById(projectId) {
         console.log('project fetched:',response[0])
         return await response.json();
     } catch (error) {
-        console.error('Error deleting project:', error);
+        console.error('Error fetching project:', error);
         throw error; 
     }   
 };

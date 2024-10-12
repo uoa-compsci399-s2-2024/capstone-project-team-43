@@ -109,6 +109,29 @@ export async function getProjectById(id) {
 }
 
 /**
+ * Get published projects
+ * 
+ * @return {Promise<Project[]>}
+ */
+export async function getPublishedProjects() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME}`);
+    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE published = true');
+
+    return rows[0];
+
+  } catch (err) {
+    console.error('Error fetching published projects:', err.message);
+  } finally {
+    if (connection) connection.release();
+  }
+}
+
+/**
  * Creates a new project 
  * @param {string} title
  * @param {string} description

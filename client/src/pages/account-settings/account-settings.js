@@ -76,7 +76,7 @@ const AccountSettings = ({ }) => {
         console.log("getting user role");
         const role = getUserRole();
         console.log("user role"+role);
-        setUserRole(userRole);
+        setUserRole(role);
     }, []);
 
     // Get user data
@@ -210,9 +210,9 @@ const AccountSettings = ({ }) => {
                                 <AccountDetail description="Team name" data={team.team_name} isStudent={isStudent}/>
                             </>
                         </div>
-                    )}
-                    {/* Add sign out & delete account options here*/}
-                    <div className='account-settings-buttons'>
+                    )}      
+                </div>
+                <div className='account-settings-buttons'>
                         {!showDeletionWarning && <SignOutButton/>}
                         {/* no delete account option for students */}
                         {(!isStudent && !showDeletionWarning) &&<button className='main-button delete-account-button' onClick={setShowDeletionWarning}>Delete Account</button>}
@@ -232,8 +232,6 @@ const AccountSettings = ({ }) => {
                             </div>                
                         )}
                         </div>
-                        
-                </div>
                 </div>}
             
         </main>

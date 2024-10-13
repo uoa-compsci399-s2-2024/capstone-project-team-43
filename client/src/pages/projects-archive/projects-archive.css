@@ -6,10 +6,10 @@
 }
 
 .projects-archive .page-content{
-    display: flex;
-    justify-content: center;
-    text-align: center;
+    min-width: 90vw;
+    justify-content: start;
 }
+
 
 .projects-archive .page-header{
     margin-top: -10vh ;
@@ -60,3 +60,5 @@
     max-height: none;
     background-color: white;
 }
+
+

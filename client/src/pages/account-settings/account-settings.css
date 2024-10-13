@@ -1,7 +1,12 @@
+.account-settings-page .page-content{
+    justify-content: start;
+}
+
 .account-settings-buttons{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    width: 100%;
     margin-top: 20px;
 }
 
@@ -22,10 +27,6 @@
     margin-bottom: 0px;
     align-items: center;
 }
-
-/* .account-settings-page .content{
-    max-width: 0%;
-} */
 
 .account-detail{
     display: flex;

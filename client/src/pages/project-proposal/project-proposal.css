@@ -4,12 +4,12 @@
 
 .project-proposal-page .content{
     max-width: 60%;
-    padding-bottom: 5vh;
+    padding-bottom: 2vh;
 }
 
-.form-content{
+.project-proposal-page .form-content{
     background-color: rgba(255, 255, 255, 0.5);
-    padding: 0;    
+    padding: 2vh;    
     border-radius: 5px;
     /* max-width: 90%; */
     display: flex;

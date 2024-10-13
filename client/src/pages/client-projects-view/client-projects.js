@@ -1,46 +1,52 @@
 
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { fetchProjects, fetchProjectsByUser } from '../../Api.js'
+import { fetchProjects, fetchProjectsByUser, fetchPublishedProjects } from '../../Api.js'
 import Project from "../../components/project/project.js";
 import PopUp from "../../components/pop-up admin/project-pop-up-admin.js";
-import { getUserID } from '../../utils/auth.js';
+import { getUserID, getUserRole } from '../../utils/auth.js';
 import './client-projects.css'
 
 const ClientProjectsView = () => {
     const [projects, setProjects] = useState([]);
-    const [userID, setUserID] = useState([]);
-    
-    // useEffect(() => {
-    //     async function getProjectsByUser() {
-    //         try {
-    //             const data = await fetchProjectsByUser(userId);
-    //             setProjects(data);
-    //         } catch (error) {
-    //             console.error('Failed to load projects:', error);
-    //         }
-    //     }
-    //     getProjectsByUser();
-    // }, []);
-
-    useEffect(() => {
-        async function getProjects() {
-            try {
-                const data = await fetchProjects();
-                setProjects(data);
-            } catch (error) {
-                console.error('Failed to load projects:', error);
-            }
-        }
-        getProjects();
-    }, []);
+    const [userID, setUserID] = useState(null);
 
     useEffect(() => {
         console.log("getting user id");
         const id = getUserID();
-        console.log("user id"+id);
+        console.log("user id:"+id);
         setUserID(id);
+
     }, []);
+
+    // Fetch client's own projects        
+    useEffect(() => {
+        if (userID) {
+            async function getProjectsByUser(userID) {
+                try {
+                    const data = await fetchProjectsByUser(userID);
+                    setProjects(data);
+                } catch (error) {
+                    console.error('Failed to load projects:', error);
+                }  
+            getProjectsByUser(userID);
+            }
+        }
+    }, [userID]); 
+
+
+            // } else {
+        //     // Admin & student view: Fetch all projects
+        //     async function getPublishedProjects() {
+        //         try {
+        //             const data = await fetchPublishedProjects();
+        //             setProjects(data);
+        //         } catch (error) {
+        //             console.error('Failed to load published projects:', error);
+        //         }
+        //     }
+        //     getPublishedProjects();
+        // }
 
     const handleclick = () =>{
         document.getElementById('popup').style.display = "block";
@@ -57,31 +63,27 @@ const ClientProjectsView = () => {
         document.getElementById('edit').style.display = "none";
     }
 
-    const userProjects = projects.filter(project => project.owner_id === userID);
+    // const userProjects = projects.filter(project => project.owner_id === userID);
 
-    console.log("USER PROJECTS: ", userProjects);
+    // console.log("USER PROJECTS: ", userProjects);
 
 
     return(
         <main className="client-projects-view-page">
-            <div className='content'>
+            {projects && <div className='content'>
                 <div className='page-heading'>
                     <h1>Your Projects</h1>
                 </div>
                 <div className='page-content'>
                 <div className='projects-container'>
-                    {userProjects.length === 0 && (
-                        <p>
-                            You haven't submitted any project proposals yet.
-                        </p>
+                    {projects.length === 0 && (
+                        <p>You haven't submitted any project proposals yet.</p>
                     )}
-                    {userProjects.length > 0 && userProjects.map(project => (
+                    {projects.length > 0 && projects.map(project => (
                             <div key={project.id} onClick={() => handleclick()}>
                                 <Project 
                                     view = 'client'
-                                    name={project.title} 
-                                    description={project.description}
-                                    number = {project.project_number}
+                                    projectId={project.id}
                                 />  
                                 {/* <div id="confirm"> */}
                             <PopUp project= {project} />
@@ -98,7 +100,7 @@ const ClientProjectsView = () => {
                     </Link>
                 </div>
                 </div>
-            </div> 
+            </div> }
         </main>  
     );
 }

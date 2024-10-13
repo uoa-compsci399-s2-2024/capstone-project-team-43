@@ -4,19 +4,23 @@
     overflow: wrap;
 }
 
+.client-projects-view-page .page-content{
+    justify-content: start;
+}
 
-.projects-container{
+
+.client-projects-view-page .projects-container{
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    justify-content: start;
     flex-wrap: wrap;
     gap:15px;
+    overflow-y: auto;
 }
 
-.Project{
+/* .Project{
     width: 100%;
     height: 100%;
-}
+} */
 
 .redirect-to-proposal{
     padding:20px;

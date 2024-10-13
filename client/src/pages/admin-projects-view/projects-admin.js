@@ -21,7 +21,6 @@ import {
   import PopUp from "../../components/pop-up admin/project-pop-up-admin.js";
 
 const AdminProjectsView = () => {
-
   const [projects, setProjects] = useState([]);
   const [expandedProjects, setExpandedProjects] = useState({});
 
@@ -150,7 +149,7 @@ const AdminProjectsView = () => {
           <div className="admin-page-content">
           <div className="container-headers">
             <div><h2>Rejected</h2></div>
-            <div><h2>Unsorted</h2></div>
+            <div><h2>Pending</h2></div>
             <div><h2>Accepted</h2></div>
             <div className="publish-buttons">
                 <button className = 'main-button' onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
@@ -177,10 +176,10 @@ const AdminProjectsView = () => {
               <Container id="rejected" items={items.rejected} expandProject={expandProject}/>
           </div>
           <div className='sort-container unsorted-container' id="center">
-              <Container id="unsorted" items={items.unsorted} />
+              <Container id="unsorted" items={items.unsorted} expandProject={expandProject}/>
           </div>
           <div className='sort-container accepted-container' id='right'>
-              <Container id="approved" items={items.approved} />
+              <Container id="approved" items={items.approved} expandProject={expandProject}/>
               <div id="publishing">
           </div>
           </div>

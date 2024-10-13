@@ -28,6 +28,9 @@
   overflow-y: hidden;
 } 
 
+/* .sort-container.project-container{
+  background-color: transparent !important;
+} */
 
 .container-headers{
   width: 100%;
@@ -48,11 +51,13 @@
 }
 
 
-.students-projects-view-page .project-container.collapsed{
-  width: calc(280px + 5vh);
-  height: calc(250px + 5vh);
-} 
+.projects-admin-page .project-container.collapsed{
+  min-width: auto;
+  max-height: calc(200px + 5vh);
+  margin-bottom: -1vh;
+}  
 
+/*
 .students-projects-view-page .project-container.expanded{
   display: flex;
   flex-direction: column;
@@ -64,7 +69,7 @@
   margin-right: 10vw;
   max-height: none;
   background-color: white;
-}
+} */
 
 /**           PROJECTS ADMIN             **/
 
@@ -87,13 +92,13 @@
     flex: 1;
     flex-grow: 1;
     overflow-y: hidden;
-    margin-top: -1vh;
 }
 
 .sort-container{
   max-height: 100%;
   overflow-y: scroll;
 }
+
 
 #sorting #left, 
 #sorting #center, 
@@ -104,18 +109,58 @@
   overflow-y: scroll; 
 }
 
-.accepted-container .project-container{
-  background-color: white;
+.accepted-container .project-container,
+.rejected-container .project-container,
+.unsorted-container .project-container,
+.admin-expand-button{
+  background-color: transparent !important;
 }
 
-.rejected-container .project-container{
+
+.admin-expand-button{
+  color: var(--text-color-dark);
+  background-color: rgba(255, 255, 255, 0);
+  font-size: 12px;
+  border-radius: 5px;
+  position: relative;
+  padding: 10px;
+
+}
+
+.admin-expand-button:hover{
+  background-color: transparent !important;
+  opacity: 0.6;
+}
+
+.full-project-wrapper.project-container{
+  background-color: inherit;
+}
+
+.full-project-wrapper{
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+
+.accepted-container .full-project-wrapper{
+  background-color: white;
+}
+.rejected-container .full-project-wrapper{
   background-color: rgba(0, 0, 0, 0.074);
 }
+
+.unsorted-container .full-project-wrapper{
+  background-color: var(--transparent);
+}
+
 
 .rejected-container .project-header h2{
   color: var(--text-color-dark) !important;
 }
 
+[role="button"] {
+  position: relative;
+  z-index: 1; /* Lower z-index to move it behind */
+}
 
 /* 
 #sorting #left{
@@ -345,20 +390,19 @@
 .publish-buttons{
   position: absolute;
   right: 0;
-  margin-right: 3.5vh;
-  margin-bottom: -1vh;
+  margin-right: 4vh;
 }
 
 .publish-buttons button{
-  padding: 3px;
+  padding: 1px;
   margin: 5px;
-  background-color: var(--text-color-dark);
-  color: white;
+  /* background-color: var(--theme-mid); */
+  color: var(--text-color-dark);
 }
 
 .publish-buttons button:hover{
-  opacity: 0.7 !important;
-  background-color: var(--text-color-dark) !important;
+  opacity: 1 !important;
+  /* background-color: var(--theme-mid) !important; */
 }
 
 #sorting #right::-webkit-scrollbar,
@@ -379,6 +423,4 @@
 #sorting #left::-webkit-scrollbar-track{
     background-color: var(--transparent);
     border-radius: 10px;
-    margin-top: 2vh;
-
 }

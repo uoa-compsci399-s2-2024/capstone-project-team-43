@@ -15,8 +15,9 @@
     max-width: inherit;
     max-height: inherit;
     z-index: 50;
-
 }
+
+
 
 
 .project-container:hover{
@@ -128,17 +129,24 @@
 
 }
 
-.expand-button-container{
+.expand-button-container button{
     color: var(--text-color-dark);
     background-color: rgba(255, 255, 255, 0);
     font-size: 12px;
     margin-bottom: -1vh;
     border-radius: 5px;
+    position: relative;
+    z-index: 1000;
 }
 
 .expand-button-container button:hover{
     background-color: transparent !important;
     opacity: 1;
 }
+
+.expand-text{
+    font-size: 12px;
+}
+
 
 

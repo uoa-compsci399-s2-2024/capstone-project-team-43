@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDroppable } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -10,34 +10,39 @@ import SortableItem from "../components/sortable_item";
 const containerStyle = {
   // background: "#dadada",
   padding: 10,
+  paddingTop:0,
   margin: 10,
+  marginTop:0,
   flex: 1
 };
 
 export default function Container(props) {
-  const { id, items } = props;
+  const { id, items} = props;
+  const [expandedProjects, setExpandedProjects] = useState({});
 
+  console.log('container id:',id);
+  console.log('container items:', items);
+  
   const { setNodeRef } = useDroppable({
     id
   });
-  // console.log(props)
-  
 
+  const expandProject = (projectId) => {
+    console.log('expanding project', id);
+    setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
+  }
+  
   return (
     <SortableContext
       items={items}
       strategy={verticalListSortingStrategy}
-    >
-     
-        
-      <div ref={setNodeRef} style={containerStyle}>
-      {/* <div ref={setNodeRef} > */}
+    > 
+      <div className='project-inner-container' ref={setNodeRef} style={containerStyle}>
 
         {items.map((id) => (
-
-          <SortableItem  id={id} />
-
-
+          <div>
+          <SortableItem  id={id}/>
+          </div>
         ))}
 
       </div>

@@ -3,9 +3,10 @@ import React,{ useState, useEffect, useRef } from "react";
 import './project.css';
 import { fetchProjectById } from "../../Api";
 
-const Project = ({ projectId, view, expanded=false, expandProject=null  }) => {
+const Project = ({ projectId, view, expanded, expandProject=null  }) => {
     const [project, setProject] = useState(null);
     const [projectButtons, setProjectButtons] = useState(false);
+    // const [isExpanded, setIsExpanded] = useState(expanded || false);
     const isStudent = view ==='student';
     const isAdmin = view ==='admin';
     const isClient = view ==='client';
@@ -52,7 +53,7 @@ const Project = ({ projectId, view, expanded=false, expandProject=null  }) => {
             {project &&
             <div className="project-content">
                 <div className="project-header">
-                    <p>{isStudent && `${project.project_number}.`} {project.title}</p>
+                    <p>{project.project_number > 0 && `${project.project_number}.`} {project.title}</p>
                 </div>
                 <div className="project-data">
                     <div className="project-data-box">
@@ -96,15 +97,10 @@ const Project = ({ projectId, view, expanded=false, expandProject=null  }) => {
                         </div>
                     </div>
                 </div>
-                {(projectButtons && !expanded && !isAdmin)&& < div className="expand-button-container">
-                    <div className="expand button">
-                        Click Anywhere to Expand
+                {(projectButtons && !isAdmin) && < div className="expand-button-container">
+                    <div className="expand-text">
+                       {expanded ? 'Click Anywhere to Collapse' : 'Click Anywhere to Expand'}
                     </div>
-                </div>}
-                {(projectButtons && !expanded && isAdmin)&& < div className="expand-button-container">
-                    <button onClick={expandProject} className="expand button">
-                        Expand Project 
-                    </button>
                 </div>}
             </div>}             
         </div> 

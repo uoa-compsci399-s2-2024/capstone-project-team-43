@@ -9,7 +9,7 @@
   --theme-light: #addbff;
   --theme-very-light: #ddf4ff;
   --theme-shadow: drop-shadow(0px 10px 12px rgba(28, 56, 112, 0.7));
-  --transparent: rgba(255, 255, 255, 0.5);
+  --transparent: rgba(255, 255, 255, 0.7);
 
   --theme-font: 'Poppins'; 
   --text-color-dark: #003C70;

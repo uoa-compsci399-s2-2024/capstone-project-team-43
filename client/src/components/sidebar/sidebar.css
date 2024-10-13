@@ -117,3 +117,9 @@ a:hover {
 .main-link {
     padding-top: 3vh;
 } 
+
+
+.sidebar-menu-header{
+    margin-top: 2vh;
+    padding-bottom: 0.5vh;
+}

@@ -52,12 +52,15 @@ const Sidebar = ({ userRole, showSidebar }) => {
         ],
         
         admin: [
-            { name: "Current Projects", path: "/projects/available" },
-            { name: "Projects", path: "/projects/manage" },
+            { name: "Projects", path: "" },
+            { name: "Manage Projects", path: "/projects/manage" },
+            { name: "View as Student", path: "/projects/available" },
             { name: "Project Archive", path: `/projects/archive/${currentSemester.id}` },
+            { name: "Semesters", path: "" },
             { name: "Manage Semesters", path: `/manage/semester/${currentSemester.id}` },
             { name: "Create Semester", path: "/create/semester "},
-            { name: "Your Projects", path: "/projects/view" },
+            { name: "Your Projects", path: "" },
+            { name: "View All", path: "/projects/view" },
             { name: "Propose a Project", path: "/projects/submit" },
         ]
     }
@@ -69,25 +72,41 @@ const Sidebar = ({ userRole, showSidebar }) => {
             <ul className='sidebar-menu-items'>
                 <div className='primary-links'>
                     {primaryLinks.map((item, index) => {
-                            return (
-                                <li key={index} className = 'sidebar-menu-item main-link' id = {item.name.replace(" ","")}>
+                        return(
+                            <React.Fragment key={index}>
+                            {item.path ? (
+                                <li className = 'sidebar-menu-item main-link' id = {item.name.replace(" ","")}>
                                     <Link to={item.path}>
                                         <span>{item.name}</span>
                                     </Link>
                                 </li>
-                            );
-                            })}
+                            ):(
+                                <li key={index} className = 'sidebar-menu-header' id = {item.name.replace(" ","")}>
+                                    <span>{item.name}</span>
+                                </li>
+                            )}
+                        </React.Fragment>
+                        );
+                    })}
                 </div>
                 <div className='role-links'>
                     {roleLinks.map((item, index) => {
-                        return (
-                            <li key={index} className = 'sidebar-menu-item role-link' id = {item.name.replace(" ","")}>
-                                <Link to={item.path}>
+                        return(
+                            <React.Fragment key={index}>
+                            {item.path ? (
+                                <li className = 'sidebar-menu-item role-link' id = {item.name.replace(" ","")}>
+                                    <Link to={item.path}>
+                                        <span>{item.name}</span>
+                                    </Link>
+                                </li>
+                            ):(
+                                <li key={index} className = 'sidebar-menu-header' id = {item.name.replace(" ","")}>
                                     <span>{item.name}</span>
-                                </Link>
-                            </li>
+                                </li>
+                            )}
+                        </React.Fragment>
                         );
-                        })}
+                    })}
                 </div>
                 <div className='footer-links'>
                     {footerLinks.map((item, index) => {

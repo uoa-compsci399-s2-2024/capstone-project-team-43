@@ -253,6 +253,7 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
 
 export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details) {
     try {
+        console.log('editing project')
         const response = await fetch(`${BASE_URL}/api/projects/update/${id}`, {
            method: "POST",
            headers: {
@@ -260,10 +261,10 @@ export async function editProject(id, title, description, special_requirements, 
            },
            body: JSON.stringify({title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details}),
          })
-
-       return await response;
+        console.log(response);
+        return response;
    } catch (error) {
-       console.error('Error fetching projects:', error);
+       console.log('Error editing projects:', error);
        throw error;    }
 };
 

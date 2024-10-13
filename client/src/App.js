@@ -28,6 +28,7 @@ import ProjectsArchive from './pages/projects-archive/projects-archive.js';
 import CreateSemester from './pages/create-semester/create-semester.js';
 import ProjectsAvailable from './pages/student-projects-view/projects-available.js';
 import AdminProjectsView from './pages/admin-projects-view/projects-admin.js';
+import EditProject from './pages/edit-project/edit-project.js';
 
 function App() {
 
@@ -51,7 +52,7 @@ function App() {
           <Route path='/manage/semester/:semesterID' element={<Layout><ManageSemester /></Layout>}/>
           <Route path='/create/semester' element={<Layout><CreateSemester /></Layout>}/>
           <Route path='/projects/manage' element={<Layout><AdminProjectsView /></Layout>}/>
-
+          <Route path='/projects/edit/:projectID' element={<Layout><EditProject /></Layout>}/>
 
 
           {/* Client Pages */}

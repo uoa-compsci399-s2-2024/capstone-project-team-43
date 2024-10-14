@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, navigate, useLocation } from "react-router-dom";
 import LandingPage from "./pages/landing-page/landing-page";
 import Cornerstone from "./pages/admin-projects-view/projects-admin.js";
-import ProjectPreferences from './pages/project-preferences';
 
 import Dashboard from './pages/dashboard/dashboard';
 import { isLoggedIn } from './utils/auth';
@@ -26,9 +25,12 @@ import ClientProjectsView from './pages/client-projects-view/client-projects.js'
 import ManageSemester from './pages/manage-semester/manage-semester.js';
 import ProjectsArchive from './pages/projects-archive/projects-archive.js';
 import CreateSemester from './pages/create-semester/create-semester.js';
-import ProjectsAvailable from './pages/student-projects-view/projects-available.js';
 import AdminProjectsView from './pages/admin-projects-view/projects-admin.js';
 import EditProject from './pages/edit-project/edit-project.js';
+
+import ProjectsAvailable from './pages/student-projects-view/projects-available.js';
+import ProjectPreferences from './pages/project-preference-form/project-preferences.js';
+
 
 function App() {
 

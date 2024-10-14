@@ -1,27 +1,20 @@
-
 import './index.css';
 import './App.css';
 
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-//import ReactDOM from "react-dom/client";
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route, navigate, useLocation } from "react-router-dom";
 import LandingPage from "./pages/landing-page/landing-page";
-import Cornerstone from "./pages/admin-projects-view/projects-admin.js";
-
 import Dashboard from './pages/dashboard/dashboard';
-import { isLoggedIn } from './utils/auth';
-
 import Layout from './components/layout/layout.js';
-
 import About from './pages/about/about.js';
 import Contact from './pages/contact/contact.js';
 import Faq from './pages/faq/faq.js';
-
 import AccountSettings from './pages/account-settings/account-settings.js';
 
 import ProjectProposalForm from "./pages/project-proposal/project-proposal.js";
 import ClientProjectsView from './pages/client-projects-view/client-projects.js';
+
 import ManageSemester from './pages/manage-semester/manage-semester.js';
 import ProjectsArchive from './pages/projects-archive/projects-archive.js';
 import CreateSemester from './pages/create-semester/create-semester.js';
@@ -33,8 +26,6 @@ import ProjectPreferences from './pages/project-preference-form/project-preferen
 
 
 function App() {
-
-  const location = useLocation();
 
   return (
       <div>
@@ -63,7 +54,6 @@ function App() {
 
 
           {/* General */}
-          {/* {<Route path="/dashboard"  element={ isLoggedIn ? <Dashboard/>:<LandingPage/> } />} */}
           <Route path='/about' element={<Layout><About/></Layout>} />
           <Route path='/contact' element={<Layout><Contact/></Layout>} />
           <Route path='/account/settings' element={<Layout><AccountSettings /></Layout>} />

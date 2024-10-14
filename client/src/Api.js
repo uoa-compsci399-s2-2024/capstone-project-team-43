@@ -19,8 +19,9 @@ const BASE_URL = "http://localhost:3001";
 export async function fetchProjects(status) {
     try {
         let response; 
-
+        console.log("Fetching Projects");
         if(status !==  undefined) {
+
             response = await fetch(`${BASE_URL}/api/projects/status/${status}`);
         }
         else {
@@ -101,6 +102,32 @@ export async function downloadCSV() {
     }
 };
 
+export async function downloadCSVClients() {
+    try {
+         const response = await fetch(`${BASE_URL}/api/users/download/clients`, {
+            method: "GET",
+            headers: {
+                "Content-Type" : "application/json"
+            }, 
+          })
+        if(response.ok) {
+        const csvData = await response.text();
+        const url = window.URL.createObjectURL(new Blob([csvData]));
+        console.log(response);
+        var blob = new Blob([csvData], {
+          type: "text/plain;charset=utf-8",
+        });
+        saveAs(blob, `Client Data.csv`);
+    }
+
+        return await response;
+    } catch (error) {
+        console.error('Error fetching projects:', error);
+        throw error;    
+    }
+};
+
+
 export async function downloadCSVTeams(semesterID) {
     try {
          const response = await fetch(`${BASE_URL}/api/teams/download`, {
@@ -117,7 +144,7 @@ export async function downloadCSVTeams(semesterID) {
         var blob = new Blob([csvData], {
           type: "text/plain;charset=utf-8",
         });
-        saveAs(blob, `Teams.csv`);
+        saveAs(blob, `Teams Data.csv`);
     }
 
         return await response;
@@ -142,7 +169,7 @@ export async function downloadAllocation() {
         var blob = new Blob([csvData], {
           type: "text/plain;charset=utf-8",
         });
-        saveAs(blob, `Allocations.csv`);
+        saveAs(blob, `Team Allocation Data.csv`);
     }
 
         return await response;

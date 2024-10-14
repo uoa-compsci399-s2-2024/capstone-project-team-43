@@ -34,7 +34,7 @@ const AdminProjectsView = () => {
       async function getProjects() {
           try {
             console.log('fetching all projects for sorting page:');
-            const data = await fetchProjects();
+            const data = await fetchProjects("valid");
             setProjects(data);
             console.log('fetched projects:',data);
 

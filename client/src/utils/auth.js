@@ -29,6 +29,8 @@ export const getUserRole = async () => {
         console.log("GETTING ROLE");
         const token = Cookies.get('authToken');
 
+
+        // If no token is found, check the url path, if its unauthorized send the user back to landing page
         if (!token) {
             await checkPath();
             return null;
@@ -125,6 +127,10 @@ export const checkPath = async () => {
                 const authorizedPaths = ["/projects/view", "/projects/submit"];
                 if (!authorizedPaths.includes(window.location.pathname) && !defaultPaths.includes(window.location.pathname)) {
                     window.location.pathname = '/projects/view';
+                }
+            } else if (role === "admin") {
+                if (window.location.pathname === "/") {
+                    window.location.pathname = '/dashboard';
                 }
             }
 

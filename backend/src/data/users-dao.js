@@ -332,3 +332,24 @@ export async function getCSV(users) {
     return[];
   }
 }
+
+/**
+* Returns a CSV structure style string based on users in database
+*
+* @param {Array<Object>} users users array
+*/
+export async function getCSVclients(users) {
+  try {
+    let CSVData = "Client Name,Email\n";
+    for (let i = 0; i < users.length; i++) {
+
+        CSVData += users[i].first_name + " " + users[i].last_name + "," + users[i].email + "\n";
+      }
+
+      return CSVData;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err);
+    return[];
+  }
+}

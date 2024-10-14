@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUsers, getUsersByTeam, createUser, deleteUser, updateUser, deleteUserByRole, getUser, getCSV } from "../../data/users-dao.js";
+import { getUsers, getUsersByTeam, createUser, deleteUser, updateUser, deleteUserByRole, getUser, getCSV, getCSVclients } from "../../data/users-dao.js";
 import { generateToken } from "../../data/authentication-dao.js";
 
 const router = Router();
@@ -105,6 +105,21 @@ router.get("/download", async (req, res) => {
 
     res.header('Content-Type', 'text/csv');
     res.attachment('studentsData.csv');
+    return res.status(200).send(CSVData);
+    } catch (err){
+        console.log("Error Downloading CSV ", err);
+        return res.status(204);
+    }
+});
+
+// Gets clients in db structured as a CSV
+router.get("/download/clients", async (req, res) => {
+    try {
+    const clients = await getUsers("client");
+    const CSVData = await getCSVclients(clients);
+
+    res.header('Content-Type', 'text/csv');
+    res.attachment('clientData.csv');
     return res.status(200).send(CSVData);
     } catch (err){
         console.log("Error Downloading CSV ", err);

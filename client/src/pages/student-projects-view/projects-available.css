@@ -3,7 +3,6 @@
     justify-content: start;
 }
 
-
 .students-projects-view-page .projects-container{
     max-height: 100%;
     max-width: 100%;
@@ -14,7 +13,6 @@
     flex-wrap: wrap;
     gap:15px;
 }
-
 
 .students-projects-view-page .project-container.collapsed{
     width: calc(280px + 5vh);
@@ -33,6 +31,10 @@
     max-height: none;
     background-color: white;
 }
+
+.students-projects-view-page .project-container:hover{
+    cursor: pointer;
+} 
 
 
 /* 

@@ -71,8 +71,22 @@ export async function getStatusProject(status) {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ? ORDER BY project_number', [status]);
-    console.log('Rows:', rows);
+    const validStatus = ['accepted', 'rejected', 'pending'];
+    let rows;
+    let fields;
+    if (validStatus.includes(status)) {
+      [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ? AND published = true ORDER BY project_number', [status]);
+    } else if (status == "valid") {
+
+      console.log("GETTING VALID PROJECTS");
+
+      //Gets the current semester end date to ensure that expired projects are not published
+      const semesters = await getSemesters();
+
+      const current_semester = semesters.find(semester => semester.status === "current");
+
+      [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE ? < expiry ORDER BY project_number', [current_semester.end_date, status]);
+    }
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -251,11 +265,11 @@ export async function updateProjectStatus(id, status) {
     // Get connection from pool
     connection = await pool.getConnection();
 
-    if(status == "pending" || status == "rejected") {
+    if (status == "pending" || status == "rejected") {
 
 
       await connection.query(`USE ${DB_NAME};`);
-  
+
       await connection.query("UPDATE `project` SET published = 'false' WHERE id = ?", [id]);
     }
 
@@ -263,7 +277,7 @@ export async function updateProjectStatus(id, status) {
 
     await connection.query("UPDATE `project` SET status = ? WHERE id = ?", [status, id]);
 
-    console.log("PROJECT STATUS CHANGED");
+    console.log("PROJECT STATUS CHANGED, ID: ", id, " NEW STATUS: ", status);
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -314,7 +328,13 @@ export async function publishProjects(status) {
     if (status == "false") {
       await connection.query("UPDATE `project` SET published = ?", [status]);
     } else {
-      await connection.query("UPDATE `project` SET published = ? WHERE status = \"accepted\"", [status]);
+
+      //Gets current semester end date to ensure that expired projects are not published
+      const semesters = await getSemesters();
+
+      const current_semester = semesters.find(semester => semester.status === "current");
+
+      await connection.query("UPDATE `project` SET published = ? WHERE status = \"accepted\" AND ? < expiry", [status, current_semester.end_date]);
     }
 
   } catch (err) {
@@ -366,18 +386,18 @@ export async function allocateNumbers(approved_projects) {
     let numberIDS = [];
 
     for (let i = 1; i < approved_projects.length + 1; i++) {
-    
-    /** @type {Project} */
-    console.log("UPDATING PROJECT WITH ID: ", projectIDS[2 * i].split(",")[0]);
 
-    numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
+      /** @type {Project} */
+      console.log("UPDATING PROJECT WITH ID: ", projectIDS[2 * i].split(",")[0]);
 
-    await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
+      numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
+
+      await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
     }
 
     console.log(numberIDS);
 
-   await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
+    await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
 
   } catch (err) {
     if (connection) connection.release();

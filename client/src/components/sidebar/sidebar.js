@@ -2,7 +2,7 @@ import React, {useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import './sidebar.css';
 import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
-import { fetchSemesters } from '../../Api';
+import { fetchSemesters, getStatusSemesters } from '../../Api';
 
 const Sidebar = ({ userRole, showSidebar }) => {
 
@@ -10,24 +10,27 @@ const Sidebar = ({ userRole, showSidebar }) => {
 
     
     const [currentSemester, setCurrentSemester] = useState(null);
+    const [upcomingSemesters, setUpcomingSemesters] = useState([]);
+    const [loadPage, setLoadPage] = useState(false);
 
-        // check if dropdown should be hidden
+        // Gets current and upcoming semesters
         useEffect(() => {
             const semester = localStorage.getItem('currentSemester');
                 const getSemesters = async () => {
                     const semesters = await fetchSemesters();
                     setCurrentSemester(semesters.find(semester => semester.status === 'current'));
+                    if(!currentSemester) {
+                        setUpcomingSemesters(await getStatusSemesters("upcoming"));
+                        console.log("No current semester, showing upcoming semesters: ", upcomingSemesters);
+                    }
+                    setLoadPage(true);
                 }
                 getSemesters();
         }, []);
 
-        //Prevents page rendering until the current semester is fetched
-        if (!currentSemester) {
-            return <div>Loading...</div>;
-        }
-
-    //currentSemester = semesters.find(semester => semester.status === 'current');
-
+    if (!loadPage) {
+        return <div>Loading...</div>;
+    }
     const primaryLinks = [
         // { name: "Home", path: "/dashboard" }
     ]
@@ -55,9 +58,9 @@ const Sidebar = ({ userRole, showSidebar }) => {
             { name: "Projects", path: "" },
             { name: "Manage Projects", path: "/projects/manage" },
             { name: "View as Student", path: "/projects/available" },
-            { name: "Project Archive", path: `/projects/archive/${currentSemester.id}` },
+            { name: "Project Archive", path: `/projects/archive/${currentSemester ? currentSemester.id : (upcomingSemesters.length > 0 ? upcomingSemesters[0].id : 1)}` },
             { name: "Semesters", path: "" },
-            { name: "Manage Semesters", path: `/manage/semester/${currentSemester.id}` },
+            { name: "Manage Semesters", path: `/manage/semester/${currentSemester ? currentSemester.id : (upcomingSemesters.length > 0 ? upcomingSemesters[0].id : 1)}` },
             { name: "Create Semester", path: "/create/semester "},
             { name: "Your Projects", path: "" },
             { name: "View All", path: "/projects/view" },

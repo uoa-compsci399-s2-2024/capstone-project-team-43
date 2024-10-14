@@ -1,5 +1,6 @@
 import { pool } from "./database.js";
 import dotenv from "dotenv";
+import { getAllocations } from "./preferences-dao.js";
 
 dotenv.config();
 
@@ -69,12 +70,12 @@ export async function getUsersByTeam(team_id) {
 
     await connection.query(`USE ${DB_NAME};`);
     const [users] = await connection.query('SELECT * FROM USER WHERE team_id = ?', team_id);
-    
+
     return users;
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
-  } finally { 
+  } finally {
     // If there is a connection, release it
     if (connection) connection.release();
   }
@@ -94,12 +95,12 @@ export async function getUser(id) {
 
     await connection.query(`USE ${DB_NAME};`);
     const [users] = await connection.query('SELECT * FROM USER WHERE id = ?', id);
-    
+
     return users[0];
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
-  } finally { 
+  } finally {
     // If there is a connection, release it
     if (connection) connection.release();
   }
@@ -188,9 +189,9 @@ export async function deleteUser(id) {
   let connection;
   try {
 
-        // Get connection from pool
-        connection = await pool.getConnection();
-        await connection.query(`USE ${DB_NAME};`);
+    // Get connection from pool
+    connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
     await connection.query("DELETE FROM USER WHERE id = ?", id);
 
   } catch (err) {
@@ -217,7 +218,7 @@ export async function deleteUserByRole(role) {
   } catch (err) {
     console.error('Error executing query/s:', err.message);
   } finally {
-    
+
     // If there is a connection, release it
     if (connection) connection.release();
   }
@@ -261,6 +262,8 @@ export async function updateUserName(id, first_name, last_name) {
     await connection.query("UPDATE USER SET first_name = ?, last_name = ? WHERE id = ?", [first_name, last_name, id]);
 
   } catch (err) {
+    // If there is a connection, release it
+    if (connection) connection.release();
     console.error('Error executing query/s:', err);
   }
 }
@@ -280,6 +283,8 @@ export async function updateTeam(unikey, team_id) {
     await connection.query("UPDATE USER SET team_id = ? WHERE email LIKE ?", [team_id, `${unikey}%`]);
 
   } catch (err) {
+    // If there is a connection, release it
+    if (connection) connection.release();
     console.error('Error executing query/s:', err);
   }
 }
@@ -301,13 +306,13 @@ export async function updateUser(id, attribute, newValue) {
     const response = await connection.query("UPDATE USER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
 
     /** @type {User} */
-    const updatedUser = await connection.query("SELECT * FROM USER WHERE id = ?", [id]); 
+    const updatedUser = await connection.query("SELECT * FROM USER WHERE id = ?", [id]);
 
     return updatedUser;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
-    return[];
+    return [];
   }
 }
 
@@ -322,13 +327,45 @@ export async function getCSV(users) {
     let CSVData = "Student name,Email,Team ID\n";
     for (let i = 0; i < users.length; i++) {
 
-        CSVData += users[i].first_name + " " + users[i].last_name + "," + users[i].email + "," + users[i].team_id + "\n";
-      }
+      CSVData += users[i].first_name + " " + users[i].last_name + "," + users[i].email + "," + users[i].team_id + "\n";
+    }
 
-      return CSVData;
+    return CSVData;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
-    return[];
+    return [];
+  }
+}
+
+/**
+* Returns a CSV structure style string based on users in database
+*
+* @param {Array<Object>} teams teams array
+*/
+export async function getCSVclients(projects, semester_id) {
+  try {
+    let CSVData = "Project Title,Client Name, Client Email, Other Client Details, Picked\n";
+    let connection = await pool.getConnection();
+    await connection.query(`USE ${DB_NAME};`);
+
+    //Gets all the teams from the database for the selected semester
+    const [teams] = await connection.query("SELECT * FROM TEAM WHERE semester_id = ?", [semester_id]);
+
+    for (let i = 0; i < projects.length; i++) {
+
+      //Checks if a team has been assigned to the project then projectPicked will be true
+      const projectPicked = teams.some(team => team.project_id === projects[i].id);
+
+      CSVData += projects[i].title + "," + projects[i].client_name + "," + projects[i].client_email + "," + projects[i].other_client_details + "," + projectPicked + "\n";
+    }
+
+    return CSVData;
+
+  } catch (err) {
+    // If there is a connection, release it
+    if (connection) connection.release();
+    console.error('Error executing query/s:', err);
+    return [];
   }
 }

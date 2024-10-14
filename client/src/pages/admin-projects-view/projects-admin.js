@@ -34,7 +34,7 @@ const AdminProjectsView = () => {
       async function getProjects() {
           try {
             console.log('fetching all projects for sorting page:');
-            const data = await fetchProjects();
+            const data = await fetchProjects("valid");
             setProjects(data);
             console.log('fetched projects:',data);
 
@@ -286,9 +286,11 @@ const AdminProjectsView = () => {
     
         setActiveId(null);
         let newStatus = "pending";
-        console.log(event.collisions[0].id);
-        console.log(event.collisions[1].id);
         try{
+
+          console.log(event.collisions[0].id);
+          console.log(event.collisions[1].id);
+          
           if(event.collisions[0].id === "approved" || event.collisions[1].id === "approved"){
             newStatus = "accepted"
           }

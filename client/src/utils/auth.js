@@ -10,7 +10,6 @@ export const getUserID = () => {
             return null;
         } else {
             const decoded = jwtDecode(token);
-            console.log(decoded);
             return decoded.userId;
         }
     } catch (err) {
@@ -26,7 +25,6 @@ export const getUserID = () => {
  */
 export const getUserRole = async () => {
     try {
-        console.log("GETTING ROLE");
         const token = Cookies.get('authToken');
 
 
@@ -58,8 +56,6 @@ export const getUserRole = async () => {
 
         const role = resJson.role;
 
-        console.log('role:', role);
-
         await checkPath();
 
         return role;
@@ -74,7 +70,6 @@ export const Logout = async (e) => {
     e.preventDefault();
     try {
         const token = Cookies.get('authToken');
-        console.log("BLACKLISTING TOKEN: ", token);
         let res = await fetch("http://localhost:3001/api/auth/logout", {
             method: "POST",
             headers: {
@@ -99,7 +94,6 @@ export const Logout = async (e) => {
 
 // This funtion checks that the user isnt accessing a page that they are unauthorized to access
 export const checkPath = async () => {
-    console.log("CHECKING PATH");
     try {
         const token = Cookies.get('authToken');
 
@@ -141,14 +135,11 @@ export const checkPath = async () => {
 export const isLoggedIn = async () => {
     try {
     const token = Cookies.get("authToken");
-    console.log("COOKIE TOKEN: ", token);
     let status = false;
     
     if (!token || token === 'null') {
-        console.log("User isnt logged in");
         status = false;
     } else {
-        console.log("User logged in");
         status = true;
     }
 

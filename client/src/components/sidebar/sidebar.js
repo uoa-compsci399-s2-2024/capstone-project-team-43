@@ -13,7 +13,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
     const [upcomingSemesters, setUpcomingSemesters] = useState([]);
     const [loadPage, setLoadPage] = useState(false);
 
-        // check if dropdown should be hidden
+        // Gets current and upcoming semesters
         useEffect(() => {
             const semester = localStorage.getItem('currentSemester');
                 const getSemesters = async () => {
@@ -28,7 +28,6 @@ const Sidebar = ({ userRole, showSidebar }) => {
                 getSemesters();
         }, []);
 
-    //currentSemester = semesters.find(semester => semester.status === 'current');
     if (!loadPage) {
         return <div>Loading...</div>;
     }

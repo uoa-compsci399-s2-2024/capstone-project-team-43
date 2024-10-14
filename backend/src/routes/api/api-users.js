@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { getUsers, getUsersByTeam, createUser, deleteUser, updateUser, deleteUserByRole, getUser, getCSV, getCSVclients } from "../../data/users-dao.js";
 import { generateToken } from "../../data/authentication-dao.js";
+import { getProjectsBySemester } from "../../data/projects-dao.js";
 
 const router = Router();
 
@@ -113,10 +114,11 @@ router.get("/download", async (req, res) => {
 });
 
 // Gets clients in db structured as a CSV
-router.get("/download/clients", async (req, res) => {
+router.get("/download/clients/:semester_id", async (req, res) => {
+    const semester_id = req.params.semester_id;
     try {
-    const clients = await getUsers("client");
-    const CSVData = await getCSVclients(clients);
+    const projects = await getProjectsBySemester(semester_id);
+    const CSVData = await getCSVclients(projects, semester_id);
 
     res.header('Content-Type', 'text/csv');
     res.attachment('clientData.csv');

@@ -102,9 +102,9 @@ export async function downloadCSV() {
     }
 };
 
-export async function downloadCSVClients() {
+export async function downloadCSVClients(semester_id) {
     try {
-         const response = await fetch(`${BASE_URL}/api/users/download/clients`, {
+         const response = await fetch(`${BASE_URL}/api/users/download/clients/${semester_id}`, {
             method: "GET",
             headers: {
                 "Content-Type" : "application/json"
@@ -140,7 +140,6 @@ export async function downloadCSVTeams(semesterID) {
         if(response.ok) {
         const csvData = await response.text();
         const url = window.URL.createObjectURL(new Blob([csvData]));
-        console.log(response);
         var blob = new Blob([csvData], {
           type: "text/plain;charset=utf-8",
         });
@@ -165,7 +164,6 @@ export async function downloadAllocation() {
         if(response.ok) {
         const csvData = await response.text();
         const url = window.URL.createObjectURL(new Blob([csvData]));
-        console.log(response);
         var blob = new Blob([csvData], {
           type: "text/plain;charset=utf-8",
         });
@@ -267,7 +265,6 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
             },
             body: JSON.stringify({start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one}),
           })
-        console.log(response)
 
         return response;
 
@@ -438,10 +435,8 @@ export async function updateUserDetails(userId, attribute, newValue) {
         });
         const resJson = await res.json();
 
-        console.log("NEW TOKEN: ", resJson.token);
-
         // Stores the resulting Auth Token
-        localStorage.setItem("authToken", resJson.token);
+        Cookies.set("authToken", resJson.token);
 
 
         return
@@ -521,7 +516,6 @@ export async function fetchPreferences() {
 };
 
 export async function deletePreferences(id) {
-    console.log('Fetch student preferences');
     try {
         let response; 
         response = await axios.delete(`${BASE_URL}/api/preferences/${id}`);

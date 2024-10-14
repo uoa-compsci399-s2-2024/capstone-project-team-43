@@ -563,3 +563,13 @@ export async function fetchProjectById(projectId) {
         throw error; 
     }   
 };
+
+export async function getStatusSemesters(status) {
+    try {
+        const response = await fetch(`${BASE_URL}/api/semesters/status/${status}`);
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching semesters:', error);
+        throw error;    }
+};

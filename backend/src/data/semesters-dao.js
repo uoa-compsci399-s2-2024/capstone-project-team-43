@@ -56,6 +56,29 @@ export async function getSemesters() {
   }
 }
 
+// Gets all semesters with given status
+export async function getStatusSemesters(status) {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    /** @type {Semester[]} */
+    const [semesters] = await connection.query('SELECT * FROM SEMESTER WHERE status = ?', [status]);
+
+    return semesters;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+    return [];
+  } finally {
+    // release connection
+    if (connection) connection.release();
+  }
+}
+
 /**
  * Gets a semester given an id
  *

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createSemester, deleteSemester, getSemester, getSemesters, updateSemester } from "../../data/semesters-dao.js";
+import { createSemester, deleteSemester, getSemester, getSemesters, updateSemester, getStatusSemesters} from "../../data/semesters-dao.js";
 import { getUsers, updateTeam, getUsersByTeam, createUser, createStudent, deleteUser, deleteUserByRole } from "../../data/users-dao.js";
 import { createTeam, deleteTeamBySemester } from "../../data/teams-dao.js";
 import multer from "multer";
@@ -33,6 +33,12 @@ router.get("/:id", async (req, res) => {
 // Retrieves all semesters
 router.get("/", async (req, res) => {
     return res.json(await getSemesters())
+});
+
+// Retrieves all semester with status
+router.get("/status/:status", async (req, res) => {
+    const status = req.params.status;
+    return res.json(await getStatusSemesters(status));
 });
 
 // Adds students or teams to database from CSV 

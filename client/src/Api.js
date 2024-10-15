@@ -530,7 +530,7 @@ export async function deletePreferences(id) {
 
 export async function deleteProject(id) {
     try {
-        const response = await axios.delete(`http://localhost:3001/api/projects/${id}`);
+        const response = await axios.delete(`/api/projects/${id}`);
         return response.status;
     } catch (error) {
         console.error('Error deleting project:', error);

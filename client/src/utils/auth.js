@@ -34,7 +34,7 @@ export const getUserRole = async () => {
             return null;
         }
 
-        let res = await fetch("http://localhost:3001/api/auth/role", {
+        let res = await fetch("/api/auth/role", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -70,7 +70,7 @@ export const Logout = async (e) => {
     e.preventDefault();
     try {
         const token = Cookies.get('authToken');
-        let res = await fetch("http://localhost:3001/api/auth/logout", {
+        let res = await fetch("/api/auth/logout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -129,25 +129,25 @@ export const checkPath = async () => {
             }
 
         }
-    } catch (err) {}
+    } catch (err) { }
 };
 
 export const isLoggedIn = async () => {
     try {
-    const token = Cookies.get("authToken");
-    let status = false;
-    
-    if (!token || token === 'null') {
-        status = false;
-    } else {
-        status = true;
+        const token = Cookies.get("authToken");
+        let status = false;
+
+        if (!token || token === 'null') {
+            status = false;
+        } else {
+            status = true;
+        }
+
+        await checkPath();
+
+        return status;
+    } catch (err) {
+        return false;
     }
-
-    await checkPath();
-
-    return status;
-} catch (err) {
-    return false;
-}
 
 }

@@ -22,7 +22,7 @@ const LandingPage = () => {
     useEffect(() => {
         async function checkLoggedIn() {
             try {
-                if(await isLoggedIn()) {
+                if (await isLoggedIn()) {
                     console.log('logged in!')
                     navigate("/dashboard");
                 }
@@ -51,11 +51,11 @@ const LandingPage = () => {
             setAdminHover(true); //'Capstone course coordinator?');
         }
         // hide general tool tip
-        setNoHover(false); 
+        setNoHover(false);
     };
 
     // hide relevant tooltip after button hover 
-    const handleMouseLeave = (buttonId) => { 
+    const handleMouseLeave = (buttonId) => {
 
         if (studentHover) {
             setStudentHover(false); //'Currently enrolled in CS399?');
@@ -65,14 +65,14 @@ const LandingPage = () => {
             setAdminHover(false); //'Capstone course coordinator?');
         }
         // show general tooltip again
-        setNoHover(true); 
+        setNoHover(true);
     };
 
     // Handles the login form submission, stores the response auth token in local storage
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
         try {
-            let res = await fetch("http://localhost:3001/api/auth/login", {
+            let res = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -102,7 +102,7 @@ const LandingPage = () => {
     const handleSubmitRegister = async (e) => {
         e.preventDefault();
         try {
-            let res = await fetch("http://localhost:3001/api/auth/register", {
+            let res = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -134,9 +134,9 @@ const LandingPage = () => {
     };
 
     const switchForm = () => {
-        console.log('showing login form',isLogin);
+        console.log('showing login form', isLogin);
         setIsLogin(!isLogin);
-        console.log('showing login form',isLogin);
+        console.log('showing login form', isLogin);
     }
 
 
@@ -159,113 +159,113 @@ const LandingPage = () => {
     }
 
     // Only used for console debugging
-    const checkLogin = async() => {
-    console.log('Logged in: ', await isLoggedIn());
+    const checkLogin = async () => {
+        console.log('Logged in: ', await isLoggedIn());
     }
     checkLogin();
 
     return (
-         <div className="landing-page" id="fill">
+        <div className="landing-page" id="fill">
             <div className='landing-header'>
-                <img className = 'logo' src={require('../../media/logo.png')}></img>
+                <img className='logo' src={require('../../media/logo.png')}></img>
                 <h1>Cornerstone</h1>
                 <h2>Connecting Computer Science Students with Innovative Projects</h2>
             </div>
             {!userType && <div className='content-container'>
                 <div className='select-user-form-container'>
-                    <div className= 'tooltip-container'>
+                    <div className='tooltip-container'>
                         {/* default tool tip */}
                         <h3 className={`default-tooltip ${noHover ? 'visible' : ''}`}>
                             Select User Type
                         </h3>
                         {/* specific tooltips shown when button is hovered over */}
-                        <h3 className= {`tooltip ${studentHover ? 'visible' : ''}`} style={{ opacity: studentHover ? 1:0 }}>
-                            Currently enrolled in CS399? 
+                        <h3 className={`tooltip ${studentHover ? 'visible' : ''}`} style={{ opacity: studentHover ? 1 : 0 }}>
+                            Currently enrolled in CS399?
                         </h3>
-                        <h3 className={`tooltip ${clientHover ? 'visible' : ''}`} style={{ opacity: clientHover ? 1:0 }}>
+                        <h3 className={`tooltip ${clientHover ? 'visible' : ''}`} style={{ opacity: clientHover ? 1 : 0 }}>
                             Wanting to propose a project and become a client?
                         </h3>
-                        <h3 className={`tooltip ${adminHover ? 'visible' : ''}`} style={{ opacity: adminHover ? 1:0 }}>
-                            Teaching CS399? 
+                        <h3 className={`tooltip ${adminHover ? 'visible' : ''}`} style={{ opacity: adminHover ? 1 : 0 }}>
+                            Teaching CS399?
                         </h3>
                     </div>
-                    <button className = 'main-button student-button' id='hoverableStudent' 
-                        onMouseEnter={() => handleMouseEnter('hoverableStudent')} 
+                    <button className='main-button student-button' id='hoverableStudent'
+                        onMouseEnter={() => handleMouseEnter('hoverableStudent')}
                         onMouseLeave={handleMouseLeave}
                         onClick={() => setUserType('student')}>
-                            Student
+                        Student
                     </button>
-                    <button className = 'main-button client-button' id='hoverableClient' 
-                        onMouseEnter={() => handleMouseEnter('hoverableClient')} 
+                    <button className='main-button client-button' id='hoverableClient'
+                        onMouseEnter={() => handleMouseEnter('hoverableClient')}
                         onMouseLeave={handleMouseLeave}
                         onClick={() => setUserType('client')}>
-                            Client
-                    </button>                
-                    <button className = 'main-button admin-button' id='hoverableAdmin' 
-                        onMouseEnter={() => handleMouseEnter('hoverableAdmin')} 
+                        Client
+                    </button>
+                    <button className='main-button admin-button' id='hoverableAdmin'
+                        onMouseEnter={() => handleMouseEnter('hoverableAdmin')}
                         onMouseLeave={handleMouseLeave}
                         onClick={() => setUserType('admin')}>
-                            Administrator
-                    </button> 
+                        Administrator
+                    </button>
                 </div>
                 {/* link to capitalise */}
                 <div className='capitalise-container'>
                     <p>Want to view previous Capstone projects?</p>
                     <button className='capitalise-button'
                         onClick={() => window.open('https://www.capitalise.space/', '')}>
-                            Visit <CapitaliseLogo className='capitalise-logo'/>
-                            {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
+                        Visit <CapitaliseLogo className='capitalise-logo' />
+                        {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                     </button>
                 </div>
             </div>}
             {/*  Redirect Students to google sign in   */}
-            {(userType==='student') && (
+            {(userType === 'student') && (
                 <div className='content-container student-admin-login'>
                     <div className='form'>
                         <h3>Sign in</h3>
-                        <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/student"}>
-                            <img src= {googleIcon} alt ='icon' className='upload-icon'></img> 
+                        <button className='main-button' onClick={() => window.location.href = "/api/auth/google/role/student"}>
+                            <img src={googleIcon} alt='icon' className='upload-icon'></img>
                             Sign in with your UoA Google account
                         </button>
                         <button onClick={handleGoBack} className='main-button form-button'>
                             Go Back
-                        </button>                
+                        </button>
                     </div>
                     <div className='capitalise-container'>
                         <p>Want to view previous Capstone projects?</p>
                         <button className='capitalise-button'
                             onClick={() => window.open('https://www.capitalise.space/', '')}>
-                                Visit <CapitaliseLogo className='capitalise-logo'/>
-                                {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
+                            Visit <CapitaliseLogo className='capitalise-logo' />
+                            {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                         </button>
                     </div>
                 </div>
             )}
-                        {/*  Redirect Admins to google sign in   */}
-                        {(userType==='admin') && (
+            {/*  Redirect Admins to google sign in   */}
+            {(userType === 'admin') && (
                 <div className='content-container student-admin-login'>
                     <div className='form'>
                         <h3>Sign in</h3>
-                        <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/admin"}>
-                            <img src= {googleIcon} alt ='icon' className='upload-icon'></img> 
+                        <button className='main-button' onClick={() => window.location.href = "/api/auth/google/role/admin"}>
+                            <img src={googleIcon} alt='icon' className='upload-icon'></img>
                             Sign in with your UoA Google account
                         </button>
                         <button onClick={handleGoBack} className='main-button form-button'>
                             Go Back
-                        </button>        
+                        </button>
                     </div>
                     <div className='capitalise-container'>
                         <p>Want to view previous Capstone projects?</p>
                         <button className='capitalise-button'
                             onClick={() => window.open('https://www.capitalise.space/', '')}>
-                                Visit <CapitaliseLogo className='capitalise-logo'/>
-                                {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
+                            Visit <CapitaliseLogo className='capitalise-logo' />
+                            {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                         </button>
                     </div>
                 </div>
             )}
             {/* Redirect Clients to create an account or sign in with google */}
-            {(userType==='client' && isLogin) && (
+            {(userType === 'client' && isLogin) && (
                 <div className='content-container login'>
                     <form className="form login" onSubmit={handleSubmitLogin} method="POST">
                         <h3>Sign in</h3>
@@ -285,8 +285,8 @@ const LandingPage = () => {
                         </div>
                         <div className='google-container login'>
                             <p>Or</p>
-                            <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>
-                                <img src= {googleIcon} alt ='icon' className='upload-icon'></img> 
+                            <button className='main-button' onClick={() => window.location.href = "/api/auth/google/role/client"}>
+                                <img src={googleIcon} alt='icon' className='upload-icon'></img>
                                 Sign in with Google
                             </button>
                         </div>
@@ -296,7 +296,7 @@ const LandingPage = () => {
                         <a className='redirect-text link' onClick={switchForm}> Sign Up</a>
                     </div>
                 </div>)}
-            {(userType==='client' && !isLogin) && (
+            {(userType === 'client' && !isLogin) && (
                 <div className='content-container register'>
                     <form className="form register" onSubmit={handleSubmitRegister} method="POST">
                         <h3>Create an Account</h3>
@@ -322,17 +322,18 @@ const LandingPage = () => {
                         </div>
                         <div className='google-container register'>
                             <p>Or</p>
-                            <button className = 'main-button' onClick={() => window.location.href = "http://localhost:3001/api/auth/google/role/client"}>
-                                <img src= {googleIcon} alt ='icon' className='upload-icon'></img> 
+                            <button className='main-button' onClick={() => window.location.href = "/api/auth/google/role/client"}>
+                                <img src={googleIcon} alt='icon' className='upload-icon'></img>
                                 Sign in with Google
                             </button>
-                        </div> 
+                        </div>
                     </form>
                     <div className='redirect-container'>
-                            <p className='redirect-text'>Already Registered?</p>
-                            <a className='redirect-text link' onClick={switchForm}>Sign in</a>
+                        <p className='redirect-text'>Already Registered?</p>
+                        <a className='redirect-text link' onClick={switchForm}>Sign in</a>
                     </div>
-                </div> )}
-            </div>
-    )};
+                </div>)}
+        </div>
+    )
+};
 export default LandingPage;

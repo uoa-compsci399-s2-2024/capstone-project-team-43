@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt'; // Will use this for password hashing
 dotenv.config();
 
 // Gets the database name from .env file
-const DB_NAME = process.env.DB_NAME;
 const DEV_EMAIL = process.env.DEV_EMAIL;
 const DEV_USER_ROLE = process.env.DEV_USER_ROLE;
 const TESTING = process.env.TESTING;

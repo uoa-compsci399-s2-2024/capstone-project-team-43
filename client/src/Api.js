@@ -43,13 +43,12 @@ export async function fetchProjects(status) {
  */
 export async function fetchPublishedProjects() {
     try {
-        const response = await fetch(`${BASE_URL}/api/projects/published`);
+        const response = await fetch(`/api/projects/published`);
 
         return await response.json();
     } catch (error) {
         console.error('Error fetching published projects:', error);
         throw error;
-        return [];
     }
 };
 
@@ -100,7 +99,7 @@ export async function downloadCSV() {
 
 export async function downloadCSVClients(semester_id) {
     try {
-        const response = await fetch(`${BASE_URL}/api/users/download/clients/${semester_id}`, {
+        const response = await fetch(`/api/users/download/clients/${semester_id}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json"
@@ -258,7 +257,7 @@ export async function createProject(title, description, owner_id, special_requir
 
 export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {
     try {
-        const response = await fetch(`${BASE_URL}/api/semesters/`, {
+        const response = await fetch(`/api/semesters/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -360,7 +359,7 @@ export async function fetchProjectsBySemester(semesterId) {
  */
 export async function fetchProjectsByUser(userId) {
     try {
-        const response = await fetch(`${BASE_URL}/api/projects/user/${userId}`);
+        const response = await fetch(`/api/projects/user/${userId}`);
         return await response.json();
     } catch (error) {
         console.error('Error fetching user projects:', error);
@@ -492,7 +491,7 @@ export async function updateSemesterDetails(semesterID, attribute, newValue) {
 export async function updatePreferences(team_id, project_id, preference) {
 
     try {
-        const response = await fetch(`${BASE_URL}/api/preferences`, {
+        const response = await fetch(`/api/preferences`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -510,19 +509,18 @@ export async function fetchPreferences() {
     console.log('Fetch student preferences');
     try {
         let response;
-        response = await fetch(`${BASE_URL}/api/preferences/`);
+        response = await fetch(`/api/preferences/`);
         return await response.json();
     } catch (error) {
         console.error('Error fetching preferences:', error);
         throw error;
-        return [];
     }
 };
 
 export async function deletePreferences(id) {
     try {
         let response;
-        response = await axios.delete(`${BASE_URL}/api/preferences/${id}`);
+        response = await axios.delete(`/api/preferences/${id}`);
         return response.status;
     } catch (error) {
         console.error('Error deleting preference:', error);
@@ -553,7 +551,7 @@ export async function deleteProject(id) {
  */
 export async function fetchProjectById(projectId) {
     try {
-        const response = await fetch(`${BASE_URL}/api/projects/${projectId}`);
+        const response = await fetch(`/api/projects/${projectId}`);
         console.log('project fetched:', response[0])
         return await response.json();
     } catch (error) {
@@ -564,7 +562,7 @@ export async function fetchProjectById(projectId) {
 
 export async function getStatusSemesters(status) {
     try {
-        const response = await fetch(`${BASE_URL}/api/semesters/status/${status}`);
+        const response = await fetch(`/api/semesters/status/${status}`);
 
         return await response.json();
     } catch (error) {

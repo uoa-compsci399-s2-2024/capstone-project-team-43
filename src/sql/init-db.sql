@@ -12,6 +12,7 @@ CREATE TABLE PROJECT (
     special_requirements TEXT(4096),
     available_resources TEXT(4096),
     created DATE NOT NULL,
+    available_from DATETIME DEFAULT CURRENT_TIMESTAMP,
     expiry DATE NOT NULL,
     semester_id INTEGER NOT NULL,
     status ENUM('rejected', 'accepted', 'pending') NOT NULL,
@@ -83,22 +84,6 @@ CREATE TABLE PREFERENCE (
     created TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3)
 );
 
--- undecided on if we need the below views 
-
--- CREATE VIEW CLIENTS AS
--- SELECT *
--- FROM USER
--- WHERE role = 'client';
-
--- CREATE VIEW ADMINS AS
--- SELECT *
--- FROM USER
--- WHERE role = 'admin';
-
--- CREATE VIEW STUDENTS AS
--- SELECT *
--- FROM USER
--- WHERE role = 'student';
 
 -- INSERT INTO PROJECT 
 --     (title, description, owner_id, other_client_details, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry, client_name, client_email) 

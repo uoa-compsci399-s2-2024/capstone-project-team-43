@@ -5,14 +5,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Creates a pool of connections to the database
-// const pool = mysql.createPool({
-//   host: 'awseb-e-huazsmxezu-stack-awsebrdsdatabase-tkhcd1kkcmwl.c7doezidupu4.ap-southeast-2.rds.amazonaws.com',
-//   user: 'cornerstone',
-//   password: 'error404',
-//   port: '3306',
-//   multipleStatements: true
-// });
-
 const pool = mysql.createPool({
   host: process.env.RDS_HOSTNAME,
   user: process.env.RDS_USERNAME,

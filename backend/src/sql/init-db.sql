@@ -12,7 +12,7 @@ CREATE TABLE PROJECT (
     special_requirements TEXT(4096),
     available_resources TEXT(4096),
     created DATE NOT NULL,
-    available_from DATE DEFAULT CURRENT_TIMESTAMP,
+    available_from DATETIME DEFAULT CURRENT_TIMESTAMP,
     expiry DATE NOT NULL,
     semester_id INTEGER NOT NULL,
     status ENUM('rejected', 'accepted', 'pending') NOT NULL,

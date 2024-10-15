@@ -53,8 +53,10 @@ const Project = ({ projectId, view, expanded, expandProject=null  }) => {
             {project &&
             <div className="project-content">
                 <div className="project-header">
-                    <p>{project.project_number > 0 && `${project.project_number}.`} {project.title}</p>
+                    {view === 'chosen' && <p>{project.project_number > 0 && `${project.project_number}.`}<br></br>{project.title}</p> }
+                    {view !== 'chosen' && <p>{project.project_number > 0 && `${project.project_number}.`} {project.title}</p>}
                 </div>
+                {(view !== 'preferences' && view !=='chosen') && 
                 <div className="project-data">
                     <div className="project-data-box">
                         <div className="project-data-container">
@@ -96,12 +98,23 @@ const Project = ({ projectId, view, expanded, expandProject=null  }) => {
                             </div>
                         </div>
                     </div>
-                </div>
-                {(projectButtons && !isAdmin) && < div className="expand-button-container">
+                </div>}
+                {(view !== 'preferences' && view !=='chosen') && (projectButtons && !isAdmin) && < div className="expand-button-container">
                     <div className="expand-text">
                        {expanded ? 'Click Anywhere to Collapse' : 'Click Anywhere to Expand'}
                     </div>
                 </div>}
+                {/* Only display description on project preference form */}
+                {view === 'preferences' && 
+                    <div className="project-data">
+                        <div className="project-data-box">
+                            <div className="project-data-container">
+                                <div className="project-data-text">
+                                    <p>{project.description || 'None'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
             </div>}             
         </div> 
         </div>

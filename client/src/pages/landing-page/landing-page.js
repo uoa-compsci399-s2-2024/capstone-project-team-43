@@ -71,8 +71,6 @@ const LandingPage = () => {
     // Handles the login form submission, stores the response auth token in local storage
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
-        console.log("Email: ", email);
-        console.log("Password: ", password);
         try {
             let res = await fetch("http://localhost:3001/api/auth/login", {
                 method: "POST",

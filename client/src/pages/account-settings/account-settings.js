@@ -202,7 +202,7 @@ const AccountSettings = ({ }) => {
                             isStudent={isStudent}
                         /> )} 
                     {/* Display team name & number if user is student and in a team */ }
-                    { team && user.role === 'student' && (
+                    {/* { team && user.role === 'student' && (
                         <div className='content-section'>
                             <h2>Your Team</h2>
                             <>
@@ -210,7 +210,7 @@ const AccountSettings = ({ }) => {
                                 <AccountDetail description="Team name" data={team.team_name} isStudent={isStudent}/>
                             </>
                         </div>
-                    )}      
+                    )}       */}
                 </div>
                 <div className='account-settings-buttons'>
                         {!showDeletionWarning && <SignOutButton/>}

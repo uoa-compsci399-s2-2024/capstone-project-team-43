@@ -1,0 +1,515 @@
+
+.project-preferences-page .content{
+  height: 90vh;
+  min-width: 90vw;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: end; */
+  overflow-y: hidden;
+}
+
+
+.project-preferences-page .page-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap:0px;
+  height: 85vh !important;
+  max-height: 85vh  !important;
+  min-width: 90vw;
+  /* overflow-y: hidden; */
+}
+
+.pref-container {
+    display: flex;
+    justify-content: center;
+    /* max-height: 70vw; */
+    /* width: 80vw; */
+    gap:3vh
+}
+
+.projects-display-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    max-height: 70vh;
+    width: 60vw;
+    max-width: 60vw;
+    background-color: transparent;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+/* displays available projects */
+.pre-projects-container{
+    border: 9px solid white;
+    border-radius: 15px;
+    min-height: 95%;
+    min-width: 95%;
+    max-height: 95%;
+    max-width: 95%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:15px;
+    margin: 1vh;
+    overflow-y: scroll;
+    padding: 1vh;
+}
+
+.pref-projects-container{
+  border: 9px solid white;
+  border-radius: 15px;
+  min-height: 95%;
+  min-width: 95%;
+  max-height: 95%;
+  max-width: 95%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:15px;
+  margin: 1vh;
+  overflow-y: scroll;
+  padding: 1vh;
+  align-items: stretch;
+}
+
+.project-preferences-page .full-project-wrapper{
+    background-color: var(--transparent);
+
+}
+
+.project-preferences-page .full-project-wrapper:hover{
+    background-color: white;
+}
+
+.project-preferences-page .project-container{
+    background-color: transparent;
+    font-size: 12px !important;
+}
+
+.project-preferences-page .project-container .project-data p{
+    font-size: 12px !important;
+}
+
+.project-preferences-page .project-container .project-header p{
+    font-size: 15px !important;
+}
+.project-preferences-page .project-container.collapsed{
+    /* width: 11vw; */
+    height: 8vw; 
+    /* margin-bottom: -1vh; */
+}  
+
+
+.preferences-display-wrapper{
+    display: flex;
+    height: 70vh;
+    width: 20vw;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.pref-button-wrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.pref-button{
+    flex-grow: 1;
+    flex: 1;
+    margin: 1vh;
+    background-color: var(--theme-mid);
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.pref-button > *{
+  padding: 0;
+  margin: 0;
+}
+
+.pref-projects-container::-webkit-scrollbar {
+    width: 10px; 
+}
+
+
+.pref-projects-container::-webkit-scrollbar-thumb{
+  background-color: var(--transparent);
+   border-radius: 10px; 
+}
+
+.pref-projects-container::-webkit-scrollbar-track{
+    background-color: inherit;
+    border-radius: 10px;
+}
+
+.submit-pref-button-wrapper{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: end;
+}
+
+.submit-pref-button{
+    background-color: var(--theme-dark);
+    font-size: 19px;
+    color: white;
+    margin: 1vh;
+    flex-grow: 1;
+    flex:1;
+
+}
+
+.submit-pref-button:hover{
+    background-color: var(--text-color-dark) !important;
+}
+
+
+.pref-button p{
+  font-size: 12 !important;
+}
+
+.confirmation-window{
+  width: auto;
+  height: auto;
+}
+
+.confirmation-content{
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+
+}
+
+.confirmation-projects{
+  display: flex;
+  justify-content: space-evenly;
+  width: auto;
+  height: auto;
+  padding: 3vh;
+  gap: 1.5vh;
+}
+
+.confirmation-checks{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+}
+
+.confirmation-text{
+  font-weight: 700;
+}
+
+.confirmation-checks input{
+  max-width: 12px;
+  max-height: 12px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.confirmation-checks label{
+  width: auto;
+  font-weight: 500;
+}
+
+.confirmation-buttons{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap:1.5vh;
+  margin-top: 2vh;
+}
+
+.chosen-project .project-container{
+  width: 10vw;
+}
+.chosen-project .project-header p{
+  color: var(--text-color-dark);
+}
+
+.chosen-project .project-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center !important;
+}
+.chosen-project .project-data{
+  display: none;
+}
+
+.project-preferences-page .redirect-button{
+  background-color: transparent;
+}
+
+.project-preferences-page .redirect-button:hover{
+  background-color: transparent !important;
+  opacity: 0.8;
+}
+
+.project-preferences-page .confirm-button{
+  background-color: var(--theme-dark);
+  font-size: 19px;
+  color: white; 
+  padding: 1vh; 
+}
+
+.project-preferences-page .confirm-button:hover{
+  background-color: var(--theme-mid) !important;
+  color: white !important;
+  opacity: 1.0 !important;
+
+}
+
+.success .confirmation-text{
+  margin-top: 2vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+  font-weight: 600;
+}
+
+/**           PROJECT PREFERENCE FORM             **/
+/* 
+.projectPreferences{
+    background-color: #2979FF;
+    display: grid;
+    width: 100%;
+    min-height: 100vh;
+    position: absolute;
+  }
+  
+  .projectPreferences #projectPreferenceselements h2{
+    color: white;
+    margin-left: 3vw;
+  }
+  
+  .preferenceProjects{
+    background-color: white;
+    max-width: 80%;
+    min-height: 70%;
+    min-width: 80%;
+    position:static;
+    margin: 0;
+    margin-left: 3vw;
+    border-radius: 10px;
+    overflow: auto;
+    flex-wrap: wrap;
+    display: flex;
+    gap: 10px;
+    align-content: flex-start;
+  }
+  
+  .projectPreferences #sidebuttons{
+    width: 10%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    margin-left: 88%;
+    top: 7vh;
+  }
+  
+  .projectPreferences #sidebuttons button:hover{
+    background-color: lightgray;
+    color: black;
+    
+  }
+  
+  .projectPreferences #sidebuttons button{
+    border-radius: 10px;
+    padding: 8px;
+    width: 90%;
+    height: 100%;
+    text-align: center;
+    border: 0.5px solid gray;
+    border-bottom: 2px solid grey;
+    background-color: white;
+    margin-top: 10px;
+    position: relative;
+    margin-left: 0;
+    align-self: center;
+  }
+  
+  .projectPreferences #preferencesubmit button{
+    border-radius: 10px;
+    padding: 8px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border: 0.5px solid gray;
+    border-bottom: 2px solid grey;
+    background-color: white;
+    position: relative;
+    margin-left: 0;
+  }
+  
+  .projectPreferences #preferencesubmit{
+    width: 9%;
+    min-width:min-content;
+    max-width: 12vw;
+    height: 9%;
+    left: 88.5%;
+    position:relative;
+    top:10vh;
+  }
+  
+  .projectPreferences #preferencesubmit button{
+    height: 50%;
+    background-color: #003998;
+    color: white;
+    border-color: #003998;
+    position: relative;
+  }
+  
+  .projectPreferences #agreeon{
+    margin-top: 35%;
+    position:absolute;
+    margin-left: 3vw;
+  }
+  
+  .projectPreferences .preferenceProjects .project{
+    background-color: white;
+    margin: 1%;
+    border-radius: 10px;
+    border: 1px solid #003998;
+    text-align:left;
+    max-width: 18vw;
+    max-height: 28vh;
+    min-width: 200px;
+    min-height: 100px;
+    height: fit-content;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+  }
+  
+  .projectPreferences .preferenceProjects .project #projectDescription{
+    margin-left: 5%;
+    font-size:small;
+    overflow: auto;
+    width:fit-content;
+    min-width: 90%;
+    min-height: 100%;
+  }
+  
+  
+  
+  .projectPreferences #onsubmission{
+    background-color: #2979FF;
+    display: none;
+    height: 100vh;
+    width: 100vw;
+    text-align: center;
+  }
+  
+  .projectPreferences #onsubmission h2{
+    margin-left: 0;
+    position: relative;
+    color: white;
+  }
+  
+  
+  .projectPreferences #onsubmission #return button{
+    background-color: #003998;
+    color: white;
+    border: 1px solid #003998;
+    border-radius: 10px;
+    height: 5vh;
+    width: 10vw;
+  }
+  
+  
+  
+  .projectPreferences #onsubmission #chosenProjects{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-start;
+  }
+  
+  .projectPreferences #onsubmission #chosenProjects .project{
+    background-color: white;
+    margin: 3%;
+    margin-top: 30vh;
+    border-radius: 10px;
+    border: 1px solid #003998;
+    max-width: 20vw;
+    max-height: 18vh;
+    overflow: hidden;
+  }
+  
+  #projectpreferenceconfirm{
+    min-height: fit-content;
+    min-width: fit-content;
+    width: 50%;
+    top: 30%;
+    z-index: 1;
+    align-self: center;
+    margin: 0;
+    position: fixed;
+    text-align: center;
+    justify-self: center;
+    background-color: #2979FF;
+    color: white;
+    border: 1px solid #003998;
+    border-radius: 10px;
+    display: none;
+  }
+  
+  #confirmprojects{
+    height: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-content: flex-start;
+  }
+  
+  #confirmprojects .project{
+    background-color: white;
+    color: black;
+    margin: 3%;
+    border-radius: 10px;
+    border: 1px solid #003998;
+    text-align:center;
+    max-width: 20vw;
+    max-height: 20vh;
+    min-width: 80px;
+    min-height: 80px;
+    height: fit-content;
+  }
+  
+  #projectpreferenceconfirm p{
+    font-size: small;
+  }
+  
+  #projectpreferenceconfirm button{
+    background-color: #003998;
+    margin: 1%;
+    padding: 1%;
+    width: 100px;
+    color: white;
+    border: solid 1px #003998;
+    border-radius: 10px;
+  }
+  
+  #projectPreferenceselements{
+    opacity: 100%;
+    background-color: #2979FF;
+  }
+  
+  
+  
+  
+  
+   */

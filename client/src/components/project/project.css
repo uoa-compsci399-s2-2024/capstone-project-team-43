@@ -101,6 +101,15 @@
     text-overflow: ellipsis;
 }
 
+.project-preferences-page .project-container.collapsed .project-data-text{
+    min-width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 100;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .project-expanded .project-data-text{
     min-width: 100%;
 }

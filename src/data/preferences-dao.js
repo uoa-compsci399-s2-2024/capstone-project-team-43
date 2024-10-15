@@ -1,4 +1,4 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -10,9 +10,6 @@ dotenv.config();
  * @property {number} project_id
  * @property {number} preference
  */
-
-// Gets the database name from the .env file
-const DB_NAME = process.env.DB_NAME;
 
 /**
  * Gets all preferences

@@ -3,7 +3,7 @@
 }
 
 .page-content {
-    position: relative; 
+    position: relative;
     z-index: 1;
     margin-top: 0vh;
 }
@@ -17,14 +17,14 @@
 
 /* DROP DOWN MENU */
 
-.semester-heading{ 
+.semester-heading {
     display: flex;
     flex-direction: row;
     justify-content: center;
     margin-top: -2vh;
 }
 
-.dropdown-button{
+.dropdown-button {
     background-image: url('/../client/src/media/drop-icon.png');
     background-size: 60% 60%;
     background-repeat: no-repeat;
@@ -39,7 +39,7 @@
     position: relative;
 }
 
-.dropdown-menu{
+.dropdown-menu {
     text-decoration: none;
     list-style-type: none;
     display: none;
@@ -54,7 +54,7 @@
     border-radius: 10px;
 }
 
-.dropdown-menu-button{
+.dropdown-menu-button {
     background-color: inherit;
     font-size: 18px;
     font-weight: normal;
@@ -62,7 +62,7 @@
     text-decoration: none;
 }
 
-.dropdown-menu-button:hover{
+.dropdown-menu-button:hover {
     font-weight: bold;
     background-color: inherit;
 
@@ -71,17 +71,17 @@
 /* UPLOADING/DOWNLOADING FILES  */
 
 
-.upload-button{
+.upload-button {
     width: auto;
 }
 
-.upload-icon{
+.upload-icon {
     /* background-image: ; */
     max-width: 20px;
     margin: -5px 3px -5px 0px;
 }
 
-.download-icon{
+.download-icon {
     /* background-image: ; */
     max-width: 25px;
     margin: -5px 3px -2px 0px;
@@ -96,7 +96,7 @@
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: center;
-    padding: 0; 
+    padding: 0;
     margin: 0;
 }
 
@@ -129,10 +129,10 @@
 .select-file-default {
     opacity: 0;
     position: absolute;
-    z-index: -1; 
+    z-index: -1;
 }
 
-.file-name{
+.file-name {
     font-size: 15px;
     margin: 0px;
 }

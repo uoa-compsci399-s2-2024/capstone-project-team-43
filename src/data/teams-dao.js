@@ -1,10 +1,7 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 
 dotenv.config();
-
-// Gets the database team_name from .env file
-const DB_NAME = process.env.DB_NAME;
 
 /**
  * @typedef {object} Team // defines the team object
@@ -20,25 +17,25 @@ const DB_NAME = process.env.DB_NAME;
  * @returns {Promise<Teams[]>}
  */
 export async function getTeam(id) {
-    let connection;
-    try {
-      // Get connection from pool
-      connection = await pool.getConnection();
-  
-      await connection.query(`USE ${DB_NAME};`);
-  
-      const [teams] = await connection.query('SELECT * FROM TEAM WHERE id = ?', [id]);
-      return [teams];
-  
-    } catch (err) {
-      console.error('Error executing query/s:', err.message);
-    } finally {
-  
-      // If there is a connection, release it
-      if (connection) connection.release();
-  
-    }
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    await connection.query(`USE ${DB_NAME};`);
+
+    const [teams] = await connection.query('SELECT * FROM TEAM WHERE id = ?', [id]);
+    return [teams];
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally {
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
   }
+}
 /**
  * Retrieves all teams of a semester given the semester id 
  *
@@ -98,7 +95,7 @@ export async function createTeam(team_number, team_name, semester_id) {
 
     /** @type {Team} */
     const [team] = await connection.query("SELECT * FROM TEAM WHERE id = ?", [response.insertId]); // insertId is the auto-generated Primary Key value
-    
+
     return team[0];
 
   } catch (err) {
@@ -195,14 +192,14 @@ export async function getCSV(teams) {
   try {
     let CSVData = "Team name,Team Number,Project ID\n";
     for (let i = 0; i < teams.length; i++) {
-      
-        CSVData += teams[i].team_name + "," + teams[i].team_number + "," + teams[i].project_id + "\n";
-      }
 
-      return CSVData;
+      CSVData += teams[i].team_name + "," + teams[i].team_number + "," + teams[i].project_id + "\n";
+    }
+
+    return CSVData;
 
   } catch (err) {
     console.error('Error executing query/s:', err);
-    return[];
+    return [];
   }
 }

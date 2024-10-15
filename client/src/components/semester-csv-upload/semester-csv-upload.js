@@ -5,7 +5,7 @@ import './semester-csv-upload.css';
 const SemesterCSVUpload = ({ semesterID, fileContent }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [error, setError] = useState('');
-    const [successMessage, setSuccessMessage] = useState(''); 
+    const [successMessage, setSuccessMessage] = useState('');
     const fileInput = useRef(null)
 
     // when true will load students from testStudentData.csv into db
@@ -13,7 +13,7 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
 
 
     // Initialise required headers for the CSV depending on the file content type
-    let requiredHeaders; 
+    let requiredHeaders;
     if (fileContent === 'students') {
         requiredHeaders = ['Student name', 'Student ID', 'Student SIS ID', 'Email', 'Section name'];
     } else if (fileContent === 'teams') {
@@ -34,7 +34,7 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
         } else {
             // return error if file is not a CSV
             setError('Please upload a CSV file');
-            setSelectedFile(null);  
+            setSelectedFile(null);
         }
     };
 
@@ -51,7 +51,7 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
 
         csvReader.onload = (e) => {
             const content = e.target.result;
-            const rows = content.split('\n');        
+            const rows = content.split('\n');
             const header = rows[0].split(',');
 
             // Check file has required headers
@@ -63,14 +63,14 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
                 formData.append('myFile', selectedFile, selectedFile.name);
 
                 // send CSV content to server
-                axios.post(`http://localhost:3001/api/semesters/${semesterID}/upload/${fileContent}`, formData, {
-                        headers: {
+                axios.post(`/api/semesters/${semesterID}/upload/${fileContent}`, formData, {
+                    headers: {
                         'Content-Type': 'multipart/form-data'
-                        }
-                    })
+                    }
+                })
                     .then(response => {
-                        setSuccessMessage(`Upload successful! ${fileContent.charAt(0).toUpperCase() + fileContent.slice(1,-1)} data has been added.`);
-                        setSelectedFile(null); 
+                        setSuccessMessage(`Upload successful! ${fileContent.charAt(0).toUpperCase() + fileContent.slice(1, -1)} data has been added.`);
+                        setSelectedFile(null);
                     })
                     .catch(error => {
                         console.error('Error uploading file', error);
@@ -95,12 +95,12 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
                     {selectedFile && <p className='file-name'>{selectedFile.name}</p>}
                     {/* Hides the functioning select file button because it's ugly */}
                 </div>
-                <input className = 'select-file-default' type='file' ref={fileInput} accept='.csv' onChange={onFileSelect} />
+                <input className='select-file-default' type='file' ref={fileInput} accept='.csv' onChange={onFileSelect} />
                 {/* Confirm upload */}
-                <div className = 'upload-file-container'>
-                    {selectedFile && <button className = 'pop-up-button confirm-upload-button' onClick={onFileUpload}>Upload {fileContent === 'students' ? 'Student' : 'Team'} Data</button>}
-                    {error && <p className='upload-error-message'>{error}</p>}  
-                    {successMessage && <p className='upload-success-message'>{successMessage}</p>} 
+                <div className='upload-file-container'>
+                    {selectedFile && <button className='pop-up-button confirm-upload-button' onClick={onFileUpload}>Upload {fileContent === 'students' ? 'Student' : 'Team'} Data</button>}
+                    {error && <p className='upload-error-message'>{error}</p>}
+                    {successMessage && <p className='upload-success-message'>{successMessage}</p>}
                 </div>
             </div>
         </div>

@@ -1,11 +1,8 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 import { getAllocations } from "./preferences-dao.js";
 
 dotenv.config();
-
-// Gets the database name from .env file
-const DB_NAME = process.env.DB_NAME;
 
 /**
  * @typedef {object} User

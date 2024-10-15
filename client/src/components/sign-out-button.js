@@ -4,7 +4,7 @@ export const handleSignOut = async () => {
     try {
         const token = localStorage.getItem('authToken');
         console.log("TAKING TOKEN: ", token);
-        let res = await fetch("http://localhost:3001/api/auth/logout", {
+        let res = await fetch("/api/auth/logout", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

@@ -5,23 +5,31 @@
   --theme-very-dark: #006DCC;
   --theme-dark: #0174DF;
   --theme-mid-dark: #2184e0;
-  --theme-mid: #7cc2ff; 
+  --theme-mid: #7cc2ff;
   --theme-light: #addbff;
   --theme-very-light: #ddf4ff;
   --theme-shadow: drop-shadow(0px 10px 12px rgba(28, 56, 112, 0.7));
   --transparent: rgba(255, 255, 255, 0.7);
 
-  --theme-font: 'Poppins'; 
+  --theme-font: 'Poppins';
   --text-color-dark: #003C70;
   --text-color-light: #1978D2;
 }
 
-h1, h2 {
+h1,
+h2 {
   color: white !important;
 }
 
-p, h2, h3, body, ul, button, input, label,
-a:visited{
+p,
+h2,
+h3,
+body,
+ul,
+button,
+input,
+label,
+a:visited {
   font-family: var(--theme-font);
   font-weight: 600;
   color: var(--text-color-dark);
@@ -32,21 +40,24 @@ a {
 }
 
 
-a, button{
+a,
+button {
   transition: 0.5s;
 }
 
-a, button:hover{
+a,
+button:hover {
   transition: 0.5s;
 }
 
-body, html {
+body,
+html {
   margin: 0;
   /* min-height: 1000vh; */
   font-family: var(--theme-font);
 }
 
-body{
+body {
   display: flex;
   flex-direction: column;
   background-color: #dcf4ff;
@@ -58,7 +69,7 @@ body{
 
 
 
-main{
+main {
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -70,7 +81,7 @@ main{
   /* padding-top: 10vh; */
 }
 
-main h1{
+main h1 {
   font-size: 45px;
   font-weight: 700;
   padding: 0;
@@ -78,12 +89,12 @@ main h1{
 
 }
 
-main h2{
+main h2 {
   font-size: 18px;
   margin-top: -4vh;
 }
 
-main p{
+main p {
   font-size: 16px;
 }
 
@@ -100,9 +111,9 @@ main p{
 
 #fillwidth {
   width: 100vw;
-} 
+}
 
 
-a:hover{
+a:hover {
   opacity: 0.6;
 }

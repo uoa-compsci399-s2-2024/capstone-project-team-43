@@ -1,4 +1,4 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; // Will use this for password hashing
@@ -42,19 +42,19 @@ export async function generateToken(email, password, googleAuth, role = null) {
 
   const DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
   if (user.email.includes(DEVAuthorizedUsers)) {
-      role = DEV_USER_ROLE;
-      console.log("DEV givin token with role: ", role);
-      
-      // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
-  const token = jwt.sign(
-    {
-      time: Date.now(),
-      userId: user.id,
-      email: user.email,
-      role: role, 
-    }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' }); // Token is valid for 1 day
+    role = DEV_USER_ROLE;
+    console.log("DEV givin token with role: ", role);
 
-  return token
+    // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
+    const token = jwt.sign(
+      {
+        time: Date.now(),
+        userId: user.id,
+        email: user.email,
+        role: role,
+      }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' }); // Token is valid for 1 day
+
+    return token
   }
 
   // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
@@ -63,7 +63,7 @@ export async function generateToken(email, password, googleAuth, role = null) {
       time: Date.now(),
       userId: user.id,
       email: user.email,
-      role: user.role, 
+      role: user.role,
     }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' }); // Token is valid for 1 day
 
   return token
@@ -86,7 +86,7 @@ async function validateUser(email, password, googleAuth) {
     await connection.query(`USE ${DB_NAME};`);
 
     // Checking if email is in the database
-    let [rows]=[];
+    let [rows] = [];
     if (TESTING) {
       [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND role = ?', [email, DEV_USER_ROLE]);
     } else {
@@ -106,11 +106,11 @@ async function validateUser(email, password, googleAuth) {
         return user;
 
       } else {
-          /** @type {User} */
-          const user = rows[0];
+        /** @type {User} */
+        const user = rows[0];
         try {
-        // Need to check hashed password
-        let result = bcrypt.compare(password, user.password);
+          // Need to check hashed password
+          let result = bcrypt.compare(password, user.password);
 
           if (result) {
             // Passwords match, authentication successful
@@ -140,11 +140,11 @@ async function validateUser(email, password, googleAuth) {
 }
 
 export async function passwordEncrypt(password) {
-    
+
   try {
     let hashPassword = bcrypt.hash(password, saltRounds);
 
-      return hashPassword;
+    return hashPassword;
 
   } catch (err) {
     console.log("Error creating hash");
@@ -245,44 +245,44 @@ export async function validateToken(token, jwtSecretKey, requested_role) {
 
   try {
 
-      const result = await checkTokenBlacklist(token);
+    const result = await checkTokenBlacklist(token);
 
-      // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
-      if (result) {
-          throw new Error('Token is invalid');
-      }
+    // Checks if the token received is on the token blacklist (if a user has logged out and is currently not logged in)
+    if (result) {
+      throw new Error('Token is invalid');
+    }
 
-      const verifiedToken = jwt.verify(token, jwtSecretKey);
+    const verifiedToken = jwt.verify(token, jwtSecretKey);
 
-      // Extract user's data
-      const user = {
-          id: verifiedToken.userId,
-          email: verifiedToken.email,
-          role: verifiedToken.role,
-      };
+    // Extract user's data
+    const user = {
+      id: verifiedToken.userId,
+      email: verifiedToken.email,
+      role: verifiedToken.role,
+    };
 
-      //Checks if the user is in the database, if so it returns their role
-      const user_role = await findUser(user.email);
+    //Checks if the user is in the database, if so it returns their role
+    const user_role = await findUser(user.email);
 
-      /** 
-       * The following must occur for a user to be verified:
-       * The token is valid and not in the blacklist token (checked above)
-       * The role in the token is the same as the requested role
-       * The user's role in the database is the same as the requested role
-       * 
-       * If the above conditions are all true, the user is verified
-       */
+    /** 
+     * The following must occur for a user to be verified:
+     * The token is valid and not in the blacklist token (checked above)
+     * The role in the token is the same as the requested role
+     * The user's role in the database is the same as the requested role
+     * 
+     * If the above conditions are all true, the user is verified
+     */
 
-      if (verifiedToken && user.role == requested_role && requested_role == user_role) {
-          return true;
-      } else {
-          // Access Denied
-          return false;
-      }
-  } catch (error) {
-      console.log("Error validating token: ", error);
+    if (verifiedToken && user.role == requested_role && requested_role == user_role) {
+      return true;
+    } else {
       // Access Denied
       return false;
+    }
+  } catch (error) {
+    console.log("Error validating token: ", error);
+    // Access Denied
+    return false;
   }
 
 }

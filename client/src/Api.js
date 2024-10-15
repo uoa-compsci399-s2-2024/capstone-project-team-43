@@ -1,8 +1,6 @@
-import axios from 'axios'; 
+import axios from 'axios';
 import { saveAs } from 'file-saver';
 import Cookies from 'js-cookie';
-
-const BASE_URL = "http://localhost:3001";
 
 /**
  * Fetches projects from the server, optionally filtered by status.
@@ -18,20 +16,18 @@ const BASE_URL = "http://localhost:3001";
  */
 export async function fetchProjects(status) {
     try {
-        let response; 
-        console.log("Fetching Projects");
-        if(status !==  undefined) {
+        let response;
 
-            response = await fetch(`${BASE_URL}/api/projects/status/${status}`);
+        if (status !== undefined) {
+            response = await fetch(`/api/projects/status/${status}`);
         }
         else {
-            response = await fetch(`${BASE_URL}/api/projects`);
+            response = await fetch(`/api/projects`);
         }
         return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
         throw error;
-        return []; 
     }
 };
 /**
@@ -53,127 +49,127 @@ export async function fetchPublishedProjects() {
     } catch (error) {
         console.error('Error fetching published projects:', error);
         throw error;
-        return []; 
+        return [];
     }
 };
 
-export async function updateStatus(id,status) {
+export async function updateStatus(id, status) {
     try {
 
         const token = Cookies.get("authToken");
 
-         const response = await fetch(`${BASE_URL}/api/projects/${id}`, {
+        const response = await fetch(`/api/projects/${id}`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json",
-                "authToken" : token
+                "Content-Type": "application/json",
+                "authToken": token
             },
             body: JSON.stringify({ status }),
-          })
+        })
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    
+        throw error;
     }
 };
 
 export async function downloadCSV() {
     try {
-         const response = await fetch(`${BASE_URL}/api/users/download`, {
+        const response = await fetch(`/api/users/download`, {
             method: "GET",
             headers: {
-                "Content-Type" : "application/json"
-            }, 
-          })
-        if(response.ok) {
-        const csvData = await response.text();
-        const url = window.URL.createObjectURL(new Blob([csvData]));
-        console.log(response);
-        var blob = new Blob([csvData], {
-          type: "text/plain;charset=utf-8",
-        });
-        saveAs(blob, `Students.csv`);
-    }
+                "Content-Type": "application/json"
+            },
+        })
+        if (response.ok) {
+            const csvData = await response.text();
+            const url = window.URL.createObjectURL(new Blob([csvData]));
+            console.log(response);
+            var blob = new Blob([csvData], {
+                type: "text/plain;charset=utf-8",
+            });
+            saveAs(blob, `Students.csv`);
+        }
 
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    
+        throw error;
     }
 };
 
 export async function downloadCSVClients(semester_id) {
     try {
-         const response = await fetch(`${BASE_URL}/api/users/download/clients/${semester_id}`, {
+        const response = await fetch(`${BASE_URL}/api/users/download/clients/${semester_id}`, {
             method: "GET",
             headers: {
-                "Content-Type" : "application/json"
-            }, 
-          })
-        if(response.ok) {
-        const csvData = await response.text();
-        const url = window.URL.createObjectURL(new Blob([csvData]));
-        console.log(response);
-        var blob = new Blob([csvData], {
-          type: "text/plain;charset=utf-8",
-        });
-        saveAs(blob, `Client Data.csv`);
-    }
+                "Content-Type": "application/json"
+            },
+        })
+        if (response.ok) {
+            const csvData = await response.text();
+            const url = window.URL.createObjectURL(new Blob([csvData]));
+            console.log(response);
+            var blob = new Blob([csvData], {
+                type: "text/plain;charset=utf-8",
+            });
+            saveAs(blob, `Client Data.csv`);
+        }
 
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    
+        throw error;
     }
 };
 
 
 export async function downloadCSVTeams(semesterID) {
     try {
-         const response = await fetch(`${BASE_URL}/api/teams/download`, {
+        const response = await fetch(`/api/teams/download`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ semesterID }),
-          }) 
-        if(response.ok) {
-        const csvData = await response.text();
-        const url = window.URL.createObjectURL(new Blob([csvData]));
-        var blob = new Blob([csvData], {
-          type: "text/plain;charset=utf-8",
-        });
-        saveAs(blob, `Teams Data.csv`);
-    }
+        })
+        if (response.ok) {
+            const csvData = await response.text();
+            const url = window.URL.createObjectURL(new Blob([csvData]));
+            var blob = new Blob([csvData], {
+                type: "text/plain;charset=utf-8",
+            });
+            saveAs(blob, `Teams Data.csv`);
+        }
 
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    
+        throw error;
     }
 };
 
 export async function downloadAllocation() {
     try {
-         const response = await fetch(`${BASE_URL}/api/project-allocation/download`, {
+        const response = await fetch(`/api/project-allocation/download`, {
             method: "GET",
             headers: {
-                "Content-Type" : "application/json"
-            }, 
-          })
-        if(response.ok) {
-        const csvData = await response.text();
-        const url = window.URL.createObjectURL(new Blob([csvData]));
-        var blob = new Blob([csvData], {
-          type: "text/plain;charset=utf-8",
-        });
-        saveAs(blob, `Team Allocation Data.csv`);
-    }
+                "Content-Type": "application/json"
+            },
+        })
+        if (response.ok) {
+            const csvData = await response.text();
+            const url = window.URL.createObjectURL(new Blob([csvData]));
+            var blob = new Blob([csvData], {
+                type: "text/plain;charset=utf-8",
+            });
+            saveAs(blob, `Team Allocation Data.csv`);
+        }
 
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    
+        throw error;
     }
 };
 
@@ -188,13 +184,14 @@ export async function downloadAllocation() {
  */
 export async function fetchTeamsBySemester(semesterID) {
     try {
-        const response = await fetch(`${BASE_URL}/api/teams/semester/${semesterID}`);
-        console.log('Response:', response);  
+        const response = await fetch(`/api/teams/semester/${semesterID}`);
+        console.log('Response:', response);
         return await response.json();
 
     } catch (error) {
         console.error('Error fetching teams:', error);
-        throw error;    }
+        throw error;
+    }
 };
 /**
  * Fetches all users from the server 
@@ -209,68 +206,71 @@ export async function fetchTeamsBySemester(semesterID) {
  */
 export async function fetchUsersByRole(role) {
     try {
-        const response = await fetch(`${BASE_URL}/api/users/role/${role}`);
-        console.log('Response:', response);  
+        const response = await fetch(`/api/users/role/${role}`);
+        console.log('Response:', response);
         return await response.json();
 
     } catch (error) {
         console.error('Error fetching users:', error);
-        throw error;    }
+        throw error;
+    }
 };
 
 export async function updatePublish(status, approved_projects = []) {
 
     try {
         const token = Cookies.get("authToken");
-        
-         const response = await fetch(`${BASE_URL}/api/projects/publish/${status}`, {
+
+        const response = await fetch(`/api/projects/publish/${status}`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json",
-                "authToken" : token
+                "Content-Type": "application/json",
+                "authToken": token
             },
             body: JSON.stringify({ status, approved_projects }),
-          })
+        })
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;}
+        throw error;
+    }
 };
 
 
 
 export async function createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details) {
     try {
-         const response = await fetch(`${BASE_URL}/api/projects/`, {
+        const response = await fetch(`/api/projects/`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, available_from, status, max_teams, project_number, semester_id, other_client_details}),
-          })
+            body: JSON.stringify({ title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, available_from, status, max_teams, project_number, semester_id, other_client_details }),
+        })
 
         return await response;
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    }
+        throw error;
+    }
 };
 
 
 export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {
     try {
-         const response = await fetch(`${BASE_URL}/api/semesters/`, {
+        const response = await fetch(`${BASE_URL}/api/semesters/`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one}),
-          })
+            body: JSON.stringify({ start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one }),
+        })
 
         return response;
 
     } catch (error) {
         console.error('Error creating semester:', error);
-        throw error;    
+        throw error;
     }
 };
 
@@ -278,30 +278,32 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
 export async function editProject(id, title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details) {
     try {
         console.log('editing project')
-        const response = await fetch(`${BASE_URL}/api/projects/update/${id}`, {
-           method: "POST",
-           headers: {
-               "Content-Type" : "application/json"
-           },
-           body: JSON.stringify({title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details}),
-         })
+        const response = await fetch(`/api/projects/update/${id}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ title, description, special_requirements, available_resources, preferred_skills, project_deliverable, expiry, max_teams, other_client_details }),
+        })
         console.log(response);
         return response;
-   } catch (error) {
-       console.log('Error editing projects:', error);
-       throw error;    }
+    } catch (error) {
+        console.log('Error editing projects:', error);
+        throw error;
+    }
 };
 
 export async function fetchSemesters() {
     try {
-        let response; 
-        
-        response = await fetch(`${BASE_URL}/api/semesters`);
+        let response;
+
+        response = await fetch(`/api/semesters`);
 
         return await response.json();
     } catch (error) {
         console.error('Error fetching semesters:', error);
-        throw error;    }
+        throw error;
+    }
 };
 /**
  * Fetches a semester from the server 
@@ -314,15 +316,14 @@ export async function fetchSemesters() {
  */
 export async function fetchSemester(semesterID) {
     try {
-        console.log('fetching semester '+semesterID);
-        const response = await fetch(`${BASE_URL}/api/semesters/${semesterID}`);
-        console.log('Fetched semester:', response);  
+        console.log('fetching semester ' + semesterID);
+        const response = await fetch(`/api/semesters/${semesterID}`);
+        console.log('Fetched semester:', response);
         return await response.json();
 
     } catch (error) {
         console.error('Error fetching semester:', error);
-        throw error; 
-        return [];
+        throw error;
     }
 };
 /**
@@ -338,12 +339,13 @@ export async function fetchSemester(semesterID) {
  */
 export async function fetchProjectsBySemester(semesterId) {
     try {
-        const response = await fetch(`${BASE_URL}/api/projects/semester/${semesterId}`);
-        console.log('project 1:',response[0])
+        const response = await fetch(`/api/projects/semester/${semesterId}`);
+        console.log('project 1:', response[0])
         return await response.json();
     } catch (error) {
         console.error('Error fetching projects:', error);
-        throw error;    }
+        throw error;
+    }
 };
 /**
  * Fetches all projects from the server by user ID
@@ -362,7 +364,8 @@ export async function fetchProjectsByUser(userId) {
         return await response.json();
     } catch (error) {
         console.error('Error fetching user projects:', error);
-        throw error;    }
+        throw error;
+    }
 };
 /**
  * Fetches a user from the server using user ID
@@ -377,15 +380,14 @@ export async function fetchProjectsByUser(userId) {
  */
 export async function fetchUser(userId) {
     try {
-        console.log('fetching data for user:'+userId);
-        const response = await fetch(`${BASE_URL}/api/users/id/${userId}`);
-        console.log('Response:', response);  
+        console.log('fetching data for user:' + userId);
+        const response = await fetch(`/api/users/id/${userId}`);
+        console.log('Response:', response);
         return await response.json();
 
     } catch (error) {
         console.error('Error fetching user:', error);
-        throw error;    
-        return [];
+        throw error;
     }
 };
 /**
@@ -401,13 +403,14 @@ export async function fetchUser(userId) {
  */
 export async function fetchTeam(userId) {
     try {
-        const response = await fetch(`${BASE_URL}/api/teams/user/id/${userId}`);
-        console.log('Response:', response);  
+        const response = await fetch(`/api/teams/user/id/${userId}`);
+        console.log('Response:', response);
         return await response.json();
 
     } catch (error) {
         console.error('Error fetching team:', error);
-        throw error;    }
+        throw error;
+    }
 };
 /**
  * Updates given attribute for User with given id
@@ -423,7 +426,7 @@ export async function fetchTeam(userId) {
 export async function updateUserDetails(userId, attribute, newValue) {
     try {
 
-        let res = await fetch(`http://localhost:3001/api/users/edit/${userId}`, {
+        let res = await fetch(`/api/users/edit/${userId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -455,11 +458,11 @@ export async function updateUserDetails(userId, attribute, newValue) {
  */
 export async function deleteUser(userID) {
     try {
-        const response = await axios.delete(`http://localhost:3001/api/users/id/${userID}`);
-        return response.status; 
+        const response = await axios.delete(`/api/users/id/${userID}`);
+        return response.status;
     } catch (error) {
         console.error('Error deleting user:', error);
-        throw error; 
+        throw error;
     }
 };
 /**
@@ -475,7 +478,7 @@ export async function deleteUser(userID) {
  */
 export async function updateSemesterDetails(semesterID, attribute, newValue) {
     try {
-        const response = await axios.put(`http://localhost:3001/api/semesters/edit/${semesterID}`, {
+        const response = await axios.put(`/api/semesters/edit/${semesterID}`, {
             attribute, newValue
         });
         return response.data; // return the updated data
@@ -489,37 +492,38 @@ export async function updateSemesterDetails(semesterID, attribute, newValue) {
 export async function updatePreferences(team_id, project_id, preference) {
 
     try {
-         const response = await fetch(`${BASE_URL}/api/preferences`, {
+        const response = await fetch(`${BASE_URL}/api/preferences`, {
             method: "POST",
             headers: {
-                "Content-Type" : "application/json"
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({ team_id, project_id, preference }),
-          })
+        })
         return await response;
     } catch (error) {
         console.error('Error updating project preferences:', error);
-        throw error;}
+        throw error;
+    }
 };
 
 export async function fetchPreferences() {
     console.log('Fetch student preferences');
     try {
-        let response; 
+        let response;
         response = await fetch(`${BASE_URL}/api/preferences/`);
         return await response.json();
     } catch (error) {
         console.error('Error fetching preferences:', error);
         throw error;
-        return []; 
+        return [];
     }
 };
 
 export async function deletePreferences(id) {
     try {
-        let response; 
+        let response;
         response = await axios.delete(`${BASE_URL}/api/preferences/${id}`);
-        return response.status; 
+        return response.status;
     } catch (error) {
         console.error('Error deleting preference:', error);
         throw error;
@@ -529,10 +533,10 @@ export async function deletePreferences(id) {
 export async function deleteProject(id) {
     try {
         const response = await axios.delete(`http://localhost:3001/api/projects/${id}`);
-        return response.status; 
+        return response.status;
     } catch (error) {
         console.error('Error deleting project:', error);
-        throw error; 
+        throw error;
     }
 };
 
@@ -550,12 +554,12 @@ export async function deleteProject(id) {
 export async function fetchProjectById(projectId) {
     try {
         const response = await fetch(`${BASE_URL}/api/projects/${projectId}`);
-        console.log('project fetched:',response[0])
+        console.log('project fetched:', response[0])
         return await response.json();
     } catch (error) {
         console.error('Error fetching project:', error);
-        throw error; 
-    }   
+        throw error;
+    }
 };
 
 export async function getStatusSemesters(status) {
@@ -565,5 +569,6 @@ export async function getStatusSemesters(status) {
         return await response.json();
     } catch (error) {
         console.error('Error fetching semesters:', error);
-        throw error;    }
+        throw error;
+    }
 };

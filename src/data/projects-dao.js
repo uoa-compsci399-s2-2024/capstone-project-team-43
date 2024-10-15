@@ -1,4 +1,4 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 import { getUser } from "./users-dao.js";
 import { getSemesters } from "./semesters-dao.js";
@@ -33,8 +33,6 @@ dotenv.config();
  * @property {Date} last_login
  */
 
-// Gets the database name from .env file
-const DB_NAME = process.env.DB_NAME;
 /**
  * Gets all projects
  *
@@ -270,12 +268,12 @@ export async function updateProjectStatus(id, status) {
 
       await connection.query(`USE ${DB_NAME};`);
 
-      await connection.query("UPDATE `project` SET published = 'false' WHERE id = ?", [id]);
+      await connection.query("UPDATE PROJECT SET published = 'false' WHERE id = ?", [id]);
     }
 
     await connection.query(`USE ${DB_NAME};`);
 
-    await connection.query("UPDATE `project` SET status = ? WHERE id = ?", [status, id]);
+    await connection.query("UPDATE PROJECT SET status = ? WHERE id = ?", [status, id]);
 
     console.log("PROJECT STATUS CHANGED, ID: ", id, " NEW STATUS: ", status);
 
@@ -326,7 +324,7 @@ export async function publishProjects(status) {
     await connection.query(`USE ${DB_NAME};`);
 
     if (status == "false") {
-      await connection.query("UPDATE `project` SET published = ?", [status]);
+      await connection.query("UPDATE PROJECT SET published = ?", [status]);
     } else {
 
       //Gets current semester end date to ensure that expired projects are not published
@@ -334,7 +332,7 @@ export async function publishProjects(status) {
 
       const current_semester = semesters.find(semester => semester.status === "current");
 
-      await connection.query("UPDATE `project` SET published = ? WHERE status = \"accepted\" AND ? < expiry", [status, current_semester.end_date]);
+      await connection.query("UPDATE PROJECT SET published = ? WHERE status = \"accepted\" AND ? < expiry", [status, current_semester.end_date]);
     }
 
   } catch (err) {
@@ -392,12 +390,12 @@ export async function allocateNumbers(approved_projects) {
 
       numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
 
-      await connection.query('UPDATE project SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
+      await connection.query('UPDATE PROJECT SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
     }
 
     console.log(numberIDS);
 
-    await connection.query('UPDATE project SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
+    await connection.query('UPDATE PROJECT SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
 
   } catch (err) {
     if (connection) connection.release();

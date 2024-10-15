@@ -5,18 +5,29 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Creates a pool of connections to the database
+// const pool = mysql.createPool({
+//   host: 'awseb-e-huazsmxezu-stack-awsebrdsdatabase-tkhcd1kkcmwl.c7doezidupu4.ap-southeast-2.rds.amazonaws.com',
+//   user: 'cornerstone',
+//   password: 'error404',
+//   port: '3306',
+//   multipleStatements: true
+// });
+
 const pool = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: '',
+  host: process.env.RDS_HOSTNAME,
+  user: process.env.RDS_USERNAME,
+  password: process.env.RDS_PASSWORD,
+  port: process.env.RDS_PORT,
   multipleStatements: true
 });
 
 // Gets the database name and script path from .env file
-const DB_NAME = process.env.DB_NAME;
+const DB_NAME = process.env.RDS_DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
+const DB_DEMO_SCRIPT = process.env.DB_DEMO_SCRIPT;
 const DEV_EMAIL = process.env.DEV_EMAIL;
 const TESTING = process.env.TESTING;
+
 
 // Initializes the database, if no such database exists, it calls the create database function
 async function initializeDatabase() {
@@ -40,6 +51,13 @@ async function initializeDatabase() {
       await createDatabase();
 
     } else {
+
+      // Check if tables exist in database
+      const [rows, fields] = await connection.query(`USE ${DB_NAME}; SHOW TABLES;`);
+      if (rows[1].length === 0) {
+        await createTables();
+      }
+
       console.log(`Database ${DB_NAME} already exists.`);
     }
   } catch (err) {
@@ -62,15 +80,31 @@ async function createDatabase() {
 
     console.log(`Database ${DB_NAME} created successfully.`);
 
+    await createTables();
+
+  } catch (err) {
+    console.error('Error creating database: ', err.message);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
+  }
+}
+
+async function createTables() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
     // Selects the newly created database
     await connection.query(`USE ${DB_NAME};`);
 
-    // Creates tables and placeholder data
+    // Creates tables
     const createTablesQuery = fs.readFileSync(DB_INIT_SCRIPT, "utf8", (err, data) => {
       if (err) throw err;
       console.log(data);
     });
-      
+
     // Runs query, if query fails, returns error
     try {
       await connection.query(createTablesQuery);
@@ -81,19 +115,51 @@ async function createDatabase() {
               ('admin', '${DEV_EMAIL}', '$2b$10$l8GwZZ3c/PB2Oq2m82RdT.jdUJXVgrvUBxTV3pxF3WzZriEWPms2.', 'Firstname', 'Lastname', NULL, NULL),
               ('student', '${DEV_EMAIL}', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'Firstname', 'Lastname',  NULL, NULL),
               ('client', '${DEV_EMAIL}', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'Firstname', 'Lastname',  NULL, 'CompanyTest');`
-            );
-        } catch (err){
-          console.log('Error adding DEV users to database:',err);
+          );
+        } catch (err) {
+          console.log('Error adding DEV users to database:', err);
         };
       };
       console.log('Tables/Data inserted successfully');
 
     } catch (err) {
-      console.error('Error initializing database: ', err.message);
+      console.error('Error creating database tables: ', err.message);
     }
 
+    await insertDemoData();
+
   } catch (err) {
-    console.error('Error creating database: ', err.message);
+    console.error('Error creating database tables: ', err.message);
+  } finally {
+    // If there is a connection, release it
+    if (connection) connection.release();
+  }
+}
+
+async function insertDemoData() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
+
+    // Selects the newly created database
+    await connection.query(`USE ${DB_NAME};`);
+
+    // Inserts demo data
+    const demoQuery = fs.readFileSync(DB_DEMO_SCRIPT, "utf8", (err, data) => {
+      if (err) throw err;
+      console.log(data);
+    });
+
+    // Runs query, if query fails, returns error
+    try {
+      await connection.query(demoQuery);
+      console.log('Demo data inserted successfully');
+    } catch (err) {
+      console.error('Error inserting demo data: ', err.message);
+    }
+  } catch (err) {
+    console.error('Error inserting demo data: ', err.message);
   } finally {
     // If there is a connection, release it
     if (connection) connection.release();
@@ -103,4 +169,4 @@ async function createDatabase() {
 initializeDatabase();
 
 
-export { pool };
+export { pool, DB_NAME };

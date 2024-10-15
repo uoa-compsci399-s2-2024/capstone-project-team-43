@@ -1,11 +1,8 @@
-import { pool } from "./database.js";
+import { pool, DB_NAME } from "./database.js";
 import dotenv from "dotenv";
 import { deleteUserByRole } from "./users-dao.js";
 
 dotenv.config();
-
-// Gets the database name from .env file
-const DB_NAME = process.env.DB_NAME;
 
 /**
  * @typedef {object} Semester //defines the semester object
@@ -47,7 +44,7 @@ export async function getSemesters() {
 
     return semestersWithStatus;
 
-  } catch (err) { 
+  } catch (err) {
     console.error('Error executing query/s:', err.message);
     return [];
   } finally {
@@ -184,7 +181,7 @@ async function updateSemesterStatus() {
       }
     }));
 
-  } catch (err) { 
+  } catch (err) {
     console.error('Error executing query/s:', err.message);
   } finally {
     // release connection
@@ -211,7 +208,7 @@ async function checkProjectsExpiry() {
     // Get all projects
     const response = await connection.query("SELECT * FROM PROJECT");
 
-    const date = new Date (current_semester[0].start_date);
+    const date = new Date(current_semester[0].start_date);
 
     for (const project of response[0]) {
 
@@ -245,9 +242,9 @@ export async function updateSemesterDates(id, start_date, end_date, start_biddin
     connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
     await connection.query("UPDATE SEMESTER SET start_date = ?, end_date = ?, start_bidding_date = ?, end_bidding_date = ? WHERE id = ?", [start_date, end_date, start_bidding_date, end_bidding_date, id]);
-    
+
     /** @type {Semester} */
-    const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
+    const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]);
     return semester;
 
   } catch (err) {
@@ -277,7 +274,7 @@ export async function updateIsSemesterOne(id, is_semester_one) {
     await connection.query("UPDATE SEMESTER SET is_semester_one = ? WHERE id = ?", [is_semester_one, id]);
 
     /** @type {Semester} */
-    const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
+    const semester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]);
     return semester;
 
   } catch (err) {
@@ -301,7 +298,7 @@ export async function updateSemester(id, attribute, newValue) {
     const response = await connection.query("UPDATE SEMESTER SET ?? = ? WHERE id = ?", [attribute, newValue, id]);
 
     /** @type {Semester} */
-    const updatedSemester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]); 
+    const updatedSemester = await connection.query("SELECT * FROM SEMESTER WHERE id = ?", [id]);
 
     return updatedSemester;
 
@@ -309,7 +306,7 @@ export async function updateSemester(id, attribute, newValue) {
     console.error('Error executing query/s:', err);
     return null;
   }
-}; 
+};
 
 /**
  * Deletes the semester with the given id
@@ -329,13 +326,13 @@ export async function deleteSemester(id) {
     await connection.query("DELETE FROM SEMESTER WHERE id = ?", [id]);
 
     /** @type {Semester} */
-    const [semesters] = await connection.query("SELECT * FROM SEMESTER"); 
+    const [semesters] = await connection.query("SELECT * FROM SEMESTER");
     return semesters;
 
   } catch (err) {
     console.error('Error executing query:', err);
     return [];
-  }finally{
+  } finally {
     if (connection) connection.release();
   }
 }

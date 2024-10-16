@@ -22,8 +22,7 @@ const Login = () => {
     // Handles the login form submission, stores the response auth token in local storage
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Email: ", email);
-        console.log("Password: ", password);
+
         try {
             let res = await fetch("/api/auth/login", {
                 method: "POST",
@@ -40,7 +39,6 @@ const Login = () => {
 
             // Stores the resulting Auth Token in a cookie
             Cookies.set("authToken", resJson.token);
-            console.log("Token stored:", resJson.token);
 
             if (res.status === 200) {
 
@@ -78,7 +76,6 @@ const Login = () => {
 
             // Stores the resulting Auth Token in a cookie
             Cookies.set("authToken", resJson.token);
-            console.log("Token stored:", resJson.token);
 
             if (res.status === 200) {
 

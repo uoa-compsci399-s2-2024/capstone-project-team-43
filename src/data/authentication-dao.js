@@ -85,12 +85,7 @@ async function validateUser(email, password, googleAuth) {
     await connection.query(`USE ${DB_NAME};`);
 
     // Checking if email is in the database
-    let [rows] = [];
-    if (TESTING) {
-      [rows] = await connection.query('SELECT * FROM USER WHERE email = ? AND role = ?', [email, DEV_USER_ROLE]);
-    } else {
-      [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
-    }
+    let [rows] = await connection.query('SELECT * FROM USER WHERE email = ?', [email]);
 
     // If there is a connection, release it
     if (connection) connection.release();

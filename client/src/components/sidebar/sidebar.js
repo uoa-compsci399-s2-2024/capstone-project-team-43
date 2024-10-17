@@ -9,28 +9,29 @@ const Sidebar = ({ userRole, showSidebar }) => {
     console.log('user role for sidebar:',userRole);
 
     
-    const [currentSemester, setCurrentSemester] = useState(null);
-    const [upcomingSemesters, setUpcomingSemesters] = useState([]);
-    const [loadPage, setLoadPage] = useState(false);
+    // const [currentSemester, setCurrentSemester] = useState(null);
+    // const [upcomingSemesters, setUpcomingSemesters] = useState([]);
+    // const [loadPage, setLoadPage] = useState(false);
 
-        // Gets current and upcoming semesters
-        useEffect(() => {
-            const semester = localStorage.getItem('currentSemester');
-                const getSemesters = async () => {
-                    const semesters = await fetchSemesters();
-                    setCurrentSemester(semesters.find(semester => semester.status === 'current'));
-                    if(!currentSemester) {
-                        setUpcomingSemesters(await getStatusSemesters("upcoming"));
-                        console.log("No current semester, showing upcoming semesters: ", upcomingSemesters);
-                    }
-                    setLoadPage(true);
-                }
-                getSemesters();
-        }, []);
+    // // Gets current and upcoming semesters
+    // useEffect(() => {
+    //     const semester = localStorage.getItem('currentSemester');
+    //         const getSemesters = async () => {
+    //             const semesters = await fetchSemesters();
+    //             setCurrentSemester(semesters.find(semester => semester.status === 'current'));
+    //             if(!currentSemester) {
+    //                 setUpcomingSemesters(await getStatusSemesters("upcoming"));
+    //                 console.log("No current semester, showing upcoming semesters: ", upcomingSemesters);
+    //             }
+    //             setLoadPage(true);
+    //         }
+    //         getSemesters();
+    // }, []);
 
-    if (!loadPage) {
-        return <div>Loading...</div>;
-    }
+    // if (!loadPage) {
+    //     return <div>Loading...</div>;
+    // }
+
     const primaryLinks = [
         // { name: "Home", path: "/dashboard" }
     ]
@@ -53,20 +54,24 @@ const Sidebar = ({ userRole, showSidebar }) => {
             { name: "Propose a Project", path: "/projects/submit" },
 
         ],
+
         
         admin: [
             { name: "Projects", path: "" },
             { name: "Manage Projects", path: "/projects/manage" },
             { name: "View as Student", path: "/projects/available" },
-            { name: "Project Archive", path: `/projects/archive/${currentSemester ? currentSemester.id : (upcomingSemesters.length > 0 ? upcomingSemesters[0].id : 1)}` },
+            { name: "Project Archive", path: `/projects/archive/`}, 
             { name: "Semesters", path: "" },
-            { name: "Manage Semesters", path: `/manage/semester/${currentSemester ? currentSemester.id : (upcomingSemesters.length > 0 ? upcomingSemesters[0].id : 1)}` },
+            { name: "Manage Semesters", path: `/manage/semester/`},
             { name: "Create Semester", path: "/create/semester "},
             { name: "Your Projects", path: "" },
             { name: "View All", path: "/projects/view" },
             { name: "Propose a Project", path: "/projects/submit" },
         ]
     }
+
+            // /  ${currentSemester ? currentSemester.id : (upcomingSemesters.length > 0 ? upcomingSemesters[0].id : 1)}` },
+
 
     const roleLinks = linksByRole[userRole] || [];
 

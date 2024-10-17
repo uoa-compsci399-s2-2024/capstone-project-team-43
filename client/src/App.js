@@ -41,8 +41,8 @@ function App() {
           <Route path='/project/preferences/submit' element={<Layout><ProjectPreferences/></Layout>} />
 
           {/* Admin Pages  */}
-          <Route path='/projects/archive/:semesterID' element={<Layout><ProjectsArchive /></Layout>} />
-          <Route path='/manage/semester/:semesterID' element={<Layout><ManageSemester /></Layout>}/>
+          <Route path='/projects/archive/:semesterID?' element={<Layout><ProjectsArchive /></Layout>} />
+          <Route path='/manage/semester/:semesterID?' element={<Layout><ManageSemester /></Layout>}/>
           <Route path='/create/semester' element={<Layout><CreateSemester /></Layout>}/>
           <Route path='/projects/manage' element={<Layout><AdminProjectsView /></Layout>}/>
           <Route path='/projects/edit/:projectID' element={<Layout><EditProject /></Layout>}/>

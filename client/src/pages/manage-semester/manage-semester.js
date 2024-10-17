@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchSemester, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams } from '../../Api.js';
+import { fetchSemester, fetchSemesters, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams } from '../../Api.js';
 import downloadIcon from '../../media/download-icon.png';
 import SemesterCSVUpload from '../../components/semester-csv-upload/semester-csv-upload.js';
 import './manage-semester.css';
@@ -57,10 +57,12 @@ const SemesterDetail = ({ description, data = 'None', onEdit, isEditing, onSave,
 }
 
 const ManageSemester = () => {
+    // const [defaultSemester, setDefaultSemester] = useState(null);
 
     // gets semesterID from URL or from previous dropdown selection
     const { semesterID: semesterIDFromURL } = useParams();
     const navigate = useNavigate();
+    // // defaults to current semester if no sem ID passed in 
     const [semesterID, setSemesterID] = useState(semesterIDFromURL || null);
 
     const [students, setStudents] = useState([]);
@@ -186,20 +188,37 @@ const ManageSemester = () => {
 
     // Get semester data from server
     useEffect(() => {
-        async function getSemester() {
-            // only fetch if semesterID is set
-            if (!semesterID) return;
-            try {
-                const data = await fetchSemester(semesterID);
-                setUpdatedSemester(data);
-                setSemester(data);
-                console.log('Fetched semester data:', data);
-            } catch (error) {
-                console.error('Failed to load semester:', error);
+        console.log('geting semester data');
+        if (semesterID) {
+            const getSemester = async () => {
+                try {
+                    const data = await fetchSemester(semesterID);
+                    setUpdatedSemester(data);
+                    setSemester(data);
+                    console.log('Fetched semester data:', data);
+                } catch (error) {
+                    console.error('Failed to load semester:', error);
+                }
             }
+            getSemester();
         }
-        getSemester();
-    }, [semesterID]); // refetch when semesterID changes (i.e. on drop down click)
+        else {
+            const getSemester = async () => {
+                try {
+                    console.log('getting default semester');
+                    const semesters = await fetchSemesters();
+                    const current = semesters.find(semester => semester.status === 'current');
+                    setSemester(current);
+                    setUpdatedSemester(current);
+
+                } catch (error) {
+                    console.error('Failed to load semester:', error);
+                }
+                
+            }
+            getSemester();
+        }
+    }, [semesterID]); 
 
     // Get semester's students 
     useEffect(() => {
@@ -214,7 +233,7 @@ const ManageSemester = () => {
             }
         }
         getStudents();
-    }, []);
+    }, [semesterID]);
 
     // Get semester's teams
     useEffect(() => {
@@ -222,7 +241,6 @@ const ManageSemester = () => {
             try {
                 const data = await fetchTeamsBySemester(semesterID);
                 setTeams(data);
-                console.log('Fetched teams:', data);
             } catch (error) {
                 console.error('Failed to load teams:', error);
             }
@@ -257,11 +275,8 @@ const ManageSemester = () => {
 
         if (formattedDate) {
 
-            console.log("DATE IS INVALID");
-
             // update details in database
             await updateSemesterDetails(semesterID, editingField, formattedDate);
-
 
             // update details on page immediately
             setUpdatedSemester((prevSemester) => ({
@@ -285,15 +300,16 @@ const ManageSemester = () => {
             {semester && <div className='content'>
                 <div className='page-heading'>
                     <div className='semester-heading'>
-                        {semester && <h1>Manage {semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h1>}
+                        <h1>{semester.name}</h1>
+                        {/* {semester && <h1>Manage {semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h1>} */}
                         {/* update semesterID when dropdown button is selected */}
                         <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['retired']} />
                     </div>
-                    <h2 className='page-subheading'>{semester.name}</h2>
+                    <h2 className='page-subheading'>{semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h2>
                 </div>
                 <div className='page-content'>
                     <div className='content-section'>
-                        <h2>Semester Timeframe</h2>
+                        <h2>Semester Dates</h2>
                         <p className='text-detail'>View and edit the semester dates</p>
                         <SemesterDetail
                             description="Start date"

@@ -66,6 +66,7 @@
     margin-top: 10px;
     margin-left: -80px;
     border-radius: 10px;
+    border: 0px solid white;
 }
 
 .dropdown-menu-button{
@@ -73,6 +74,7 @@
     font-size: 18px;
     padding: 5px;
     text-decoration: none;
+
     transition: 0s !important;
 
 }

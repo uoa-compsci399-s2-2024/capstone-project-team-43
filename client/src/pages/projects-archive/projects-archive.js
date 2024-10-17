@@ -16,26 +16,37 @@ const ProjectsArchive = () => {
     const [expandedProjects, setExpandedProjects] = useState({});
 
 
-    // Get the semester from server 
-    useEffect(() => {
-        async function getSemester() {
-            // only fetch if semesterID is set
-            if (!semesterID) return; 
-            try {
-                const data = await fetchSemester(semesterID);
-                setSemester(data);
-                console.log('Fetched semester data:', data);  
-                // check semester is retired
-                if (data.status !== 'retired') {
-                    throw new Error('Semester is not retired.');
-                }            
-            } catch (error) {
-                console.error('Failed to load semester:', error);
-                return; 
+     // Get semester data from server
+     useEffect(() => {
+        console.log('geting semester data');
+        if (semesterID) {
+            const getSemester = async () => {
+                try {
+                    const data = await fetchSemester(semesterID);
+                    setSemester(data);
+                    console.log('Fetched semester data:', data);
+                } catch (error) {
+                    console.error('Failed to load semester:', error);
+                }
             }
+            getSemester();
         }
-        getSemester();
-    }, [semesterID]);
+        else {
+            const getSemester = async () => {
+                try {
+                    console.log('getting default semester');
+                    const semesters = await fetchSemesters();
+                    const current = semesters.find(semester => semester.status === 'retired');
+                    setSemester(current);
+
+                } catch (error) {
+                    console.error('Failed to load semester:', error);
+                }
+                
+            }
+            getSemester();
+        }
+    }, [semesterID]); 
 
 
     // Get all projects in database

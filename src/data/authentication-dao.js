@@ -35,6 +35,8 @@ export async function generateToken(email, password, googleAuth, role = null) {
   /** @type {User} */
   const user = await validateUser(email, password, googleAuth);
 
+  console.log("USER: ", user);
+
   if (user == null) {
     return null;
   }

@@ -73,7 +73,8 @@ CREATE TABLE TEAM (
     team_number INT NOT NULL, 
     team_name VARCHAR(255),
     semester_id INT NOT NULL, 
-    project_id INT
+    project_id INT,
+    preference INT
 );
 
 CREATE TABLE PREFERENCE (

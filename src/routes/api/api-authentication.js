@@ -231,7 +231,7 @@ router.get('/google/callback', async (req, res) => {
 
         let DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
         if (email.includes(DEVAuthorizedUsers)) {
-            user_role = DEV_USER_ROLE;
+            user_role = role;
             console.log("DEV logging in, authorizing access, role: ", user_role);
         }
 

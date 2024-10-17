@@ -4,6 +4,7 @@
   height: 90vh;
   display: flex;
   flex-direction: column;
+  min-width: 100vw;
   /* justify-content: end; */
 }
 

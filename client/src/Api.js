@@ -265,7 +265,8 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
             body: JSON.stringify({ start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one }),
         })
 
-        return response;
+        const createdSemester = await response.json();
+        return createdSemester;
 
     } catch (error) {
         console.error('Error creating semester:', error);

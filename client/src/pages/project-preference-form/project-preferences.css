@@ -23,8 +23,6 @@
 .pref-container {
     display: flex;
     justify-content: center;
-    /* max-height: 70vw; */
-    /* width: 80vw; */
     gap:3vh
 }
 
@@ -206,9 +204,9 @@
   gap: 1vh;
 }
 
-.confirmation-text{
+/* .confirmation-text{
   font-weight: 700;
-}
+} */
 
 .confirmation-checks input{
   max-width: 12px;
@@ -270,14 +268,14 @@
   opacity: 1.0 !important;
 
 }
-
+/* 
 .success .confirmation-text{
   margin-top: 2vh;
   display: flex;
   flex-direction: column;
   gap: 1vh;
   font-weight: 600;
-}
+} */
 
 /**           PROJECT PREFERENCE FORM             **/
 /* 

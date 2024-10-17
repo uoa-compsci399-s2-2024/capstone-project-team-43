@@ -28,10 +28,11 @@
     font-family: var(--theme-font);
 }
 
-h3{
-    font-size: 23px;
+.form-head{
+    font-size: 23px !important;
     margin-top: 0vh;
     margin-bottom: 0.5vh;
+    color: var(--text-color-dark) !important;
 }
 
 .landing-page {
@@ -76,20 +77,24 @@ h3{
     position: absolute;
     opacity: 0;
     transition: 1s;
-    font-size: 16px;
     min-width: 500px;
 } 
+
+.tooltip-container p{
+    font-size: 16px;
+}
 
 .tooltip.visible {
     opacity: 1;
     transition: opacity 2s;
+    /* font-size: 16px !important; */
 }
 
 .default-tooltip {
     position: absolute;
     opacity: 0;    
     transition: opacity 0.5s ease-in-out;
-    font-size: 16px;
+    /* font-size: 16px !important; */
     min-width: 500px;
 
 }
@@ -276,7 +281,3 @@ input:-webkit-autofill:active{
     cursor: default;
 }
 
-.redirect-container .link:hover{
-    text-decoration: underline;
-
-}

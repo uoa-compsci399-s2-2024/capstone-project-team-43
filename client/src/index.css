@@ -9,7 +9,7 @@
   --theme-light: #addbff;
   --theme-very-light: #ddf4ff;
   --theme-shadow: drop-shadow(0px 10px 12px rgba(28, 56, 112, 0.7));
-  --transparent: rgba(255, 255, 255, 0.7);
+  --transparent: rgba(255, 255, 255, 0.5);
 
   --theme-font: 'Poppins';
   --text-color-dark: #003C70;
@@ -17,26 +17,37 @@
 }
 
 h1,
-h2 {
+h2,
+h3 {
   color: white !important;
 }
 
+h3{
+  font-size: 4vh;
+  margin: 0;
+}
+
+
 p,
-h2,
-h3,
 body,
 ul,
 button,
 input,
 label,
-a:visited {
+a:visited,
+span {
   font-family: var(--theme-font);
-  font-weight: 600;
+  /* font-weight: 600; */
   color: var(--text-color-dark);
+}
+
+p, a, button, input {
+  font-weight: 600;
 }
 
 a {
   text-decoration: none;
+  font-size: 12px;
 }
 
 

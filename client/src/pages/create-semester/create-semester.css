@@ -1,9 +1,18 @@
+.create-semester-page{
+    max-height: 90vh;
+}
+
 .content-section p{
     font-size: 13px;
 }
 
 
-.c
+.create-semester-page .start-end-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1vw;
+}
 
 .create-semester-page.form-content h1{
     color: var(--text-color-dark) !important;
@@ -14,15 +23,16 @@
     margin-bottom: -2vh !important;
 }
 
-.create-semester-page .content{
-    max-width: 40%;
-    min-width: 40%;
-    padding-bottom: 5vh;
+.create-semester-page .page-content{
+    /* max-width: 40%;
+    min-width: 40%; */
+    width: auto;
+    padding: 3vh;
 }
 
 .form-content{
     background-color: rgba(255, 255, 255, 0.5);
-    padding: 20px;    
+    /* padding: 20px;     */
     border-radius: 5px;
     min-width: 30%;
     /* max-width: 90%; */
@@ -32,11 +42,12 @@
     text-align: center;
     justify-content: center;
     overflow: wrap;
+    gap: 2vh;
 }
 
-.create-semester-page .form-section{
+/* .create-semester-page .form-section{
     margin: 2vh;
-}
+} */
 
 .create-semester-page.form-content h2{
     color: var(--text-color-dark) !important;
@@ -76,7 +87,7 @@
     border-color: transparent;
     font-family: var(--theme-font);
     padding: 10px;
-    height: 10%;
+    /* height: 10%; */
     width: 150px;
     color: rgba(0, 0, 0, 0.495);
     font-weight: 600;
@@ -100,7 +111,7 @@
 
 .date-input{
     display: flex;
-    gap: 2vw;
+    gap: 1vw;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -111,8 +122,6 @@
     border: none;
     font-family: var(--theme-font);
 }
-
-
 
 
 

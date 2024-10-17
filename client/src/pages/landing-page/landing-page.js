@@ -175,19 +175,19 @@ const LandingPage = () => {
                 <div className='select-user-form-container'>
                     <div className='tooltip-container'>
                         {/* default tool tip */}
-                        <h3 className={`default-tooltip ${noHover ? 'visible' : ''}`}>
+                        <p className={`default-tooltip ${noHover ? 'visible' : ''}`}>
                             Select User Type
-                        </h3>
+                        </p>
                         {/* specific tooltips shown when button is hovered over */}
-                        <h3 className={`tooltip ${studentHover ? 'visible' : ''}`} style={{ opacity: studentHover ? 1 : 0 }}>
+                        <p className={`tooltip ${studentHover ? 'visible' : ''}`} style={{ opacity: studentHover ? 1 : 0 }}>
                             Currently enrolled in CS399?
-                        </h3>
-                        <h3 className={`tooltip ${clientHover ? 'visible' : ''}`} style={{ opacity: clientHover ? 1 : 0 }}>
+                        </p>
+                        <p className={`tooltip ${clientHover ? 'visible' : ''}`} style={{ opacity: clientHover ? 1 : 0 }}>
                             Wanting to propose a project and become a client?
-                        </h3>
-                        <h3 className={`tooltip ${adminHover ? 'visible' : ''}`} style={{ opacity: adminHover ? 1 : 0 }}>
+                        </p>
+                        <p className={`tooltip ${adminHover ? 'visible' : ''}`} style={{ opacity: adminHover ? 1 : 0 }}>
                             Teaching CS399?
-                        </h3>
+                        </p>
                     </div>
                     <button className='main-button student-button' id='hoverableStudent'
                         onMouseEnter={() => handleMouseEnter('hoverableStudent')}
@@ -222,7 +222,7 @@ const LandingPage = () => {
             {(userType === 'student') && (
                 <div className='content-container student-admin-login'>
                     <div className='form'>
-                        <h3>Sign in</h3>
+                        <p className='form-head'>Sign in</p>
                         <button className='main-button' onClick={() => window.location.href = "/api/auth/google/role/student"}>
                             <img src={googleIcon} alt='icon' className='upload-icon'></img>
                             Sign in with your UoA Google account
@@ -245,7 +245,7 @@ const LandingPage = () => {
             {(userType === 'admin') && (
                 <div className='content-container student-admin-login'>
                     <div className='form'>
-                        <h3>Sign in</h3>
+                        <p className='form-head'>Sign in</p>
                         <button className='main-button' onClick={() => window.location.href = "/api/auth/google/role/admin"}>
                             <img src={googleIcon} alt='icon' className='upload-icon'></img>
                             Sign in with your UoA Google account
@@ -268,7 +268,7 @@ const LandingPage = () => {
             {(userType === 'client' && isLogin) && (
                 <div className='content-container login'>
                     <form className="form login" onSubmit={handleSubmitLogin} method="POST">
-                        <h3>Sign in</h3>
+                        <p className='form-head'>Sign in</p>
                         <label>
                             <input type="email" placeholder="Email Address*" value={email} onChange={(e) => setEmail(e.target.value)} required />
                         </label>
@@ -299,7 +299,7 @@ const LandingPage = () => {
             {(userType === 'client' && !isLogin) && (
                 <div className='content-container register'>
                     <form className="form register" onSubmit={handleSubmitRegister} method="POST">
-                        <h3>Create an Account</h3>
+                        <p className='form-head'>Create an Account</p>
                         <label>
                             <input type="text" placeholder="First Name*" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
                         </label>

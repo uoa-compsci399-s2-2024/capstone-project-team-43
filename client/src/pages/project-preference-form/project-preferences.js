@@ -402,13 +402,13 @@ const ProjectPreferences = ()=>{
                                 <button className = 'redirect-button' onClick={handleGoBack}>Go Back</button>
                             </div>
                         </div>}
-                        {showSuccessMessage && <div className="confirmation-content success">
+                        {showSuccessMessage && <div className="confirmation-content">
                             <div className="confirmation-header">
-                                <p>Project Preferences Submitted Successfully</p>
+                                <h3>Preferences Submitted Successfully</h3>
                             </div>
                             <div className="confirmation-text">
-                                <span>Your team's project preferences have been submitted and will be considered during the project allocation process. </span>
-                                <span>All team members can now view this submission through their Cornerstone account.</span>
+                                <p>Your team's project preferences have been submitted and will be considered during the project allocation process. </p>
+                                <p>All team members can now view this submission through their Cornerstone account.</p>
                             </div>
                         </div>}
 
@@ -436,110 +436,3 @@ const ProjectPreferences = ()=>{
     )};
 
  export default ProjectPreferences;
-
-
-    //         <div id="projectpreferenceconfirm">
-    //         <br></br><br></br>
-    //         <h2>Are you sure you want to submit?</h2>
-    //         <p>Please note that this submission will count for your entire group.</p>
-    //         <p>The most recent team submission will bid_end the valid one.</p>
-    //         <div id="confirmprojects">
-
-
-    //         {/* display projects here */}
-            
-    //     {chosenProjects.map((chosen) =>
-    //         <div id="confirmingprojects">
-    //         {chosen.project_numbid_endr}
-    //         . 
-    //         {chosen.title}
-
-    //         </div>
-    //     )}
-
-            
-
-    //         </div>
-    //         <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n" required></input>
-    //         <labid_endl for="agreeupon"> Do all team membid_endrs agree on the order of the projects provided above?*</labid_endl>
-    //         <br></br>
-    //         <button onClick={cancel}>Cancel</button><button onClick={submit}>Confirm</button>
-    //         <br></br><br></br><br></br>
-    //         </div>
-
-    //         {/* <div id="help">
-    //             <p>
-    //             <br></br>
-    //         1. On the right hand side of the page there are 5 buttons numbid_endred from 1 to 5, with 1 at the top and 5 at the bottom.
-    //         <br></br>
-    //         <br></br>
-    //         2. To select your preference click on the button that corresponds to the position you would like to rank the project.
-    //         <br></br>
-    //         <br></br>
-    //         3. After clicking on the button go to the left hand side of the page and click on which project you would like to bid_end ranked in that position.
-    //         <br></br>
-    //         <br></br>
-    //         4. Repeat this process until you have five projects selected.
-    //         <br></br>
-    //         <br></br>
-    //         5. Once you have selected your five ranked preferences projects scroll down to click the submit button.
-    //         <br></br>
-    //         <br></br>
-    //         </p>
-    //         <button onClick={helppopupclose}>Close</button>
-    //         <br></br>
-    //         <br></br>
-    //         </div> */}
-
-    //         <div id = "projectPreferenceselements">
-    //             {/* <button onClick={sendPreferences}>
-    //                 send prefs
-    //             </button> */}
-    //             <h2 id="">Project Preferences
-    //              {/* This console.log needs to stay so that it calls formatBiddingDate bid_endforehand */}   
-    //             {console.log(formatBiddingDate(biddingtime))}
-    //             <br></br>
-    //             Form Will Close On: 
-    //             <br></br>{formatBiddingDate(biddingtime)}
-    //             </h2>
-    //             <div className="preferenceProjects">
-    //                 {/* <ul> */}
-
-    //                 {projects.filter(project => project.published === 'true' && project.semester_id === 1).map(project => (
-    //                (<div onClick={() => handleclick(project)} id="proj">
-    //                <Project id={project.id} name={project.title} description={project.description}/> </div>)))}
-
-    //             {/* {itemList.map((project) => 
-    //                 (<div onClick={() => handleclick(project)}>
-    //                 {project}
-    //                 </div>))} */}
-    //                 {/* </ul> */}
-    //             </div>
-    //             <button id ="?" onClick={helppopup}>?</button>
-    //             <div id="sidebuttons">
-    //                 <button id="option1" onClick={()=>{selecting("option1")}}>1</button>
-    //                 <button id="option2" onClick={()=>{selecting("option2")}}>2</button>
-    //                 <button id="option3" onClick={()=>{selecting("option3")}}>3</button>
-    //                 <button id="option4" onClick={()=>{selecting("option4")}}>4</button>
-    //                 <button id="option5" onClick={()=>{selecting("option5")}}>5</button>
-    //             </div>
-    //             <div id = "preferencesubmit">
-    //             <button onClick={confirmation}>Submit</button>
-    //             </div>     
-    //         </div>
-    //         <div id = "onsubmission">
-    //             <h2>Your project preferences have bid_enden submitted!</h2>
-    //             <div id = "chosenProjectss">
-    //             {/* {chosenProjects.map((chosen, index) =>
-    //             <div>
-    //             {chosen ? chosen : <Project/ >}
-    //             </div>
-    //         )} */}
-    //             </div>
-    //             <div id = "return">
-    //             <Link to="/pages/projects-available"><button>Return to Projects</button></Link>
-    //             </div>
-    //         </div>
-    //     </main>
-    // )};
-

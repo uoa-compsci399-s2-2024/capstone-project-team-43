@@ -38,6 +38,20 @@
   justify-content: center;
 }
 
+/* success/confirmation window after form completion */
+
+
+.confirmation-content{
+  border-radius: 5px;
+  display: flex;
+  width: auto;
+  max-width: 30vw;
+  padding: 4vh;
+  flex-direction: column;
+  background-color: var(--transparent);
+}
+
+
 /* BUTTONS */
 
 button {

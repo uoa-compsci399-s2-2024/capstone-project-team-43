@@ -18,16 +18,14 @@ const LandingPage = () => {
 
     const navigate = useNavigate();
 
-    // redirect to dashboard if user not signed in
+    // redirect to a different page if user is signed in.
     useEffect(() => {
         async function checkLoggedIn() {
             try {
                 if (await isLoggedIn()) {
-                    console.log('logged in!')
-                    navigate("/dashboard");
+                    console.log('logged in!');
                 }
                 console.log('not logged in!');
-                navigate("/");
             } catch (error) {
                 console.error('Failed to login:', error);
             }

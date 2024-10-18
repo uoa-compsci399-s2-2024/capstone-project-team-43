@@ -251,7 +251,7 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('/dashboard');
+            return res.status(200).redirect('/projects/view');
 
 
         } else if (user_role != null && role == user_role) {
@@ -267,7 +267,13 @@ router.get('/google/callback', async (req, res) => {
                 path: '/'
             }));
 
-            return res.status(200).redirect('/dashboard');
+            if (role == "student") {
+                return res.status(200).redirect('/projects/available'); 
+            } else if (role == "client") {
+                return res.status(200).redirect('/projects/view');
+            } else if (role == "admin") {
+                return res.status(200).redirect('/projects/manage');
+            }
 
         } else {
 

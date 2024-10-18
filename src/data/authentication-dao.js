@@ -43,7 +43,6 @@ export async function generateToken(email, password, googleAuth, role = null) {
 
   const DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
   if (user.email.includes(DEVAuthorizedUsers)) {
-    role = DEV_USER_ROLE;
     console.log("DEV givin token with role: ", role);
 
     // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour

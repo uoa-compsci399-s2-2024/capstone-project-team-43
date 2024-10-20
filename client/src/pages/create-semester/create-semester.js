@@ -21,7 +21,11 @@ const CreateSemester = () =>{
         let start_bidding_datetime = `${start_bidding_date} ${start_bidding_time}:00`;
         let end_bidding_datetime = `${end_bidding_date} ${end_bidding_time}:00`;
 
+
         let is_semester_one = document.getElementById("is_sem_1").value;
+
+        let proposal_deadline = document.getElementById("proposal_deadline").value;
+
 
         console.log('creating semester...');
         console.log(start_date);
@@ -29,9 +33,11 @@ const CreateSemester = () =>{
         console.log(start_bidding_datetime);
         console.log(end_bidding_datetime);
         console.log(is_semester_one);
+        console.log(proposal_deadline);
 
 
-        const createdSemester = createSemester(start_date, end_date, start_bidding_datetime, end_bidding_datetime, is_semester_one);
+
+        const createdSemester = createSemester(start_date, end_date, start_bidding_datetime, end_bidding_datetime, is_semester_one, proposal_deadline);
         setShowSuccessMessage(true)
 
     } catch (err) {
@@ -62,7 +68,7 @@ const CreateSemester = () =>{
                             </div>
                             <div className="date-input">
                                 <p>Type</p>
-                                <select id="is_sem_1" defaultValue="Select" required>
+                                <select id="is_sem_1" defaultValue="true" required>
                                     <option value="true">Semester One</option>
                                     <option value="false">Semester Two</option>
                                 </select>
@@ -87,6 +93,16 @@ const CreateSemester = () =>{
                             </div>                 
                         </div>
                     </label>
+                    <label className="form-section">
+                        <h2>Project Proposal Deadline*</h2>
+                        <p>Choose the project proposal submission deadline for this semester. While applications are accepted throughout the year, this deadline will be visible to clients on the project proposal form.</p>
+
+                        <div className="date-input-container">
+                            <div className="date-input"> 
+                                <input type='date' placeholder="YYYY-MM-DD" id="proposal_deadline"/>  
+                            </div>                 
+                        </div>
+                    </label>
                     <div className = 'semester-submission-buttons'>
                         <button className = 'main-button'id="submit" form="create-semester" type="submit" onClick={handleSubmit}>Create Semester</button>
                     </div>
@@ -100,8 +116,8 @@ const CreateSemester = () =>{
                                 <p>You can view or edit the semester at any time on the Manage Semesters page.</p>
                             </div>
                             <div className="confirmation-link">
-                                <Link to='/semesters/manage'>
-                                <span>Go to Manage Semesters</span>
+                                <Link to='/manage/semester'>
+                                <span className="create-link">Go to Manage Semesters</span>
                                 </Link>
                             </div>
                         </div>}

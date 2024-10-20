@@ -4,8 +4,11 @@ import { getPreferences, storeAllocations, getAllocations } from "../../data/pre
 
 const router = Router();
 
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
     const preferences = await getPreferences();
+    const { hours } = req.body;
+
+    console.log("Allocation with limit of ", hours, " hours");
 
     // Final allocation
     // allocation contains which teams have been allocated to each project
@@ -29,7 +32,7 @@ router.get("/", async (req, res) => {
     let team_preferences = {};
 
     // Maximum number of admin hours available
-    const max_hours = 10;
+    const max_hours = hours;
 
     // Sort preferences by created datetime
     preferences.sort(function (a, b) {
@@ -49,15 +52,12 @@ router.get("/", async (req, res) => {
             team_preferences[team_id] = new Array(5).fill(0);
         }
         team_preferences[team_id][p - 1] = project_id;
+        console.log(project_id);
         if (!(project_id in project_capacity)) {
             let project = await getProjectById(project_id);
             project_capacity[project_id] = project.max_teams;
         }
     }
-
-    // console.log(team_preferences);
-    // console.log(submission_order);
-    // console.log(project_capacity);
 
     let message;
     // Allocate projects to teams based on order of submission time

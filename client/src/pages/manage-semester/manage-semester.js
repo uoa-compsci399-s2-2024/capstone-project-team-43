@@ -81,8 +81,10 @@ const ManageSemester = () => {
     const openTeamUpload = () => setShowTeamUpload(true);
     const closeStudentUpload = () => setShowStudentUpload(false);
     const closeTeamUpload = () => setShowTeamUpload(false);
+    
 
     const [allocationComplete, setAllocationComplete] = useState(false);
+    const [hours, setHours] = useState('');
 
     // Required headers for csv uploads
     const studentHeaders = ['Student name', 'Student ID', 'Student SIS ID', 'Email', 'Section name'];
@@ -104,8 +106,9 @@ const ManageSemester = () => {
         downloadAllocation();
     }
 
-    const handleProcessAllocation = () => {
-        processAllocation();
+    const handleProcessAllocation = (e) => {
+        e.preventDefault();
+        processAllocation(hours);
         setAllocationComplete(true);
     }
 
@@ -113,6 +116,11 @@ const ManageSemester = () => {
         console.log("downloading client data");
         downloadCSVClients(semester.id);
     }
+
+    const handleHoursChange = (event) => {
+        setHours(event.target.value);
+      };
+      
 
     // Helper function for date formatting the semester start/end dates, validDate is a true/false flag that returns a valid date that the mySQL database can read
     const formatSemesterDate = (dateString, validDate = false) => {
@@ -469,10 +477,12 @@ const ManageSemester = () => {
                                 <p>All teams have submitted their project preferences.</p>
                                 </div>
                                 <div className='container-button'>
-                                    
-                                <button className='upload-button' onClick={handleProcessAllocation}>
+                                <form onSubmit={handleProcessAllocation}>
+                                <p>Max number of hours</p><input type="number" onChange={handleHoursChange} required></input>
+                                <button type="submit" className='upload-button' >
                                         Process Project Allocation
                                     </button>
+                                    </form>    
                                    {allocationComplete && <button className='upload-button' onClick={allocationDownload}>
                                         Download Allocation Results
                                     </button>}

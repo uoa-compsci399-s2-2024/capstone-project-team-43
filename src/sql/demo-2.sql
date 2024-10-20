@@ -13,65 +13,65 @@ VALUES
     (2, 3, 5),
     (3, 1, 1),
     (3, 10, 2),
-    (3, 12, 3),
+    (3, 11, 3),
     (3, 8, 4),
-    (3, 14, 5),
-    (4, 0, 1),
+    (3, 12, 5),
+    (4, 1, 1),
     (4, 3, 2),
     (4, 9, 3),
     (4, 7, 4),
-    (4, 16, 5),
+    (4, 2, 5),
     (5, 5, 1),
     (5, 6, 2),
-    (5, 14, 3),
-    (5, 13, 4),
-    (5, 17, 5),
+    (5, 8, 3),
+    (5, 9, 4),
+    (5, 7, 5),
     (6, 8, 1),
     (6, 9, 2),
-    (6, 15, 3),
+    (6, 3, 3),
     (6, 6, 4),
-    (6, 12, 5),
+    (6, 11, 5),
     (7, 1, 1),
-    (7, 19, 2),
+    (7, 10, 2),
     (7, 11, 3),
     (7, 4, 4),
     (7, 5, 5),
-    (8, 0, 1),
+    (8, 1, 1),
     (8, 2, 2),
-    (8, 14, 3),
+    (8, 12, 3),
     (8, 3, 4),
     (8, 9, 5),
     (9, 6, 1),
     (9, 13, 2),
-    (9, 19, 3),
+    (9, 14, 3),
     (9, 7, 4),
     (9, 5, 5),
     (10, 4, 1),
-    (10, 16, 2),
-    (10, 18, 3),
+    (10, 12, 2),
+    (10, 11, 3),
     (10, 2, 4),
     (10, 9, 5),
-    (11, 12, 1),
-    (11, 13, 2),
-    (11, 11, 3),
+    (11, 4, 1),
+    (11, 6, 2),
+    (11, 8, 3),
     (11, 1, 4),
     (11, 10, 5),
-    (12, 0, 1),
-    (12, 19, 2),
+    (12, 1, 1),
+    (12, 2, 2),
     (12, 7, 3),
-    (12, 14, 4),
-    (12, 15, 5),
+    (12, 3, 4),
+    (12, 4, 5),
     (13, 1, 1),
-    (13, 17, 2),
-    (13, 16, 3),
-    (13, 12, 4),
+    (13, 3, 2),
+    (13, 6, 3),
+    (13, 9, 4),
     (13, 10, 5),
     (14, 3, 1),
     (14, 2, 2),
     (14, 8, 3),
-    (14, 18, 4),
+    (14, 11, 4),
     (14, 6, 5),
-    (15, 19, 1),
+    (15, 2, 1),
     (15, 5, 2),
     (15, 9, 3);
 INSERT INTO SEMESTER 
@@ -85,7 +85,7 @@ VALUES
 ('Performance Vision App', 'This multi-part project is a rework of an existing native app (originally designed in GDevelop) to make V2.0 multiplatform
 compatible for Android, iOS and Windows.
 This app consists of multiple games used in optometry for vision training (specifically sports vision training).
-Students can choose the game-engine of their choice (e.g Unity or React).', NULL, NULL, 'JS, HTML, Google Firebase, Game Dev (Unity/ React or similar)', NULL, 'Available resources: https://performancevision.co.nz/', 'App package suitable for uploading to both Apple App Store and Google Play Store', NULL, 1, 'accepted', NULL, 0, NULL, '1/08/2024', 'Alex Jones', 'alex.jones@example.com'),
+Students can choose the game-engine of their choice (e.g Unity or React).', NULL, NULL, 'JS, HTML, Google Firebase, Game Dev (Unity/ React or similar)', NULL, 'Available resources: https://performancevision.co.nz/', 'App package suitable for uploading to both Apple App Store and Google Play Store', NULL, 1, 'accepted', NULL, 2, NULL, '1/08/2024', 'Alex Jones', 'alex.jones@example.com'),
 ('Development of a python graphical user interface to our data
 acquisition software PLACE', 'What started as a computer science graduation project, has grown into open source data acquisition software for our physics
 lab. Many labs are slaves to the peculiarities of LabView, while our laser ultrasonics lab in the Physics department lives a happy,
@@ -93,7 +93,7 @@ license free, existence thanks to previous computer science students.
 This software package called PLACE is python-based, communicating with all our hardware through pyserial. The current version
 is mostly the work of previous Auckland computer science student Paul Freeman. The only component of the browser-based
 data acquisition that is not in python is the graphical user interface.
-In this project, we will take the final step in the main development of PLACE and create a python graphical user interface.', NULL, NULL, 'Good understanding of python is mandatory, while an interest in hardware and physics are a definite plus', NULL, 'Available resources: https://github.com/PALab/place', 'The desired outputs include an investigation in the best options for a python graphical user interface, a small scale demo of an experiment in PLACE run with the new python GUI, and finally inclusion of the python GUI in our PLACE code on GitHub.', NULL, 1, 'accepted', NULL, 0, NULL, '1/08/2024', 'Emily Smith', 'emily.smith@fakeemail.com'),
+In this project, we will take the final step in the main development of PLACE and create a python graphical user interface.', NULL, NULL, 'Good understanding of python is mandatory, while an interest in hardware and physics are a definite plus', NULL, 'Available resources: https://github.com/PALab/place', 'The desired outputs include an investigation in the best options for a python graphical user interface, a small scale demo of an experiment in PLACE run with the new python GUI, and finally inclusion of the python GUI in our PLACE code on GitHub.', NULL, 1, 'accepted', 3, 0, NULL, '1/08/2024', 'Emily Smith', 'emily.smith@fakeemail.com'),
 ('Chatbots as Interactive Storytellers', 'Storytelling and dialogue have long been an area of interest in Cognitive Computer Science, but strongly limited by the lack of novelty and
 imagination that a hard-coded system can display.
 This project aims to explore the potential of generative LLMs (ChatGPT) for creating fun and novel storytelling controlled by prompts from an
@@ -102,13 +102,13 @@ intentions and world-state. Then, they will utilise the ChatGPT API for fresh id
 into engaging human-readable text, resulting in a Choose-Your-Own-Adventure-style narrative.
 Depending on progress, next steps would include looking into the quality of storytelling, through elements such as pacing, problem-andresolution cycles and character development; and potentially building a UI for better user experience.', NULL, NULL, NULL, NULL, NULL, 'An MVP would look like a basic engine to control things such as character status, inventory and location, as well as a
 successfully integrated chatbot to provide a scene and a set of reasonable interactive choices for the reader to make.
-If the choices and story are consistent, I will consider the MVP to be met.', NULL, 1, 'accepted', NULL, 0, NULL, '1/08/2024', 'John Doe', 'john.doe@mydomain.com'),
+If the choices and story are consistent, I will consider the MVP to be met.', NULL, 1, 'accepted', 3, 0, NULL, '1/08/2024', 'John Doe', 'john.doe@mydomain.com'),
 ('Te Tuhi Disability Training Cafe platform for trainees', 'The Behaviour Analysis Programme at the university specialises in partnering with organisations who support people with disabilities (including
 dementia, brain injury, and intellectual disabilities).
 One of our ongoing projects is the Te Tuhi cafe for training people with disabilities (https://www.times.co.nz/news/cooking-up-opportunitynew-training-cafe-at-te-tuhi/; https://tetuhi.art/about/te-tuhi-cafe/). The next step in our project is to create an electronic platform on which
 to store data, track a trainee''s progress, and create a one-stop-shop for all the programmes in the project.
 We would love to collaborate to develop this - it''s outside our expertise!', NULL, NULL, NULL, NULL, 'See Canvas Resources section. We could also take students to the cafe to meet the team and see how it operates. We have a number of documents that we can share
-that explain the programmes we''ve developed and how we are measuring outcomes.', 'A platform that allows us to store and track data, but that is also user-friendly for people with disabilities', NULL, 1, 'accepted', NULL, 0, NULL, '1/08/2024', 'Sarah Connor', 'sarah.connor@randommail.com'),
+that explain the programmes we''ve developed and how we are measuring outcomes.', 'A platform that allows us to store and track data, but that is also user-friendly for people with disabilities', NULL, 1, 'accepted', 1, 0, NULL, '1/08/2024', 'Sarah Connor', 'sarah.connor@randommail.com'),
 ('Real-time EEG analysis program', 'The electroencephalogram (EEG) measures the electrical signals of the brain. These are hard to interpret physiological signals. Hence, further
 quantitative analysis is needed to elucidate subtle changes.
 In my work, I use EEG to measure changes during extreme physiological interventions, like severe hypoxia (shortage of oxygen), hypercapnia
@@ -119,7 +119,7 @@ artifacts in the signals (based on code snippets that will be provided), and run
 are subsequently visualized with changes over time. All data (raw and processed) need to be stored for future analysis and interpretation.', NULL, NULL, 'Hardware interaction, real-time engines, accurate data processing', NULL, 'There is an EEG device available that can be used to program the interaction with the software. This device is also used occasionally for research, so it is not full-time available. Additionally, there will be a tour for the student group showing the lab where the device is used. If the software is successful, it can be trialled in the lab.', 'Program that captures the signals of the EEG device, annotate events, detects and visualizes artifacts in the signals
 (based on code snippets that will be provided), and run quantitative EEG analysis scripts (again will be provided) that
 are subsequently visualized with changes over time. All data (raw and processed) need to be stored for future analysis
-and interpretation.', NULL, 1, 'accepted', NULL, 0, NULL, '1/08/2024', 'David Lee', 'david.lee@fakemail.net'),
+and interpretation.', NULL, 1, 'accepted', 2, 0, NULL, '1/08/2024', 'David Lee', 'david.lee@fakemail.net'),
 ('Gamification of Sustainable Transition Pathways', 'We are interested in having a ''candy-land'' style game developed, to help us communicate our research findings to managers and
 implement them in practice. The goal is to help managers understand differences in sustainability initiatives that can be implemented in their
 firms and how to build sustainable transition pathways (to make their business models more sustainable). This would require the ''game'' to
@@ -136,7 +136,7 @@ Likely two avatars - one is the ''game'' that asks the questions and makes state
 would be the ''player'' (a managerial-looking individual).
 An ability to store data (firm size, type, current initiatives) and the ''potential path'' they build as well as the email so that
 we may be able to send future communications (if they opt-in). Keeping the data at a minimum would help us get an
-index of what firms are currently doing and their current paths.', NULL, 2, 'accepted', NULL, 1, NULL, NULL, 'Laura Miller', 'laura.miller@testemail.com'),
+index of what firms are currently doing and their current paths.', NULL, 2, 'accepted', 1, 1, NULL, NULL, 'Laura Miller', 'laura.miller@testemail.com'),
 ('Alcohol, drug use and mental illness during pregnancy', 'Methamphetamine (METH), cannabis and other recreational drug use during pregnancy has increased in NZ and worldwide (1, 2). Multiple
 drug use, comorbid psychiatric disorders, and domestic violence are common in women who report using METH, alcohol and other drugs
 during pregnancy (3, 4). Alcohol and drugs consumed during pregnancy cross the placenta and depending on the drug, the timing, and
@@ -148,7 +148,7 @@ standardised screener to test whether they have an alcohol or drug problem and l
 might mean for their the mother''s health and the baby''s development. 2.Allow individuals to use a standardised
 screener to test whether they have a mental health problem and link to what that might mean for the mother''s health
 and the baby''s development. 3.Provide links to resources, self-help websites or places where they can get help.
-4.Develop the website so it can toggle between English and Māori.', NULL, 2, 'accepted', NULL, 2, NULL, NULL, 'Michael Clark', 'michael.clark@sampledomain.org'),
+4.Develop the website so it can toggle between English and Māori.', NULL, 2, 'accepted', 3, 2, NULL, NULL, 'Michael Clark', 'michael.clark@sampledomain.org'),
 ('CARE Web Platform: Advancing Wildlife Conservation through
 AI-Driven Animal Re-Identification', 'The CARE Web Platform is an innovative online system designed to revolutionize wildlife conservation efforts through advanced AI-driven
 animal re-identification technology. At its core, the platform utilizes the Clip-based Animal REidentification (CARE) framework, which
@@ -172,7 +172,7 @@ effortlessly upload wildlife images, input relevant data, and access identificat
 2. Analytics and Reporting Tools: The platform should include comprehensive analytics and reporting capabilities,
 allowing users to track re-identification rates, population trends, and other vital conservation metrics.
 3. Collaborative Features: Facilities for sharing data and results among conservationists, researchers, and organizations
-should be integrated to foster collaboration and knowledge exchange within the wildlife conservation community.', NULL, 2, 'accepted', NULL, 3, NULL, NULL, 'Olivia Martin', 'olivia.martin@mockmail.com'),
+should be integrated to foster collaboration and knowledge exchange within the wildlife conservation community.', NULL, 2, 'accepted', 2, 3, NULL, NULL, 'Olivia Martin', 'olivia.martin@mockmail.com'),
 ('Performance enhancement of a Julia Monte Carlo code for
 melting simulations', 'In our research group we develop Monte Carlo methods to describe melting processes. Recently, we developed a Monte Carlo package
 ParallelTemperingMonteCarlo.jl in the modern programming language Julia, based on our melting codes originally developed in Fortran90.
@@ -186,7 +186,7 @@ on the New Zealand e-science infrastructure (NeSi) supercomputers.', NULL, NULL,
 programming language or supercomputers is helpful but not a prerequisite', NULL, 'Julia documentation: https://docs.julialang.org/en/v1/
 Julia tutorials: https://julialang.org/learning/tutorials/
 Monte Carlo melting code: https://github.com/ElkePahl/ParallelTemperingMonteCarlo.jl', 'Performance improvement of our Julia code (serial version) to achieve comparable efficiency as we had for the
-Fortran version. A plus would be to have a parallel version of the code that runs on NeSI''s supercomputer.', NULL, 2, 'accepted', NULL, 4, NULL, NULL, 'James Brown', 'james.brown@nowhere.com'),
+Fortran version. A plus would be to have a parallel version of the code that runs on NeSI''s supercomputer.', NULL, 2, 'accepted', 1, 4, NULL, NULL, 'James Brown', 'james.brown@nowhere.com'),
 ('Low / non-profit dating app that maximizes usefulness', 'Dating apps these days confine users to overpriced paywalls, mindless swiping and algorithms that discriminate and game the app towards
 addiction rather than actually maximizing the odds of finding a suitor.
 The world needs a dating app that it is not controlled by a greedy monopoly. It puts transparency, fairness, and real connection above
@@ -202,14 +202,14 @@ settings)
 -in app messaging
 -profiles include interests tags, bio, age, photos, drug/alcohol/smoking tags
 -report profiles feature
--Any other features you think will help people find a match.', NULL, 2, 'accepted', NULL, 5, NULL, NULL, 'Sophia Davis', 'sophia.davis@tempemail.net'),
+-Any other features you think will help people find a match.', NULL, 2, 'accepted', 2, 5, NULL, NULL, 'Sophia Davis', 'sophia.davis@tempemail.net'),
 ('WeDo', 'An app enabling people to connect based around a sport, hobby or activity. WeDo will let users post an activity e.g. tennis, gaming, walking
 ,running, meditating etc. and other users will be able to join in if they''re interested.
 A simple yet powerful way to help people socialize and have fun.
 This is a much more informal and powerful version of the website "Meetup". With WeDo, activities can be posted on short notice and users will
 have better control over the types of participants they interact with.
 
-WeDo will also give users the power to set preference such as women’s or men’s only activities, age range of participants and locality. ', NULL, NULL, NULL, NULL, 'Git repository with the project implemented by capstone students in the past', NULL, NULL, 2, 'accepted', NULL, 6, NULL, NULL, 'William Johnson', 'william.johnson@dummyemail.org'),
+WeDo will also give users the power to set preference such as women’s or men’s only activities, age range of participants and locality. ', NULL, NULL, NULL, NULL, 'Git repository with the project implemented by capstone students in the past', NULL, NULL, 2, 'accepted', 3, 6, NULL, NULL, 'William Johnson', 'william.johnson@dummyemail.org'),
 ('Dance Competition & Registration Event App', 'Create a front end app viewable from phone & PC for a google sheet backend, similar to glideapps, but without the requirement for drag
 and drop UI editor that glide provides.', NULL, NULL, NULL, NULL, 'Access to copy of current app (currently using glideapps)
 Access to google sheet (backend of app)', 'Features:
@@ -230,7 +230,7 @@ drive? Or some cloud storage.)
 - Choice Selections - From List from google sheet with filtered list options.
 - User Initiated data refresh (would be nice to have) - for example refreshing stripe payment link (as below).
 - In App Media player (music) - Not a definite requirement (can just provide a download link)
-Would be good to have notifications also, but not sure this is possible with HTML apps yet.', NULL, 2, 'accepted', NULL, 7, NULL, NULL, 'Mia Wilson', 'mia.wilson@fakemail.com'),
+Would be good to have notifications also, but not sure this is possible with HTML apps yet.', NULL, 2, 'accepted', 4, 7, NULL, NULL, 'Mia Wilson', 'mia.wilson@fakemail.com'),
 ('Taiaho Observatory Operations Dashboard', 'The University of Auckland has developed a prototype ground station called the Taiaho Observatory. Taiaho is currently capable of tracking
 satellites for the purpose of communications and space situational awareness. To expand the capabilities of this observatory, we are tasking
 a student with designing and developing a unified dashboard to present important operational information and control key systems. The
@@ -246,7 +246,7 @@ https://uxdesign.cc/how-i-recreated-crew-dragons-ui-15877eddf3ed', 'Design a vis
 Liaise with the current FSOC team to design a sensible data solution that integrates with existing network infrastructure.
 (Back-end).
 Liaise with the current FSOC team and the DLR to integrate existing control systems into the dashboard.
-Maintain a mindful approach towards cyber security. ', NULL, 2, 'accepted', NULL, 8, NULL, NULL, 'Benjamin Moore', 'benjamin.moore@randomnet.com'),
+Maintain a mindful approach towards cyber security. ', NULL, 2, 'accepted', 4, 8, NULL, NULL, 'Benjamin Moore', 'benjamin.moore@randomnet.com'),
 ('Connecting neurodivergent students at UoA', 'Context and rationale:
 Inclusive Learning supports neurodivergent students with their academic and learning needs. As well as navigating the academic demands
 of tertiary study, many of these students report feeling isolated and disconnected from others; they would like to meet other students within
@@ -261,7 +261,7 @@ students could connect with other neurodivergent students. The students would cr
 programme, neurodivergence, past courses, current courses, interests, specific skills and knowledge, what they like to
 do in their spare time etc).
 The platform would allow students to be matched according to various profile information (e.g. taking the same
-course, taken the course in the past, similar interests, looking to learn and skill or offering to share/teach a skill). ', NULL, 2, 'accepted', NULL, 9, NULL, NULL, 'Chloe Harris', 'chloe.harris@testdomain.com'),
+course, taken the course in the past, similar interests, looking to learn and skill or offering to share/teach a skill). ', NULL, 2, 'accepted', 2, 9, NULL, NULL, 'Chloe Harris', 'chloe.harris@testdomain.com'),
 ('Sorting out basic chemical ideas', 'Fundamental chemical concepts (e.g., molecules, elements, compounds, atoms, state of matter, and the relationships among these
 concepts) are known to be challenging to learn by early senior science students. Very often, students would have to learn a string of
 definitions that are abstract and not easy to visualise. I''ve been trying to use a visual method to help students learn (and teachers teach). I
@@ -276,4 +276,4 @@ to appreciate how users may sort the diagrams. ', 'The project would
 (3) give verbal feedback on the way users sort, and where appropriate, conceptualise their sorting in terms of those
 chemical concepts (e.g., when a user puts diagrams representing oxygen, chlorine, mercury in one group, and water,
 carbon dioxide, carbon monoxide in another group, the feedback would help the user to learn they are ''elements'' and
-''compounds'' respectively). ', NULL, 2, 'accepted', NULL, 10, NULL, NULL, 'Ethan Jackson', 'ethan.jackson@mockmail.net');
+''compounds'' respectively). ', NULL, 2, 'accepted', 3, 10, NULL, NULL, 'Ethan Jackson', 'ethan.jackson@mockmail.net');

@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { fetchProjects } from '../../Api.js'
 import Project from "../../components/project/project.js";
 import PopUp from "../../components/project-pop-up-student.js";
+import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
+
 
 import './projects-available.css'
 
@@ -48,15 +50,20 @@ const ProjectsAvailable = () => {
                 <div className='page-heading'>
                     <h1>Available Projects</h1>
                 </div>
-                <div className='page-content'>
-                <div className='projects-container'>
+                
+
                     {projects.filter(project => project.published === 'true').length === 0 && 
+                    <div className='page-content text-page'> 
                         <p>
-                            There are currently no available projects.
+                            Available projects have not been published yet.
                         </p>
+                        
+                    </div>
                     }
                     {projects.filter(project => project.published === 'true').length > 0 && 
-                    projects.map(project => (
+                    <div className='page-content'> 
+                    <div className='projects-container'>
+                    {projects.map(project => (
                         // expand project when user clicks
                         <div key={project.id} onClick={() => expandProject(project.id)}>
                 
@@ -68,10 +75,18 @@ const ProjectsAvailable = () => {
                             />
                              {/* {false &&<PopUp project = {project}/>} */}
                         </div>))}
+                    </div>
+                    </div>}
+                    <div className='capitalise-container'>
+                        <p>Want to view previous Capstone projects?</p>
+                        <button className='capitalise-button'
+                            onClick={() => window.open('https://www.capitalise.space/', '')}>
+                                Visit <CapitaliseLogo className='capitalise-logo'/>
+                                {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
+                        </button>
+                    </div>
                         {/* <button id="close" onClick={close}>&times;</button> */}
                 </div>
-                </div>
-            </div>
         </main>    
 
     );

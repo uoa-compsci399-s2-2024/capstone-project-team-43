@@ -98,6 +98,54 @@ const Project = ({ projectId, view, expanded, expandProject=null  }) => {
                             </div>
                         </div>
                     </div>
+                    {isAdmin && <div className="project-data-box">
+                        <div className="project-data-container">
+                            <p className="proj-data-header">Client Name</p>
+                            <div className="project-data-text">
+                                <p>{project.client_name || 'None'}</p>
+                            </div>
+                        </div>
+                    </div>}
+                    {isAdmin && <div className="project-data-box">
+                        <div className="project-data-container">
+                            <p className="proj-data-header">Client Email</p>
+                            <div className="project-data-text">
+                                <p>{project.client_email || 'None'}</p>
+                            </div>
+                        </div>
+                    </div>}
+                    {isAdmin && <div className="project-data-box">
+                        <div className="project-data-container">
+                            <p className="proj-data-header">Other Client Details</p>
+                            <div className="project-data-text">
+                                <p>{project.other_client_details || 'None'}</p>
+                            </div>
+                        </div>
+                    </div>}
+                    {isAdmin && <div className="project-data-box">
+                        <div className="project-data-container">
+                            <p className="proj-data-header">Maximum Teams</p>
+                            <div className="project-data-text">
+                                <p>{project.max_teams || 'None'}</p>
+                            </div>
+                        </div>
+                    </div>}
+                    {isAdmin && <div className="project-data-box">
+                        <div className="project-data-container">
+                            <p className="proj-data-header">Date Created</p>
+                            <div className="project-data-text">
+                                <p>{project.created.substring(0,10) || 'None'}</p>
+                            </div>
+                        </div>
+                    </div>}
+                    {isAdmin && <div className="project-data-box">
+                        <div className="project-data-container">
+                            <p className="proj-data-header">Expiry</p>
+                            <div className="project-data-text">
+                                <p>{project.expiry.substring(0,10)  || 'None'}</p>
+                            </div>
+                        </div>
+                    </div>}
                 </div>}
                 {(view !== 'preferences' && view !=='chosen') && (projectButtons && !isAdmin) && < div className="expand-button-container">
                     <div className="expand-text">

@@ -1,9 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import { createProject } from '../../Api.js'
+import { createProject, fetchSemester } from '../../Api.js'
 
-// import { projectinfo } from "../../components/sortable_item.js";
-import { projectinfo } from "../../components/pop-up admin/project-pop-up-admin.js";
 import { fetchUser } from "../../Api.js";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate, Link } from 'react-router-dom';
@@ -25,6 +23,11 @@ const ProjectProposal = () => {
     const openAttendanceConfirmation = () => setShowAttendanceConfirmation(true);
     const closeAttendanceConfirmation = () => setShowAttendanceConfirmation(false);
 
+    const [nextSemester, setNextSemester] = useState(null);
+
+    // const [nextStart, setNextStart] = useState(null);
+    // const [submissionDeadline, setSubmissionDeadline] = useState(null);
+
     const handleEquipmentReqSelect = (event) => {
         const value = event.target.value;
         if (value === "1") {
@@ -37,14 +40,31 @@ const ProjectProposal = () => {
 
     const navigate = useNavigate();
 
+    // Get semester data from server
+    useEffect(() => {
+        console.log('getting semesters data');
+        const getSemester = async () => {
+                try {
+                    const data = await fetchSemester();
+                    const currentDate = new Date();
+
+                    const upcomingSemesters = data.filter(semester => new Date(semester.start_date) > currentDate);
+                    const sortedSemesters = upcomingSemesters.sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+                    const earliestSemester = sortedSemesters.length > 0 ? sortedSemesters[0] : null;
+
+                    setNextSemester(earliestSemester);
+                    console.log('Fetched semester data:', earliestSemester);
+                } catch (error) {
+                    console.error('Failed to load semester:', error);
+                }
+            }
+        getSemester();
+    }, []); 
+    
 
     
     const handleContinueToForm = (field) => {
         
-        if(projectinfo !== null){
-            populate();
-        }
-
         if (document.getElementById("check1").checked 
             && document.getElementById("check2").checked) {
             setShowForm(true);
@@ -112,38 +132,6 @@ const ProjectProposal = () => {
             }
         }
 
-        const populate = () => {
-            // Must keep this comment here to fetch projectinfo data
-            console.log(fetchUser(projectinfo.owner_id));
-            console.log(projectinfo)
-    
-            //document.getElementById("clientname").value = projectinfo.project.owner_id;
-            //document.getElementById("clientemail").value = projectinfo.project.owner_id;
-    
-
-            // document.getElementById("otherclientdetails").value = projectinfo.other_client_details;
-            // document.getElementById("projecttitle").value = projectinfo.project.title;
-            // document.getElementById("projectdescription").value = projectinfo.description;
-            // document.getElementById("desiredoutput").value = projectinfo.deliverable;
-            // document.getElementById("specialequipment").value = projectinfo.special_requirements;
-            // document.getElementById("desiredskill").value = projectinfo.preferred_skills;
-            // document.getElementById("teams").value = projectinfo.max_teams;
-            // document.getElementById("availableresources").value = projectinfo.project.available_resources;
-            // project_id = projectinfo.id;
-            //     try {
-            //     if (projectinfo.special_requirements.length > 0) {
-            //         document.getElementById("yes-no-equipment").checked = 1;
-            //     } else {
-            //         document.getElementById("yes-no-equipment").checked = 0;
-            //     }
-            // } catch {
-            //     document.getElementById("yes-no-equipment").checked = 0;
-            // }
-    
-            // const date = projectinfo.expiry.split("T");
-            // document.getElementById("date").value = date[0]; 
-            
-        }
 
     return(
             <main className="project-proposal-page">
@@ -155,11 +143,12 @@ const ProjectProposal = () => {
                         <p>Please complete this form if you wish to propose a 
                             project for the COMPSCI 399 Capstone Course.
                         </p>
-                        <h2>Submission Deadline</h2>
+                        {nextSemester && <div> <h2>Submission Deadline</h2>
+                        <p>The submission deadline for the next semester starting in {nextSemester.start_date} is {nextSemester.proposal_deadline}.</p>
                         <p>Please note that while we accept applications throughout the year, 
                             if the proposal submission deadline isn't met we will only consider 
                             the project for future semesters.
-                        </p>
+                        </p></div>}
 
                         <h2>Project Requirements</h2>    
                         <p>The proposed project should be a research or software development project,

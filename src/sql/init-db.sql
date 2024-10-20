@@ -40,8 +40,8 @@ CREATE TABLE SEMESTER (
     end_bidding_date DATETIME NOT NULL,
     is_semester_one BOOL NOT NULL,
     status ENUM('retired', 'current', 'upcoming'),
-    name VARCHAR(255) DEFAULT NULL
-
+    name VARCHAR(255) DEFAULT NULL,
+    proposal_deadline DATE DEFAULT NULL
 );
 -- trigger to fill value in name & status column of SEMESTER
 CREATE TRIGGER before_insert_semester

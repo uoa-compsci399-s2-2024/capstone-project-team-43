@@ -60,7 +60,7 @@ const Dashboard = () => {
                         <p>You haven't submitted any project proposals yet.</p>
                     )} */}
                     {semesters.length > 0 && semesters.filter(semester => (semester.status === 'current')).map(semester => (
-                            <div key={semester.id} className="semester-container existing">
+                            <div key={semester.id} className="semester-container existing" onClick={() => {navigate(`/manage/semester/${semester.id}`)}}>
                                 <div className="head">
                                     <p className="name">{semester.name}</p>
                                     <p className="status">{semester.status}</p>

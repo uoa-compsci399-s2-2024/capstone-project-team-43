@@ -149,13 +149,14 @@ export async function downloadCSVTeams(semesterID) {
 };
 
 
-export async function processAllocation() {
+export async function processAllocation(hours) {
     try {
         const response = await fetch(`/api/project-allocation/`, {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
+            body: JSON.stringify({ hours }),
         })
 
         return await response;

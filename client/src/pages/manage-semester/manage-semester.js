@@ -218,8 +218,11 @@ const ManageSemester = () => {
                     console.log('getting default semester');
                     const semesters = await fetchSemesters();
                     const current = semesters.find(semester => semester.status === 'current');
+                    const currentid = semesters.find(semester => semester.status === 'current').id;
                     setSemester(current);
                     setUpdatedSemester(current);
+                    setSemesterID(currentid);
+                    console.log('CURRENT ID:',currentid);
 
                 } catch (error) {
                     console.error('Failed to load semester:', error);
@@ -252,15 +255,15 @@ const ManageSemester = () => {
             try {
                 const data = await fetchUsersByRole('student');
                 // ignore demo user -- delete after demo
-                const demoData = data.filter(student => student.email !== 'student@gmail.com')
+                const demoData = data.filter(student => (student.email !== 'iwoo708@aucklanduni.ac.nz' && student.email !== 'student@gmail.com'))
                 setStudents(demoData);
-                console.log('Fetched students:', data);
+                console.log('Fetched students:', demoData);
             } catch (error) {
                 console.error('Failed to load students:', error);
             }
         }
         getStudents();
-    }, [semesterID]);
+    }, [semesterID, semester]);
 
     // Get semester's teams
     useEffect(() => {
@@ -333,7 +336,7 @@ const ManageSemester = () => {
                         <h1>Manage Semesters</h1>
                     <div className='page-subheading semester-subheading'>
                         <h2 className='page-subheading'>{semester.name}</h2>
-                        <SemesterDropdown onSelectSemester={handleSemesterSelect}/>
+                        <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={'retired'}/>
                     </div>
                 </div>
                 {semester.status !== 'retired' && <div className='page-content'>
@@ -365,7 +368,7 @@ const ManageSemester = () => {
                                 <div className='pop-up'>
                                     <div className='pop-up-header'>
                                         <h3>Upload Student Data</h3>
-                                        <button className='quit-button' onClick={closeStudentUpload}></button>
+                                        {/* <button className='quit-button' onClick={closeStudentUpload}></button> */}
                                     </div>
                                     <div className='pop-up-text'>
                                         <p>File must be a CSV with headers {studentHeaders.join(', ')}</p>
@@ -398,6 +401,19 @@ const ManageSemester = () => {
                                     </button>}
                                 </div>}
                             </div>
+                            {showTeamUpload && (
+                            <div className='pop-up'>
+                                <div className='pop-up-header'>
+                                    <h3>Upload Team Data</h3>
+                                    {/* <button className='quit-button' onClick={closeTeamUpload}></button> */}
+                                </div>
+                                <div className='pop-up-text'>
+                                    <p>File must be a CSV with headers {teamHeaders.join(', ')}</p>
+                                    <p className='warning'>Warning: Reuploading team data will remove the already existing teams from the system. This cannot be undone.</p>
+                                </div>
+                                <SemesterCSVUpload semesterID={semesterID} fileContent='teams' />
+                            </div>
+                            )}   
                         </div>
                             
                     </div>
@@ -463,19 +479,6 @@ const ManageSemester = () => {
                                 </div>
                             </div>
                         </div>
-                        {showTeamUpload && (
-                            <div className='pop-up'>
-                                <div className='pop-up-header'>
-                                    <h3>Upload Team Data</h3>
-                                    <button className='quit-button' onClick={closeTeamUpload}></button>
-                                </div>
-                                <div className='pop-up-text'>
-                                    <p>File must be a CSV with headers {teamHeaders.join(', ')}</p>
-                                    <p className='warning'>Warning: Reuploading team data will remove the already existing teams from the system. This cannot be undone.</p>
-                                </div>
-                                <SemesterCSVUpload semesterID={semesterID} fileContent='teams' />
-                            </div>
-                        )}   
                     </div>
                     <div className='content-sections-container dates'>
                         <h3>Dates and Deadlines</h3>

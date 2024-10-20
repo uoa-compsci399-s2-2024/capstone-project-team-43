@@ -85,6 +85,8 @@ CREATE TABLE PREFERENCE (
     created TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP(3)
 );
 
+ALTER TABLE TEAM
+ADD CONSTRAINT unique_team UNIQUE (team_number, team_name, semester_id);
 
 -- INSERT INTO PROJECT 
 --     (title, description, owner_id, other_client_details, preferred_skills, special_requirements, available_resources, deliverable, created, semester_id, status, max_teams, project_number, published, expiry, client_name, client_email) 

@@ -87,6 +87,53 @@
     margin-top: -1vh;
 }
 
+.manage-semester-page .pop-up{
+    justify-content: center;
+    padding: 1vh;
+}
+
+.manage-semester-page .pop-up-text p{
+    margin: 0;
+}
+
+
+.manage-semester-page .pop-up-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    max-width: 100%;
+    align-items: center;
+    padding: 2vh;
+}
+.manage-semester-page .pop-up-header h3{
+    color: var(--text-color-light) !important;
+    font-size: 20px;
+
+}
+
+.manage-semester-page .file-form-container{
+    padding: 1vh;
+}
+
+.manage-semester-page .pop-up-button{
+    background-color: var(--theme-dark);
+    padding: 1vh;
+    font-size: 12px;
+}
+
+/* .manage-semester-page .pop-up-button:hover{
+    opacity: 0.7;
+} */
+
+.manage-semester-page .confirm-upload-button{
+    background-color: var(--theme-highlight);
+    opacity: 1;
+}
+
+.upload-success-message{
+    font-weight: 600 !important;
+}
+
 /* DROP DOWN MENU */
 /* 
 .semester-subheading{ 
@@ -272,7 +319,6 @@
 }
 
 .manage-semester-page button:hover{
-    background-color: transparent !important;
     opacity: 0.6;
     /* color: white; */
     /* color: white; */

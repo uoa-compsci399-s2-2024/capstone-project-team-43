@@ -96,10 +96,10 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
                     {/* Hides the functioning select file button because it's ugly */}
                 </div>
                 <input className='select-file-default' type='file' ref={fileInput} accept='.csv' onChange={onFileSelect} />
+                {error && <p className='upload-error-message'>{error}</p>}
                 {/* Confirm upload */}
                 <div className='upload-file-container'>
                     {selectedFile && <button className='pop-up-button confirm-upload-button' onClick={onFileUpload}>Upload {fileContent === 'students' ? 'Student' : 'Team'} Data</button>}
-                    {error && <p className='upload-error-message'>{error}</p>}
                     {successMessage && <p className='upload-success-message'>{successMessage}</p>}
                 </div>
             </div>

@@ -74,7 +74,7 @@ button {
   background-color: rgba(255, 255, 255, 0.45);
 }
 
-button:hover {
+.landing-page button:hover {
   background-color: white !important;
   cursor: pointer;
 }
@@ -140,10 +140,6 @@ button:hover {
   border-color: var(--theme-dark);
 }
 
-.pop-up-button:hover {
-  background-color: var(--theme-dark) !important;
-  color: white;
-}
 
 .quit-button-container {
   display: flex;

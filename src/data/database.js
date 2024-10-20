@@ -5,13 +5,23 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Creates a pool of connections to the database
+// const pool = mysql.createPool({
+//   host: process.env.RDS_HOSTNAME,
+//   user: process.env.RDS_USERNAME,
+//   password: process.env.RDS_PASSWORD,
+//   port: process.env.RDS_PORT,
+//   multipleStatements: true,
+// });
+
 const pool = mysql.createPool({
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.RDS_USERNAME,
-  password: process.env.RDS_PASSWORD,
+  host: 'localhost',
+  user: 'root',
+  password: '',
   port: process.env.RDS_PORT,
-  multipleStatements: true
+  multipleStatements: true,
+  connectionLimit: 50
 });
+
 
 // Gets the database name and script path from .env file
 const DB_NAME = process.env.RDS_DB_NAME;
@@ -37,10 +47,10 @@ async function initializeDatabase() {
       // Database doesn't exist so it calls a function to create one
       await createDatabase();
 
-    } else if (TESTING) {
-      console.log(`TESTING is true, deleting and recreating database`);
-      await connection.query(`DROP DATABASE ${DB_NAME};`);
-      await createDatabase();
+    // } else if (TESTING) {
+    //   console.log(`TESTING is true, deleting and recreating database`);
+    //   await connection.query(`DROP DATABASE ${DB_NAME};`);
+    //   await createDatabase();
 
     } else {
 

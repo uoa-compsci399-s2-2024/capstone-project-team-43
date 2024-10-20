@@ -73,16 +73,23 @@ router.post("/:id/upload/:fileContent", upload.single("myFile"), async (req, res
 
             // If CSV contains teams data 
             } else if (fileContent === 'teams') {
+                console.log('deleting existing teams')
 
                 // delete any preexisting teams
                 await deleteTeamBySemester(semester_id);
+                console.log('creating teams');
+
 
                 // create new teams in database
                 for (const row of rows) {
-                    console.log('creating teams');
                     let team_number = row['group_name'][5];
                     let team_name = row['group_name'].slice(9,); 
-                    let unikey =  row['login_id']; 
+                    let unikey =  row['login_id'];
+                    
+                    console.log('team number:', team_number);
+                    console.log('team name:',team_name);
+                    console.log('unikey:',unikey);
+                    console.log('sem id:',semester_id);
 
                     const team = await createTeam(team_number, team_name, semester_id);
 

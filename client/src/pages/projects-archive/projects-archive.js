@@ -82,28 +82,36 @@ const ProjectsArchive = () => {
         <main className="projects-archive">
             {semester && <div className='content'>
                 <div className='page-heading'>
-                    <div className='semester-heading'>
-                        {semester && <h1>Project Archive</h1>}
-                        {/* update semesterID when dropdown button is selected */}
-                        <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['current','upcoming']} />
+                        <h1>Project Archive</h1>
+                        <div className='page-subheading semester-subheading'>
+                        <h2 className='page-subheading'>{semester.name}</h2>
+                        <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['current','upcoming']}/>
                     </div>
-                    <h2 className='page-subheading'>{semester.name}</h2>
                 </div>
+
                 <div className = 'page-content display-projects'>
                     {/* display projects from semester */}
-                    <div id="archivedProjects">
+                    <div className='projects-container' id="archivedProjects">
                         {archivedProjects.length > 0 ? (
                             archivedProjects.map(project => (
-                                <div key={project.id} onClick={() => expandProject(project.id)}>
+                                <div className='full-project-wrapper' key={project.id} >
                                     <Project className = 'project'
                                         view='admin'
                                         projectId={project.id}
                                         expanded={expandedProjects[project.id]}
                                         expandProject = {expandProject}
                                     />
+                                    <div className="project-wrapper-buttons">
+                                        <button onClick={() => expandProject(project.id)} className="admin-expand-button">
+                                            {!expandedProjects[project.id] ? 'Expand Project Details' : 'Collapse Project Details'}
+                                        </button> 
+                                    {expandedProjects[project.id] && <button onClick={() => navigate(`/projects/edit/${project.id}`)} className="admin-expand-button">
+                                            Edit Project
+                                        </button>} 
+                                    </div>
                                 </div>
                             ))
-                        ) : (<div className='text-page'>
+                        ) : (<div className='page-content text-page'>
                             <p>No projects have been archived for this semester.</p>
                             </div>
                         )}

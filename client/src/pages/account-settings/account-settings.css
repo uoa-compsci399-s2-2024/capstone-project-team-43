@@ -1,5 +1,6 @@
 .account-settings-page .page-content{
     justify-content: start;
+    width: 100%;
 }
 
 .account-settings-buttons{
@@ -16,8 +17,8 @@
 
 .account-settings-page .content-section{
     text-align: left;
-    width: 600px;
-    min-width: 300px;
+    /* width: 600px;
+    min-width: 300px; */
 }
 
 .data-container{

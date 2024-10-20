@@ -159,8 +159,8 @@ const AccountSettings = ({ }) => {
         <main className='account-settings-page'>
             {user && <div className='content'>
                 <div className='page-heading'>
-                <h1>Account Settings</h1>
-                <h2 className='page-subheading'>Your Account Details</h2>
+                <h1>Your Account</h1>
+                {/* <h2 className='page-subheading'>Your Account Details</h2> */}
                 </div>
                 <div className='page-content'>
                 <div className='content-section'>

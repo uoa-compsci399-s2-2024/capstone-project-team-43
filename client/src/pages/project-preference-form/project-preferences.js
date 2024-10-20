@@ -8,9 +8,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getUserID } from "../../utils/auth.js";
 import Container from "../../components/container.js";
 
-
-
-
 const ProjectPreferences = ()=>{
     const [currentSemester, setCurrentSemester] = useState(null);
     const [userId, setUserId] = useState(null);
@@ -27,7 +24,27 @@ const ProjectPreferences = ()=>{
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showConfirmationPopUp, setShowConfirmationPopUp] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [showHelp, setShowHelp] = useState(false); 
+    const [showHelp, setShowHelp] = useState(false);
+    
+    const [selectingProject, setSelectingProject] = useState(1);
+
+    const [choice, setChoice] = useState([null, null, null, null, null]);
+
+    const tooltipFormat = {
+        1: 'first',
+        2: 'second',
+        3: 'third',
+        4: 'fourth',
+        5: 'fifth',
+    };
+
+    const buttonFormat = {
+        1: '1st',
+        2: '2nd',
+        3: '3rd',
+        4: '4th',
+        5: '5th',
+    };
 
     
     const handleGoBack = () => {
@@ -39,11 +56,6 @@ const ProjectPreferences = ()=>{
     const handleSuccess = () => {
         setShowSuccessMessage(true)
     };
-
-    const choose = (element, index) =>{
-        setChosenProjects(oldArray => [...oldArray,element] );
-    }
-
 
     // get user's id
     useEffect(() => {
@@ -136,66 +148,11 @@ const ProjectPreferences = ()=>{
     // }, [currentSemester]);
 
 
-    // handles user clicking project after already clicking a preference button
-    const handleclick = (project) =>{
-        if (opt1 === true){
-            if (!(chosenProjects.some((item) => item.title === project.title))){
-                {choose(project, 0)};
-            let options = document.getElementById('option1');
-            options.innerHTML += `<p className = 'opt-project-title'>${project.title}</p>`;
-            // options.innerHTML += project.title;
-            // options.innerHTML += "</p>";
-            opt1 = false;
-            }
-        }
-        else if (opt2 === true){
-            if (!(chosenProjects.some((item) => item.title === project.title))){
-            {choose(project, 1)};
-            let options = document.getElementById('option2');
-            options.innerHTML += `<p className = 'opt-project-title'>${project.title}</p>`;
-            opt2 = false;
-        }
-        }
-        else if (opt3 === true){
-            if (!(chosenProjects.some((item) => item.title === project.title))){
-            {choose(project, 2)};
-            let options = document.getElementById('option3');
-            options.innerHTML += `<p className = 'opt-project-title'>${project.title}</p>`;
-            opt3 = false;
-        }
-        }
-        else if (opt4 === true){
-            if (!(chosenProjects.some((item) => item.title === project.title))){
-            {choose(project, 3)};
-            let options = document.getElementById('option4');
-            options.innerHTML += `<p className = 'opt-project-title'>${project.title}</p>`;
-
-            opt4 = false;
-        }
-        }
-        else if (opt5 === true){
-            if (!(chosenProjects.some((item) => item.title === project.title))){
-            {choose(project, 4)};
-            let options = document.getElementById('option5');
-            options.innerHTML += `<p className = 'opt-project-title'>${project.title}</p>`;
-
-            opt5 = false;
-        }
-        }
-    }
-
-    let opt1 = false;
-    let opt2 = false;
-    let opt3 = false;
-    let opt4 = false;
-    let opt5 = false;
 
     // handles form submission 
     const handleConfirmation =() =>{
         if(document.getElementById("agreeupon").checked === true) {
-        // document.getElementById('projectPreferenceselements').style.display = "none";
-        // document.getElementById('onsubmission').style.display = "block";
-        // document.getElementById('projectpreferenceconfirm').style.display = "none";
+
         
             let team = user.team_id;
 
@@ -223,62 +180,19 @@ const ProjectPreferences = ()=>{
         }
     }
 
-    // const cancel = () =>{
-    //     document.getElementById('projectpreferenceconfirm').style.display = "none";
-    //     document.getElementById('projectPreferenceselements').style.background = "#2979FF";
-    //     document.getElementById('projectPreferenceselements').style.opacity = "100%";
-    // }
-
     const handleSubmit = () =>{
         // only continue if all 5 preference containers have been filled
-        if(chosenProjects.length < 5){
-            return;
+        if (choice.every(value => value !== null)){
+            setShowForm(false);
+            setShowHelp(false);
+            setShowConfirmation(true);
+            console.log('chosen:',choice);
         }
-        console.log('chosen:',chosenProjects);
-
-        // if(chosenProjects[0].title !== undefined && chosenProjects[1].title !== undefined && chosenProjects[2].title !== undefined && chosenProjects[3].title !== undefined && chosenProjects[4].title !== undefined){
-        // document.getElementById('projectpreferenceconfirm').style.display = "block";
-        // document.getElementById('projectPreferenceselements').style.background = "#003998";
-        // document.getElementById('projectPreferenceselements').style.opacity = "30%";
-        // }
+        return; 
 
         // move to confirmation page
-        setShowForm(false);
-        setShowHelp(false);
-        setShowConfirmation(true);
     }
 
-    const selecting = (option) =>{
-        if (option === "option1"){
-            opt1 = true;
-            let options = document.getElementById('option1');
-            options.innerHTML = "1";
-        }
-
-        else if (option === "option2"){
-            opt2 = true;
-            let options = document.getElementById('option2');
-            options.innerHTML = "2";
-        }
-
-        else if (option === "option3"){
-            opt3 = true;
-            let options = document.getElementById('option3');
-            options.innerHTML = "3";
-        }
-
-        else if (option === "option4"){
-            opt4 = true;
-            let options = document.getElementById('option4');
-            options.innerHTML = "4";
-        }
-
-        else if (option === "option5"){
-            opt5 = true;
-            let options = document.getElementById('option5');
-            options.innerHTML = "5";
-        }
-    }
     
     let biddingtime;
     const getBiddingDate = () => {
@@ -309,28 +223,23 @@ const ProjectPreferences = ()=>{
         }
     };
 
-    // const helppopup = () =>{
-    //     document.getElementById('help').style.display = "block";
-    //     document.getElementById('projectPreferenceselements').style.background = "#003998";
-    //     document.getElementById('projectPreferenceselements').style.opacity = "30%";
-    // }
 
-    // const helppopupclose = () =>{
-    //     document.getElementById('help').style.display = "none";
-    //     document.getElementById('projectPreferenceselements').style.background = "#2979FF";
-    //     document.getElementById('projectPreferenceselements').style.opacity = "100%";
-    // }
+    const handleSelect = (project) => {
+        const updatedChoice = [...choice];
+        updatedChoice[(selectingProject - 1)] = project;
+        setChoice(updatedChoice);
+        const nextProject = updatedChoice.findIndex(choice => choice === null);
+        setSelectingProject(nextProject+1);
+    }
 
+    const handleDeselect = (index) => {
+        const updatedChoice = [...choice];
+        updatedChoice[index] = null;
+        setChoice(updatedChoice);
+        const nextProject = updatedChoice.findIndex(choice => choice === null);
+        setSelectingProject(nextProject+1);
+    }
 
-    // if todays date out of valid range - display locked page, else display preferences page
-    // if(showForm === false){
-    //     return(
-    //         <div className="preferenceHide">
-    //         Project preference submission currently locked.
-    //         </div>
-    //     )
-    // };
-    
 
     return(
         <main className="project-preferences-page">
@@ -342,13 +251,16 @@ const ProjectPreferences = ()=>{
                 {/* display form if bidding open */}
                 {(showForm && biddingOpen) && <div className="page-content">
                     <div className="pref-container">
-                        <div className="projects-display-wrapper">
+
+                        <div className={`projects-display-wrapper ${choice.every(value => value !== null) ? 'all-selected':''}`}>
+                        <h2 className="preferences-tooltip">{tooltipFormat[selectingProject] ? `Select your ${tooltipFormat[selectingProject]} choice`:(null)}</h2>
+
                             <div className="pref-projects-container">
                                 {/* display published projects */}
                                 {projects
                                 // .filter(project => project.published === 'true')
                                 .map(project => (
-                                    (<div className="full-project-wrapper" key={project.id} onClick={() => handleclick(project)} id="proj">
+                                    (<div className= {`full-project-wrapper ${choice.every(value => value !== null) ? 'all-selected':''}`} key={project.id} onClick={() => handleSelect(project)} id="proj">
                                         <Project 
                                         projectId={project.id} 
                                         view = 'preferences'
@@ -358,30 +270,43 @@ const ProjectPreferences = ()=>{
                             </div>
                         </div>
                         {/* preference number containers */}
-                        <div className="preferences-display-wrapper">
-                            <div className='pref-button-wrapper' id="sidebuttons">
-                                <button className='pref-button' id="option1" onClick={()=>{selecting("option1")}}>1</button>
-                                <button className='pref-button' id="option2" onClick={()=>{selecting("option2")}}>2</button>
-                                <button className='pref-button' id="option3" onClick={()=>{selecting("option3")}}>3</button>
-                                <button className='pref-button' id="option4" onClick={()=>{selecting("option4")}}>4</button>
-                                <button className='pref-button' id="option5" onClick={()=>{selecting("option5")}}>5</button>
-                                
+                        <div className={`preferences-display-wrapper ${choice.every(value => value !== null) ? 'all-selected':''}`} >
+                            
+                                {choice.map((choiceNum, index) =>(
+                                    <div className= {`pref-button-wrapper 
+                                                    ${choiceNum ? 'selected':'not-selected'}  
+                                                    ${selectingProject===(index+1) ? 'selecting':'not-selecting'} 
+                                                    ${choice.every(value => value !== null) ? 'all-selected':''}`} 
+                                        id="sidebuttons">
+                                        <div className="pref-number">
+                                            <p>{buttonFormat[index+1]}</p>
+                                        </div>
+
+                                        <button className={`pref-button`}>
+                                            {choiceNum && <p className="choice-title">{`${choiceNum.project_number}. ${choiceNum.title}`}</p>}
+                                        </button>
+                                        <div className="cancel-button-wrapper">
+                                            <button onClick={()=>{handleDeselect(index)}} className="cancel-button">
+                                               <img src={require('../../media/cancel-icon.png')} alt="Remove Selection" />
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                ))}
+                            <button className={`submit-pref-button ${choice.every(value => value !== null) ? 'ready':'not-ready'}`} onClick={handleSubmit}>Submit Preferences</button>  
                                 {/* Submit form button */}
-                                <button className='submit-pref-button' onClick={handleSubmit}>Submit Preferences</button>
-                            </div>
+                            {/* </div> */}
                         </div>
                     </div>
                 </div>}
-                {showConfirmation && <div className="page-content">
+                {(showConfirmation && !showSuccessMessage) && <div className="page-content">
                     <div className="success-message confirmation-window">
-                        {!showSuccessMessage && <div className="confirmation-content">
+                        <div className="confirmation-content first">
                             <div className="confirmation-header">
                                 <p>Confirm Your Preferences</p>
                             </div>
                             <div className="confirmation-projects">
-                                {chosenProjects
-                                // .filter(project => project.published === 'true')
-                                .map(project => (
+                                {choice.map(project => (
                                     (<div className="full-project-wrapper chosen-project" key={project.id} id="proj">
                                         <Project 
                                         projectId={project.id} 
@@ -401,22 +326,24 @@ const ProjectPreferences = ()=>{
                                 <button className='confirm-button'onClick={handleConfirmation}>Submit Team Preferences</button>
                                 <button className = 'redirect-button' onClick={handleGoBack}>Go Back</button>
                             </div>
-                        </div>}
-                        {showSuccessMessage && <div className="confirmation-content">
-                            <div className="confirmation-header">
-                                <h3>Preferences Submitted Successfully</h3>
-                            </div>
-                            <div className="confirmation-text">
-                                <p>Your team's project preferences have been submitted and will be considered during the project allocation process. </p>
-                                <p>All team members can now view this submission through their Cornerstone account.</p>
-                            </div>
-                        </div>}
-
+                        </div>
                     </div>
+                </div>}
+                {showSuccessMessage && <div className="page-content">
+                    <div className="success-message confirmation-window ">
+                    <div className="confirmation-content final">
+                    <div className="confirmation-header">
+                        <p>Success</p>
+                    </div>
+                    <div className="confirmation-text">
+                        <p>Your team's project preferences have been submitted and will be considered during the project allocation process. </p>
+                    </div>
+                </div>
+                </div>
                 </div>}
 
                 {/* help window */}
-                {showHelp && <div className="help-window">
+                {/* {showHelp && <div className="help-window">
                     <div className="help-content">
                         <div className="help-header">
                             <h1>How to Select Your Preferences</h1>
@@ -429,7 +356,7 @@ const ProjectPreferences = ()=>{
                             <p>5. Once you have selected your five ranked preferences projects scroll down to click the submit button.</p>
                         </div>
                     </div>
-                </div>}
+                </div>} */}
                 
             </div>}
         </main>

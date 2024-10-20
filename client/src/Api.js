@@ -148,6 +148,24 @@ export async function downloadCSVTeams(semesterID) {
     }
 };
 
+
+export async function processAllocation() {
+    try {
+        const response = await fetch(`/api/project-allocation/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+        return await response;
+    } catch (error) {
+        console.error('Error processing project allocation:', error);
+        throw error;
+    }
+};
+
+
 export async function downloadAllocation() {
     try {
         const response = await fetch(`/api/project-allocation/download`, {
@@ -255,14 +273,14 @@ export async function createProject(title, description, owner_id, special_requir
 };
 
 
-export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {
+export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one, proposal_deadline) {
     try {
         const response = await fetch(`/api/semesters/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one }),
+            body: JSON.stringify({ start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one, proposal_deadline }),
         })
 
         const createdSemester = await response.json();
@@ -409,6 +427,29 @@ export async function fetchTeam(userId) {
 
     } catch (error) {
         console.error('Error fetching team:', error);
+        throw error;
+    }
+};
+/**
+ * Fetches a user's team from the server 
+ * 
+ * @async
+ * @function fetchTeams
+ * @returns {Promise<Team[]>} 
+ * 
+ * @throws Will throw an error if the network request fails or the server returns an error.
+ * 
+ */
+export async function fetchTeams() {
+    try {
+        const response = await fetch(`/api/teams`);
+        console.log('Response:', response);
+        const data = await response.json();
+        console.log('data', data);
+        return data;
+
+    } catch (error) {
+        console.error('Error fetching teams:', error);
         throw error;
     }
 };

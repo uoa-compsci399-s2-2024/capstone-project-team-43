@@ -61,7 +61,31 @@ export async function getTeamsBySemester(semester_id) {
 
   }
 }
+/**
+ * Retrieves all teams o
+ *
+ * @returns {Promise<Team[]>}
+ */
+export async function getTeams() {
+  let connection;
+  try {
+    // Get connection from pool
+    connection = await pool.getConnection();
 
+    await connection.query(`USE ${DB_NAME};`);
+
+    const [teams] = await connection.query('SELECT * FROM TEAM');
+    return teams;
+
+  } catch (err) {
+    console.error('Error executing query/s:', err.message);
+  } finally {
+
+    // If there is a connection, release it
+    if (connection) connection.release();
+
+  }
+}
 
 /**
  * Creates a new Team

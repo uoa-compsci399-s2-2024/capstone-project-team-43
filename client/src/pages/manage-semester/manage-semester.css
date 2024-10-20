@@ -2,6 +2,40 @@
     text-transform: capitalize;
 }
 
+.content-sections-container{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 2vh;
+    height: auto;
+    justify-content: start;
+    width: 100%;
+    gap: 2vh;
+    /* height: 60vh; */
+    padding: 3vh;
+    flex-wrap: wrap;
+}
+
+.manage-semester-page .page-content{
+    gap: 3vh;
+    /* min-width: 90vw; 
+    flex-direction: row;
+    justify-content: start;
+    align-items: start; */
+}
+
+.manage-semester-page .container-text{
+    flex: 1;
+    flex-grow: 1;
+    margin-top: -1vh;
+}
+
+.manage-semester-page .container-text p{
+    padding: 0;
+    margin: 0;
+}
+
 /* .manage-semester-page .content{
     max-width: 60%;
     display: flex;
@@ -9,11 +43,42 @@
     gap: 40px;
 } */
 
-.content-section{
+.manage-semester-page .content-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
     text-align: left;
-    min-width: 100%
+    min-width: 100%;
+    /* padding: 1vh; */
+    margin: 0;
+    gap:1vh;
     /* width: 50%; */
     /* min-width: 30%; */
+}
+
+
+.manage-semester-page .content-section-heading{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 0;
+}
+
+.manage-semester-page .content-section-data{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    gap: 0;
+    
+}
+
+.manage-semester-page .content-section-data p{
+    font-size: 14px;
+}
+
+.manage-semester-page .edit-input{
+    background-color: var(--theme-light);
+    font-weight: 500;
 }
 
 /* small subeadings */
@@ -23,12 +88,12 @@
 }
 
 /* DROP DOWN MENU */
-
-.semester-heading{ 
+/* 
+.semester-subheading{ 
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
     margin-top: auto;
 }
 
@@ -38,7 +103,7 @@
     background-repeat: no-repeat;
     background-position: center;
     background-color: inherit;
-    margin-top: 0px;
+    margin-top: 0.6vh !important;
     width: 25px;
     height: 25px;
     border: none;
@@ -61,7 +126,7 @@
     position: absolute;
     background-color: white;
     z-index: 100;
-    width: 200px;
+    width: 180px;
     padding: 0px;
     margin-top: 10px;
     margin-left: -80px;
@@ -71,11 +136,11 @@
 
 .dropdown-menu-button{
     background-color: inherit;
-    font-size: 18px;
-    padding: 5px;
+    font-size: 20px;
+    padding: 0px;
     text-decoration: none;
-
     transition: 0s !important;
+    font-weight: 600;
 
 }
 
@@ -83,7 +148,9 @@
     background-color: inherit !important;
     font-weight: 700;
     transition: 0s !important;
+    color: var(--text-color-light) !important;
 }
+ */
 
 /* UPLOADING/DOWNLOADING FILES  */
 
@@ -149,11 +216,65 @@
     margin-left: 10px;
 }
 
-.semester-data-container{
+.dates .semester-data-container{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     margin-bottom: 0px;
     align-items: center;
 }
 
+.students .semester-data-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0px;
+    align-items: left;
+    justify-content: start;
+
+}
+
+
+.manage-semester-page .container-button {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: left;
+    gap: 2vh;
+    margin-top: 0.5vh;
+}
+
+.manage-semester-page .container-button button{
+    color: var(--text-color-light);
+}
+
+
+.manage-semester-page p.account-data {
+    margin: 0px;
+    padding: 0px;
+}
+
+.manage-semester-page h3{
+    color: var(--text-color-dark) !important;
+}
+
+.manage-semester-page h4,
+.manage-semester-page h3,
+.manage-semester-page .text-detail{
+    margin:0;
+    padding: 0;
+}
+
+.manage-semester-page button{
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+    /* filter: invert(1); */
+}
+
+.manage-semester-page button:hover{
+    background-color: transparent !important;
+    opacity: 0.6;
+    /* color: white; */
+    /* color: white; */
+    /* filter: invert(1); */
+}

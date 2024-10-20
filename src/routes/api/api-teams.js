@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createTeam, getTeam, getTeamByUser, getTeamsBySemester, deleteTeamBySemester, setTeamProject, getCSV } from "../../data/teams-dao.js";
+import { createTeam, getTeam, getTeams, getTeamByUser, getTeamsBySemester, deleteTeamBySemester, setTeamProject, getCSV } from "../../data/teams-dao.js";
 
 const router = Router();
 
@@ -14,6 +14,12 @@ router.get("/id/:id", async (req, res) => {
 router.get("/user/id/:userId", async (req, res) => {
     const userId = req.params.userId;
     return res.json(await getTeamByUser(userId))
+});
+
+// Retrieves all teams
+router.get("/", async (req, res) => {
+    const userId = req.params.userId;
+    return res.json(await getTeams(userId))
 });
 
 // Retrieves the teams from a semester with a given semester_id

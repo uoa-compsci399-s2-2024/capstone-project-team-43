@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchSemester, fetchSemesters, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams } from '../../Api.js';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import { fetchSemester, fetchSemesters, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams, fetchProjectsBySemester } from '../../Api.js';
 import downloadIcon from '../../media/download-icon.png';
 import SemesterCSVUpload from '../../components/semester-csv-upload/semester-csv-upload.js';
 import './manage-semester.css';
 import SemesterDropdown from '../../components/semester-dropdown/semester-dropdown.js';
 import uploadIcon from '../../media/upload-icon.png';
 
-import { downloadAllocation, downloadCSVClients } from '../../Api.js';
+
+import { downloadAllocation, downloadCSVClients, processAllocation } from '../../Api.js';
 
 // Formats semester data & edit functionality
 const SemesterDetail = ({ description, data = 'None', onEdit, isEditing, onSave, onCancel }) => {
@@ -56,6 +57,7 @@ const SemesterDetail = ({ description, data = 'None', onEdit, isEditing, onSave,
     );
 }
 
+
 const ManageSemester = () => {
     // const [defaultSemester, setDefaultSemester] = useState(null);
 
@@ -67,6 +69,7 @@ const ManageSemester = () => {
 
     const [students, setStudents] = useState([]);
     const [teams, setTeams] = useState([]);
+    const [projects, setProjects] = useState([]);
     const [semester, setSemester] = useState(null);
     const [updatedSemester, setUpdatedSemester] = useState(null);
     const [editingField, setEditingField] = useState(null);
@@ -78,6 +81,8 @@ const ManageSemester = () => {
     const openTeamUpload = () => setShowTeamUpload(true);
     const closeStudentUpload = () => setShowStudentUpload(false);
     const closeTeamUpload = () => setShowTeamUpload(false);
+
+    const [allocationComplete, setAllocationComplete] = useState(false);
 
     // Required headers for csv uploads
     const studentHeaders = ['Student name', 'Student ID', 'Student SIS ID', 'Email', 'Section name'];
@@ -97,6 +102,11 @@ const ManageSemester = () => {
     const allocationDownload = () => {
         console.log("Fetching allocation results");
         downloadAllocation();
+    }
+
+    const handleProcessAllocation = () => {
+        processAllocation();
+        setAllocationComplete(true);
     }
 
     const CSVclients = () => {
@@ -220,13 +230,30 @@ const ManageSemester = () => {
         }
     }, [semesterID]); 
 
+    useEffect(() => {
+        const getProjects = async () => {
+            try {
+                console.log('getting semesters projects');
+                const data = await fetchProjectsBySemester(semesterID);
+                setProjects(data);
+
+                console.log('fetched projects:',data);
+            } catch (error) {
+                console.error('Failed to load projects:', error);
+            }
+        }
+        getProjects();
+    },[semesterID]);
+
+
     // Get semester's students 
     useEffect(() => {
         async function getStudents() {
             try {
                 const data = await fetchUsersByRole('student');
-                setStudents(data);
-                // setNumStudents(data.length); 
+                // ignore demo user -- delete after demo
+                const demoData = data.filter(student => student.email !== 'student@gmail.com')
+                setStudents(demoData);
                 console.log('Fetched students:', data);
             } catch (error) {
                 console.error('Failed to load students:', error);
@@ -294,119 +321,148 @@ const ManageSemester = () => {
     };
 
 
+    const pendingProjects = projects.filter(project => project.status === 'pending');
+    const acceptedProjects = projects.filter(project => project.status === 'accepted');
+    const rejectedProjects = projects.filter(project => project.status === 'rejected');
+    const publishedProjects = projects.filter(project => project.status === 'published');
 
     return (
         <main className='manage-semester-page'>
             {semester && <div className='content'>
                 <div className='page-heading'>
-                    <div className='semester-heading'>
-                        <h1>{semester.name}</h1>
-                        {/* {semester && <h1>Manage {semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h1>} */}
-                        {/* update semesterID when dropdown button is selected */}
-                        <SemesterDropdown onSelectSemester={handleSemesterSelect} hideSemesters={['retired']} />
+                        <h1>Manage Semesters</h1>
+                    <div className='page-subheading semester-subheading'>
+                        <h2 className='page-subheading'>{semester.name}</h2>
+                        <SemesterDropdown onSelectSemester={handleSemesterSelect}/>
                     </div>
-                    <h2 className='page-subheading'>{semester.status.charAt(0).toUpperCase()}{semester.status.slice(1)} Semester</h2>
                 </div>
-                <div className='page-content'>
-                    <div className='content-section'>
-                        <h2>Semester Dates</h2>
-                        <p className='text-detail'>View and edit the semester dates</p>
-                        <SemesterDetail
-                            description="Start date"
-                            data={formatSemesterDate(updatedSemester.start_date)}
-                            onEdit={() => handleEdit('start_date')}
-                            isEditing={editingField === 'start_date'}
-                            onSave={handleSave}
-                            onCancel={handleCancel}
-                        />
-                        <SemesterDetail
-                            description="End date"
-                            data={formatSemesterDate(updatedSemester.end_date)}
-                            onEdit={() => handleEdit('end_date')}
-                            isEditing={editingField === 'end_date'}
-                            onSave={handleSave}
-                            onCancel={handleCancel}
-                        />
-                    </div>
-                    <div className='content-section'>
-                        <h2>Project Bidding Timeframe</h2>
-                        <p className='text-detail'>View and edit when teams are able to submit their project preferences</p>
-                        <SemesterDetail
-                            description="Start date"
-                            data={formatBiddingDate(updatedSemester.start_bidding_date)}
-                            onEdit={() => handleEdit('start_bidding_date')}
-                            isEditing={editingField === 'start_bidding_date'}
-                            onSave={handleSave}
-                            onCancel={handleCancel}
-                        />
-                        <SemesterDetail
-                            description="End date"
-                            data={formatBiddingDate(updatedSemester.end_bidding_date)}
-                            onEdit={() => handleEdit('end_bidding_date')}
-                            isEditing={editingField === 'end_bidding_date'}
-                            onSave={handleSave}
-                            onCancel={handleCancel}
-                        />
-                    </div>
-                    {/* Semester Student/Team Data */}
-                    <div className='content-section'>
-                        <h2>Students and Teams</h2>
-                        <p className='text-detail'>View, edit, and download the semester's students and teams</p>
-                        {/* Displays student count & gives upload option */}
-                        <div className='semester-data-container'>
-                            <div className='container-text'>
-                                <p> {students.length} student{students.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
+                {semester.status !== 'retired' && <div className='page-content'>
+                    <div className='content-sections-container students'>
+                        <h3>Students and Teams</h3>
+                        {/* Semester Student/Team Data */}
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Students</h4>
                             </div>
-                            {!showStudentUpload && <div className='container-button'>
-                                <button className='upload-button' onClick={openStudentUpload}>
-                                    <img src={uploadIcon} alt='icon' className='upload-icon'></img>
-                                    {students.length >= 1 ? 'Reupload' : 'Upload'} Student Data
-                                </button>
-                                <button className='upload-button' onClick={studentDownload}>
-                                    <img src={downloadIcon} alt='icon' className='download-icon'></img>
-                                    Download Student Data
-                                </button>
-                            </div>}
-                        </div>
-                        {showStudentUpload && (
-                            <div className='pop-up'>
-                                <div className='pop-up-header'>
-                                    <h3>Upload Student Data</h3>
-                                    <button className='quit-button' onClick={closeStudentUpload}></button>
+                            {/* Displays student count & gives upload option */}
+                            <div className='semester-data-container content-section-data'>
+                                    <div className='container-text'>
+                                        {students.length > 0 ? (
+                                            <p>Student data has been uploaded. <br></br>{students.length} student{students.length !== 1 ? 's are' : ' is'} registered for this semester.</p>)
+                                        :(<p>Student data has not been uploaded.</p>)}
+                                    </div>
+                                    {!showStudentUpload && <div className='container-button'>
+                                        <button className='upload-button' onClick={openStudentUpload}>
+                                            {/* <img src={uploadIcon} alt='icon' className='upload-icon'></img> */}
+                                            {students.length >= 1 ? 'Reupload' : 'Upload'} Student Data
+                                        </button>
+                                        {/*{students.length >= 1 && <button className='upload-button' onClick={studentDownload}>
+                                            Download Student Data
+                                        </button>}*/}
+                                    </div>}
+                            </div>
+                            {showStudentUpload && (
+                                <div className='pop-up'>
+                                    <div className='pop-up-header'>
+                                        <h3>Upload Student Data</h3>
+                                        <button className='quit-button' onClick={closeStudentUpload}></button>
+                                    </div>
+                                    <div className='pop-up-text'>
+                                        <p>File must be a CSV with headers {studentHeaders.join(', ')}</p>
+                                        <p className='warning'>Warning: Reuploading student data will remove the already existing students from the system. This cannot be undone.</p>
+                                    </div>
+                                    <SemesterCSVUpload semesterID={semesterID} fileContent='students' />
                                 </div>
-                                <div className='pop-up-text'>
-                                    <p>File must be a CSV with headers {studentHeaders.join(', ')}</p>
-                                    <p className='warning'>Warning: Reuploading student data will remove the already existing students from the system. This cannot be undone.</p>
-                                </div>
-                                <SemesterCSVUpload semesterID={semesterID} fileContent='students' />
-                            </div>
-                        )}
-                        {/* Displays team count & gives upload option */}
-                        <div className='semester-data-container'>
-                            <div className='container-text'>
-                                <p>{teams.length} team{teams.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
-                            </div>
-                            {!showTeamUpload && <div className='container-button'>
-                                <button className='upload-button' onClick={openTeamUpload}>
-                                    <img src={uploadIcon} alt='icon' className='upload-icon'></img>
-                                    {teams.length >= 1 ? 'Reupload' : 'Upload'} Team Data
-                                </button>
-
-                                <button className='upload-button' onClick={teamDownload}>
-                                    <img src={downloadIcon} alt='icon' className='download-icon'></img>
-                                    Download Team Data
-                                </button>
-                            </div>}
+                            )}
                         </div>
-                        <button className='upload-button' onClick={allocationDownload}>
-                            <img src={downloadIcon} alt='icon' className='download-icon'></img>
-                            Download Allocation Results
-                        </button>
+                        <div className='content-section'>
+                                <div className='content-section-heading'>
+                                    <h4>Teams</h4>
+                                </div>
+                            <div className='content-section-data'>
+                                <div className='container-text'>
+                                    {teams.length > 0 ? (
+                                        <p>Team data has been uploaded. {teams.length} team{teams.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
+                                    ):(
+                                        <p>Team data has not been uploaded.</p>
+                                    )}
+                                    
+                                </div>
+                                {!showTeamUpload && <div className='container-button'>
+                                    <button className='upload-button' onClick={openTeamUpload}>
+                                        {teams.length >= 1 ? 'Reupload' : 'Upload'} Team Data
+                                    </button>
 
-                        <button className='upload-button' onClick={CSVclients}>
-                            <img src={downloadIcon} alt='icon' className='download-icon'></img>
-                            Download Client Project Data
-                        </button>
+                                    {teams.length >= 1 && <button className='upload-button' onClick={teamDownload}>
+                                        Download Team Data
+                                    </button>}
+                                </div>}
+                            </div>
+                        </div>
+                            
+                    </div>
+                    <div className='content-sections-container'>
+                        <h3>Projects</h3>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Proposals</h4>
+                            </div>
+                            <div className='semester-data-container content-section-data'>
+                                {projects.length > 0 ? (<div className='container-text'> 
+                                    {pendingProjects.length > 0 ? (
+                                        <p>{pendingProjects.length} project proposal{pendingProjects.length > 1 ? 's' : ''} awaiting approval.</p>
+                                    ) : (
+                                        <p>All project proposals have been sorted.</p>
+                                    )}
+
+                                    {acceptedProjects.length > 0 ? (
+                                        <p>
+                                            {acceptedProjects.length} project proposal
+                                            {acceptedProjects.length > 1 ? 's have' : ' has'} been approved
+                                            {rejectedProjects.length > 0 ? `, and ${rejectedProjects.length} project proposal${rejectedProjects.length > 1 ? 's have' : ' has'} been rejected.` : ', and none have been rejected.'}
+                                        </p>
+                                    ) : (
+                                        <p>No project proposals have been approved.</p>
+                                    )}
+                                    
+                                    <p>{publishedProjects[0]}</p>
+
+                                    {publishedProjects.length > 0 ? (
+                                        <p>Approved projects have been published and are visible to students.</p>
+                                    ) : (
+                                        <p>Approved projects have not been published yet so are not visible to students.</p>
+                                    )}
+                                </div>
+                                ) : (
+                                <div className='container-text'> 
+                                    <p>No project proposals have been submitted for this semester yet.</p>
+                                </div>)}
+                                <div className='container-button'>
+                                    <button className='upload-button' onClick={allocationDownload}>
+                                        Go to Manage Projects 
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Project Allocation</h4>
+                            </div>
+                            <div className='content-section-data'>
+                                <div className='container-text'>
+                                <p>All teams have submitted their project preferences.</p>
+                                </div>
+                                <div className='container-button'>
+                                    
+                                <button className='upload-button' onClick={handleProcessAllocation}>
+                                        Process Project Allocation
+                                    </button>
+                                   {allocationComplete && <button className='upload-button' onClick={allocationDownload}>
+                                        Download Allocation Results
+                                    </button>}
+                                </div>
+                            </div>
+                        </div>
                         {showTeamUpload && (
                             <div className='pop-up'>
                                 <div className='pop-up-header'>
@@ -419,8 +475,127 @@ const ManageSemester = () => {
                                 </div>
                                 <SemesterCSVUpload semesterID={semesterID} fileContent='teams' />
                             </div>
-                        )}
+                        )}   
                     </div>
+                    <div className='content-sections-container dates'>
+                        <h3>Dates and Deadlines</h3>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Semester Dates</h4>
+                                <p className='text-detail'></p>
+                            </div>
+                            <div className='content-section-data'>
+                                <div className='container-text'>
+                                <p>The semester starts on {formatSemesterDate(updatedSemester.start_date)} and ends {formatSemesterDate(updatedSemester.end_date)}.</p>
+                                </div>
+                                <div className='container-button'>
+                                    {/* MAKE THIS TRIGGER EDIT */}
+                                    <button className='upload-button'>
+                                        Edit Semester Dates
+                                    </button>
+                                </div>
+                            {/* <SemesterDetail
+                                description="Semester starts"
+                                data={formatSemesterDate(updatedSemester.start_date)}
+                                onEdit={() => handleEdit('start_date')}
+                                isEditing={editingField === 'start_date'}
+                                onSave={handleSave}
+                                onCancel={handleCancel}
+                            />
+                            <SemesterDetail
+                                description="Semester ends"
+                                data={formatSemesterDate(updatedSemester.end_date)}
+                                onEdit={() => handleEdit('end_date')}
+                                isEditing={editingField === 'end_date'}
+                                onSave={handleSave}
+                                onCancel={handleCancel}
+                            /> */}
+                            </div>
+                        </div>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Project Proposal Deadline</h4>
+                                <p className='text-detail'></p>
+                            </div>
+                            <div className='content-section-data'>
+                                <div className='container-text'>
+                                <p>The Project Proposal Form currently notifies clients that any submissions after {semester.proposal_deadline} will only be considered for future semesters.</p>
+                                </div>
+                                <div className='container-button'>
+                                    {/* MAKE THIS TRIGGER EDIT */}
+                                    <button className='upload-button'>
+                                        Edit Project Proposal Deadline
+                                    </button>
+                                </div>
+                            {/* <SemesterDetail
+                                description="Semester starts"
+                                data={formatSemesterDate(updatedSemester.start_date)}
+                                onEdit={() => handleEdit('start_date')}
+                                isEditing={editingField === 'start_date'}
+                                onSave={handleSave}
+                                onCancel={handleCancel}
+                            />
+                            <SemesterDetail
+                                description="Semester ends"
+                                data={formatSemesterDate(updatedSemester.end_date)}
+                                onEdit={() => handleEdit('end_date')}
+                                isEditing={editingField === 'end_date'}
+                                onSave={handleSave}
+                                onCancel={handleCancel}
+                            /> */}
+                            </div>
+                        </div>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                            <h4>Project Bidding Timeframe</h4>
+                            <p className='text-detail'></p>
+                            </div>
+                            <div className='content-section-data'>
+                                <div className='container-text'>
+                                <p>Teams are able to submit their project preferences from {formatBiddingDate(updatedSemester.start_bidding_date)} to {formatBiddingDate(updatedSemester.end_bidding_date)}.</p>
+                                </div>
+                                <div className='container-button'>
+                                    {/* MAKE THIS TRIGGER EDIT */}
+                                    <button className='upload-button'>
+                                        Edit Project Bidding Timeframe
+                                    </button>
+                                </div>
+                            {/* <SemesterDetail
+                                description="Opens"
+                                data={formatBiddingDate(updatedSemester.start_bidding_date)}
+                                onEdit={() => handleEdit('start_bidding_date')}
+                                isEditing={editingField === 'start_bidding_date'}
+                                onSave={handleSave}
+                                onCancel={handleCancel}
+                            />
+                            <SemesterDetail
+                                description="Closes"
+                                data={formatBiddingDate(updatedSemester.end_bidding_date)}
+                                onEdit={() => handleEdit('end_bidding_date')}
+                                isEditing={editingField === 'end_bidding_date'}
+                                onSave={handleSave}
+                                onCancel={handleCancel}
+                            /> */}
+                            </div>
+                        </div>
+                    </div>
+                </div>}
+                {semester.status=== 'retired' && <div className='page-content'>
+                    <p>This semester has been retired.</p>
+                    <Link to='/projects/archive'>
+                        <span>View in Project Archive</span>
+                    </Link>
+                </div>}
+            </div>}
+            {!semester && <div className='content'>
+                <div className='page-heading'>
+                        <h1>Manage Semesters</h1>
+                </div>
+                <div className='page-content'>
+                    <p>No current or upcoming semesters.</p>
+                    <Link to='/create/semester'>
+                        <span className='create-link'>Create New Semester</span>
+                    </Link>
                 </div>
             </div>}
         </main>

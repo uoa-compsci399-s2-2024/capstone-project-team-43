@@ -110,7 +110,7 @@ router.post("/:id/dates", async (req, res) => {
 
 // Creates a new semester with start and end dates
 router.post("/", async (req, res) => {
-    const { start_date, end_date, is_semester_one, start_bidding_date, end_bidding_date } = req.body;
+    const { start_date, end_date, is_semester_one, start_bidding_date, end_bidding_date, proposal_deadline } = req.body;
 
     if (!start_date || !end_date || !start_bidding_date || !end_bidding_date) {
         console.log("Invalid semester details");
@@ -119,12 +119,13 @@ router.post("/", async (req, res) => {
 
 
     // Details are valid and now passed to createSemester function to query into database
-    const semester = await createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one);
+    const semester = await createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one, proposal_deadline);
     return res.status(201).json(semester);
 });
 
 // Deletes the semester with the given ID
 router.delete("/:id", async (req, res) => {
+    console.log('deleting semester');
     const id = req.params.id;
     const success = deleteSemester(id);
     res.sendStatus(success ? 204 : 404);

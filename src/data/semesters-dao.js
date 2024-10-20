@@ -126,7 +126,7 @@ export async function getSemester(id) {
  * 
  * @returns {Promise<Semester>}
  */
-export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) {
+export async function createSemester(start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one, proposal_deadline) {
   let connection;
   try {
 
@@ -137,7 +137,7 @@ export async function createSemester(start_date, end_date, start_bidding_date, e
 
     // Insert semester into db
     const [response] = await connection.query(
-      "INSERT INTO SEMESTER (start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one) VALUES (?, ?, ?, ?, ?)", [start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one]);
+      "INSERT INTO SEMESTER (start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one, proposal_deadline) VALUES (?, ?, ?, ?, ?, ?)", [start_date, end_date, start_bidding_date, end_bidding_date, is_semester_one, proposal_deadline]);
 
     await updateSemesterStatus();
 

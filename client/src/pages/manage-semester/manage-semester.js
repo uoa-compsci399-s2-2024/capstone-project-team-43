@@ -82,6 +82,11 @@ const ManageSemester = () => {
     const closeStudentUpload = () => setShowStudentUpload(false);
     const closeTeamUpload = () => setShowTeamUpload(false);
 
+    const [studentUploadSuccess, setStudentUploadSuccess] = useState(null);
+    const [teamUploadSuccess, setTeamUploadSuccess] = useState(null);
+
+
+
     const [allocationComplete, setAllocationComplete] = useState(false);
 
     // Required headers for csv uploads
@@ -263,7 +268,7 @@ const ManageSemester = () => {
             }
         }
         getStudents();
-    }, [semesterID, semester]);
+    }, [semesterID, semester, studentUploadSuccess]);
 
     // Get semester's teams
     useEffect(() => {
@@ -276,7 +281,7 @@ const ManageSemester = () => {
             }
         }
         getTeams();
-    }, [semesterID]);
+    }, [semesterID, teamUploadSuccess]);
 
     // handles semester selection in dropdown menu
     const handleSemesterSelect = (selectedSemesterID) => {
@@ -321,6 +326,18 @@ const ManageSemester = () => {
     // Handle cancelling edit
     const handleCancel = () => {
         setEditingField(null); // Exit edit mode without saving
+    };
+
+    // refresh student data if uploaded
+    const handleStudentUploadSuccess = () => {
+        setStudentUploadSuccess(true); 
+        // setShowStudentUpload(false); 
+    };
+
+    // refresh student data if uploaded
+    const handleTeamsUploadSuccess = () => {
+        setTeamUploadSuccess(true); 
+        // setShowTeamsUpload(false); 
     };
 
 
@@ -374,7 +391,7 @@ const ManageSemester = () => {
                                         <p>File must be a CSV with headers {studentHeaders.join(', ')}</p>
                                         <p className='warning'>Warning: Reuploading student data will remove the already existing students from the system. This cannot be undone.</p>
                                     </div>
-                                    <SemesterCSVUpload semesterID={semesterID} fileContent='students' />
+                                    <SemesterCSVUpload semesterID={semesterID} fileContent='students' onSuccess={handleStudentUploadSuccess} />
                                 </div>
                             )}
                         </div>
@@ -385,7 +402,7 @@ const ManageSemester = () => {
                             <div className='content-section-data'>
                                 <div className='container-text'>
                                     {teams.length > 0 ? (
-                                        <p>Team data has been uploaded. {teams.length} team{teams.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
+                                        <p>Team data has been uploaded. <br></br>{teams.length} team{teams.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
                                     ):(
                                         <p>Team data has not been uploaded.</p>
                                     )}
@@ -411,7 +428,7 @@ const ManageSemester = () => {
                                     <p>File must be a CSV with headers {teamHeaders.join(', ')}</p>
                                     <p className='warning'>Warning: Reuploading team data will remove the already existing teams from the system. This cannot be undone.</p>
                                 </div>
-                                <SemesterCSVUpload semesterID={semesterID} fileContent='teams' />
+                                <SemesterCSVUpload semesterID={semesterID} fileContent='teams' onSuccess={handleTeamsUploadSuccess}/>
                             </div>
                             )}   
                         </div>
@@ -454,7 +471,7 @@ const ManageSemester = () => {
                                     <p>No project proposals have been submitted for this semester yet.</p>
                                 </div>)}
                                 <div className='container-button'>
-                                    <button className='upload-button' onClick={allocationDownload}>
+                                    <button className='upload-button' onClick={() => {navigate('/projects/manage')}}>
                                         Go to Manage Projects 
                                     </button>
                                 </div>

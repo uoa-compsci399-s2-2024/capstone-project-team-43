@@ -92,7 +92,13 @@ const ProjectPreferences = ()=>{
                 console.log('getting projects')
                 // const data = await fetchProjects('accepted');
                 const data = await fetchProjects();
-                setProjects(data);
+                const currentData = data.filter(project => project.semester_id === 2);
+                console.log('current data:',currentData);
+
+                const availableData = currentData.filter(project => project.status === 'accepted');
+                console.log('available data:', availableData);
+
+                setProjects(availableData);
                 console.log('projects:',data);
             } catch (error) {
                 console.error('Failed to load projects:', error);

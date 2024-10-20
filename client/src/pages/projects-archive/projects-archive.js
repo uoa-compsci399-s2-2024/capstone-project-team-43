@@ -76,7 +76,7 @@ const ProjectsArchive = () => {
     }
 
     // projects for the given semester
-    const archivedProjects = projects.filter(project => project.semester_id === semesterID);
+    const archivedProjects = projects.filter(project => project.semester_id === 1);
 
     return(
         <main className="projects-archive">

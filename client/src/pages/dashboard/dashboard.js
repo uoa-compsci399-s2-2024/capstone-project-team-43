@@ -82,7 +82,7 @@ const Dashboard = () => {
                     </div>                       */}
                 </div>
                 <div className='redirect-to-create'>
-                    <Link to='/semesters/create'>
+                    <Link to='/create/semester'>
                         <p>Create a New Semester</p>
                     </Link>
                 </div>

@@ -95,37 +95,63 @@ const ProjectProposal = () => {
         try {
             console.log('submitting edits');
             e.preventDefault(); 
-
+            
             let other_client_details = document.getElementById("otherclientdetails").value;
+            
+
             let title = document.getElementById("projecttitle").value;
+            
+
             let description = document.getElementById("projectdescription").value;
+            
+
             let project_deliverable = document.getElementById("desiredoutput").value;
-            let special_equipment_requirment = document.getElementById("specialequipment").value;
+            
+
+            let special_equipment_requirement = null; //document.getElementById("specialequipment").value;
+            
+
             let max_teams = document.getElementById("teams").value;
+            
+
             let preferred_skills = document.getElementById("desiredskill").value;
+            
+
             let available_resources = document.getElementById("availableresources").value;
-            let available_from = document.getElementById("start_date").value;
+            
+
+            // let available_from = document.getElementById("start_date").value;
             let expiry = document.getElementById("date").value;
+            
+
             let owner_id = userID;
+            
+
             let currentDate = new Date();
+            
+
             let created = currentDate.toISOString().split('T')[0];
+            
+
 
             // Log all the collected values
             console.log("Other Client Details:", other_client_details);
             console.log("Project Title:", title);
             console.log("Project Description:", description);
             console.log("Project Deliverable:", project_deliverable);
-            console.log("Special Equipment Requirement:", special_equipment_requirment);
+            console.log("Special Equipment Requirement:", special_equipment_requirement);
             console.log("Max Teams:", max_teams);
             console.log("Preferred Skills:", preferred_skills);
             console.log("Available Resources:", available_resources);
-            console.log("Available From:", available_from);
+            // console.log("Available From:", available_from);
             console.log("Expiry Date:", expiry);
             console.log("Owner ID:", owner_id);
             console.log("Created Date:", created);
 
+            // title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details
+
             //Structure:  title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, expiry, status, max_teams, project_number, semester_id, other_client details
-            createProject(title, description, owner_id, special_equipment_requirment, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, "pending", max_teams, -1, 1, other_client_details);
+            createProject(title, description, owner_id, special_equipment_requirement, available_resources, preferred_skills, project_deliverable, created, created, expiry, "pending", max_teams, -1, 2, other_client_details);
 
         } catch (err) {
             console.log("Error", err);
@@ -133,8 +159,7 @@ const ProjectProposal = () => {
         }
 
 
-    return(
-            <main className="project-proposal-page">
+    return(<main className="project-proposal-page">
                 <div className="content">
                     <div className='page-heading'>
                         <h1>Project Proposal Form</h1>
@@ -143,12 +168,12 @@ const ProjectProposal = () => {
                         <p>Please complete this form if you wish to propose a 
                             project for the COMPSCI 399 Capstone Course.
                         </p>
-                        {nextSemester && <div> <h2>Submission Deadline</h2>
-                        <p>The submission deadline for the next semester starting in {nextSemester.start_date} is {nextSemester.proposal_deadline}.</p>
+                        <div> <h2>Submission Deadline</h2>
+                        <p>The submission deadline for the next semester starting 21/10/2024 is 21/10/2024.</p>
                         <p>Please note that while we accept applications throughout the year, 
                             if the proposal submission deadline isn't met we will only consider 
                             the project for future semesters.
-                        </p></div>}
+                        </p></div>
 
                         <h2>Project Requirements</h2>    
                         <p>The proposed project should be a research or software development project,
@@ -158,16 +183,16 @@ const ProjectProposal = () => {
                             consisting of 5-6 students. For example, if you are 
                             involved in an ongoing research/development project and seek assistance
                             in developing a specific module, you can propose it as a potential project. 
-                            Alternatively, if you are in a service role and require support in creating a system to 
+                            <br></br><br></br>Alternatively, if you are in a service role and require support in creating a system to 
                             facilitate or automate certain aspects of your work, you can suggest a project for consideration.
-                            Each team is expected to allocate approximately 7-8 hours per person per week to project development. 
+                            <br></br><br></br>Each team is expected to allocate approximately 7-8 hours per person per week to project development. 
                             The team will produce a prototype system every fortnight, progressively enhancing its functionality.
                         </p>
 
                         <h2>Supervision Requirements</h2>
                         <p>Team(s) will meet with you (or your nominated representative) at least 
                             once every fortnight to ensure that the project is going in the right direction.
-                            There will be a final project presentation session (probably in the last week of the semester) 
+                            <br></br><br></br>There will be a final project presentation session (probably in the last week of the semester) 
                             that we would expect you (or your nominated representative) to attend and provide us with feedback
                             on your team's performance.
                         </p>
@@ -175,8 +200,8 @@ const ProjectProposal = () => {
                         <h2>Contacts & Information</h2>
                         <p>You can find examples of projects created by capstone students following 
                             this link: https://www.capitalise.space/
-                            The course overview can be found here: https://courseoutline.auckland.ac.nz/dco/course/COMPSCI/399/1243
-                            If you have any questions, please feel free to contact Anna Trofimova (anna.trofimova@auckland.ac.nz)
+                            <br></br><br></br>The course overview can be found here: https://courseoutline.auckland.ac.nz/dco/course/COMPSCI/399/1243
+                            <br></br><br></br>If you have any questions, please feel free to contact Anna Trofimova (anna.trofimova@auckland.ac.nz)
                             or Asma Shakil (asma.shakil@auckland.ac.nz).
                         </p>
 
@@ -217,10 +242,8 @@ const ProjectProposal = () => {
                                 Please confirm meeting attendance and final presentation attendance before continuing to the project proposal form.
                             </p>
                         </div>}
-                    <button onClick={handleContinueToForm} className='main-button'>Continue to Project Proposal Form</button>
-                    </div>}
-            </div>
-            
+                    <button onClick={handleContinueToForm} className='main-button continue'>Continue to Project Proposal Form</button>
+                    </div>}            
             {showForm && <form onSubmit={submit} className="page-content form-content form-fill" id="proposalForm">
                     <label>
                         <h2>1. Other Clients' Details</h2>
@@ -284,32 +307,40 @@ const ProjectProposal = () => {
                     </label>
                     <label>
                         <h2>9. Project Offering Timeframe*</h2>
-                        <p>Please specify the timeframe in which you would like the project to be offered</p>
-                        <p>Start date</p>
-                        <input type="date" id="start_date"/> 
-                        <p>End date</p>
+                        <p>Please specify when you would like to withdraw your project from being offered</p>
+                        {/* <p>Start date</p>
+                        <input type="date" id="start_date"/>  */}
+                        {/* <p>End date</p> */}
                         <input type="date" id="date"/> 
                     </label>             
                         <div className = 'proposal-submission-buttons' id="proposalButtons">
                         <button className = 'main-button' onClick={handleGoBack} id="back">Go Back</button>
                         <button className = 'main-button'id="submit" form="proposalForm" type="submit">Submit</button>
-                    </div>
+                        </div>
                 </form>} 
-                {showSuccessMessage && (<div className='success-message'>
-                        <h1>Thank you for submitting your project!</h1>
-                        <h2>You will be contacted by the course coordinators if your project is assigned to a student team</h2>
-                        <div className='redirect-to-proposal'>
+
+                {showSuccessMessage && (<div className='page-content'>
+                    <div className='success-message'>
+                        <p>Success</p>
+                        <div className='project-edit-redirect'>
+                            <p>Thank you for submitting your project!</p>
+                            <p>You will be contacted by the course coordinators if your project is assigned to a student team.</p>
                             <Link to='/projects/view'>
                                 <span>View Your Projects</span>
                             </Link>
+                            {/* {userRole === 'admin' && <Link to='/projects/available'>
+                                <span>View Published Projects</span>
+                            </Link>}
+                            {userRole === 'admin' && <Link to='/projects/manage'>
+                                <span>Manage All Projects</span>
+                            </Link>} */}
                         </div>
                     </div>
-                )}
+                </div>)}
+            </div>
         </main>
     )
-
 }
-
 
 export default ProjectProposal;
 

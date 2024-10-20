@@ -4,6 +4,7 @@
 }
 
 .students-projects-view-page .projects-container{
+    margin-top: 5vh;
     max-height: 100%;
     max-width: 100%;
     display: flex;

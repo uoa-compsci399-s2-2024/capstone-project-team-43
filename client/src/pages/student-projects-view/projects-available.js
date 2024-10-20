@@ -12,12 +12,20 @@ const ProjectsAvailable = () => {
     const [projects, setProjects] = useState([]);
     const [expandedProjects, setExpandedProjects] = useState({});
 
-    // get data on all accepted projects 
+    // Get all projects in database
     useEffect(() => {
         async function getProjects() {
             try {
-                const data = await fetchProjects('accepted');
-                setProjects(data);
+                const data = await fetchProjects();
+                console.log('data:',data);
+                const currentData = data.filter(project => project.semester_id === 2);
+                console.log('current data:',currentData);
+
+                const availableData = currentData.filter(project => project.status === 'accepted');
+                console.log('available data:', availableData);
+
+                setProjects(availableData);
+                console.log('projects:'+data);
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }
@@ -29,6 +37,7 @@ const ProjectsAvailable = () => {
         setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
     }
 
+    // const projects = projects
 
 
     //   const handleclick = (project) =>{
@@ -52,7 +61,7 @@ const ProjectsAvailable = () => {
                 </div>
                 
 
-                    {projects.filter(project => project.published === 'true').length === 0 && 
+                    {projects.filter(project => (project.status === 'accepted' && project.semester_id===2)).length === 0 && 
                     <div className='page-content text-page'> 
                         <p>
                             Available projects have not been published yet.
@@ -60,7 +69,7 @@ const ProjectsAvailable = () => {
                         
                     </div>
                     }
-                    {projects.filter(project => project.published === 'true').length > 0 && 
+                    {projects.filter(project => (project.status === 'accepted' && project.semester_id===2)).length > 0 && 
                     <div className='page-content'> 
                     <div className='projects-container'>
                     {projects.map(project => (

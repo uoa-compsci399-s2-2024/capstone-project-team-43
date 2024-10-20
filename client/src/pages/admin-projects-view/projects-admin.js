@@ -24,6 +24,15 @@ const AdminProjectsView = () => {
   const [projects, setProjects] = useState([]);
   const [expandedProjects, setExpandedProjects] = useState({});
 
+  const [changed, setChanged] = useState(false);
+  const [published, setPublished] = useState(() => {
+    const storedPublished = localStorage.getItem('published');
+    return storedPublished !== null ? JSON.parse(storedPublished) : false; 
+  });  
+  
+  const [publishedProjects, setPublishedProjects] = useState(null);
+  const [unpublishedApproved, setUnpublishedApproved] = useState(null);
+
   const expandProject = (projectId) => {
     setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
   }
@@ -34,9 +43,13 @@ const AdminProjectsView = () => {
       async function getProjects() {
           try {
             console.log('fetching all projects for sorting page:');
-            const data = await fetchProjects("valid");
-            setProjects(data);
+            const data = await fetchProjects();
+            const currentData = data.filter(project => project.semester_id === 2);
+
+            setProjects(currentData);
             console.log('fetched projects:',data);
+            const publishedData = projects.filter(project => project.published === 'true');
+            setPublishedProjects(publishedData)
 
           } catch (error) {
             console.error('Failed to load projects:', error);
@@ -124,6 +137,7 @@ const AdminProjectsView = () => {
             loaded.current = 0;
           }else{
             if(loaded.current === 0){
+              setChanged(true);
               load();
             }else{
               return;
@@ -140,6 +154,13 @@ const AdminProjectsView = () => {
           }),
         );
 
+
+
+
+      // useEffect(() => {
+      //   setChanged(true);
+      // },[items.approved]);
+
     return(
         <main className="projects-admin-page">
           <div className="admin-content">
@@ -150,14 +171,24 @@ const AdminProjectsView = () => {
           <div className="container-headers">
             <div><h2>Rejected</h2></div>
             <div><h2>Pending</h2></div>
-            <div><h2>Accepted</h2></div>
+            <div><h2>Approved</h2></div>
             <div className="publish-buttons">
-                <button className = 'main-button' onClick={()=>updatePublish(false)} id="unpublish">Unpublish</button>
-                <button className = 'main-button' onClick={() => {
+              {published && <button className = 'main-button unpublish' onClick={()=>{updatePublish(false); setPublished(false); localStorage.setItem('published', JSON.stringify(false));}} id="unpublish">Unpublish</button>}
+                {!published && <button className = 'main-button publish' onClick={() => {
                     updatePublish(true, items.approved).then(() => {
+                    setPublished(true);
+                    localStorage.setItem('published', JSON.stringify(true));
                     window.location.reload();
                   });
-                }} id="publish">Publish</button>
+                }} id="publish">Publish</button>}
+                {(published && changed ) && <button className = 'main-button publish' onClick={() => {
+                    updatePublish(true, items.approved).then(() => {
+                    setPublished(true);
+                    localStorage.setItem('published', JSON.stringify(true));
+                    window.location.reload();
+                  });
+                }} id="publish">Save Changes</button>}
+
             </div>
           </div>
           {/* <div className="content"> */}
@@ -173,13 +204,16 @@ const AdminProjectsView = () => {
           onDragEnd={handleDragEnd}
         >
           <div className='sort-container rejected-container' id="left">
-              <Container id="rejected" items={items.rejected} expandProject={expandProject}/>
+              {items.rejected && <Container id="rejected" items={items.rejected} expandProject={expandProject}/>}
+              {items.rejected.length === 0 && <p className="empty-text">No rejected projects.</p>}
           </div>
           <div className='sort-container unsorted-container' id="center">
-              <Container id="unsorted" items={items.unsorted} expandProject={expandProject}/>
+              {items.unsorted && <Container id="unsorted" items={items.unsorted} expandProject={expandProject}/>}
+              {items.unsorted.length === 0 && <p className="empty-text">No pending projects.</p>}
           </div>
           <div className='sort-container accepted-container' id='right'>
-              <Container id="approved" items={items.approved} expandProject={expandProject}/>
+              {items.approved && <Container id="approved" items={items.approved} expandProject={expandProject}/>}
+              {items.approved.length === 0 && <p className="empty-text">No approved projects.</p>}
               <div id="publishing">
           </div>
           </div>

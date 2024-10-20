@@ -124,7 +124,7 @@ export const checkPath = async () => {
                 }
             } else if (role === "admin") {
                 if (window.location.pathname === "/") {
-                    window.location.pathname = '/projects/manage';
+                    window.location.pathname = '/dashboard';
                 }
             }
 

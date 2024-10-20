@@ -1,0 +1,86 @@
+.dashboard-semesters-container{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    align-items: center;
+
+}
+.semester-container{
+    background-color: rgba(255, 255, 255, 0.5);
+    /* width: auto; */
+    width: 550px;
+    border-radius: 15px;
+    padding: 1.5vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 7vh;
+    transition: 0.5s ease;
+
+}
+
+
+.semester-container:hover{
+    background-color: white;
+}
+
+.semester-container .head{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    width: 100%;
+    gap: 1vh;
+    text-transform: capitalize;
+    padding: 0;
+}
+
+.existing .head{
+    justify-content: start;
+}
+
+.semester-container.new .head{
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+}
+
+.plus-text{
+    font-size: 40px;
+}
+
+.semester-container .head .name{
+    color: var(--text-color-dark);
+    font-size: 24px;
+}
+
+.semester-container .head p{
+    padding: 0;
+    margin: 0;
+}
+
+.semester-container .head .status{
+    color: var(--text-color-dark);
+}
+
+.name{
+    font-weight: 700 !important;
+}
+
+.dashboard-page a{
+    font-size: 15px;
+} 
+
+.redirect-to-create{
+    margin-top: -2vh;
+}
+
+.create-text{
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.create-link{
+    font-size: 13px;
+}

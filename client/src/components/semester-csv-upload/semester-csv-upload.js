@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import './semester-csv-upload.css';
 
-const SemesterCSVUpload = ({ semesterID, fileContent }) => {
+const SemesterCSVUpload = ({ semesterID, fileContent, onSuccess }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -71,6 +71,7 @@ const SemesterCSVUpload = ({ semesterID, fileContent }) => {
                     .then(response => {
                         setSuccessMessage(`Upload successful! ${fileContent.charAt(0).toUpperCase() + fileContent.slice(1, -1)} data has been added.`);
                         setSelectedFile(null);
+                        onSuccess(); 
                     })
                     .catch(error => {
                         console.error('Error uploading file', error);

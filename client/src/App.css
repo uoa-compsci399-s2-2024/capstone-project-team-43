@@ -21,9 +21,22 @@
   gap: 6vh;
 }
 
+
+.page-content.text-page{
+  flex-grow: 1;
+  min-width: 50vw;
+  max-width: 40vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center !important;
+  margin-bottom: 10vh;
+  align-items: center;
+  gap: 6vh;
+}
+
 .page-heading {
   margin-top: 4vh;
-  padding-bottom: 5vh;
+  /* padding-bottom: 5vh; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,9 +46,9 @@
 .page-subheading {
   margin-top: auto;
   font-size: 25px;
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: center; */
 }
 
 /* success/confirmation window after form completion */

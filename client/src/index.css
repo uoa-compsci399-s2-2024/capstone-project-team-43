@@ -10,6 +10,7 @@
   --theme-very-light: #ddf4ff;
   --theme-shadow: drop-shadow(0px 10px 12px rgba(28, 56, 112, 0.7));
   --transparent: rgba(255, 255, 255, 0.5);
+  --theme-highlight: rgb(242, 133, 0);
 
   --theme-font: 'Poppins';
   --text-color-dark: #003C70;
@@ -41,7 +42,7 @@ span {
   color: var(--text-color-dark);
 }
 
-p, a, button, input {
+p, a, button, input, span {
   font-weight: 600;
 }
 
@@ -72,10 +73,22 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #dcf4ff;
-  background: linear-gradient(360deg, #dcf4ff 15%, #0174DF 75%, #006DCC 100%) !important;
+  /* background: linear-gradient(360deg, #dcf4ff 15%, #0174DF 75%, #006DCC 100%) !important; */
+  z-index: -1;
+  /* background-size: cover; */
+  /* background-attachment: fixed; */
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(360deg, #dcf4ff 10%, #cbebfa 20%, #0174DF 75%, #006DCC 100%);
   z-index: -1;
   background-size: cover;
-  background-attachment: fixed;
 }
 
 

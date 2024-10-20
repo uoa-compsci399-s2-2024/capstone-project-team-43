@@ -12,61 +12,8 @@
 .text-detail {
     font-size: 15px;
     margin-top: -20px;
-    font-style: italic;
 }
 
-/* DROP DOWN MENU */
-
-.semester-heading {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: -2vh;
-}
-
-.dropdown-button {
-    background-image: url('/../client/src/media/drop-icon.png');
-    background-size: 60% 60%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: inherit;
-    margin-top: 0px;
-    width: 25px;
-    height: 25px;
-    border: none;
-    cursor: pointer;
-    box-sizing: content-box;
-    position: relative;
-}
-
-.dropdown-menu {
-    text-decoration: none;
-    list-style-type: none;
-    display: none;
-    position: absolute;
-    background-color: lightgray;
-    z-index: 100;
-    width: 200px;
-    padding: 0px;
-    margin-top: 10px;
-    margin-left: -80px;
-    border: 2px solid lightgray;
-    border-radius: 10px;
-}
-
-.dropdown-menu-button {
-    background-color: inherit;
-    font-size: 18px;
-    font-weight: normal;
-    padding: 5px;
-    text-decoration: none;
-}
-
-.dropdown-menu-button:hover {
-    font-weight: bold;
-    background-color: inherit;
-
-}
 
 /* UPLOADING/DOWNLOADING FILES  */
 

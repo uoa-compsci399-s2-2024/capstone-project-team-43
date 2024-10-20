@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { fetchSemesters } from "../../Api";
+import './semester-dropdown.css';
 
 
 const SemesterDropdown = ({ onSelectSemester, hideSemesters = [] }) => {

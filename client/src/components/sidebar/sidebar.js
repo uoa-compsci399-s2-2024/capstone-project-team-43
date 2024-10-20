@@ -57,6 +57,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
 
         
         admin: [
+            { name: "Dashboard", path: "/dashboard" },
             { name: "Projects", path: "" },
             { name: "Manage Projects", path: "/projects/manage" },
             { name: "View as Student", path: "/projects/available" },
@@ -85,12 +86,12 @@ const Sidebar = ({ userRole, showSidebar }) => {
                             {item.path ? (
                                 <li className = 'sidebar-menu-item main-link' id = {item.name.replace(" ","")}>
                                     <Link to={item.path}>
-                                        <span>{item.name}</span>
+                                        <p>{item.name}</p>
                                     </Link>
                                 </li>
                             ):(
                                 <li key={index} className = 'sidebar-menu-header' id = {item.name.replace(" ","")}>
-                                    <span>{item.name}</span>
+                                    <p>{item.name}</p>
                                 </li>
                             )}
                         </React.Fragment>

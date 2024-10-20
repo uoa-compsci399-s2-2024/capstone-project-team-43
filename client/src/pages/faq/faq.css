@@ -20,4 +20,5 @@
     flex-direction: column;
     text-align: left;
     background-color: var(--transparent);
+    border-radius: 15px;
 }

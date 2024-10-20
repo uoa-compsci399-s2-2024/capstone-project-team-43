@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Header from '../header/header.js';
 import Sidebar from '../sidebar/sidebar.js';
 import { getUserRole } from '../../utils/auth.js';
+import { useLocation } from 'react-router-dom';
 import AccountDropdown from '../account-dropdown/account-dropdown.js';
 
 const Layout = ({ children }) => {
@@ -13,6 +14,12 @@ const Layout = ({ children }) => {
     const [hidingDropdown, setHidingDropdown] = useState(false);
     const [dropdownButtonHover, setDropdownButtonHover] = useState(false);
     const [dropdownHover, setDropdownHover] = useState(false);
+
+    const location = useLocation();
+
+    useEffect(() => {
+        setShowSidebar(false); // Hide the sidebar
+    }, [location]);
 
     // get user role (student, admin etc.) when the page loads
     let role;

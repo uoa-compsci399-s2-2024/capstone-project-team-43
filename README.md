@@ -1,4 +1,4 @@
-###**Project 9 Online Platform Capstone Link**
+### Project 9 Online Platform Capstone Link
 
 **Our project management tool:** 
 

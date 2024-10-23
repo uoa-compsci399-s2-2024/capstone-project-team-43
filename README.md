@@ -12,7 +12,7 @@ Technologies used in our project:
 
 Instruction on how to install and setup the project:
 
-Usage examples: https://compsci399.com/
+Usage examples: 
 
 Client: 
 A client can login and submit multiple project proposals, they can also view and edit any previous submissions.
@@ -23,7 +23,7 @@ Admins can login and manage semester details, upload and download CSV files, man
 Student: 
 Students can login as students and view available projects for a given semester then they may submit their preference for five projects through our preference submission form.
 
-Deployment URL:
+Deployment URL: https://compsci399.com/
 
 Future plans:
 

@@ -12,7 +12,7 @@ Technologies used in our project:
 
 Instruction on how to install and setup the project:
 
-Usage examples:
+Usage examples: https://compsci399.com/
 
 Client: 
 A client can login and submit multiple project proposals, they can also view and edit any previous submissions.

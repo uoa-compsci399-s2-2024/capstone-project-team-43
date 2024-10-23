@@ -1,4 +1,4 @@
-# Project 9 Online Platform Capstone Link
+## Project 9 Online Platform Capstone Link
 
 ### Our project management tool:
 
@@ -12,11 +12,11 @@ This project is designed to streamline the process of collecting, managing, and 
 
 - Hosting Technologies:
 
-[AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/?gclid=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB&trk=ea5a003b-635c-40d0-95d9-8de0b681d14f&sc_channel=ps&ef_id=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB:G:s&s_kwcid=AL!4422!3!651510138129!e!!g!!amazon%20beanstalk!19835787008!146688781803)
+> [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/?gclid=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB&trk=ea5a003b-635c-40d0-95d9-8de0b681d14f&sc_channel=ps&ef_id=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB:G:s&s_kwcid=AL!4422!3!651510138129!e!!g!!amazon%20beanstalk!19835787008!146688781803)
 
 - Frontend Technologies:
 
-[React](https://react.dev/) 18.3.1
+> [React](https://react.dev/) 18.3.1
 
 - Frontend Libraries:
 

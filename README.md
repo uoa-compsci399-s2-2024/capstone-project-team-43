@@ -15,12 +15,17 @@ This project is designed to streamline the process of collecting, managing, and 
 > [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/?gclid=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB&trk=ea5a003b-635c-40d0-95d9-8de0b681d14f&sc_channel=ps&ef_id=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB:G:s&s_kwcid=AL!4422!3!651510138129!e!!g!!amazon%20beanstalk!19835787008!146688781803)
 
 - Frontend Technologies:
-
 > [React](https://react.dev/) 18.3.1
+> JavaScript
+> Css
 
-- Frontend Libraries:
+- Libraries used:
+  > [dnd kit](https://dndkit.com/) 6.1.0
 
 - Backend Technologies:
+> [Nodejs](https://nodejs.org/en) 20.16.0
+> JavaScript
+> Google Authentication
 
 This a list of the main technologies we used, for a more extensive list of dependencies check the package.json in the client and server folder.
 

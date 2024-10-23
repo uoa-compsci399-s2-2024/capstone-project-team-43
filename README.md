@@ -14,9 +14,35 @@ Instruction on how to install and setup the project:
 
 Usage examples:
 
+Client: 
+A client can login and submit multiple project proposals, they can also view and edit any previous submissions.
+
+Admin: 
+Admins can login and manage semester details, upload and download CSV files, manage projects through sorting them in three different categories ‘rejected’, ‘unsorted’, ‘accepted’, edit any projects, initiate the project allocation process and be able to propose their own projects.
+
+Student: 
+Students can login as students and view available projects for a given semester then they may submit their preference for five projects through our preference submission form.
+
 Deployment URL:
 
 Future plans:
+
+Save and exit proposal forms - we would like to implement a feature in the future where admins and clients may save and exit the proposal forms and come back to it later.
+
+Save and exit preference forms - we would like to implement a feature in the future where students may save and exit the preference forms and come back to it later.
+
+Favourite subjects - we would like to implement a feature in the future where students can set favourite projects from the list of available projects and these favourite projects would be placed at a more accessible location to the students.
+
+Search and filter projects - we would like to implement a search and filter feature for the project to minimise the time it would take to look through the projects.
+
+Reset password - we would like to implement a reset password feature in case user forgets their passwords.
+
+Email confirmation - we would like to be able to send out email confirmations after account creation.
+
+Allowing for multiple companies to add employees - we would like to add a feature that allows a company to add multiple employees to manage projects submitted by one company.
+
+Mobile friendly - we would like to make the platform more mobile responsive so users who reply on phones may have easier access to the site.
+
 
 Acknowledgements:
 

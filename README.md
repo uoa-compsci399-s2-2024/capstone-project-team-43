@@ -1,6 +1,6 @@
 ### Project 9 Online Platform Capstone Link
 
-**Our project management tool:** 
+### Our project management tool:** 
 
 https://cs399-error404.atlassian.net/jira/software/projects/PROJ/boards/1?atlOrigin=eyJpIjoiN2I5ZWFhOWM4M2M0NDcxNmEzYjM0OWRmNjY2ODk5ZDAiLCJwIjoiaiJ9
 

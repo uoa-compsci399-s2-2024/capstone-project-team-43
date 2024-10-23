@@ -15,7 +15,9 @@ This project is designed to streamline the process of collecting, managing, and 
 
 - Frontend Technologies:
   > [React](https://react.dev/) 18.3.1
+  
   > JavaScript
+  
   > Css
 
 - Libraries used:
@@ -23,7 +25,9 @@ This project is designed to streamline the process of collecting, managing, and 
 
 - Backend Technologies:
   > [Nodejs](https://nodejs.org/en) 20.16.0
+  
   > JavaScript
+  
   > Google Authentication
 
 This a list of the main technologies we used, for a more extensive list of dependencies check the package.json in the client and server folder.

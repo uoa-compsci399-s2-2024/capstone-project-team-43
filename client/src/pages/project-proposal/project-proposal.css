@@ -55,14 +55,25 @@
     margin-bottom: 2vh;
 }
 
-.project-proposal-page .quit-button{
+.client-input-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
+/* .project-proposal-page .quit-button{
     width: 4px;
     margin-left: -2vh;
+} */
+
+.project-proposal-page .pop-up-text{
+    padding: 1vh;
+    font-weight: 600;
 }
 
 .attendance-confirmation{
     display: flex;
-    background-color: var(--theme-mid);
+    background-color: var(--theme-light) !important;
     max-width: 300px;
     margin: 10px;
 }
@@ -105,23 +116,25 @@
     padding: 10px;
     width: 40%;
     min-width: 200px;
-    color: rgba(0, 0, 0, 0.495);
+    color: black;
     font-weight: 600;
 }
 
 
-.project-proposal-page textarea::placeholder,
+.project-edit-redirect p{
+    font-size: 13px;
+}
+.project-proposal-page .form-fill label textarea{
+    color: var(--text-color-dark) !important;
+}
+input {
+    color: var(--text-color-dark) !important;
+}
+
+/* .project-proposal-page textarea::placeholder, */
 .project-proposal-page input::placeholder{
     color: rgba(0, 0, 0, 0.495);
     font-weight: 600;
 }
 
-.pop-up-header{
-    justify-content: end;
-}
-
-.pop-up-text, .pop-up-text p{
-    margin-top: 0vh !important;
-    padding-top: 0 !important;
-}
 

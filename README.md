@@ -19,6 +19,8 @@ This project is designed to streamline the process of collecting, managing, and 
   > JavaScript
   
   > Css
+  
+  > HTML
 
 - Libraries used:
   > [dnd kit](https://dndkit.com/) 6.1.0
@@ -32,17 +34,6 @@ This project is designed to streamline the process of collecting, managing, and 
 
 - Database:
   > [MySQL](https://www.mysql.com/)
-
-- Other:
-  > [Figma](https://www.figma.com/)
-  
-  > [GitHub](https://github.com/)
-  
-  > [Git](https://git-scm.com/)
-  
-  > [Jira](https://www.atlassian.com/software/jira)
-  
-  > [Visual Studio Code](https://code.visualstudio.com/)
 
 This a list of the main technologies we used, for a more extensive list of dependencies check the package.json in the client and server folder.
 

@@ -404,7 +404,7 @@
 }
 
 .project-preferences-page .confirmation-header p{
-  color: var(--text-color-dark) !important;
+  color: white !important;
   font-weight: 700;
 }
 .project-preferences-page .confirmation-projects{

@@ -41,7 +41,7 @@ CREATE TABLE SEMESTER (
     is_semester_one BOOL NOT NULL,
     status ENUM('retired', 'current', 'upcoming'),
     name VARCHAR(255) DEFAULT NULL,
-    proposal_deadline DATE DEFAULT NULL
+    proposal_deadline DATE
 );
 -- trigger to fill value in name & status column of SEMESTER
 CREATE TRIGGER before_insert_semester
@@ -66,6 +66,11 @@ BEGIN
 
     -- Set name as "Semester {1 or 2}, {start_date year}"
     SET NEW.name = CONCAT('Semester ', semester_num, ', ', YEAR(NEW.start_date));
+
+    -- Set proposal deadline to semester start date if null 
+    IF NEW.proposal_deadline IS NULL THEN
+        SET NEW.proposal_deadline = NEW.start_date;
+    END IF;
 END; 
 
 CREATE TABLE TEAM (

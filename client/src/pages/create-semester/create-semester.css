@@ -26,6 +26,11 @@
 .create-semester-page .confirmation-content{
     margin-top: 17vh;
 }
+
+.create-semester-page .confirmation-header h3{
+    color: var(--text-color-dark);
+}
+
 .create-semester-page .page-content{
     /* max-width: 40%;
     min-width: 40%; */

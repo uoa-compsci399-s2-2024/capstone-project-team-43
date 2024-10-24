@@ -109,7 +109,7 @@ const CreateSemester = () =>{
                 </form>}
                 {showSuccessMessage && <div className="confirmation-content">
                             <div className="confirmation-header">
-                                <h3>Success!</h3>
+                                <h3>Success</h3>
                             </div>
                             <div className="confirmation-text">
                                 <p>The new semester has been created.</p>

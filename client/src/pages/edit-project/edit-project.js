@@ -9,6 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate, Link, useParams} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { getUserID, getUserRole } from '../../utils/auth.js';
+import { formatDateForDisplay, formatDateForInput } from '../../utils/format-date.js';
 
 import './edit-project.css'
 
@@ -18,6 +19,7 @@ const EditProject = () => {
     const [project, setProject] = useState(null);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showEquipmentReqWindow, setShowEquipmentReqWindow] = useState(false);
+    const [showExpiryWindow, setShowExpiryWindow] = useState(false);
 
     // fetch project data 
     useEffect(() => {
@@ -60,20 +62,24 @@ const EditProject = () => {
     //     setShowSuccessMessage(true)
     // };
     
+    const handleFurtherConsiderationSelect = (event) => {
+        const value = event.target.value;
+        if (value === "1") {
+            setShowExpiryWindow(true);
+        }
+        else{
+            setShowExpiryWindow(false);
+        }
+    }
     
     const submit = (e) =>{
         try {
             e.preventDefault(); 
 
-            console.log('1');
             let other_client_details = document.getElementById("otherclientdetails").value;
-            console.log('1');
             let title = document.getElementById("projecttitle").value;
-            console.log('1');
             let description = document.getElementById("projectdescription").value;
-            console.log('1');
             let project_deliverable = document.getElementById("desiredoutput").value;
-            console.log('1');
             
             let special_requirements;
             if (document.getElementById("yes-no-equipment").value == "1") {
@@ -83,19 +89,19 @@ const EditProject = () => {
                 special_requirements = null;
             }
 
-            console.log('1');
+
             let max_teams = document.getElementById("teams").value;
-            console.log('1');
+            
             let preferred_skills = document.getElementById("desiredskill").value;
-            console.log('1');
+            
             let available_resources = document.getElementById("availableresources").value;
-            console.log('1');
+            
             let expiry = document.getElementById("date").value;
-            console.log('1');
+            
             let owner_id = project.owner_id;
-            console.log('1');
+            
             let currentDate = new Date();
-            console.log('1');
+            
             let created = project.created;
 
             // Log all the collected values
@@ -130,7 +136,7 @@ const EditProject = () => {
                     project.max_teams && (document.getElementById("teams").value = project.max_teams);
                     project.preferred_skills && (document.getElementById("desiredskill").value = project.preferred_skills);
                     project.available_resources && (document.getElementById("availableresources").value = project.available_resources);
-                    project.expiry && (document.getElementById("date").value = project.expiry.substring(0,10));
+                    project.expiry && (document.getElementById("expiry").value = formatDateForDisplay(project.expiry));
 
                     try {
                         if (project.special_requirements) {
@@ -221,11 +227,19 @@ const EditProject = () => {
                         <textarea placeholder="Enter your answer" id="availableresources" />
                     </label>
                     <label>
-                        <h2>9. Future Consideration</h2>
-                        <p>Please specify when you would like the project to be withdrawn from consideration</p>
-                        <input type="date" id="date"/> 
+                        <h2>9. Further Consideration</h2>
+                        <p>If your project is not selected by students in the upcoming semester, would you like it to be considered for following semesters?</p>
+                        <select id="yes-no-futher-consideration" onChange = {handleFurtherConsiderationSelect}> 
+                            <option value="" disabled selected>Select</option>
+                            <option value="1">Yes</option>
+                            <option value="0">No</option>
+                        </select>
+                        {showExpiryWindow && <div>
+                            <p>Please enter the date you would like your project to be withdrawn</p>
+                            <input type="date" id="expiry"/>
+                            </div>}
                     </label>             
-                        <div className = 'proposal-submission-buttons' id="proposalButtons">
+                    <div className = 'proposal-submission-buttons' id="proposalButtons">
                         <button className = 'main-button'id="submit" form="proposalForm" type="submit">Save Changes</button>
                     </div>
                 </form>}

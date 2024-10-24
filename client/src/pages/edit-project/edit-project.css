@@ -109,7 +109,7 @@
     justify-content: end;
 }
 
-.pop-up-text, .pop-up-text p{
+.edit-project-page .pop-up-text, .edit-project-page .pop-up-text p{
     margin-top: 0vh !important;
     padding-top: 0 !important;
 }
@@ -127,7 +127,7 @@
 
 }
 .success-message p{
-    font-size: 23px !important;
+    /* font-size: 23px !important; */
     color: var(--text-color-light);
     padding: 0;
     margin: 0;

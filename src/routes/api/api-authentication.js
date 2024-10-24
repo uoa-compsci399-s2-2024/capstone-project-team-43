@@ -272,7 +272,7 @@ router.get('/google/callback', async (req, res) => {
             } else if (role == "client") {
                 return res.status(200).redirect('/projects/view');
             } else if (role == "admin") {
-                return res.status(200).redirect('/projects/manage');
+                return res.status(200).redirect('/dashboard');
             }
 
         } else {

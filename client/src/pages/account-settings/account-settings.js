@@ -162,7 +162,7 @@ const AccountSettings = ({ }) => {
                 <h1>Your Account</h1>
                 {/* <h2 className='page-subheading'>Your Account Details</h2> */}
                 </div>
-                <div className='page-content'>
+                <div className='page-content text-content'>
                 <div className='content-section'>
                     <AccountDetail 
                         description="First name" 
@@ -220,8 +220,8 @@ const AccountSettings = ({ }) => {
                         { showDeletionWarning && (
                             <div className='pop-up'>
                                 <div className='pop-up-header'>
-                                    <h3>Delete Account</h3>
-                                    <button className = 'quit-button' onClick={closeDeletionWarning}></button>
+                                    <h3 className='delete-h3'>Delete Account</h3>
+                                    {/* <button className = 'quit-button' onClick={closeDeletionWarning}></button> */}
                                 </div>
                                 <div className='pop-up-text'>
                                     <p className='warning'>WARNING: Deleting your account will delete any project proposals you have submitted, 

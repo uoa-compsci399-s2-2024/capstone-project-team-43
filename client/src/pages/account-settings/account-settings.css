@@ -14,11 +14,34 @@
 .editing-button-container > button{
     margin-left: 10px;
 }
+.account-settings-page .pop-up{
+    margin-top: -3vh;
+}
+
+.account-settings-page .pop-up-header{
+    justify-content: center !important;
+    margin-top: 1vh;
+}
+.confirm-delete-account-button{
+    background-color: inherit !important;
+    color: var(--text-color-dark) !important;
+
+}
+
+.page-content.text-content{
+    align-items: stretch;
+}
 
 .account-settings-page .content-section{
     text-align: left;
     /* width: 600px;
     min-width: 300px; */
+}
+
+
+.delete-h3{
+    color: var(--text-color-dark) !important;
+    text-align: center;
 }
 
 .data-container{

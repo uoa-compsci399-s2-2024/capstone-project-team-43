@@ -30,6 +30,8 @@ This project is designed to streamline the process of collecting, managing, and 
   
   > Google Authentication
 
+- Database:
+  > [MySQL](https://www.mysql.com/)
 This a list of the main technologies we used, for a more extensive list of dependencies check the package.json in the client and server folder.
 
 

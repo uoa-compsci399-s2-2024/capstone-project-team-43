@@ -18,14 +18,8 @@ const ProjectsAvailable = () => {
             try {
                 const data = await fetchProjects();
                 console.log('data:',data);
-                const currentData = data.filter(project => project.semester_id === 2);
-                console.log('current data:',currentData);
-
-                const availableData = currentData.filter(project => project.status === 'accepted');
-                console.log('available data:', availableData);
-
-                setProjects(availableData);
-                console.log('projects:'+data);
+                const published = data.filter(project => project.published === 'true');
+                setProjects(published)
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }
@@ -37,30 +31,28 @@ const ProjectsAvailable = () => {
         setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
     }
 
-    // const projects = projects
+    const expandAll = () => {
+        const allExpanded = {};
+        projects.forEach(project => {
+            allExpanded[project.id] = true; 
+        });
+        setExpandedProjects(allExpanded);
+    }
 
-
-    //   const handleclick = (project) =>{
-    //     document.getElementById('popup').style.display = "block";
-    //     document.getElementById('close').style.display = "block";       
-    //   };
-
-
-
-    //   const close =() =>{
-    //     document.getElementById('popup').style.display = "none";
-    //     document.getElementById('close').style.display = "none";
-    // }
-
-      
+    const collapseAll = () => {
+        const allCollapsed = {};
+        projects.forEach(project => {
+            allCollapsed[project.id] = false; 
+        });
+        setExpandedProjects(allCollapsed);
+    }
+  
     return(
         <main className="students-projects-view-page">
             <div className='content'>
                 <div className='page-heading'>
                     <h1>Available Projects</h1>
                 </div>
-                
-
                     {projects.filter(project => (project.status === 'accepted' && project.semester_id===2)).length === 0 && 
                     <div className='page-content text-page'> 
                         <p>
@@ -71,6 +63,14 @@ const ProjectsAvailable = () => {
                     }
                     {projects.filter(project => (project.status === 'accepted' && project.semester_id===2)).length > 0 && 
                     <div className='page-content'> 
+                    <div className='expand-collapse-button'>
+                        <button className='expand' onClick={expandAll}>
+                            Expand All
+                        </button>
+                        <button className='expand' onClick={collapseAll}>
+                            Collapse All
+                        </button>
+                    </div>
                     <div className='projects-container'>
                     {projects.map(project => (
                         // expand project when user clicks

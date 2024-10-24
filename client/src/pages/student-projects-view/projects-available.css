@@ -13,6 +13,7 @@
     align-items: center;
     flex-wrap: wrap;
     gap:15px;
+    margin-top: 0;
 }
 
 .students-projects-view-page .project-container.collapsed{
@@ -33,10 +34,25 @@
     background-color: white;
 }
 
+
 .students-projects-view-page .project-container:hover{
     cursor: pointer;
 } 
 
+.expand-collapse-button{
+    display: flex;
+    width: 70vw;
+    /* align-items:right; */
+    justify-content: end;
+    gap: 1vh;
+    margin-bottom: -5vh;
+}
+
+.expand-collapse-button button{
+    background-color: transparent !important;
+    color: white;
+
+}
 
 /* 
 .students-projects-view-page .project-header p{

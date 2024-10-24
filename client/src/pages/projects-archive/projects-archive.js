@@ -78,6 +78,22 @@ const ProjectsArchive = () => {
     // projects for the given semester
     const archivedProjects = projects.filter(project => project.semester_id === 1);
 
+    const expandAll = () => {
+        const allExpanded = {};
+        projects.forEach(project => {
+            allExpanded[project.id] = true; 
+        });
+        setExpandedProjects(allExpanded);
+    }
+
+    const collapseAll = () => {
+        const allCollapsed = {};
+        projects.forEach(project => {
+            allCollapsed[project.id] = false; 
+        });
+        setExpandedProjects(allCollapsed);
+    }
+
     return(
         <main className="projects-archive">
             {semester && <div className='content'>

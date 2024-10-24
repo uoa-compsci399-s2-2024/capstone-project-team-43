@@ -20,11 +20,11 @@ const Project = ({ projectId, view, expanded, expandProject=null  }) => {
     const showProjectButtons = () => {setProjectButtons(true)};
     const hideProjectButtons = () => {setProjectButtons(false)};
 
-    useEffect(() => {
-        if (expanded && projectRef.current) {
-            projectRef.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center"}); 
-        }
-    }, [expanded]);  
+    // useEffect(() => {
+    //     if (expanded && projectRef.current) {
+    //         projectRef.current.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center"}); 
+    //     }
+    // }, [expanded]);  
 
 
     // fetch project data 
@@ -130,7 +130,7 @@ const Project = ({ projectId, view, expanded, expandProject=null  }) => {
                             </div>
                         </div>
                     </div>}
-                    {isAdmin && <div className="project-data-box">
+                    {/* {isAdmin && <div className="project-data-box">
                         <div className="project-data-container">
                             <p className="proj-data-header">Date Created</p>
                             <div className="project-data-text">
@@ -145,7 +145,7 @@ const Project = ({ projectId, view, expanded, expandProject=null  }) => {
                                 <p>{project.expiry.substring(0,10)  || 'None'}</p>
                             </div>
                         </div>
-                    </div>}
+                    </div>} */}
                 </div>}
                 {(view !== 'preferences' && view !=='chosen') && (projectButtons && !isAdmin) && < div className="expand-button-container">
                     <div className="expand-text">

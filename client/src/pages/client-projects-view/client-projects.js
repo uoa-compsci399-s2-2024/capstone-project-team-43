@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { fetchProjects, fetchProjectsByUser, fetchPublishedProjects } from '../../Api.js'
 import Project from "../../components/project/project.js";
 import PopUp from "../../components/pop-up admin/project-pop-up-admin.js";
@@ -10,6 +10,10 @@ import './client-projects.css'
 const ClientProjectsView = () => {
     const [projects, setProjects] = useState([]);
     const [userID, setUserID] = useState(null);
+    const [expandedProjects, setExpandedProjects] = useState({});
+
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         console.log("getting user id");
@@ -19,54 +23,43 @@ const ClientProjectsView = () => {
 
     }, []);
 
-    // Fetch client's own projects        
+    const expandProject = (projectId) => {
+        setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
+    }
+
+
+
+    // Get all projects in database
     useEffect(() => {
-        if (userID) {
-            async function getProjectsByUser(userID) {
-                try {
-                    const data = await fetchProjectsByUser(userID);
-                    setProjects(data);
-                } catch (error) {
-                    console.error('Failed to load projects:', error);
-                }  
-            getProjectsByUser(userID);
+        async function getProjects() {
+            try {
+                const data = await fetchProjects();
+                console.log('projects:'+data);
+                const userProjects = data.filter(project => project.owner_id === userID);
+                setProjects(userProjects);
+                console.log('User projects:'+data);
+            } catch (error) {
+                console.error('Failed to load projects:', error);
             }
         }
-    }, [userID]); 
+        getProjects();
+    }, []);
 
-
-            // } else {
-        //     // Admin & student view: Fetch all projects
-        //     async function getPublishedProjects() {
-        //         try {
-        //             const data = await fetchPublishedProjects();
-        //             setProjects(data);
-        //         } catch (error) {
-        //             console.error('Failed to load published projects:', error);
-        //         }
-        //     }
-        //     getPublishedProjects();
-        // }
-
-    const handleclick = () =>{
-        document.getElementById('popup').style.display = "block";
-        document.getElementById('close').style.display = "block";
-        //document.getElementById('edit').style.display = "block";
-      };
-      const close =() =>{
-        document.getElementById('popup').style.display = "none";
-        document.getElementById('close').style.display = "none";
-    }
-      const submit =() =>{
-        document.getElementById('confirm').style.display = "none";
-        document.getElementById('close').style.display = "none";
-        document.getElementById('edit').style.display = "none";
+    const expandAll = () => {
+        const allExpanded = {};
+        projects.forEach(project => {
+            allExpanded[project.id] = true; 
+        });
+        setExpandedProjects(allExpanded);
     }
 
-    // const userProjects = projects.filter(project => project.owner_id === userID);
-
-    // console.log("USER PROJECTS: ", userProjects);
-
+    const collapseAll = () => {
+        const allCollapsed = {};
+        projects.forEach(project => {
+            allCollapsed[project.id] = false; 
+        });
+        setExpandedProjects(allCollapsed);
+    }
 
     return(
         <main className="client-projects-view-page">
@@ -74,33 +67,36 @@ const ClientProjectsView = () => {
                 <div className='page-heading'>
                     <h1>Your Projects</h1>
                 </div>
-                <div className='page-content'>
+                {projects.length > 0 && <div className='page-content'>
                 <div className='projects-container'>
-                    {projects.length === 0 && (
-                        <p>You haven't submitted any project proposals yet.</p>
+                    {projects.map(project => (
+                            <div key={project.id} >
+                            <Project className = 'project'
+                                view='client'
+                                projectId={project.id}
+                                expanded={expandedProjects[project.id]}
+                                expandProject = {expandProject}
+                            />
+                            {/* // <div className="project-wrapper-buttons">
+                            //     <button onClick={() => expandProject(project.id)} className="admin-expand-button">
+                            //         {!expandedProjects[project.id] ? 'Expand Project Details' : 'Collapse Project Details'}
+                            //     </button> 
+                            // {expandedProjects[project.id] && <button onClick={() => navigate(`/projects/edit/${project.id}`)} className="admin-expand-button">
+                            //         Edit Project
+                            //     </button>} 
+                            // </div> */}
+                        </div>
+                    ))}                       
+                </div>
+                </div>}
+                {projects.length === 0 && (<div className='page-content text-page'>
+                        <p>You haven't submitted any project proposals yet</p>
+                        <Link to='/projects/submit'>
+                            <span className="create-link">Go to Project Proposal Form</span>
+                        </Link>
+                    </div>
                     )}
-                    {projects.length > 0 && projects.map(project => (
-                            <div key={project.id} onClick={() => handleclick()}>
-                                <Project 
-                                    view = 'client'
-                                    projectId={project.id}
-                                />  
-                                {/* <div id="confirm"> */}
-                            <PopUp project= {project} />
-                           
-                            </div>
-                            
-                    ))}
-                     <button id="close" onClick={close}>&times;</button>                   
-                            
-                </div>
-                <div className='redirect-to-proposal'>
-                    <Link to='/projects/submit'>
-                        <span>Go to Project Proposal Form</span>
-                    </Link>
-                </div>
-                </div>
-            </div> }
+                </div>}
         </main>  
     );
 }

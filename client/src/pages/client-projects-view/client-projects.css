@@ -17,6 +17,10 @@
     overflow-y: auto;
 }
 
+.empty.page-content{
+    margin-top: 8vh;
+}
+
 /* .Project{
     width: 100%;
     height: 100%;

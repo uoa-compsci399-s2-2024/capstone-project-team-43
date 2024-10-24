@@ -13,7 +13,7 @@ This project is designed to streamline the process of collecting, managing, and 
 - Hosting Technologies:
   > [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/?gclid=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB&trk=ea5a003b-635c-40d0-95d9-8de0b681d14f&sc_channel=ps&ef_id=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB:G:s&s_kwcid=AL!4422!3!651510138129!e!!g!!amazon%20beanstalk!19835787008!146688781803)
 
-  > [AWS EC2] (https://aws.amazon.com/ec2/)
+  > [AWS EC2](https://aws.amazon.com/ec2/)
 
 - Frontend Technologies:
   > [React](https://react.dev/) 18.3.1
@@ -26,7 +26,7 @@ This project is designed to streamline the process of collecting, managing, and 
   
   > JavaScript
   
-  > Google Oauth (https://developers.google.com/identity/protocols/oauth2) 2.0
+  > Google Oauth(https://developers.google.com/identity/protocols/oauth2) 2.0
 
 - Database:
   > [MySQL](https://www.mysql.com/)
@@ -86,7 +86,9 @@ Students can login as students and view available projects for a given semester 
 
 
 ### Acknowledgements:
+Special thanks to Anna, Asma and Mark for their guidance throughout the project.
 
+We would like to thank the staff at the CS Capstone Bootcamp we attended for teaching us the foundational skills needed to kickstart this project. 
 
 ### Team Members
 

@@ -26,7 +26,7 @@ This project is designed to streamline the process of collecting, managing, and 
   
   > JavaScript
   
-  > Google Oauth(https://developers.google.com/identity/protocols/oauth2) 2.0
+  > [Google Oauth](https://developers.google.com/identity/protocols/oauth2) 2.0
 
 - Database:
   > [MySQL](https://www.mysql.com/)

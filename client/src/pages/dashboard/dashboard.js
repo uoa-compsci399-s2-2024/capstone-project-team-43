@@ -46,55 +46,79 @@ const Dashboard = () => {
         getSemesters();
     }, []); 
 
+    const currentSemesters = semesters.filter(semester => semester.status === 'current')
+        .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+    const upcomingSemesters = semesters.filter(semester => semester.status === 'upcoming')
+        .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+    const retiredSemesters = semesters.filter(semester => semester.status === 'retired')
+        .sort((a, b) => new Date(b.start_date) - new Date(a.start_date));
 
     return(
         <main className="dashboard-page">
             {semesters && <div className='content'>
                 <div className='page-heading'>
                     <h1>Dashboard</h1>
-                    <h2 className="page-subheading">Your Active Semesters</h2>
+                    <h2 className="page-subheading">Your Semesters</h2>
                 </div>
-                {semesters.filter(semester => (semester.status !== 'retired')).length > 0 && <div className='page-content'>
-                <div className='dashboard-semesters-container'>
-                    {/* {semesters.length === 0 && (
-                        <p>You haven't submitted any project proposals yet.</p>
-                    )} */}
-                    {semesters.length > 0 && semesters.filter(semester => (semester.status === 'current')).map(semester => (
-                            <div key={semester.id} className="semester-container existing" onClick={() => {navigate(`/manage/semester/${semester.id}`)}}>
-                                <div className="head">
-                                    <p className="name">{semester.name}</p>
-                                    <p className="status">{semester.status}</p>
+                <div className="dashboard-semesters-container">
+                        {upcomingSemesters.length > 0 && upcomingSemesters
+                            .sort((a, b) => new Date(a.start_date) - new Date(b.start_date)) 
+                            .reverse()
+                            .map((semester,index) => ( 
+                                <div 
+                                key={semester.id} 
+                                className={`semester-container current ${index===0 ? 'first':''}`} 
+                                onClick={() => {navigate(`/manage/semester/${semester.id}`)}}>
+                                    <div className="head">
+                                        <p className="name">{semester.name}</p>
+                                        <p className="status">{semester.status}</p>
+                                    </div>
                                 </div>
-                            </div>     
-                    ))} 
-                    {semesters.length > 0 && semesters.filter(semester => (semester.status === 'upcoming')).map(semester => (
-                            <div key={semester.id} className="semester-container existing">
-                                <div className="head">
-                                    <p className="name">{semester.name}</p>
-                                    <p className="status">{semester.status}</p>
+                            ))}
+
+                        {currentSemesters.length > 0 && currentSemesters
+                            .sort((a, b) => new Date(a.start_date) - new Date(b.start_date)) 
+                            .reverse()
+                            .map((semester,index) => ( 
+                                <div 
+                                key={semester.id} 
+                                className={`semester-container current`} 
+                                onClick={() => {navigate(`/manage/semester/${semester.id}`)}}>
+                                    <div className="head">
+                                        <p className="name">{semester.name}</p>
+                                        <p className="status">{semester.status}</p>
+                                    </div>
                                 </div>
-                    </div>  
-                    ))}
-                    {/* <div className="semester-container new" onClick={() => {navigate('/create/semester')}}>
-                        <div className="head">
-                            <p className="create-text">Create New Semester</p>
-                        </div>
-                    </div>                       */}
+                            ))}
+                        {retiredSemesters.length > 0 && retiredSemesters
+                            .sort((a, b) => new Date(a.start_date) - new Date(b.start_date)) 
+                            .reverse()
+                            .map((semester,index) => ( 
+                                <div 
+                                key={semester.id} 
+                                className={`semester-container current`} 
+                                onClick={() => {navigate(`/manage/semester/${semester.id}`)}}>
+                                    <div className="head">
+                                        <p className="name">{semester.name}</p>
+                                        <p className="status">{semester.status}</p>
+                                    </div>
+                                </div>
+                            ))}
                 </div>
                 <div className='redirect-to-create'>
                     <Link to='/create/semester'>
                         <p>Create a New Semester</p>
                     </Link>
                 </div>
-                </div>}
-                {semesters.filter(semester => (semester.status !== 'retired')).length === 0 && <div className='content'>
+            </div>}
+            {/* if user has no upcoming or current semesters */}
+            {semesters.filter(semester => (semester.status !== 'retired')).length === 0 && <div className='content'>
                 <div className='page-content'>
                     <p>No current or upcoming semesters.</p>
                     <Link to='/create/semester'>
                         <span className="create-link">Create New Semester</span>
                     </Link>
                 </div>
-            </div>}
             </div>}
         </main>
     );

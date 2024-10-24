@@ -1,13 +1,30 @@
+.dashboard-page .content{
+    max-height: 90vh;
+    overflow: hidden;
+}
+
 .dashboard-semesters-container{
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 2vh;
+    gap: 1.5vh;
     align-items: center;
-
+    justify-content: start;
+    overflow-y: auto;
+    /* max-height: 50vh; */
+    /* padding: 3vh; */
+    -webkit-mask-image: linear-gradient(180deg, transparent 5%, rgba(0, 0, 0, 1) 20%, rgba(0, 0, 0, 1) 44%, transparent 95%);
+    /* -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%); */
+    padding-top: 5%;
+    padding-bottom: 10%;
+    /* box-sizing: border-box; */
+    max-height: 55vh;
+    margin-top: -6vh;
 }
+
+
 .semester-container{
-    background-color: rgba(255, 255, 255, 0.5);
+    /* background-color: rgba(255, 255, 255, 0.5); */
     /* width: auto; */
     width: 550px;
     border-radius: 15px;
@@ -16,34 +33,43 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 7vh;
+    /* min-height: 10vh; */
     transition: 0.5s ease;
-
+    background-color: white;
+    height: 10vh;
+    transition: 0.5s;
+    /* margin:1vh 0 1vh 0; */
+    /* margin: auto; */
 }
 
+/* .semester-container.current{
+    background-color: white;
+}
+
+.semester-container.retired{
+    background-color: rgba(0, 0, 0, 0.074);
+}
+
+.semester-container.upcoming{
+    background-color: var(--transparent);
+} */
 
 .semester-container:hover{
-    background-color: white;
+    width: 560px;
+    height: 11vh;
+    transition: 0.5s;
 }
 
 .semester-container .head{
     display: flex;
-    flex-direction: row;
-    align-items: baseline;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
-    gap: 1vh;
+    /* gap: 1vh; */
+    justify-content: center;
     text-transform: capitalize;
     padding: 0;
-}
 
-.existing .head{
-    justify-content: start;
-}
-
-.semester-container.new .head{
-    justify-content: center;
-    align-items: center;
-    gap: 2vh;
 }
 
 .plus-text{
@@ -51,8 +77,9 @@
 }
 
 .semester-container .head .name{
-    color: var(--text-color-dark);
-    font-size: 24px;
+    color: var(--text-color-light);
+    font-size: 30px !important;
+    padding-left: 1vh;
 }
 
 .semester-container .head p{
@@ -62,10 +89,13 @@
 
 .semester-container .head .status{
     color: var(--text-color-dark);
+    font-size: 15px;
+    /* margin-top: -3vh; */
 }
 
 .name{
     font-weight: 700 !important;
+    font-size: 30px !important;
 }
 
 .dashboard-page a{
@@ -73,7 +103,18 @@
 } 
 
 .redirect-to-create{
-    margin-top: -2vh;
+    margin-top: 0vh;
+    opacity: 0.7;
+}
+
+.redirect-to-current{
+    margin-top: 0vh;
+    opacity: 0.7;
+}
+
+.redirect-to-current p{
+    color: white !important;
+
 }
 
 .create-text{
@@ -83,4 +124,16 @@
 
 .create-link{
     font-size: 13px;
+}
+
+.dashboard-semesters-container::-webkit-scrollbar{
+    width: 0.8vw;
+}
+
+.dashboard-semesters-container::-webkit-scrollbar-track{
+    background-color: var(--transparent);
+}
+.dashboard-semesters-container::-webkit-scrollbar-thumb{
+    background-color: white;
+    border-radius: 10px;
 }

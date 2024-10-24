@@ -24,7 +24,7 @@ const AdminProjectsView = () => {
   const [projects, setProjects] = useState([]);
   const [expandedProjects, setExpandedProjects] = useState({});
 
-  const [changed, setChanged] = useState(false);
+  const [changedApproved, setChangedApproved] = useState(false);
   const [published, setPublished] = useState(() => {
     const storedPublished = localStorage.getItem('published');
     return storedPublished !== null ? JSON.parse(storedPublished) : false; 
@@ -33,145 +33,183 @@ const AdminProjectsView = () => {
   const [publishedProjects, setPublishedProjects] = useState(null);
   const [unpublishedApproved, setUnpublishedApproved] = useState(null);
 
+  const [loading, setLoading] = useState(true); 
+
   const expandProject = (projectId) => {
     setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
   }
 
-
   // get projects
   useEffect(() => {
-      async function getProjects() {
-          try {
-            console.log('fetching all projects for sorting page:');
-            const data = await fetchProjects();
-            const currentData = data.filter(project => project.semester_id === 2);
+    async function getProjects() {
+      try {
+        console.log('fetching all projects for sorting page:');
 
-            setProjects(currentData);
-            console.log('fetched projects:',data);
-            const publishedData = projects.filter(project => project.published === 'true');
-            setPublishedProjects(publishedData)
+        // get all available projects 
+        const data = await fetchProjects();
+        const availProjects = data.filter(project => new Date(project.expiry) > new Date())
+        setProjects(data);
 
-          } catch (error) {
-            console.error('Failed to load projects:', error);
-          }
-      };
-      getProjects();
+        // get published projects
+        const publishedData = availProjects.filter(project => project.published === 'true');
+        setPublishedProjects(publishedData)
+
+        setLoading(false);
+
+      } catch (error) {
+        console.error('Failed to load projects:', error);
+        setLoading(false);
+      }
+    };
+    getProjects();
   }, []);
 
 
-      //Rejected projects
-      let rejected = [];
+  //Rejected projects
+  let rejected = [];
 
-      projects
-      .filter(project => project.status === 'rejected')
-      .map(project => (
-        rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
+  projects
+  .filter(project => project.status === 'rejected')
+  .map(project => (
+    rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
-      ));
+  ));
 
-      //Unsorted projects
-      let unsorted = [];
+  //Unsorted projects
+  let unsorted = [];
 
-      projects
-      .filter(project => project.status === 'pending')
-      .map(project => (
-        unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
+  projects
+  .filter(project => project.status === 'pending')
+  .map(project => (
+    unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
-      ));
+  ));
 
-      //Approved projects
-      let approved = [];
+  //Approved projects
+  let approved = [];
 
-      projects
-      .filter(project => project.status === 'accepted')
-      .map(project => (
-        approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
+  projects
+  .filter(project => project.status === 'accepted')
+  .map(project => (
+    approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
-      ));
+  ));
 
-      const [items, setItems] = useState({
-        rejected:[],
-        unsorted: [],
-        approved: [],
-      });
+  const [items, setItems] = useState({
+    rejected:[],
+    unsorted: [],
+    approved: [],
+  });
 
-      // let loaded = false;
-      const loaded = useRef(0);
-        //DEFINE LOAD
-        const load = () => {
-          let updatedItems = {};
-          items.rejected = [];
-          items.unsorted = [];
-          items.approved = [];
-          // console.log(rejected);
-          // console.log(unsorted);
-          // console.log(approved);
-        for (let i = 0; i < rejected.length; i++) {
-          items.rejected.push(rejected[i]);
-        };
+  // let loaded = false;
+  const loaded = useRef(0);
+    //DEFINE LOAD
+    const load = () => {
+      let updatedItems = {};
+      items.rejected = [];
+      items.unsorted = [];
+      items.approved = [];
+      // console.log(rejected);
+      // console.log(unsorted);
+      // console.log(approved);
+    for (let i = 0; i < rejected.length; i++) {
+      items.rejected.push(rejected[i]);
+    };
 
-        for (let i = 0; i < unsorted.length; i++) {
-          items.unsorted.push(unsorted[i]);
-        };
+    for (let i = 0; i < unsorted.length; i++) {
+      items.unsorted.push(unsorted[i]);
+    };
 
-        for (let i = 0; i < approved.length; i++) {
-          items.approved.push(approved[i]);
-        };
+    for (let i = 0; i < approved.length; i++) {
+      items.approved.push(approved[i]);
+    };
 
-        updatedItems = {
-          rejected: items.rejected,
-          unsorted: items.unsorted,
-          approved: items.approved,
-        };
+    updatedItems = {
+      rejected: items.rejected,
+      unsorted: items.unsorted,
+      approved: items.approved,
+    };
 
-        setItems(items =>
-        ({  ...items,
-        ...updatedItems})
-        );
-        loaded.current = loaded.current + 1;
-        };
+    setItems(items =>
+    ({  ...items,
+    ...updatedItems})
+    );
+    loaded.current = loaded.current + 1;
+    };
 
-//Check whether need to call load/re-render
-        useEffect(() => {
-          if(rejected.length === 0 && unsorted.length === 0 && approved.length === 0){
-            loaded.current = 0;
-          }else{
-            if(loaded.current === 0){
-              setChanged(true);
-              load();
-            }else{
-              return;
-            }
-          }
-      });
+  //Check whether need to call load/re-render
+  useEffect(() => {
+    if(rejected.length === 0 && unsorted.length === 0 && approved.length === 0){
+      loaded.current = 0;
+    }else{
+      if(loaded.current === 0){
+        // setChanged(true);
+        load();
+      }else{
+        return;
+      }
+    }
+  });
 
-        const [activeId, setActiveId] = useState();
-      
-        const sensors = useSensors(
-          useSensor(PointerSensor),
-          useSensor(KeyboardSensor, {
-            coordinateGetter: sortableKeyboardCoordinates,
-          }),
-        );
+  const [activeId, setActiveId] = useState();
 
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
 
+  useEffect(() => {
+    console.log('approved:', items.approved);
+    console.log('published:', publishedProjects);
+    if (JSON.stringify(items.approved) !== JSON.stringify(publishedProjects)) {
+      setChangedApproved(true);
+      console.log('changed: true');
+    }
+    console.log('done checking if changed');
+  }, [items.approved]);
 
-
-      // useEffect(() => {
-      //   setChanged(true);
-      // },[items.approved]);
-
-    return(
-        <main className="projects-admin-page">
-          <div className="admin-content">
-          <div className="admin-page-heading">
-            <h1>Manage Projects</h1>
+  return(
+      <main className="projects-admin-page">
+        <div className="admin-content">
+        <div className="admin-page-heading">
+          <h1>Manage Projects</h1>
+        </div>
+        {loading ? (
+        <div></div>  
+        ) : (
+        <div className="admin-page-content">
+        <div className="container-headers">
+          <div><h2 className="rejected">Rejected</h2></div>
+          <div><h2 className="pending">Pending</h2></div>
+          <div className="approved-header-wrapper">
+            <h2 className="approved">Approved</h2> 
           </div>
-          <div className="admin-page-content">
-          <div className="container-headers">
-            <div><h2>Rejected</h2></div>
-            <div><h2>Pending</h2></div>
-            <div><h2>Approved</h2></div>
+          
+        </div>
+        <div className='project-sorting-wrapper' id="sorting">
+        <DndContext
+        sensors={sensors}
+        collisionDetection={rectIntersection}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+        <div className='sort-container rejected-container' id="left">
+          
+            {items.rejected && <Container id="rejected" items={items.rejected} expandProject={expandProject}/>}
+            {items.rejected.length === 0 && <p className="empty-text">No rejected projects.</p>}
+
+        </div>
+        <div className='sort-container unsorted-container' id="center">
+            {items.unsorted && <Container id="unsorted" items={items.unsorted} expandProject={expandProject}/>}
+            {items.unsorted.length === 0 && <p className="empty-text">No pending projects.</p>}
+        </div>
+        <div className='sort-container accepted-container' id='right'>
+         
+            {items.approved && <Container id="approved" items={items.approved} expandProject={expandProject}/>}
+            {items.approved.length === 0 && <p className="empty-text">No approved projects.</p>}
             <div className="publish-buttons">
               {published && <button className = 'main-button unpublish' onClick={()=>{updatePublish(false); setPublished(false); localStorage.setItem('published', JSON.stringify(false));}} id="unpublish">Unpublish</button>}
                 {!published && <button className = 'main-button publish' onClick={() => {
@@ -181,7 +219,7 @@ const AdminProjectsView = () => {
                     window.location.reload();
                   });
                 }} id="publish">Publish</button>}
-                {(published && changed ) && <button className = 'main-button publish' onClick={() => {
+                {(published && changedApproved) && <button className = 'main-button publish' onClick={() => {
                     updatePublish(true, items.approved).then(() => {
                     setPublished(true);
                     localStorage.setItem('published', JSON.stringify(true));
@@ -189,41 +227,17 @@ const AdminProjectsView = () => {
                   });
                 }} id="publish">Save Changes</button>}
 
-            </div>
-          </div>
-          {/* <div className="content"> */}
-              {/* <Header semester = "2024 - Semester 1" current = "2024 - Semester 2" semesters = {semesters}/> */}
-              {/* <button onClick={load} id="load">Load all</button> */}
-              
-          <div className='project-sorting-wrapper' id="sorting">
-          <DndContext
-          sensors={sensors}
-          collisionDetection={rectIntersection}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-        >
-          <div className='sort-container rejected-container' id="left">
-              {items.rejected && <Container id="rejected" items={items.rejected} expandProject={expandProject}/>}
-              {items.rejected.length === 0 && <p className="empty-text">No rejected projects.</p>}
-          </div>
-          <div className='sort-container unsorted-container' id="center">
-              {items.unsorted && <Container id="unsorted" items={items.unsorted} expandProject={expandProject}/>}
-              {items.unsorted.length === 0 && <p className="empty-text">No pending projects.</p>}
-          </div>
-          <div className='sort-container accepted-container' id='right'>
-              {items.approved && <Container id="approved" items={items.approved} expandProject={expandProject}/>}
-              {items.approved.length === 0 && <p className="empty-text">No approved projects.</p>}
-              <div id="publishing">
-          </div>
-          </div>
-          <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
-          </DndContext>
-          </div>
-          </div>
+            </div> 
+            <div id="publishing">
         </div>
+        </div>
+        <DragOverlay>{activeId ? <Item id={activeId} /> : null}</DragOverlay>
+        </DndContext>
+        </div>
+        </div>)}
+      </div>
 
-    </main>);
+  </main>);
 
     function findContainer(id) {
         if (id in items) {
@@ -335,12 +349,15 @@ const AdminProjectsView = () => {
             newStatus = "pending"
           }
           const projectId = id[0].id;
+          console.log('updatting status. proj id:',projectId);
+          console.log('new status',newStatus);
         updateStatus(projectId, newStatus);
   
         } catch(error){
           console.log('Error with Drag-end, try again.');
         }
         const projectId = id[0].id;
+        console.log('new status:',newStatus);
       updateStatus(projectId, newStatus);
           }
 

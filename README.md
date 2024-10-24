@@ -13,14 +13,10 @@ This project is designed to streamline the process of collecting, managing, and 
 - Hosting Technologies:
   > [AWS Elastic Beanstalk](https://aws.amazon.com/elasticbeanstalk/?gclid=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB&trk=ea5a003b-635c-40d0-95d9-8de0b681d14f&sc_channel=ps&ef_id=Cj0KCQjwveK4BhD4ARIsAKy6pMJSdW0iwCnHA0dEtZpimOXVdH0zRW8ZVUWogHcwRFpL9mFoXZZUxuoaAp2wEALw_wcB:G:s&s_kwcid=AL!4422!3!651510138129!e!!g!!amazon%20beanstalk!19835787008!146688781803)
 
+  > [AWS EC2] (https://aws.amazon.com/ec2/)
+
 - Frontend Technologies:
   > [React](https://react.dev/) 18.3.1
-  
-  > JavaScript
-  
-  > Css
-  
-  > HTML
 
 - Libraries used:
   > [dnd kit](https://dndkit.com/) 6.1.0
@@ -30,7 +26,7 @@ This project is designed to streamline the process of collecting, managing, and 
   
   > JavaScript
   
-  > Google Authentication
+  > Google Oauth (https://developers.google.com/identity/protocols/oauth2) 2.0
 
 - Database:
   > [MySQL](https://www.mysql.com/)
@@ -39,6 +35,23 @@ This a list of the main technologies we used, for a more extensive list of depen
 
 
 ### Instruction on how to install and setup the project:
+
+To run the application on localhost:
+
+Clone the repository from github using the following link: https://github.com/uoa-compsci399-s2-2024/capstone-project-team-43.git
+
+Then open a code editor of your choice (preferably visual studio), ensure the terminal's path is in the cloned repository folder by using cd [path] ie: C:\Users\Documents\capstone...
+
+Enter "npm install" in the terminal this will install all of the dependencies and packages for the backend server
+
+Then enter "cd ./client" and again enter "npm install" this will install all of the dependencies and packages for the frontend
+
+Then enter "cd ../" and type "npm run build"
+
+This will compile the react frontend and run the application
+
+To access the application on AWS you must have an AWS account that has access to the website, then you can manage the website by searching for "elastic beanstalk" in the search bar
+
 
 ### Usage examples:
 

@@ -33,9 +33,9 @@ router.post("/login", async (req, res) => {
 
     res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
         httpOnly: false, // Prevents JavaScript access to the cookie
-        secure: false, // Once in production, must set to "true", only works over https
+        secure: true, // Once in production, must set to "true", only works over https
         maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
-        sameSite: 'Strict',
+        sameSite: 'Lax',
         path: '/'
     }));
     return res.status(200).end();
@@ -65,9 +65,9 @@ router.post("/register", async (req, res) => {
 
     res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
         httpOnly: false, // Prevents JavaScript access to the cookie
-        secure: false, // Once in production, must set to "true", only works over https
+        secure: true, // Once in production, must set to "true", only works over https
         maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
-        sameSite: 'Strict',
+        sameSite: 'Lax',
         path: '/'
     }));
     return res.status(200).end();
@@ -245,9 +245,9 @@ router.get('/google/callback', async (req, res) => {
 
             res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
                 httpOnly: false, // Prevents JavaScript access to the cookie
-                secure: false, // Once in production, must set to "true", only works over https
+                secure: true, // Once in production, must set to "true", only works over https
                 maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
-                sameSite: 'Strict',
+                sameSite: 'Lax',
                 path: '/'
             }));
 
@@ -261,9 +261,9 @@ router.get('/google/callback', async (req, res) => {
 
             res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
                 httpOnly: false, // Prevents JavaScript access to the cookie
-                secure: false, // Once in production, must set to "true", only works over https
+                secure: true, // Once in production, must set to "true", only works over https
                 maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
-                sameSite: 'Strict',
+                sameSite: 'Lax',
                 path: '/'
             }));
 
@@ -281,9 +281,9 @@ router.get('/google/callback', async (req, res) => {
             //User is not registered and not a client, they are unauthorized to login
             res.setHeader('Set-Cookie', cookie.serialize('authToken', "null", {
                 httpOnly: false, // Prevents JavaScript access to the cookie
-                secure: false, // Once in production, must set to "true", only works over https
+                secure: true, // Once in production, must set to "true", only works over https
                 maxAge: 60 * 60 * 24, // Cookie only valid for 1 day
-                sameSite: 'Strict',
+                sameSite: 'Lax',
                 path: '/'
             }));
 

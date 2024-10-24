@@ -18,7 +18,7 @@ const BUILD_PATH = 'client/build';
 
 // Configure middleware (CORS support, JSON parsing support, static files support)
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://compsci399.com/',
     credentials: true, // Enable cookies
 }));
 app.use(express.json());
@@ -32,5 +32,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Example app listening at http://localhost:${PORT}`);
+    console.log(`App listening on port: ${PORT}`);
 });

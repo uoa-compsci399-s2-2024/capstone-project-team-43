@@ -27,8 +27,6 @@ const pool = mysql.createPool({
 const DB_NAME = process.env.RDS_DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
 const DB_DEMO_SCRIPT = process.env.DB_DEMO_SCRIPT;
-const DEV_EMAIL = process.env.DEV_EMAIL;
-const TESTING = process.env.TESTING;
 
 
 // Initializes the database, if no such database exists, it calls the create database function
@@ -46,11 +44,6 @@ async function initializeDatabase() {
 
       // Database doesn't exist so it calls a function to create one
       await createDatabase();
-
-    // } else if (TESTING) {
-    //   console.log(`TESTING is true, deleting and recreating database`);
-    //   await connection.query(`DROP DATABASE ${DB_NAME};`);
-    //   await createDatabase();
 
     } else {
 
@@ -110,18 +103,6 @@ async function createTables() {
     // Runs query, if query fails, returns error
     try {
       await connection.query(createTablesQuery);
-
-      if (TESTING) {
-        try {
-          await connection.query(`INSERT INTO USER (role, email, password, first_name, last_name, team_id, company) VALUES 
-              ('admin', '${DEV_EMAIL}', '$2b$10$l8GwZZ3c/PB2Oq2m82RdT.jdUJXVgrvUBxTV3pxF3WzZriEWPms2.', 'Firstname', 'Lastname', NULL, NULL),
-              ('student', '${DEV_EMAIL}', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'Firstname', 'Lastname',  NULL, NULL),
-              ('client', '${DEV_EMAIL}', '$2b$10$OjWuGKeyNJC/i8yQcxLHluifVPtJ4siHIp.VYRSkR5g5iWrCcbOCe', 'Firstname', 'Lastname',  NULL, 'CompanyTest');`
-          );
-        } catch (err) {
-          console.log('Error adding DEV users to database:', err);
-        };
-      };
       console.log('Tables/Data inserted successfully');
 
     } catch (err) {
@@ -150,7 +131,6 @@ async function insertDemoData() {
     // Inserts demo data
     const demoQuery = fs.readFileSync(DB_DEMO_SCRIPT, "utf8", (err, data) => {
       if (err) throw err;
-      console.log(data);
     });
 
     // Runs query, if query fails, returns error
@@ -169,6 +149,5 @@ async function insertDemoData() {
 }
 
 initializeDatabase();
-
 
 export { pool, DB_NAME };

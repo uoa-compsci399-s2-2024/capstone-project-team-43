@@ -39,7 +39,7 @@ router.delete("/role/:role", async (req, res) => {
 router.post("/", async (req, res) => {
     const { role, email, password, first_name, last_name, company } = req.body;
     if (!role, !email, !first_name, !last_name) {
-        return res.status(422);
+        return res.status(422).end();
     }
 
     // Details are valid and now passed to createUser function to query into database
@@ -77,39 +77,35 @@ router.put("/edit/:id", async (req, res) => {
         // Update the attribute in the database
         const [updatedUser] = await updateUser(id, attribute, newValue);
 
-        console.log(updatedUser[0].email);
+        // checks if user has valid credentials
+        const token = await generateToken(updatedUser[0].email, updatedUser[0].password, false);
 
-            // checks if user has valid credentials
-    const token = await generateToken(updatedUser[0].email, updatedUser[0].password, false);
-
-    if (token == null) {
-        //Access denied, not valid user
-        res.status(401);
-    }
-
-    console.log("Token generated for new details: " + token);
+        if (token == null) {
+            //Access denied, not valid user
+            res.status(401).end();
+        }
 
         // Return success status
-       return res.status(200).json({token: token});
+        return res.status(200).json({ token: token });
 
     } catch (error) {
         console.error('Error updating user:', error);
-      return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
 // Gets students in db structured as a CSV
 router.get("/download", async (req, res) => {
     try {
-    const students = await getUsers("student");
-    const CSVData = await getCSV(students);
+        const students = await getUsers("student");
+        const CSVData = await getCSV(students);
 
-    res.header('Content-Type', 'text/csv');
-    res.attachment('studentsData.csv');
-    return res.status(200).send(CSVData);
-    } catch (err){
+        res.header('Content-Type', 'text/csv');
+        res.attachment('studentsData.csv');
+        return res.status(200).send(CSVData);
+    } catch (err) {
         console.log("Error Downloading CSV ", err);
-        return res.status(204);
+        return res.status(204).end();
     }
 });
 
@@ -117,15 +113,15 @@ router.get("/download", async (req, res) => {
 router.get("/download/clients/:semester_id", async (req, res) => {
     const semester_id = req.params.semester_id;
     try {
-    const projects = await getProjectsBySemester(semester_id);
-    const CSVData = await getCSVclients(projects, semester_id);
+        const projects = await getProjectsBySemester(semester_id);
+        const CSVData = await getCSVclients(projects, semester_id);
 
-    res.header('Content-Type', 'text/csv');
-    res.attachment('clientData.csv');
-    return res.status(200).send(CSVData);
-    } catch (err){
+        res.header('Content-Type', 'text/csv');
+        res.attachment('clientData.csv');
+        return res.status(200).send(CSVData);
+    } catch (err) {
         console.log("Error Downloading CSV ", err);
-        return res.status(204);
+        return res.status(204).end();
     }
 });
 

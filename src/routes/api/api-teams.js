@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
 
     // check details are valid
     if (!team_number || !team_name || !semester_id) {
-        return res.status(422);
+        return res.status(422).end();
     }
 
     // add new team to database
@@ -72,7 +72,7 @@ router.post("/download", async (req, res) => {
     return res.status(200).send(CSVData);
     } catch (err){
         console.log("Error Downloading CSV ", err);
-        return res.status(204);
+        return res.status(204).end();
     }
 });
 

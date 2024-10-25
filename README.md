@@ -52,6 +52,81 @@ This will compile the react frontend and run the application
 
 To access the application on AWS you must have an AWS account that has access to the website, then you can manage the website by searching for "elastic beanstalk" in the search bar
 
+- Dependencies:
+  > bcrypt 5.1.1
+  
+  > cookie 0.6.0
+  
+  > cors 2.8.5
+  
+  > csv 6.3.10
+  
+  > dayjs 1.11.10
+  
+  > dotenv 16.4.1
+  
+  > ejs 3.1.9
+  
+  > express 4.19.2
+  
+  > google-auth-library 9.14.1
+  
+  > googleapis 144.0.0
+  
+  > jsonwebtoken 9.0.2
+  
+  > multer 1.4.5-lts.1
+  
+  > mysql2 3.11.0
+  
+  > nodemon 3.1.4
+  
+  > open 10.1.0
+  
+  > server-destroy 1.0.1
+  
+  > concurrently 8.2.2
+  
+  > node 20.16.0
+  
+  > @dnd-kit/core 6.1.0
+  
+  > @dnd-kit/sortable 8.0.0
+  
+  > @testing-library/jest-dom 5.17.0
+  
+  > @testing-library/react 13.4.0
+  
+  > @testing-library/user-event 13.5.0
+  
+  > @types/react-router-dom 5.3.3
+  
+  > axios 1.7.2
+  
+  > cookies 0.9.1
+  
+  > file-saver 2.0.5
+  
+  > js-cookie 3.0.5
+  
+  > jwt-decode 4.0.0
+  
+  > react 18.3.1
+  
+  > react-dom 18.3.1
+  
+  > react-router-dom 6.25.1
+  
+  > react-scripts 5.0.1
+  
+  > web-vitals 2.1.4
+
+For a more extensive list of dependencies check the package.json in the client and server folder.
+
+**Admin type users can only login if user email is in database, admin emails has to be manually added to the database**
+**Client type users may register on the site and then login**
+**Student type users can only login after admin has uploaded CSV containing student data through semester management page**
+
 
 ### Usage examples:
 
@@ -62,7 +137,7 @@ A client can login and submit multiple project proposals, they can also view and
 Admins can login and manage semester details, upload and download CSV files, manage projects through sorting them in three different categories ‘rejected’, ‘unsorted’, ‘accepted’, edit any projects, initiate the project allocation process and be able to propose their own projects.
 
 - Student: 
-Students can login as students and view available projects for a given semester then they may submit their preference for five projects through our preference submission form.
+Students can login as students once admin has uploaded CSV files containing student data and view available projects for a given semester then they may submit their preference for five projects through our preference submission form.
 
 ### Deployment URL: https://compsci399.com/
 

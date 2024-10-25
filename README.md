@@ -124,7 +124,9 @@ To access the application on AWS you must have an AWS account that has access to
 For a more extensive list of dependencies check the package.json in the client and server folder.
 
 **Admin type users can only login if user email is in database, admin emails has to be manually added to the database**
+
 **Client type users may register on the site and then login**
+
 **Student type users can only login after admin has uploaded CSV containing student data through semester management page**
 
 

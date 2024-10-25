@@ -27,6 +27,7 @@ const pool = mysql.createPool({
 const DB_NAME = process.env.RDS_DB_NAME;
 const DB_INIT_SCRIPT = process.env.DB_INIT_SCRIPT;
 const DB_DEMO_SCRIPT = process.env.DB_DEMO_SCRIPT;
+const TESTING = process.env.TESTING;
 
 
 // Initializes the database, if no such database exists, it calls the create database function
@@ -109,7 +110,9 @@ async function createTables() {
       console.error('Error creating database tables: ', err.message);
     }
 
+    if (TESTING == "true") {
     await insertDemoData();
+    }
 
   } catch (err) {
     console.error('Error creating database tables: ', err.message);

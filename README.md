@@ -50,9 +50,9 @@ Then enter "cd ./client" and again enter "npm install" this will install all of 
 
 Then nagivate to the parent folder or type "cd ../" to create a file with the name ".env" and copy everything from the ".env.example" file into the newly created ".env" file
 
-Then open xampp (it's a localhosting service for mySQL databases) the download link is: https://www.apachefriends.org/download.html 
+Then download and open xampp (it's a localhosting service for mySQL databases) the download link is: https://www.apachefriends.org/download.html 
 
-Open xampp and press the start button on the "apache" and "mySQL" services. Now the web application will have access to a localhosted mySQL database. To view this database click the "admin" button on the mySQL service
+Press the start button on the "apache" and "mySQL" services. Now the web application will have access to a localhosted mySQL database. To view this database click the "admin" button on the mySQL service
 
 After completing these steps, type npm run build in the terminal. Ensure that the terminal's path is set to the parent folder.
 

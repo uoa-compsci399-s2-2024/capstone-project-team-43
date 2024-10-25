@@ -76,8 +76,6 @@ export async function getStatusProject(status) {
       [rows, fields] = await connection.query('SELECT * FROM PROJECT WHERE status = ? AND published = true ORDER BY project_number', [status]);
     } else if (status == "valid") {
 
-      console.log("GETTING VALID PROJECTS");
-
       //Gets the current semester end date to ensure that expired projects are not published
       const semesters = await getSemesters();
 
@@ -171,8 +169,6 @@ export async function createProject(title, description, owner_id, special_requir
     /** @type {User} */
     const user = await getUser(owner_id);
 
-    console.log("USER: ", user);
-
     const client_name = user.first_name + " " + user.last_name;
     const client_email = user.email;
 
@@ -265,7 +261,6 @@ export async function updateProjectStatus(id, status) {
 
     if (status == "pending" || status == "rejected") {
 
-
       await connection.query(`USE ${DB_NAME};`);
 
       await connection.query("UPDATE PROJECT SET published = 'false' WHERE id = ?", [id]);
@@ -274,8 +269,6 @@ export async function updateProjectStatus(id, status) {
     await connection.query(`USE ${DB_NAME};`);
 
     await connection.query("UPDATE PROJECT SET status = ? WHERE id = ?", [status, id]);
-
-    console.log("PROJECT STATUS CHANGED, ID: ", id, " NEW STATUS: ", status);
 
     // If there is a connection, release it
     if (connection) connection.release();
@@ -351,7 +344,6 @@ export async function publishProjects(status) {
 export async function getProjectsBySemester(semester_id) {
   let connection;
   try {
-    console.log('semester', semester_id);
     // Get connection from pool
     connection = await pool.getConnection();
 
@@ -385,15 +377,10 @@ export async function allocateNumbers(approved_projects) {
 
     for (let i = 1; i < approved_projects.length + 1; i++) {
 
-      /** @type {Project} */
-      console.log("UPDATING PROJECT WITH ID: ", projectIDS[2 * i].split(",")[0]);
-
       numberIDS.push(parseInt(projectIDS[2 * i].split(",")[0]));
 
       await connection.query('UPDATE PROJECT SET project_number = ? WHERE id = ? ', [i, projectIDS[2 * i].split(",")[0]]);
     }
-
-    console.log(numberIDS);
 
     await connection.query('UPDATE PROJECT SET project_number = 0 WHERE id NOT IN (?)', [numberIDS]);
 
@@ -410,7 +397,7 @@ export async function allocateNumbers(approved_projects) {
 export async function getProjectsByUser(user_id) {
   let connection;
   try {
-    console.log('user', user_id);
+
     // Get connection from pool
     connection = await pool.getConnection();
 

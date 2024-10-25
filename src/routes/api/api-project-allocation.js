@@ -5,14 +5,16 @@ import { getPreferences, storeAllocations, getAllocations } from "../../data/pre
 const router = Router();
 
 router.post("/", async (req, res) => {
+    try {
     const preferences = await getPreferences();
     const { hours } = req.body;
 
-    console.log("Allocation with limit of ", hours, " hours");
+    /**  
+    * Final allocation
+    * allocation contains which teams have been allocated to each project
+    * team_preferences contains which preference each team has been allocated 
+    * */
 
-    // Final allocation
-    // allocation contains which teams have been allocated to each project
-    // team_preferences contains which preference each team has been allocated
     let allocation = {
         'allocation': {},
         'team_preferences': {}
@@ -24,11 +26,12 @@ router.post("/", async (req, res) => {
     // Keep track of which teams have had projects allocated
     let allocated_teams = [];
 
-    // Dictionary of team:preferences pairs
-    // Eg: team_id=1 where first preference is project 5, etc.
-    // {
-    //     1: [5, 2, 3, 4, 1]
-    // }
+    /**  
+    * Dictionary of team:preferences pairs
+    * Eg: team_id=1 where first preference is project 5, etc.
+    * { 1: [5, 2, 3, 4, 1] } 
+    */ 
+
     let team_preferences = {};
 
     // Maximum number of admin hours available
@@ -52,7 +55,6 @@ router.post("/", async (req, res) => {
             team_preferences[team_id] = new Array(5).fill(0);
         }
         team_preferences[team_id][p - 1] = project_id;
-        console.log(project_id);
         if (!(project_id in project_capacity)) {
             let project = await getProjectById(project_id);
             project_capacity[project_id] = project.max_teams;
@@ -104,6 +106,9 @@ router.post("/", async (req, res) => {
     }
     await storeAllocations(allocation);
     return res.json(allocation);
+} catch (err) {
+    console.log("Error during allocation: ", err);
+}
 });
 
 // Gets allocation results in db structured as a CSV
@@ -111,14 +116,12 @@ router.get("/download", async (req, res) => {
     try {
     const data = await getAllocations();
 
-    console.log("DATA RECEIVED: ", data);
-
     res.header('Content-Type', 'text/csv');
     res.attachment('AllocationData.csv');
     return res.status(200).send(data);
     } catch (err){
         console.log("Error Downloading CSV ", err);
-        return res.status(204);
+        return res.status(204).end();
     }
 });
 export default router;

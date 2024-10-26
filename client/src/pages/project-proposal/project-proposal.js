@@ -9,7 +9,7 @@ import Cookies from 'js-cookie';
 import { getUserID } from '../../utils/auth.js';
 
 import './project-proposal.css'
-import { formatDateForDisplay } from '../../utils/format-date.js';
+import { formatDate } from '../../utils/format-date.js';
 
 const ProjectProposal = () => {
     const [userID, setUserID] = useState(null);
@@ -250,8 +250,7 @@ const ProjectProposal = () => {
                         {upcomingSemester && <div> 
                             <h2>Submission Deadline</h2>
                             <p>
-                                The submission deadline for the next semester starting {formatDateForDisplay(upcomingSemester.start_date)} 
-                                 is {formatDateForDisplay(upcomingSemester.proposal_deadline)}.
+                                The submission deadline for the next semester starting {formatDate(upcomingSemester.start_date)} is {formatDate(upcomingSemester.proposal_deadline)}.
                             </p>
                             <p>Please note that while we accept applications throughout the year, 
                                 if the proposal submission deadline isn't met we will only consider 

@@ -7,7 +7,7 @@ import './manage-semester.css';
 import SemesterDropdown from '../../components/semester-dropdown/semester-dropdown.js';
 import uploadIcon from '../../media/upload-icon.png';
 
-import { formatDateForDisplay, formatDatetimeForDisplay, formatDateForInput } from '../../utils/format-date.js';
+import { formatDate, formatDatetime, formatDateForInput, formatTimeForInput } from '../../utils/format-date.js';
 
 import { downloadAllocation, downloadCSVClients, processAllocation } from '../../Api.js';
 
@@ -439,20 +439,21 @@ const ManageSemester = () => {
                                             type="date"
                                             id='start_date'
                                             onChange={() => setHasEditedSemesterDates(true)}
-                                            defaultValue={updatedSemester.start_date.substring(0, 10)}
+                                            // defaultValue={updatedSemester.start_date.substring(0, 10)}
+                                            defaultValue={formatDateForInput(updatedSemester.start_date)}
                                         /> 
                                         and ends 
                                         <input className={`edit-input ${hasEditedProposalDeadline ? 'edited':'not-edited'}`}
                                             type="date"
                                             id='end_date'
                                             onChange={() => setHasEditedSemesterDates(true)}
-                                            defaultValue={updatedSemester.end_date.substring(0, 10)}
+                                            defaultValue={formatDateForInput(updatedSemester.end_date)}
                                         /> 
                                     </p>
                                 </div>
                                 ) : (
                                 <div className='content-section-text'>
-                                    <p>The semester starts on {formatDateForDisplay(semester.start_date)} and ends {formatDateForDisplay(semester.end_date)}</p>
+                                    <p>The semester starts on {formatDate(semester.start_date)} and ends {formatDate(semester.end_date)}</p>
                                 </div>
                                 )}
                             {isEditingSemesterDates ? (
@@ -485,14 +486,14 @@ const ManageSemester = () => {
                                             type="date"
                                             id='proposal_deadline'
                                             onChange={() => setHasEditedProposalDeadline(true)}
-                                            defaultValue={updatedSemester.proposal_deadline.substring(0, 10)}
+                                            defaultValue={formatDateForInput(updatedSemester.proposal_deadline)}
                                         /> 
                                         will only be considered for future semesters.
                                     </p>
                                 </div>
                                 ) : (
                                 <div className='content-section-text'>
-                                    <p>The Project Proposal Form currently notifies clients that any submissions after {formatDateForDisplay(semester.proposal_deadline)} will only be considered for future semesters.</p>
+                                    <p>The Project Proposal Form currently notifies clients that any submissions after {formatDate(semester.proposal_deadline)} will only be considered for future semesters.</p>
                                 </div>
                                 )}
                             {isEditingProposalDeadline ? (
@@ -525,32 +526,32 @@ const ManageSemester = () => {
                                             type="date"
                                             id='start_bidding_date'
                                             onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={updatedSemester.start_bidding_date.substring(0,10)} 
+                                            defaultValue={formatDateForInput(updatedSemester.start_bidding_date)} 
                                         /> 
                                         <input className='edit-input'
                                             type="time"
                                             id='start_bidding_time'
                                             onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={updatedSemester.start_bidding_date.substring(11,19)}
+                                            defaultValue={formatTimeForInput(updatedSemester.start_bidding_date)}
                                         /> 
                                         to
                                         <input className='edit-input'
                                             type="date"
                                             id='end_bidding_date'
                                             onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={updatedSemester.end_bidding_date.substring(0,10)}
+                                            defaultValue={formatDateForInput(updatedSemester.end_bidding_date)}
                                         /> 
                                         <input className='edit-input'
                                             type="time"
                                             id='end_bidding_time'
                                             onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={updatedSemester.end_bidding_date.substring(11,19)}
+                                            defaultValue={formatTimeForInput(updatedSemester.end_bidding_date)}
                                         /> 
                                     </p>
                                 </div>
                                 ) : (
                                 <div className='content-section-text'>
-                                    <p>Students can access and submit the project preferences form from {formatDatetimeForDisplay(semester.start_bidding_date)} to {formatDatetimeForDisplay(semester.end_bidding_date)}</p>
+                                    <p>Students can access and submit the project preferences form from {formatDatetime(semester.start_bidding_date)} to {formatDatetime(semester.end_bidding_date)}</p>
                                 </div>
                                 )}
                             {isEditingBiddingDates? (

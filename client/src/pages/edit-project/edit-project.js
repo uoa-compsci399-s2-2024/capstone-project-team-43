@@ -9,7 +9,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate, Link, useParams} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { getUserID, getUserRole } from '../../utils/auth.js';
-import { formatDateForDisplay, formatDateForInput } from '../../utils/format-date.js';
+import { formatDate, formatDateForInput } from '../../utils/format-date.js';
 
 import './edit-project.css'
 
@@ -136,7 +136,7 @@ const EditProject = () => {
                     project.max_teams && (document.getElementById("teams").value = project.max_teams);
                     project.preferred_skills && (document.getElementById("desiredskill").value = project.preferred_skills);
                     project.available_resources && (document.getElementById("availableresources").value = project.available_resources);
-                    project.expiry && (document.getElementById("expiry").value = formatDateForDisplay(project.expiry));
+                    project.expiry && (document.getElementById("expiry").value = formatDate(project.expiry));
 
                     try {
                         if (project.special_requirements) {

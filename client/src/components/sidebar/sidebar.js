@@ -45,7 +45,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
 
     const linksByRole = {
         student : [
-            { name: "Available Projects", path: "/projects/available"},
+            { name: "Available Projects", path: "/projects"},
             { name: "Project Preference Form", path: "/project/preferences/submit" },
         ],
         
@@ -60,7 +60,7 @@ const Sidebar = ({ userRole, showSidebar }) => {
             { name: "Dashboard", path: "/dashboard" },
             { name: "Projects", path: "" },
             { name: "Manage Projects", path: "/projects/manage" },
-            { name: "View as Student", path: "/projects/available" },
+            { name: "View as Student", path: "/projects" },
             { name: "Project Archive", path: `/projects/archive/`}, 
             { name: "Semesters", path: "" },
             { name: "Manage Semesters", path: `/manage/semester/`},

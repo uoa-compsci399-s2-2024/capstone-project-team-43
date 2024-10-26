@@ -37,7 +37,7 @@ function App() {
         
 
           {/* Student Pages */}
-          <Route path='/projects/available' element={<Layout><ProjectsAvailable/></Layout>} />
+          <Route path='/projects' element={<Layout><ProjectsAvailable/></Layout>} />
           <Route path='/project/preferences/submit' element={<Layout><ProjectPreferences/></Layout>} />
 
           {/* Admin Pages  */}

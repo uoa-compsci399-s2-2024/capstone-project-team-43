@@ -53,7 +53,7 @@ const Project = ({ projectId, view, expanded, expandProject=null  }) => {
             {project &&
             <div className="project-content">
                 <div className="project-header">
-                    {view === 'chosen' && <p>{project.project_number > 0 && `${project.project_number}.`}<br></br>{project.title}</p> }
+                    {view === 'chosen' && <p>{project.project_number > 0 && `Project ${project.project_number}`}<br></br>{project.title}</p> }
                     {view !== 'chosen' && <p>{project.project_number > 0 && `${project.project_number}.`} {project.title}</p>}
                 </div>
                 {(view !== 'preferences' && view !=='chosen') && 

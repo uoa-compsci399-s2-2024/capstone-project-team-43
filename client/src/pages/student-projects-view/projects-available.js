@@ -11,6 +11,8 @@ import './projects-available.css'
 const ProjectsAvailable = () => {
     const [projects, setProjects] = useState([]);
     const [expandedProjects, setExpandedProjects] = useState({});
+    const [allCollapsed, setAllCollapsed] = useState(null);
+    const [allExpanded, setAllExpanded] = useState(null);
 
     // Get all projects in database
     useEffect(() => {
@@ -20,6 +22,14 @@ const ProjectsAvailable = () => {
                 console.log('data:',data);
                 const published = data.filter(project => project.published === 'true');
                 setProjects(published)
+
+                const initialExpandedProjects = {};
+                published.forEach(project => {
+                    initialExpandedProjects[project.id] = false;
+                });
+                setExpandedProjects(initialExpandedProjects);
+                setAllCollapsed(true);
+                setAllExpanded(false);
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }
@@ -46,6 +56,11 @@ const ProjectsAvailable = () => {
         });
         setExpandedProjects(allCollapsed);
     }
+
+    useEffect(() => {
+        setAllExpanded(Object.values(expandedProjects).every(value => value === true));
+        setAllCollapsed(Object.values(expandedProjects).every(value => value === false));
+    }, [expandedProjects]);
   
     return(
         <main className="students-projects-view-page">
@@ -63,27 +78,31 @@ const ProjectsAvailable = () => {
                     }
                     {projects.filter(project => (project.status === 'accepted' && project.semester_id===2)).length > 0 && 
                     <div className='page-content'> 
-                    <div className='expand-collapse-button'>
-                        <button className='expand' onClick={expandAll}>
-                            Expand All
-                        </button>
-                        <button className='expand' onClick={collapseAll}>
-                            Collapse All
-                        </button>
+
+                    <div className='projects-buttons-wrapper'>
+                        <div className='expand-collapse-button'>
+                            {!allExpanded && <button className='expand' onClick={expandAll}>
+                                Expand All
+                            </button>}
+                            {!allCollapsed && <button className='expand' onClick={collapseAll}>
+                                Collapse All
+                            </button>}
+                        </div>
+                        <div className='projects-container'>
+                        
+                        {projects.map(project => (
+                            // expand project when user clicks
+                            <div key={project.id} onClick={() => expandProject(project.id)}>
+                    
+                                <Project className = 'project'
+                                    view='student'
+                                    projectId={project.id}
+                                    expanded={expandedProjects[project.id]}
+                                    expandProject = {expandProject}
+                                />
+                                {/* {false &&<PopUp project = {project}/>} */}
+                            </div>))}
                     </div>
-                    <div className='projects-container'>
-                    {projects.map(project => (
-                        // expand project when user clicks
-                        <div key={project.id} onClick={() => expandProject(project.id)}>
-                
-                            <Project className = 'project'
-                                view='student'
-                                projectId={project.id}
-                                expanded={expandedProjects[project.id]}
-                                expandProject = {expandProject}
-                            />
-                             {/* {false &&<PopUp project = {project}/>} */}
-                        </div>))}
                     </div>
                     </div>}
                     <div className='capitalise-container'>

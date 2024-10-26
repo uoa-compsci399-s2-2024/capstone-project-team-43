@@ -109,10 +109,10 @@ export const checkPath = async () => {
             const defaultPaths = ["/contact", "/about", "/faq", "/dashboard", "/account/settings"];
 
             if (role === "student") {
-                const authorizedPaths = ["/projects/available", "/project/preferences/submit"];
+                const authorizedPaths = ["/projects", "/project/preferences/submit"];
 
                 if (!authorizedPaths.includes(window.location.pathname) && !defaultPaths.includes(window.location.pathname)) {
-                    window.location.pathname = '/projects/available';
+                    window.location.pathname = '/projects';
 
                 }
 

@@ -6,29 +6,41 @@ import { useState, useEffect } from "react";
 import { fetchProjects, fetchSemesters, updatePreferences, fetchUser, fetchPreferences, deletePreferences } from '../../Api.js'
 import { useParams, useNavigate } from 'react-router-dom';
 import { getUserID } from "../../utils/auth.js";
+import { formatDatetime } from "../../utils/format-date.js";
 import Container from "../../components/container.js";
+import { ReactComponent as QuitIcon } from '../../media/quit.svg';
 
 const ProjectPreferences = ()=>{
     const [currentSemester, setCurrentSemester] = useState(null);
     const [userId, setUserId] = useState(null);
     const [user, setUser] = useState(null);
     const [projects, setProjects] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const [chosenProjects, setChosenProjects] = useState([]);
+    const [selectableProjects, setSelectableProjects] = useState([]);
 
-    // below set to true, must be set to false in deployment
-    const [biddingOpen, setBiddingOpen] = useState(true);
+    const [checkedConfirmation, setCheckedConfirmation] = useState(null);
+
+    // const [chosenProjects, setChosenProjects] = useState([]);
+    const [existingPreferences, setExistingPreferences] = useState([]);
+
+
+    const [biddingStarted, setBiddingStarted] = useState(false);
+    const [biddingEnded, setBiddingEnded] = useState(false);
+    const [biddingOpen, setBiddingOpen] = useState(false); // if biddingStarted and !biddingEnded
 
     const [showForm, setShowForm] = useState(true);
+
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [showConfirmationPopUp, setShowConfirmationPopUp] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-    const [showHelp, setShowHelp] = useState(false);
     
-    const [selectingProject, setSelectingProject] = useState(1);
+    const [selectingProject, setSelectingProject] = useState(1); // tracks which preference (1 to 5) user is selecting
+    const [selectedProjects, setSelectedProjects] = useState([null, null, null, null, null]); // user's preferences
 
-    // user's final preferences in order
-    const [choice, setChoice] = useState([null, null, null, null, null]);
+    const allPreferencesSelected = selectedProjects.every(pref => pref !== null);
+
+    const MINUTE_MS = 60000;
 
     const tooltipFormat = {
         1: 'first',
@@ -58,6 +70,7 @@ const ProjectPreferences = ()=>{
 
     // get user's id
     useEffect(() => {
+        setLoading(true);
         const fetchUserId = async () => {
             console.log("getting user id");
             const id = await getUserID(); 
@@ -65,10 +78,12 @@ const ProjectPreferences = ()=>{
             setUserId(id);
         };
         fetchUserId(); 
+        setLoading(false);
     }, []);
 
     // Get user data
     useEffect(() => {
+        setLoading(true);
         if (userId) {
             async function getUser() {
                 try {
@@ -79,38 +94,58 @@ const ProjectPreferences = ()=>{
                     console.error('Failed to load user:', error);
                 }
             }
-            
+        getUser();
         }
+        setLoading(false);
+    }, [userId]);
+
+    
+    // Get team's preferences
+    useEffect(() => {
+        setLoading(true);
+        if (user) {
+            async function getPreferences() {
+                try {
+                    const data = await fetchPreferences();
+                    const teamData = data.filter(preference => preference.team_id === user.team_id)
+                    console.log('Fetched existing preferences:', teamData); 
+                    setExistingPreferences(teamData);
+                } catch (error) {
+                    console.error('Failed to load existing preferences:', error);
+                }
+            }
+            getPreferences();
+        }
+        setLoading(false);
     }, [userId]);
         
-    // get all projects 
+    // get all published projects 
     useEffect(() => {
+        setLoading(true);
         async function getProjects() {
             try {
                 console.log('getting projects')
-                // const data = await fetchProjects('accepted');
                 const data = await fetchProjects();
-                const currentData = data.filter(project => project.semester_id === 2);
-                console.log('current data:',currentData);
+                const publishedProjects = data.filter(project => project.published === 'true');
+                setProjects(publishedProjects);
+                console.log('showing projects:',publishedProjects);
 
-                const availableData = currentData.filter(project => project.status === 'accepted');
-                console.log('available data:', availableData);
-
-                setProjects(availableData);
-                console.log('projects:',data);
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }
         }
         getProjects();
+        setLoading(false);
     }, []);
 
     // get current semester 
     useEffect(() => {
+        setLoading(true);
+        console.log('FETCHING SEMESTERS')
         async function getSemesters() {
             try {
                 const data = await fetchSemesters();
-                console.log('Fetched semester datas', data);  
+                console.log('Fetched semester data', data);  
                 setCurrentSemester(data.find(data => data.status === 'current'));                       
             } catch (error) {
                 console.error('Failed to load semester:', error);
@@ -118,209 +153,263 @@ const ProjectPreferences = ()=>{
             }
         }
         getSemesters();
+        setLoading(false);
     }, []);
 
-    // UNCOMMENT WHEN TESTING
 
-    // ensure form only displays if bidding is open
+    // ensure form only available if bidding is open
     useEffect(() => {
-        if (currentSemester) {
-            let today = new Date().toISOString();
-            
+        setLoading(true);
+            if (currentSemester) {
+                async function checkFormAvailability () {
+                
+                console.log('checking if bidding open');
+                // recheck availability every minute
+                const interval = setInterval(() => {
+                    console.log('Logging every minute');
+                }, MINUTE_MS);
+        
+                const currentDatetime = formatDatetime(new Date()); //current date
+                console.log('current:',currentDatetime);
+                console.log('start',formatDatetime(currentSemester.start_bidding_date));
+                console.log('end',formatDatetime(currentSemester.end_bidding_date))
+                const hasStarted = currentDatetime >= formatDatetime(currentSemester.start_bidding_date);
+                const hasEnded = !formatDatetime(currentSemester.end_bidding_date) >= currentDatetime;
+                setBiddingStarted(hasStarted);
+                setBiddingEnded(hasEnded);
 
-            let isOpen = (today >= currentSemester.start_bidding_date
-                && currentSemester.end_bidding_date >= today)
+                setBiddingOpen(hasStarted && !hasEnded);
+                console.log('BIDDING STARTED ? ',hasStarted);
+                console.log('BIDDING ENDED ? ',hasEnded);
+                console.log('BIDDING OPEN ? ',hasStarted && !hasEnded);
 
-            console.log('isOpen?',isOpen);
-
-            setBiddingOpen(isOpen)
+                // clear interval on unmount
+                setLoading(false);
+                return () => clearInterval(interval); 
+            }
+            checkFormAvailability();
         }
     }, [currentSemester]);
 
-
-
     // handles form submission 
     const handleConfirmation =() =>{
-        setShowConfirmation(false);
-        setShowSuccessMessage(true);
+        // update preferences in database if user's checked the confirmation
+        if (document.getElementById("agreeupon").checked) {
+            let team = user.team_id;
+
+            // delete any pre-existing preferences for the user's team
+            for (let i = 0; i < existingPreferences.length; i++){
+                console.log("deleting existing preference ",i);
+                deletePreferences(existingPreferences[i].id);
+            };
+            console.log('finished deleting existing prefs');
+
+            // save new preferences into database
+            console.log('saving new preferences to db');
+            for (let i = 0; i < selectedProjects.length; i++){
+                let proj = selectedProjects[i].id;
+                let pref = i+1;
+                updatePreferences(team, proj, pref);
+            };
+            console.log('finished');
+            setShowForm(false);
+            setShowSuccessMessage(true);
+            // setShowConfirmation(false);
+
+        }
+        else {
+            // currently doesn't do anything - should pop up with reminder to check confirmation 
+            setShowConfirmationPopUp(true);
+        }
     }
-    //     if(document.getElementById("agreeupon").checked === true) {
-
-        
-    //         let team = user.team_id;
-
-    //         // delete any pre-existing preferences for the user's team
-    //         let exists = [];
-    //         exists = preferences.filter(preference => preference.team_id === team);
-    //         if (exists.length !== 0){
-    //             for (let i = 0; i < exists.length; i++){
-    //                 console.log("DELETE");
-    //                 deletePreferences(exists[i].id);
-    //             };
-    //         }
-
-    //         // load preferences into database
-    //         for (let i = 0; i < chosenProjects.length; i++){
-    //             let proj = chosenProjects[i].id;
-    //             let pref = i+1;
-    //             updatePreferences(team, proj, pref);
-    //         };
-    //         setShowSuccessMessage(true);
-    //     }
-    //     else {
-    //         // currently doesn't do anything - should pop up with reminder to check confirmation 
-    //         setShowConfirmationPopUp(true);
-    //     }
-    // }
 
     const handleSubmit = () =>{
         // only continue if all 5 preference containers have been filled
-        if (choice.every(value => value !== null)){
-            setShowForm(false);
-            setShowHelp(false);
+        if (selectedProjects.every(value => value !== null)){
+            // setShowForm(false);
             setShowConfirmation(true);
-            console.log('chosen:',choice);
+            console.log('chosen:',selectedProjects);
         }
         return; 
-
-        // move to confirmation page
     }
 
-    // const formatBiddingDate = (biddingDate) => {
-    //     console.log("BIDDING DATE RECEIVED: ", biddingDate);
-    //     if(biddingDate) {
-    //     console.log(typeof biddingDate, biddingDate);
-    //     const date = new Date(biddingDate);
-    //     const hours = date.getHours();
-    //     const minutes = date.getMinutes().toString().padStart(2, '0');
-    //     const ampm = hours >= 12 ? 'pm' : 'am';
-    //     const formattedHours = (hours % 12) || 12;
-    //     const day = date.getDate().toString().padStart(2, '0');
-    //     const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-    //     const year = date.getFullYear().toString().slice(-2); 
-            
-    //     return `${formattedHours}:${minutes}${ampm} ${day}/${month}/${year}`;
-    //     } else {
-    //         // getBiddingDate();
-    //         // console.log("UPDATED BIDDING DATE: ", biddingtime);
-    //         return null;
-    //     }
-    // };
+    const checkConfirmation = () => {
+        if (document.getElementById("agreeupon").checked) {
+            setShowConfirmationPopUp(false);    
+            setCheckedConfirmation(true);    
+        }
+        else {
+            // setShowConfirmationPopUp(true);
+            setCheckedConfirmation(false);  
+        }   
+    };
 
-
+    // handles new project selected for a specific preference number
     const handleSelect = (project) => {
-        const updatedChoice = [...choice];
-        updatedChoice[(selectingProject - 1)] = project;
-        setChoice(updatedChoice);
-        const nextProject = updatedChoice.findIndex(choice => choice === null);
+        // add to user's selected projects
+        const updatedSelectedProjects = [...selectedProjects]; 
+        updatedSelectedProjects[(selectingProject - 1)] = project; 
+        setSelectedProjects(updatedSelectedProjects); 
+
+        // go to next project to select
+        const nextProject = updatedSelectedProjects.findIndex(selectedProjects => selectedProjects === null);
         setSelectingProject(nextProject+1);
     }
 
     const handleDeselect = (index) => {
-        const updatedChoice = [...choice];
-        updatedChoice[index] = null;
-        setChoice(updatedChoice);
-        const nextProject = updatedChoice.findIndex(choice => choice === null);
+        // remove from user's selected projects
+        const updatedSelectedProjects = [...selectedProjects];
+        updatedSelectedProjects[index] = null;
+        setSelectedProjects(updatedSelectedProjects);
+
+
+        // go to next preference selection
+        const nextProject = updatedSelectedProjects.findIndex(selectedProjects => selectedProjects === null);
         setSelectingProject(nextProject+1);
     }
 
 
     return(
         <main className="project-preferences-page">
-            {projects && <div className="content">
+            {(!loading && currentSemester) && <div className="content">
                 <div className="page-heading">
                     <h1>Project Preferences Form</h1>
                 </div>
+                {(showForm && !biddingStarted)&& 
+                    <div className="page-content text-page">
+                        <p>The Project Preferences form is currently locked.<br></br>Come back when the form opens on {formatDatetime(currentSemester.start_bidding_date)}.</p>
+                        <Link to='/projects'>
+                            <span className="create-link">View Available Projects</span>
+                        </Link>
+                    </div>}
+                {(showForm && biddingEnded) && 
+                <div className="page-content text-page">
+                    <p>The Project Preferences form is no longer open.<br></br>You can view your team's submission on your dashboard.</p>
+                    <Link to='/dashboard'>
+                        <span className="create-link">Go to Dashboard</span>
+                    </Link>
+                </div>}
                 {/* display form if bidding open */}
                 {(showForm && biddingOpen) && <div className="page-content">
-                    <div className="pref-container">
+                    {!showConfirmation && <div className="pref-container">
 
-                        <div className={`projects-display-wrapper ${choice.every(value => value !== null) ? 'all-selected':''}`}>
-                        <h2 className="preferences-tooltip">{tooltipFormat[selectingProject] ? `Select your ${tooltipFormat[selectingProject]} choice`:(null)}</h2>
+                        <div className={`projects-display-wrapper`}>
+                        <h2 className="preferences-tooltip">{tooltipFormat[selectingProject] ? `Select your ${tooltipFormat[selectingProject]} preference`:(null)}</h2>
 
                             <div className="pref-projects-container">
                                 {/* display published projects */}
-                                {projects
-                                .filter(project => project.published === 'true')
-                                .map(project => (
-                                    (<div className= {`full-project-wrapper ${choice.every(value => value !== null) ? 'all-selected':''}`} key={project.id} onClick={() => handleSelect(project)} id="proj">
+                                {projects.map(project => {
+                                    const isSelected = selectedProjects.includes(project);
+                                    const selectable = !isSelected && !allPreferencesSelected;
+                            
+                                    return (<div 
+                                    className= {`full-project-wrapper ${selectable ? 'selectable':'unselectable'}`} 
+                                    key={project.id} 
+                                    onClick={selectable ? () => handleSelect(project): null} id="proj">
                                         <Project 
                                         projectId={project.id} 
                                         view = 'preferences'
                                         expanded={false} 
                                         />   
-                                    </div>)))}
+                                    </div>)})}
                             </div>
                         </div>
                         {/* preference number containers */}
-                        <div className={`preferences-display-wrapper ${choice.every(value => value !== null) ? 'all-selected':''}`} >
+                        <div className={`preferences-display-wrapper ${allPreferencesSelected ? 'all-selected':''}`} >
                             
-                                {choice.map((choiceNum, index) =>(
+                                {selectedProjects.map((selectedProjectsNum, index) =>(
                                     <div className= {`pref-button-wrapper 
-                                                    ${choiceNum ? 'selected':'not-selected'}  
+                                                    ${selectedProjectsNum ? 'selected':'not-selected'}  
                                                     ${selectingProject===(index+1) ? 'selecting':'not-selecting'} 
-                                                    ${choice.every(value => value !== null) ? 'all-selected':''}`} 
+                                                    ${selectedProjects.every(value => value !== null) ? 'all-selected':''}`} 
                                         id="sidebuttons">
                                         <div className="pref-number">
                                             <p>{buttonFormat[index+1]}</p>
                                         </div>
 
                                         <button className={`pref-button`}>
-                                            {choiceNum && <p className="choice-title">{`${choiceNum.project_number}. ${choiceNum.title}`}</p>}
+                                        
+                                            {selectedProjectsNum && <p className="choice-title">{`${selectedProjectsNum.project_number}. ${selectedProjectsNum.title}`}</p>}
+
                                         </button>
                                         <div className="cancel-button-wrapper">
                                             <button onClick={()=>{handleDeselect(index)}} className="cancel-button">
-                                               <img src={require('../../media/cancel-icon.png')} alt="Remove Selection" />
+                                                <QuitIcon className="quit-icon" />
                                             </button>
                                         </div>
-
+                                        {/* <div className="cancel-button-wrapper">
+                                            <button onClick={()=>{handleDeselect(index)}} className="cancel-button">
+                                               <img src={require('../../media/cancel-icon.png')} alt="Remove Selection" />
+                                            </button>
+                                        </div> */}
+                                        
                                     </div>
                                 ))}
-                            <button className={`submit-pref-button ${choice.every(value => value !== null) ? 'ready':'not-ready'}`} onClick={handleSubmit}>Submit Preferences</button>  
-                                {/* Submit form button */}
-                            {/* </div> */}
+                            <button className={`submit-pref-button ${selectedProjects.every(value => value !== null) ? 'ready':'not-ready'}`} onClick={handleSubmit}>Submit Preferences</button>  
                         </div>
-                    </div>
-                </div>}
-                {(showConfirmation && !showSuccessMessage) && <div className="page-content">
-                    <div className="success-message confirmation-window">
-                        <div className="confirmation-content first">
-                            <div className="confirmation-header">
-                                <p>Confirm Your Preferences</p>
+                    </div>}
+                    {(showConfirmation && selectedProjects) && <div className="pref-container">
+                        <div className="success-message confirmation-window">
+                            <div className="confirmation-content projects">
+                                <div className="confirmation-header">
+                                    <p>Confirm Your Preferences</p>
+                                </div>
+                                <div className="confirmation-projects">
+                                    {selectedProjects.map((project, index) => (
+                                        (<div className="confirmation-project">
+                                            <p className="proj-number">{buttonFormat[index+1]}</p>
+                                            <div className="full-project-wrapper chosen-project" key={project.id} id="proj">
+                                                <Project 
+                                                projectId={project.id} 
+                                                view = 'chosen'
+                                                expanded={false} 
+                                                />   
+                                            </div>
+                                        </div>)))}
+                                </div>
+                                <div className="confirmation-text">
+                                    <span>Please note that this submission will count for your entire team and cause any previous submissions for your team to be deleted.</span>
+                                </div>
+                                <div className="confirmation-popup-wrapper">
+                                    <div className="confirmation-checks">
+                                            <input
+                                                onChange={checkConfirmation}
+                                                type="checkbox"
+                                                id="agreeupon"
+                                                name="agreeupon"
+                                                value="y/n"
+                                                required
+                                            />
+                                                                               
+                                        <label htmlFor="agreeupon"> I confirm that all team members agree on the order of the projects provided above</label>
+                                    </div>
+                                </div>
+                                <div className="confirmation-buttons">
+                                    <div className= {`check-popup ${showConfirmationPopUp ? 'visible':'hidden'}`}>
+                                        <p>Please check the confirmation before submitting your team preferences</p>
+                                    </div>
+                                    <button className={`confirm-button ${checkedConfirmation ? 'ready':'not-ready'}`} onClick={handleConfirmation}>Submit Team Preferences</button>
+                                    <button className = 'redirect-button' onClick={handleGoBack}>Go Back</button>
+                                </div>
                             </div>
-                            <div className="confirmation-projects">
-                                {choice.map(project => (
-                                    (<div className="full-project-wrapper chosen-project" key={project.id} id="proj">
-                                        <Project 
-                                        projectId={project.id} 
-                                        view = 'chosen'
-                                        expanded={false} 
-                                        />   
-                                    </div>)))}
+                        </div>
+                    </div>}
+                </div>}
+               
+                {showSuccessMessage && <div className="page-content text-page">
+                    <div className="success-message confirmation-window">
+                        <div className="confirmation-content success">
+                            <div className="confirmation-header">
+                                <p>Success</p>
                             </div>
                             <div className="confirmation-text">
-                                <span>Please note that this submission will count for your entire team and cause any previous submissions for your team to be deleted.</span>
+                                <p>Your team's project preferences have been submitted and will be considered during the project allocation process. </p> 
                             </div>
-                            <div className="confirmation-checks">
-                                <input type="checkbox" id="agreeupon" name="agreeupon" value="y/n" required></input>
-                                <label htmlFor="agreeupon"> I confirm that all team members agree on the order of the projects provided above</label>
-                            </div>
-                            <div className="confirmation-buttons">
-                                <button className='confirm-button'onClick={handleConfirmation}>Submit Team Preferences</button>
-                                <button className = 'redirect-button' onClick={handleGoBack}>Go Back</button>
-                            </div>
+                            <Link to='/projects'>
+                                    <span className="create-link">View Available Projects</span>
+                            </Link>
                         </div>
                     </div>
-                </div>}
-                {showSuccessMessage && <div className="page-content">
-                    <div className="success-message">
-                    <div className="confirmation-header">
-                        <p>Success</p>
-                    </div>
-                    <div className="confirmation-text">
-                        <p>Your team's project preferences have been submitted and will be considered during the project allocation process. </p>
-                    </div>
-                </div>
                 </div>}                
             </div>}
         </main>

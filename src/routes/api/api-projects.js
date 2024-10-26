@@ -113,7 +113,6 @@ router.post("/:id", async (req, res) => {
 // Creates a new project with given name and desc.
 router.post("/", async (req, res) => {
     const { title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details } = req.body;
-    console.log(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details);
     if (!title || !owner_id || !description || !created || !expiry || !status || !max_teams) {
         console.log("Not Valid Project Details");
         return res.status(401);

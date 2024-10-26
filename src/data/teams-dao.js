@@ -99,8 +99,6 @@ export async function createTeam(team_number, team_name, semester_id) {
   let connection;
   try {
 
-    console.log('in createTeam');
-
     // Get connection from pool
     connection = await pool.getConnection();
 

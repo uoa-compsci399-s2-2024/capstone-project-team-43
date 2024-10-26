@@ -73,12 +73,9 @@ router.post("/:id/upload/:fileContent", upload.single("myFile"), async (req, res
 
                 // If CSV contains teams data 
             } else if (fileContent === 'teams') {
-                console.log('deleting existing teams')
 
                 // delete any preexisting teams
                 await deleteTeamBySemester(semester_id);
-                console.log('creating teams');
-
 
                 // create new teams in database
                 for (const row of rows) {
@@ -132,7 +129,6 @@ router.post("/", async (req, res) => {
 
 // Deletes the semester with the given ID
 router.delete("/:id", async (req, res) => {
-    console.log('deleting semester');
     const id = req.params.id;
     const success = deleteSemester(id);
     res.sendStatus(success ? 204 : 404);

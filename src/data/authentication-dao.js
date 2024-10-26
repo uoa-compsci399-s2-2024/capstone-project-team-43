@@ -6,7 +6,6 @@ import bcrypt from 'bcrypt'; // Will use this for password hashing
 dotenv.config();
 
 // Gets the database name from .env file
-const TESTING = process.env.TESTING;
 
 const saltRounds = 10; // Typically a value between 10 and 12
 
@@ -32,8 +31,6 @@ export async function generateToken(email, password, googleAuth) {
   // Validate user here
   /** @type {User} */
   const user = await validateUser(email, password, googleAuth);
-
-  console.log("USER: ", user);
 
   if (user == null) {
     return null;
@@ -91,7 +88,7 @@ async function validateUser(email, password, googleAuth) {
 
           if (result) {
             // Passwords match, authentication successful
-            console.log('Passwords match! User authenticated.');
+            console.log('User authenticated.');
 
             return user;
 

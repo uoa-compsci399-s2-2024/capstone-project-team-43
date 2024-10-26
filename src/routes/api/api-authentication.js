@@ -327,7 +327,7 @@ router.get("/role", async (req, res) => {
         } else {
 
             // If the role in the database and token don't match, then the token has been tampered with
-            console.log("JWT Token has been changed!");
+            console.log("JWT Token has been malformed!");
             return res.status(401).json({ role: "none" });
         }
     } catch (err) {

@@ -14,8 +14,6 @@ dotenv.config();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
-const DEV_EMAIL = process.env.DEV_EMAIL;
-const DEV_USER_ROLE = process.env.DEV_USER_ROLE;
 
 const client = new OAuth2Client(GOOGLE_CLIENT_ID);
 
@@ -229,12 +227,6 @@ router.get('/google/callback', async (req, res) => {
         // Checks if the user exists in the database, if so it returns the role, if not returns null
         let user_role = await findUser(email);
 
-        let DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
-        if (email.includes(DEVAuthorizedUsers)) {
-            user_role = role;
-            console.log("DEV logging in, authorizing access, role: ", user_role);
-        }
-
         let token = null
 
         if (user_role == null && role == "client") {
@@ -328,12 +320,6 @@ router.get("/role", async (req, res) => {
 
         const db_role = await findUser(user.email);
 
-        let DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
-        if (user.email.includes(DEVAuthorizedUsers)) {
-            console.log("DEV checking role, authorizing access with role: ", user.role);
-            return res.status(200).json({ role: user.role });
-        }
-
         if (db_role == user.role) {
 
             return res.status(200).json({ role: user.role });
@@ -341,7 +327,7 @@ router.get("/role", async (req, res) => {
         } else {
 
             // If the role in the database and token don't match, then the token has been tampered with
-            console.log("JWT Token has been changed!");
+            console.log("JWT Token has been malformed!");
             return res.status(401).json({ role: "none" });
         }
     } catch (err) {

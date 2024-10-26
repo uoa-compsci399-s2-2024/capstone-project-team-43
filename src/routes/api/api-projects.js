@@ -21,7 +21,6 @@ router.get("/published", async (req, res) => {
     return res.json(await getPublishedProjects())
 });
 
-
 router.get("/:id", async (req, res) => {
     const id = req.params.id;
     return res.json(await getProjectById(id))
@@ -45,7 +44,7 @@ router.post("/update/:id", async (req, res) => {
 
     if (!id || !title || !description || !expiry || !max_teams || !project_deliverable) {
         console.log("Not Valid Project Details");
-        return res.status(401);
+        return res.status(401).end();
     }
 
     // Details are valid and now passed to editProject function to query into database
@@ -55,68 +54,65 @@ router.post("/update/:id", async (req, res) => {
 
 // Sets all approved projects to published and if false then unpublish all projects
 router.post("/publish/:status", async (req, res) => {
- try {
-      // Tokens are passed in header of request for security
-  let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
-  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+    try {
+        // Tokens are passed in header of request for security
+        let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+        let jwtSecretKey = process.env.JWT_SECRET_KEY;
 
-    const id = req.params.id;
+        const id = req.params.id;
 
-    const token = req.header(tokenHeaderKey);
+        const token = req.header(tokenHeaderKey);
 
-    const result = await validateToken(token, jwtSecretKey, "admin");
+        const result = await validateToken(token, jwtSecretKey, "admin");
 
-    if (!result) {
-        console.log(result);
-        throw new error("Invalid Token Credentials");
+        if (!result) {
+            throw new error("Invalid Token Credentials");
+        }
+
+        const status = req.params.status;
+
+        if (status == "true") {
+            const { approved_projects } = req.body;
+
+            allocateNumbers(approved_projects);
+        }
+        return res.json(await publishProjects(status))
+    } catch (err) {
+        console.log("User is not authorized to access this data");
+        res.sendStatus(403).end();
     }
-
-    const status = req.params.status;
-    
-    if(status == "true") {
-    const { approved_projects } = req.body;
-
-    allocateNumbers(approved_projects);
-    }
-    return res.json(await publishProjects(status))
-} catch (err) {
-    console.log("User is not authorized to access this data");
-    res.sendStatus(403);
-}
 });
 
 
 // Updates status of project with given status
 router.post("/:id", async (req, res) => {
     try {
-     // Tokens are passed in header of request for security
-     let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
-     let jwtSecretKey = process.env.JWT_SECRET_KEY;
-   
-       const id = req.params.id;
-       const { status } = req.body;
-   
-       const token = req.header(tokenHeaderKey);
-   
-       const result = await validateToken(token, jwtSecretKey, "admin");
-   
-       if (!result) {
-           console.log(result);
-           throw new error("Invalid Token Credentials");
-       }
-   
-       const success = updateProjectStatus(id, status);
-       res.sendStatus(success ? 204 : 404);
+        // Tokens are passed in header of request for security
+        let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+        let jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+        const id = req.params.id;
+        const { status } = req.body;
+
+        const token = req.header(tokenHeaderKey);
+
+        const result = await validateToken(token, jwtSecretKey, "admin");
+
+        if (!result) {
+            throw new error("Invalid Token Credentials");
+        }
+
+        const success = updateProjectStatus(id, status);
+        res.sendStatus(success ? 204 : 404);
     } catch (err) {
-       console.log("User is not authorized to access this data");
-       res.sendStatus(403);
+        console.log("User is not authorized to access this data");
+        res.sendStatus(403).end();
     }
-   });   
+});
 
 // Creates a new project with given name and desc.
 router.post("/", async (req, res) => {
     const { title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details } = req.body;
-    console.log(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details);
     if (!title || !owner_id || !description || !created || !expiry || !status || !max_teams) {
         console.log("Not Valid Project Details");
         return res.status(401);

@@ -38,7 +38,9 @@ This a list of the main technologies we used, for a more extensive list of depen
 
 To run the application on localhost:
 
-Clone the repository from github using the following link: https://github.com/uoa-compsci399-s2-2024/capstone-project-team-43.git
+Clone the repository from github using the following link: https://github.com/uoa-compsci399-s2-2024/capstone-project-team-43.git 
+
+The demo branch on git is optimised for localhost, however the main branch is optimised for AWS deployment and does not work on localhost
 
 Then open a code editor of your choice (preferably visual studio), ensure the terminal's path is in the cloned repository folder by using cd [path] ie: C:\Users\Documents\capstone...
 
@@ -46,9 +48,13 @@ Enter "npm install" in the terminal this will install all of the dependencies an
 
 Then enter "cd ./client" and again enter "npm install" this will install all of the dependencies and packages for the frontend
 
-Then enter "cd ../" and type "npm run build"
+Then nagivate to the parent folder or type "cd ../" to create a file with the name ".env" and copy everything from the ".env.example" file into the newly created ".env" file
 
-This will compile the react frontend and run the application
+Then download and open xampp (it's a localhosting service for mySQL databases) the download link is: https://www.apachefriends.org/download.html 
+
+Press the start button on the "apache" and "mySQL" services. Now the web application will have access to a localhosted mySQL database. To view this database click the "admin" button on the mySQL service
+
+After completing these steps, type npm run build in the terminal. Ensure that the terminal's path is set to the parent folder.
 
 To access the application on AWS you must have an AWS account that has access to the website, then you can manage the website by searching for "elastic beanstalk" in the search bar
 

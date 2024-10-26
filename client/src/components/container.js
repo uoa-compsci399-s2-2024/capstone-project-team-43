@@ -19,9 +19,6 @@ const containerStyle = {
 export default function Container(props) {
   const { id, items} = props;
   const [expandedProjects, setExpandedProjects] = useState({});
-
-  console.log('container id:',id);
-  console.log('container items:', items);
   
   const { setNodeRef } = useDroppable({
     id

@@ -6,9 +6,6 @@ import bcrypt from 'bcrypt'; // Will use this for password hashing
 dotenv.config();
 
 // Gets the database name from .env file
-const DEV_EMAIL = process.env.DEV_EMAIL;
-const DEV_USER_ROLE = process.env.DEV_USER_ROLE;
-const TESTING = process.env.TESTING;
 
 const saltRounds = 10; // Typically a value between 10 and 12
 
@@ -29,32 +26,14 @@ const saltRounds = 10; // Typically a value between 10 and 12
  * @param {string} password // encrypted password of user
  * @param {boolean} googleAuth // toggle if google authentication was used
 */
-export async function generateToken(email, password, googleAuth, role = null) {
+export async function generateToken(email, password, googleAuth) {
 
   // Validate user here
   /** @type {User} */
   const user = await validateUser(email, password, googleAuth);
 
-  console.log("USER: ", user);
-
   if (user == null) {
     return null;
-  }
-
-  const DEVAuthorizedUsers = [DEV_EMAIL]; // **MUST REMOVE BEFORE DEPLOYMENT ***
-  if (user.email.includes(DEVAuthorizedUsers)) {
-    console.log("DEV givin token with role: ", role);
-
-    // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
-    const token = jwt.sign(
-      {
-        time: Date.now(),
-        userId: user.id,
-        email: user.email,
-        role: role,
-      }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' }); // Token is valid for 1 day
-
-    return token
   }
 
   // User is valid, JWT token is signed with given user details, secret key, current date, and expires after 1 hour
@@ -109,7 +88,7 @@ async function validateUser(email, password, googleAuth) {
 
           if (result) {
             // Passwords match, authentication successful
-            console.log('Passwords match! User authenticated.');
+            console.log('User authenticated.');
 
             return user;
 

@@ -17,8 +17,7 @@ import {
   
   import Container from '../../components/container.js';
   import {Item} from '../../components/sortable_item.js';
-  import Header from "../../components/admin-semester-header.js";
-  import PopUp from "../../components/pop-up admin/project-pop-up-admin.js";
+
 
 const AdminProjectsView = () => {
   const [projects, setProjects] = useState([]);
@@ -64,7 +63,7 @@ const AdminProjectsView = () => {
     getProjects();
   }, []);
 
-
+//Filter through project status
   //Rejected projects
   let rejected = [];
 
@@ -95,13 +94,14 @@ const AdminProjectsView = () => {
 
   ));
 
+  //initalise items which will store projects
   const [items, setItems] = useState({
     rejected:[],
     unsorted: [],
     approved: [],
   });
 
-  // let loaded = false;
+
   const loaded = useRef(0);
     //DEFINE LOAD
     const load = () => {
@@ -109,9 +109,6 @@ const AdminProjectsView = () => {
       items.rejected = [];
       items.unsorted = [];
       items.approved = [];
-      // console.log(rejected);
-      // console.log(unsorted);
-      // console.log(approved);
     for (let i = 0; i < rejected.length; i++) {
       items.rejected.push(rejected[i]);
     };
@@ -129,7 +126,7 @@ const AdminProjectsView = () => {
       unsorted: items.unsorted,
       approved: items.approved,
     };
-
+    //set loaded items
     setItems(items =>
     ({  ...items,
     ...updatedItems})
@@ -137,13 +134,13 @@ const AdminProjectsView = () => {
     loaded.current = loaded.current + 1;
     };
 
-  //Check whether need to call load/re-render
+  //Check whether need to call load/re-render. 
+  //Done this way to ensure load can be called after useEffect to fetch projects as recall on useeffect continually rerenders page and functionality will not work.
   useEffect(() => {
     if(rejected.length === 0 && unsorted.length === 0 && approved.length === 0){
       loaded.current = 0;
     }else{
       if(loaded.current === 0){
-        // setChanged(true);
         load();
       }else{
         return;
@@ -239,19 +236,28 @@ const AdminProjectsView = () => {
 
   </main>);
 
+                //THE FOLLOWING FUNCTION HANDLE THE DRAG AND DROP FUNCTIONALITY
+
+    //Helper function to find container active id is over
     function findContainer(id) {
+      try{
         if (id in items) {
           return id;
         }
         return Object.keys(items).find((key) => items[key].includes(id));
+      }catch(error){
+        console.log('Error finding container');
       }
-    
+      }
+      
+      //Handles start of dragging event - sets the activeid for the project that is being dragged
       function handleDragStart(event) {
         const {active} = event;
         const {id} = active;
         setActiveId(id);
       }
     
+      //Handles the drag over reading which container it has been dragged over most recently, updates status based on this, and updates setItems
       function handleDragOver(event) {
         const {active, over, draggingRect} = event;
         const {id} = active;
@@ -269,71 +275,8 @@ const AdminProjectsView = () => {
         ) {
           return;
         }
-        
-        setItems((prev) => {
-          const activeItems = prev[activeContainer];
-          const overItems = prev[overContainer];
-          
-          const activeIndex = activeItems.indexOf(id);
-          const overIndex = overItems.indexOf(overId);
-          
-          let newIndex;
-          if (overId in prev) {
-            newIndex = overItems.length + 1;
-          } else {
-            const isBelowLastItem =
-              over &&
-              overIndex === overItems.length - 1 &&
-              draggingRect?.offsetTop > over.rect.offsetTop + over.rect.height;
-    
-            const modifier = isBelowLastItem ? 1 : 0;
-    
-            newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
-          }
-    
-          return {
-            ...prev,
-            [activeContainer]: [...prev[activeContainer].filter((item) => item !== active.id)],
-            [overContainer]: [...prev[overContainer].slice(0, newIndex),
-              items[activeContainer][activeIndex], ...prev[overContainer].slice(newIndex, prev[overContainer].length),],
-          };
-        });
-      }
-    
-      function handleDragEnd(event) {
-        const {active, over} = event;
-        const {id} = active;
-        console.log("ACTIVE ID: ", id[0].id);
-        if (over === null) return;
-        const {id: overId} = over;
-    
-        const activeContainer = findContainer(id);
-        const overContainer = findContainer(overId);
-    
-        if (
-          !activeContainer ||
-          !overContainer ||
-          activeContainer !== overContainer
-        ) {
-          return;
-        }
-    
-        const activeIndex = items[activeContainer].indexOf(active.id);
-        const overIndex = items[overContainer].indexOf(overId);
-    
-        if (activeIndex !== overIndex) {
-          setItems((items) => ({
-            ...items,
-            [overContainer]: arrayMove(
-              items[overContainer],
-              activeIndex,
-              overIndex,
-            ),
-          }));
-        }
-    
-        setActiveId(null);
         let newStatus = "pending";
+    
         try{
 
           console.log(event.collisions[0].id);
@@ -359,6 +302,114 @@ const AdminProjectsView = () => {
         const projectId = id[0].id;
         console.log('new status:',newStatus);
       updateStatus(projectId, newStatus);
+        
+        setItems((prev) => {
+          const activeItems = prev[activeContainer];
+          const overItems = prev[overContainer];
+          
+
+          const activeIndex = activeItems.indexOf(id);
+          const overIndex = overItems.indexOf(overId);
+
+          let newIndex;
+          if (overId in prev) {
+            newIndex = overItems.length + 1;
+          } else {
+            const isBelowLastItem =
+              over &&
+              overIndex === overItems.length - 1 &&
+              draggingRect?.offsetTop > over.rect.offsetTop + over.rect.height;
+    
+            const modifier = isBelowLastItem ? 1 : 0;
+    
+            newIndex = overIndex >= 0 ? overIndex + modifier : overItems.length + 1;
+          }
+
+          return {
+            ...prev,
+            [activeContainer]: [...prev[activeContainer].filter((item) => item !== active.id)],
+            [overContainer]: [...prev[overContainer].slice(0, newIndex),
+              items[activeContainer][activeIndex], ...prev[overContainer].slice(newIndex, prev[overContainer].length),],
+          };
+        });
+      }
+    
+      //Function handling what occurs when dragging mouse is released. Finds container - sets items. Backup status change incase of errors in dagOver
+      function handleDragEnd(event) {
+        
+        const {active, over} = event;
+        const {id} = active;
+        console.log("ACTIVE ID: ", id[0].id);
+        if (over === null) return;
+        if (active === null) return;
+        const {id: overId} = over;
+    
+        const activeContainer = findContainer(id);
+        const overContainer = findContainer(overId);   
+
+
+        if (
+          !activeContainer ||
+          !overContainer ||
+          activeContainer !== overContainer
+        ) {
+          return;
+        }
+        let activeIndex = 0;
+        let overIndex = 0;
+        try{
+        const activeIndex = items[activeContainer].indexOf(active.id);
+        const overIndex = items[overContainer].indexOf(overId);
+        }catch(error){
+          console.log(error);
+          return;
+        }
+        setActiveId(null);
+
+        let newStatus = "pending";
+        //If not successful moved in dragover event, can be moved in dragend as back up
+        try{
+
+          console.log(event.collisions[0].id);
+          console.log(event.collisions[1].id);
+          
+          if(event.collisions[0].id === "approved" || event.collisions[1].id === "approved"){
+            newStatus = "accepted"
+          }
+          else if(event.collisions[0].id === "rejected" || event.collisions[1].id === "rejected"){
+            newStatus = "rejected"
+          }
+          else if(event.collisions[0].id === "unsorted" || event.collisions[0].id === "unsorted"){
+            newStatus = "pending"
+          }
+          const projectId = id[0].id;
+          console.log('updatting status. proj id:',projectId);
+          console.log('new status',newStatus);
+        updateStatus(projectId, newStatus);
+  
+        } catch(error){
+          console.log('Error with Drag-end, try again.');
+        }
+        const projectId = id[0].id;
+        console.log('new status:',newStatus);
+        updateStatus(projectId, newStatus);
+
+        if (activeIndex !== overIndex) {
+          try{
+            
+          setItems((items) => ({
+            ...items,
+            [overContainer]: arrayMove(
+              items[overContainer],
+              activeIndex,
+              overIndex,
+            ),
+           
+          }));
+        } catch(error){
+            console.log('Error with set items');
+          }
+        }
           }
 
 };

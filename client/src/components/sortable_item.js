@@ -9,34 +9,8 @@ export let projectinfo = null;
 
 export function Item(props) {
   const { id, expanded, expandProject } = props;
-  // const project = id[0].project;
-  // const [expanded, setExpanded] = useState(false);
-  // const [expandedProjects, setExpandedProjects] = useState({});
 
   const navigate = useNavigate();
-  // const handleclick = () =>{
-  //   projectinfo = (id[0]);
-  //   navigate('/pages/project-proposal');
-  // };
-
-  console.log('item id:',id);
-
-  // const toggleExpand = () => {
-  //   console.log('expanding or shrinking project');
-  //   setExpanded(!expanded); 
-  // }
-
-    //   const submit =() =>{
-    //     document.getElementById('confirm').style.display = "none";
-    //     document.getElementById('close').style.display = "none";
-    //     document.getElementById('edit').style.display = "none";
-    // }
-
-    // const edit = () =>{
-    //   console.log(document.getElementById('edit').style.display);
-    // }
-
-
     const project = id[0].project;
 
   return (
@@ -78,7 +52,9 @@ export default function SortableItem(props) {
   const expandProject = (projectId) => {
     setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
   }
-
+  if(!props.id || !expandProject){
+    return;
+  }
 
   return (
     <div className="full-project-wrapper">

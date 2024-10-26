@@ -99,30 +99,15 @@ export async function createTeam(team_number, team_name, semester_id) {
   let connection;
   try {
 
-    console.log('in createTeam');
-
     // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
 
-    // // return team if it already exists 
-    // const [existingTeam] = await connection.query(
-    //   "SELECT * FROM TEAM WHERE (team_number = ? AND team_name = ? AND semester_id = ?)", [team_number, team_name, semester_id]
-    // );
-    // if (existingTeam.length > 0) {
-    //   console.log('team already exists!');
-    //   return existingTeam[0];
-    // }
-    // console.log('new team, creating now');
-    // Otherwise insert new team into database
-    console.log('inserting now');
     const [response] = await connection.query(
       "INSERT IGNORE INTO TEAM (team_number, team_name, semester_id) VALUES (?, ?, ?)", 
       [team_number, team_name, semester_id]
     );
-
-    console.log('done');
 
     if (response.affectedRows > 0) {
       const [team] = await connection.query("SELECT * FROM TEAM WHERE id = ?", [response.insertId]);

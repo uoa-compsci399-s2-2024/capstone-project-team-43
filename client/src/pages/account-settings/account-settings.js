@@ -60,6 +60,7 @@ const AccountSettings = ({ }) => {
     const [team, setTeam] = useState(null);
     const [editingField, setEditingField] = useState(null);
     const [deleteAccount, setDeleteAccount] = useState(null);
+    const [isStudent, setIsStudent] = useState(null);
 
     const [showDeletionWarning, setShowDeletionWarning] = useState(false);  
     const openDeletionWarning = () => setShowDeletionWarning(true);
@@ -72,12 +73,19 @@ const AccountSettings = ({ }) => {
         setUserID(id);
     }, []);
 
-    useEffect(() => {
-        console.log("getting user role");
-        const role = getUserRole();
-        console.log("user role"+role);
-        setUserRole(role);
-    }, []);
+    // useEffect(() => {
+    //     async function getUser() {
+    //         try {
+    //             const data = await fetchUse(userID);
+    //             setUser(data);
+    //             console.log('Fetched user data:', data);  
+    //         } catch (error) {
+    //             console.error('Failed to load user:', error);
+    //         }
+    //     }
+    //     getUser();
+    // }, [userID]);
+
 
     // Get user data
     useEffect(() => {
@@ -85,7 +93,10 @@ const AccountSettings = ({ }) => {
             try {
                 const data = await fetchUser(userID);
                 setUser(data);
-                console.log('Fetched user data:', data);  
+                setIsStudent(data.role === "student")
+                console.log('Fetched user data:', data); 
+                console.log('role:', data.role); 
+                console.log('is student?',data.role === "student");
             } catch (error) {
                 console.error('Failed to load user:', error);
             }
@@ -153,14 +164,12 @@ const AccountSettings = ({ }) => {
         }
     };
 
-    const isStudent = userRole === 'student';
 
     return(
         <main className='account-settings-page'>
             {user && <div className='content'>
                 <div className='page-heading'>
                 <h1>Your Account</h1>
-                {/* <h2 className='page-subheading'>Your Account Details</h2> */}
                 </div>
                 <div className='page-content text-content'>
                 <div className='content-section'>
@@ -202,7 +211,7 @@ const AccountSettings = ({ }) => {
                             isStudent={isStudent}
                         /> )} 
                     {/* Display team name & number if user is student and in a team */ }
-                    {/* { team && user.role === 'student' && (
+                    {team && user.role === 'student' && (
                         <div className='content-section'>
                             <h2>Your Team</h2>
                             <>
@@ -210,12 +219,12 @@ const AccountSettings = ({ }) => {
                                 <AccountDetail description="Team name" data={team.team_name} isStudent={isStudent}/>
                             </>
                         </div>
-                    )}       */}
+                    )}      
                 </div>
                 <div className='account-settings-buttons'>
                         {!showDeletionWarning && <SignOutButton/>}
                         {/* no delete account option for students */}
-                        {(!isStudent && !showDeletionWarning) &&<button className='main-button delete-account-button' onClick={setShowDeletionWarning}>Delete Account</button>}
+                        {(user.role==='client' && !showDeletionWarning) &&<button className='main-button delete-account-button' onClick={setShowDeletionWarning}>Delete Account</button>}
                     </div>
                         { showDeletionWarning && (
                             <div className='pop-up'>

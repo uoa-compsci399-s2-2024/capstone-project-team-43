@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchProjects, fetchSemesters } from '../../Api.js'
 import Project from "../../components/project/project.js";
 import PopUp from "../../components/project-pop-up-student.js";
-import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
+import { ReactComponent as CapitaliseLogo } from '../../media/visit-capitalise.svg';
 
 
 import './projects-available.css'
@@ -130,7 +130,7 @@ const ProjectsAvailable = () => {
                         <p>Want to view previous Capstone projects?</p>
                         <button className='capitalise-button'
                             onClick={() => window.open('https://www.capitalise.space/', '')}>
-                                Visit <CapitaliseLogo className='capitalise-logo'/>
+                                <CapitaliseLogo className='capitalise-logo'/>
                                 {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                         </button>
                     </div>

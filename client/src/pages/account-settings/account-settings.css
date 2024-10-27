@@ -1,6 +1,7 @@
 .account-settings-page .page-content{
     justify-content: start;
     width: 100%;
+    margin-top: 5vh;
 }
 
 .account-settings-buttons{
@@ -16,32 +17,52 @@
 }
 .account-settings-page .pop-up{
     margin-top: -3vh;
+    align-items: center;
+    border-radius: 10px;
+    margin: 0;
 }
 
 .account-settings-page .pop-up-header{
     justify-content: center !important;
     margin-top: 1vh;
 }
-.confirm-delete-account-button{
-    background-color: inherit !important;
-    color: var(--text-color-dark) !important;
 
+
+.confirm-delete-account-button{
+    background-color: transparent !important;
+    color: var(--text-color-dark) !important;
+    width: auto;
 }
 
-.page-content.text-content{
-    align-items: stretch;
+.confirm-delete-account-button:hover{
+    /* background-color: transparent !important; */
+    opacity: 0.7;
+}
+
+.account-settings-page .page-content.text-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
 }
 
 .account-settings-page .content-section{
-    text-align: left;
-    /* width: 600px;
-    min-width: 300px; */
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 2vh;
+    height: auto;
+    justify-content: center;
+    width: 100%;
+    gap: 0vh;
 }
 
 
 .delete-h3{
     color: var(--text-color-dark) !important;
     text-align: center;
+    font-size: 22px;
 }
 
 .data-container{
@@ -50,10 +71,17 @@
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: center;
+    min-width: 100%;
 }
 
 .account-detail{
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+
+.account-settings-page .account-settings-buttons button:hover{
+    opacity: 1 !important;
+    background-color: white;
 }

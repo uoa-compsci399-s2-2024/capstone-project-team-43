@@ -21,13 +21,12 @@ const ProjectPreferences = ()=>{
 
     const [checkedConfirmation, setCheckedConfirmation] = useState(null);
 
-    // const [chosenProjects, setChosenProjects] = useState([]);
     const [existingPreferences, setExistingPreferences] = useState([]);
 
 
-    const [biddingStarted, setBiddingStarted] = useState(false);
-    const [biddingEnded, setBiddingEnded] = useState(false);
-    const [biddingOpen, setBiddingOpen] = useState(false); // if biddingStarted and !biddingEnded
+    const [biddingStarted, setBiddingStarted] = useState(null);
+    const [biddingEnded, setBiddingEnded] = useState(null);
+    const [biddingOpen, setBiddingOpen] = useState(null); 
 
     const [showForm, setShowForm] = useState(true);
 
@@ -35,8 +34,8 @@ const ProjectPreferences = ()=>{
     const [showConfirmationPopUp, setShowConfirmationPopUp] = useState(false);
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     
-    const [selectingProject, setSelectingProject] = useState(1); // tracks which preference (1 to 5) user is selecting
-    const [selectedProjects, setSelectedProjects] = useState([null, null, null, null, null]); // user's preferences
+    const [selectingProject, setSelectingProject] = useState(1); 
+    const [selectedProjects, setSelectedProjects] = useState([null, null, null, null, null]); 
 
     const allPreferencesSelected = selectedProjects.every(pref => pref !== null);
 
@@ -106,6 +105,7 @@ const ProjectPreferences = ()=>{
         if (user) {
             async function getPreferences() {
                 try {
+                    console.log('getting preferences')
                     const data = await fetchPreferences();
                     const teamData = data.filter(preference => preference.team_id === user.team_id)
                     console.log('Fetched existing preferences:', teamData); 
@@ -117,7 +117,7 @@ const ProjectPreferences = ()=>{
             getPreferences();
         }
         setLoading(false);
-    }, [userId]);
+    }, [user]);
         
     // get all published projects 
     useEffect(() => {
@@ -169,20 +169,25 @@ const ProjectPreferences = ()=>{
                     console.log('Logging every minute');
                 }, MINUTE_MS);
         
-                const currentDatetime = formatDatetime(new Date()); //current date
-                console.log('current:',currentDatetime);
-                console.log('start',formatDatetime(currentSemester.start_bidding_date));
-                console.log('end',formatDatetime(currentSemester.end_bidding_date))
-                const hasStarted = currentDatetime >= formatDatetime(currentSemester.start_bidding_date);
-                const hasEnded = !formatDatetime(currentSemester.end_bidding_date) >= currentDatetime;
+                const currentDatetime = new Date();
+                const startBiddingDate = new Date(currentSemester.start_bidding_date);
+                const endBiddingDate = new Date(currentSemester.end_bidding_date);
+
+                console.log('Current:', formatDatetime(currentDatetime));
+                console.log('Start:', formatDatetime(startBiddingDate));
+                console.log('End:', formatDatetime(endBiddingDate));
+
+
+                const hasStarted = currentDatetime >= startBiddingDate;
+                const hasEnded = currentDatetime > endBiddingDate;
+    
                 setBiddingStarted(hasStarted);
                 setBiddingEnded(hasEnded);
-
                 setBiddingOpen(hasStarted && !hasEnded);
-                console.log('BIDDING STARTED ? ',hasStarted);
-                console.log('BIDDING ENDED ? ',hasEnded);
-                console.log('BIDDING OPEN ? ',hasStarted && !hasEnded);
-
+    
+                console.log('BIDDING STARTED?', hasStarted);
+                console.log('BIDDING ENDED?', hasEnded);
+                console.log('BIDDING OPEN?', hasStarted && !hasEnded);
                 // clear interval on unmount
                 setLoading(false);
                 return () => clearInterval(interval); 
@@ -193,9 +198,11 @@ const ProjectPreferences = ()=>{
 
     // handles form submission 
     const handleConfirmation =() =>{
-        // update preferences in database if user's checked the confirmation
-        if (document.getElementById("agreeupon").checked) {
+
+        // only submit preferences if confirmation has been checked
+        if (checkedConfirmation && existingPreferences) {
             let team = user.team_id;
+            console.log('teamid:',team)
 
             // delete any pre-existing preferences for the user's team
             for (let i = 0; i < existingPreferences.length; i++){
@@ -217,8 +224,9 @@ const ProjectPreferences = ()=>{
             // setShowConfirmation(false);
 
         }
+        // otherwise show pop up to check confirmation
         else {
-            // currently doesn't do anything - should pop up with reminder to check confirmation 
+            console.log('confirmation not checked')
             setShowConfirmationPopUp(true);
         }
     }

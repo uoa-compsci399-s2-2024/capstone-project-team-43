@@ -144,3 +144,18 @@
 .project-edit-redirect a span{
     font-size: 13px !important;
 }
+
+
+
+#otherclientdetails, #projecttitle, #projectdescription, #desiredoutput, #specialequipment, #desiredskill, #availableresources{
+    min-width: 200px;
+    width: 65%;
+}
+
+#otherclientdetails, #specialequipment, #desiredskill, #availableresources{
+    height: 90px;
+}
+
+#projectdescription, #desiredoutput{
+    height: 120px;
+}

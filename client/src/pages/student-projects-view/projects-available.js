@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { fetchProjects } from '../../Api.js'
+import { fetchProjects, fetchSemesters } from '../../Api.js'
 import Project from "../../components/project/project.js";
 import PopUp from "../../components/project-pop-up-student.js";
 import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
@@ -13,6 +13,27 @@ const ProjectsAvailable = () => {
     const [expandedProjects, setExpandedProjects] = useState({});
     const [allCollapsed, setAllCollapsed] = useState(null);
     const [allExpanded, setAllExpanded] = useState(null);
+    const [semesterID, setSemesterID] = useState(null);
+
+
+      // retrieves semesters and sets current semester id
+    useEffect(() => {
+      console.log('getting semester data');
+  
+      const getSemester = async () => {
+          try {
+              const semesters = await fetchSemesters();
+              console.log('Fetched all semesters:', semesters);
+
+              // Try to find the current semester
+              const currentSemester = semesters.find(semester => semester.status === 'current');
+              setSemesterID(currentSemester.id);
+          } catch (error) {
+              console.error('Failed to fetch semester:', error);
+          }
+      };
+      getSemester();
+    }, []);
 
     // Get all projects in database
     useEffect(() => {
@@ -68,7 +89,7 @@ const ProjectsAvailable = () => {
                 <div className='page-heading'>
                     <h1>Available Projects</h1>
                 </div>
-                    {projects.filter(project => (project.status === 'accepted' && project.semester_id===2)).length === 0 && 
+                    {projects.filter(project => (project.status === 'accepted' && project.semester_id===semesterID)).length === 0 && 
                     <div className='page-content text-page'> 
                         <p>
                             Available projects have not been published yet.

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef  } from "react";
 import { fetchProjects,updateStatus, fetchSemesters, updatePublish } from '../../Api.js';
-
+import { useParams } from 'react-router-dom';
 import './projects-admin.css'
 
 
@@ -38,6 +38,31 @@ const AdminProjectsView = () => {
     setExpandedProjects(prev => ({ ...prev, [projectId]: !prev[projectId] })); 
   }
 
+  // const { semesterID: semesterIDFromURL } = useParams();
+
+  const [semesterID, setSemesterID] = useState(null);
+
+    // retrieves semesters and sets current semester id
+    useEffect(() => {
+      console.log('getting semester data');
+  
+      const getSemester = async () => {
+          try {
+              const semesters = await fetchSemesters();
+              console.log('Fetched all semesters:', semesters);
+
+              // Try to find the current semester
+              const currentSemester = semesters.find(semester => semester.status === 'current');
+              setSemesterID(currentSemester.id);
+          } catch (error) {
+              console.error('Failed to fetch semester:', error);
+          }
+      };
+      getSemester();
+    }, []);
+
+
+
   // get projects
   useEffect(() => {
     async function getProjects() {
@@ -46,11 +71,11 @@ const AdminProjectsView = () => {
 
         // get all available projects 
         const data = await fetchProjects();
-        const availProjects = data.filter(project => new Date(project.expiry) > new Date())
+        // const availProjects = data.filter(project => new Date(project.expiry) > new Date())
         setProjects(data);
 
         // get published projects
-        const publishedData = availProjects.filter(project => project.published === 'true');
+        const publishedData = data.filter(project => project.published === 'true');
         setPublishedProjects(publishedData)
 
         setLoading(false);
@@ -69,6 +94,7 @@ const AdminProjectsView = () => {
 
   projects
   .filter(project => project.status === 'rejected')
+  .filter(project => project.semester_id === semesterID)
   .map(project => (
     rejected.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -79,6 +105,7 @@ const AdminProjectsView = () => {
 
   projects
   .filter(project => project.status === 'pending')
+  .filter(project => project.semester_id === semesterID)
   .map(project => (
     unsorted.push([{id: project.id, name:project.title, description:project.description, project:project}])
 
@@ -89,6 +116,7 @@ const AdminProjectsView = () => {
 
   projects
   .filter(project => project.status === 'accepted')
+  .filter(project => project.semester_id === semesterID)
   .map(project => (
     approved.push([{id: project.id, name:project.title, description:project.description, project:project}])
 

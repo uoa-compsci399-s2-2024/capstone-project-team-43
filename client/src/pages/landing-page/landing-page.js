@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { isLoggedIn } from '../../utils/auth';
 import './landing-page.css';
-import { ReactComponent as CapitaliseLogo } from './../../media/capitalise.svg';
+import { ReactComponent as CapitaliseLogo } from './../../media/visit-capitalise.svg';
 import googleIcon from './../../media/google.webp';
 import { useNavigate } from 'react-router-dom';
 
@@ -211,7 +211,7 @@ const LandingPage = () => {
                     <p>Want to view previous Capstone projects?</p>
                     <button className='capitalise-button'
                         onClick={() => window.open('https://www.capitalise.space/', '')}>
-                        Visit <CapitaliseLogo className='capitalise-logo' />
+                        <CapitaliseLogo className='capitalise-logo' />
                         {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                     </button>
                 </div>
@@ -233,7 +233,7 @@ const LandingPage = () => {
                         <p>Want to view previous Capstone projects?</p>
                         <button className='capitalise-button'
                             onClick={() => window.open('https://www.capitalise.space/', '')}>
-                            Visit <CapitaliseLogo className='capitalise-logo' />
+                            <CapitaliseLogo className='capitalise-logo' />
                             {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                         </button>
                     </div>
@@ -256,7 +256,7 @@ const LandingPage = () => {
                         <p>Want to view previous Capstone projects?</p>
                         <button className='capitalise-button'
                             onClick={() => window.open('https://www.capitalise.space/', '')}>
-                            Visit <CapitaliseLogo className='capitalise-logo' />
+                            <CapitaliseLogo className='capitalise-logo' />
                             {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                         </button>
                     </div>

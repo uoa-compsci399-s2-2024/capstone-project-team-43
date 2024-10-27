@@ -1,7 +1,7 @@
 import React, {useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import './sidebar.css';
-import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
+import { ReactComponent as CapitaliseLogo } from '../../media/visit-capitalise.svg';
 import { fetchSemesters, getStatusSemesters } from '../../Api';
 
 const Sidebar = ({ userRole, showSidebar }) => {
@@ -127,9 +127,9 @@ const Sidebar = ({ userRole, showSidebar }) => {
                             </li>
                         );
                         })}
-                    <li className='sidebar-menu-item sidebar-capitalise-link main-link'>
+                    <li className='sidebar-menu-item capitalise-button main-link'>
                         <Link onClick={() => window.open('https://www.capitalise.space/', '')}>
-                            <span>Visit <CapitaliseLogo className='sidebar-capitalise-logo'/></span>
+                            <CapitaliseLogo className='capitalise-logo'/>
                         </Link>
                     </li>
                 </div>

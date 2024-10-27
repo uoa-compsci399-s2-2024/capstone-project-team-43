@@ -1,7 +1,7 @@
 import React from "react";
 
 import './about.css';
-import { ReactComponent as CapitaliseLogo } from '../../media/capitalise.svg';
+import { ReactComponent as CapitaliseLogo } from '../../media/visit-capitalise.svg';
 
 const About = () =>{
     return(
@@ -25,7 +25,7 @@ const About = () =>{
                         <p>Want to view previous Capstone projects?</p>
                         <button className='capitalise-button'
                             onClick={() => window.open('https://www.capitalise.space/', '')}>
-                                Visit <CapitaliseLogo className='capitalise-logo'/>
+                                <CapitaliseLogo className='capitalise-logo'/>
                                 {/* <img src = {require('./../../media/capitalise.svg')}></img> */}
                         </button>
                 </div>

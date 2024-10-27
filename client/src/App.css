@@ -85,7 +85,7 @@ button {
 }
 
 .landing-page button:hover {
-  background-color: white !important;
+  background-color: white;
   cursor: pointer;
 }
 

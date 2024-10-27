@@ -78,17 +78,6 @@
     padding-bottom: 3vh;
 }
 
-
-.sidebar-capitalise-link{
-    display: flex;
-    align-items: baseline;
-    flex-direction: row;
-    max-width: inherit;
-    justify-content: start;
-    gap: 5px;
-    /* margin-top: -0.5vh; */
-} 
-
 .sidebar-capitalise-logo{
     position: fixed;
     height: 18px;
@@ -96,6 +85,16 @@
     padding-left: 5px;
     /* margin-top: -0.5vh; */
     margin-top: +0.6vh;
+}
+
+.sidebar-menu-item.capitalise-button{
+    margin: 0;
+}
+
+
+.sidebar-menu-item.capitalise-button svg{
+    width: 124px ;
+    padding: 0;
 }
 
 

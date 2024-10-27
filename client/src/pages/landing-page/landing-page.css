@@ -144,6 +144,7 @@
 
 }
 
+
 .capitalise-logo{
     object-fit: contain;
     height: 22px;
@@ -166,8 +167,13 @@
 .capitalise-button:hover{
     opacity: 0.6;
     transition: 0.5s;
+    background-color: transparent!important;
 } 
 
+
+.capitalise-button svg{
+    width: 110px;
+}
 /* LOGIN AND REGISTER CONTENT  */
 
 .content-container{

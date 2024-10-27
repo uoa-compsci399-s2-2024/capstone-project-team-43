@@ -1,5 +1,8 @@
-.faq-page h3{
+.faq-page h4{
     font-size: 17px;
+    color: var(--text-color-dark) !important;
+    padding-top: 0;
+    margin-top: 0;
 
 }
 .faq-page h2{
@@ -8,6 +11,10 @@
     margin-top: 1vh;
 }
 
+
+.faq-page .page-content{
+    margin-top: 5vh;
+}
 
 .faq-section p{
     font-size: 14px;

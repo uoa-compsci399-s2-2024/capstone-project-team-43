@@ -11,21 +11,21 @@ const Faq = () =>{
                 </div>
                 <div className="page-content">
             <div className="faq-section">
-                <h3>I forgot my password. How can I reset it?</h3>
+                <h4>I forgot my password. How can I reset it?</h4>
                 <p>You can reset your password by clicking on the "Forgot Password" link on the login page. 
                 Follow the instructions to reset your password via email.</p>
-            <h3>Can I have both a client and student account?</h3>
+            <h4>Can I have both a client and student account?</h4>
                 <p>
                     No, each account is designed for a specific role (client or student). Only students who have enrolled into CS 399 may be able to login as a student.
                 </p>
-            <h3>Who should I contact for technical support?</h3>
+            <h4>Who should I contact for technical support?</h4>
                 <p>For any technical issues or support, please contact our support team via the "Contact Us" page or email exsample@gmail.com.
                 </p>
             </div>
 
             <h2>For Clients</h2>
             <div className="faq-section">
-                <h3>How do I submit a new project?</h3>
+                <h4>How do I submit a new project?</h4>
                     <p>To submit a project:
                         <ul>
                             <li>
@@ -39,7 +39,7 @@ const Faq = () =>{
                             </li>  
                         </ul>
                     </p>
-                <h3>How can I check my projects?</h3>
+                <h4>How can I check my projects?</h4>
                     <p>To check the status of your project:
                         <ul>
                             <li>
@@ -51,7 +51,7 @@ const Faq = () =>{
                         </ul>
                     </p>
 
-                <h3>Can I edit or update my submitted project?</h3>
+                <h4>Can I edit or update my submitted project?</h4>
                 <p>
                     Yes, projects may be edit or updated through navigating the "My Projects" section.
                     <ul>
@@ -70,7 +70,7 @@ const Faq = () =>{
                     </ul>
                 </p>
 
-                <h3>What does the status "Unavailable" mean for my project? </h3>
+                <h4>What does the status "Unavailable" mean for my project? </h4>
                 <p>
                     The "Unavailable" status indicates that your project is no longer active for our student to select for their preference of projects.
                 </p>
@@ -79,13 +79,13 @@ const Faq = () =>{
 
             <h2>For Students</h2>
             <div className="faq-section">
-                <h3>How do I view available projects?</h3>
+                <h4>How do I view available projects?</h4>
                 <p>
                     To view approved projects, navigate to the 'Projects' page, where all approved projects will be listed.
                     You may click on a project to view more information on the chosen project.
                 </p>
                    
-                <h3>How do I submit my project preferences?</h3>
+                <h4>How do I submit my project preferences?</h4>
                     <p>To submit your preferences:
                         <ul>
                             <li>
@@ -99,7 +99,7 @@ const Faq = () =>{
                             </li>
                         </ul>
                      </p>
-                <h3>Can I change my project preferences after submitting them?</h3>
+                <h4>Can I change my project preferences after submitting them?</h4>
                     <p>Yes, you can change your preferences up until the submission deadline:
                         <ul>
                             <li>
@@ -110,7 +110,7 @@ const Faq = () =>{
                             </li> 
                         </ul>
                     </p>
-                <h3>How do I know if I've been assigned to a project?</h3>
+                <h4>How do I know if I've been assigned to a project?</h4>
                 <p>
                     The project allocations will be uploaded to canvas by the lecturers after they are looked over and approved.
                 </p>

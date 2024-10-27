@@ -238,27 +238,62 @@ const ManageSemester = () => {
 
 
     // Handle saving edit changes
-    const handleSaveChanges = async (editingFields) => {
+    const handleSaveChanges = async (editingFields, setIsEditingFalse) => {
         console.log(`Saving ${editingFields} changes`);
-
+    
         for (let i = 0; i < editingFields.length; i++) {
-            console.log('updating:', editingFields[i]);
-            // get edited value using id
-            let newValue = document.getElementById(editingFields[i]).value;
-            if (newValue !== semester[editingFields[i]]) {
-                await updateSemesterDetails(semesterID, editingFields[i], newValue);
+            let field = editingFields[i];
+            console.log('editing field:',field);
+
+            let newValue = null; 
+
+            // concatenate date and time inputs if editing bidding timeframe
+            if (field === 'start_bidding_date' ||  field === 'end_bidding_date') {
+                console.log('editing bidding timeframe')
+
+
+                let newDate = document.getElementById(`${field}_date`).value;
+                console.log('new date:',newDate);
+
+                let newTime = document.getElementById(`${field}_time`).value;
+                console.log('new time:',newTime);
+
+                newValue = `${newDate}T${newTime}`;
+                console.log('new value:', newValue);
+
+                if (newValue !== (semester[field])) {
+                    console.log('value has been changed, updating to be', newValue);
+                    await updateSemesterDetails(semesterID, field, newValue);
+
+                    // update details on page immediately
+                    setUpdatedSemester((prevSemester) => {
+                        const updatedSemester = { ...prevSemester };
+                        updatedSemester[field] = newValue;
+                        return updatedSemester;
+                    });
+                }
 
             }
+            // otherwise update using single input value
+            else {
+                console.log('not editing bidding timeframe')
+                newValue = document.getElementById(field).value;
+                console.log('new value:', newValue);
+                if (newValue !== semester[field]) {
+                    await updateSemesterDetails(semesterID, field, newValue);
 
+                     // update details on page immediately
+                    setUpdatedSemester((prevSemester) => {
+                        const updatedSemester = { ...prevSemester };
+                        updatedSemester[field] = newValue;
+                        return updatedSemester; 
+                    });
+                }
+                
+            }
         }
-        // update details on page immediately
-        setUpdatedSemester((prevSemester) => {
-            const updatedSemester = { ...prevSemester };
-            editingFields.forEach((field) => {
-                updatedSemester[field] = document.getElementById(field).value;
-            });
-            return updatedSemester;
-        });
+        console.log('done looping through fields')
+        setIsEditingFalse();
     } 
 
     const pendingProjects = projects.filter(project => project.status === 'pending');
@@ -453,12 +488,12 @@ const ManageSemester = () => {
                                 </div>
                                 ) : (
                                 <div className='content-section-text'>
-                                    <p>The semester starts on {formatDate(semester.start_date)} and ends {formatDate(semester.end_date)}</p>
+                                    <p>The semester starts on {formatDate(updatedSemester.start_date)} and ends {formatDate(updatedSemester.end_date)}</p>
                                 </div>
                                 )}
                             {isEditingSemesterDates ? (
                                 <div className='content-button-container'>
-                                    <button onClick = {() => handleSaveChanges(['start-date','end_date'])} className={`upload-button save ${hasEditedSemesterDates ? 'ready':'not-ready'}`}>
+                                    <button onClick = {() => handleSaveChanges(['start_date','end_date'], () => setIsEditingSemesterDates(false))} className={`upload-button save ${hasEditedSemesterDates ? 'ready':'not-ready'}`}>
                                         Save Changes 
                                     </button>
                                     <button onClick = {() => {setIsEditingSemesterDates(false); setHasEditedSemesterDates(false)}} className='upload-button'>
@@ -493,12 +528,12 @@ const ManageSemester = () => {
                                 </div>
                                 ) : (
                                 <div className='content-section-text'>
-                                    <p>The Project Proposal Form currently notifies clients that any submissions after {formatDate(semester.proposal_deadline)} will only be considered for future semesters.</p>
+                                    <p>The Project Proposal Form currently notifies clients that any submissions after {formatDate(updatedSemester.proposal_deadline)} will only be considered for future semesters.</p>
                                 </div>
                                 )}
                             {isEditingProposalDeadline ? (
                                 <div className='content-button-container'>
-                                    <button onClick = {() => handleSaveChanges(['proposal_deadline'])} className={`upload-button save ${hasEditedProposalDeadline ? 'ready':'not-ready'}`}>
+                                    <button onClick = {() => handleSaveChanges(['proposal_deadline'], () => setIsEditingProposalDeadline(false))} className={`upload-button save ${hasEditedProposalDeadline ? 'ready':'not-ready'}`}>
                                         Save Changes 
                                     </button>
                                     <button onClick = {() => {setIsEditingProposalDeadline(false); setHasEditedProposalDeadline(false)}} className='upload-button'>
@@ -524,26 +559,26 @@ const ManageSemester = () => {
                                         Students can access and submit the project preferences form from 
                                         <input className='edit-input'
                                             type="date"
-                                            id='start_bidding_date'
+                                            id='start_bidding_date_date'
                                             onChange={() => setHasEditedBiddingDates(true)}
                                             defaultValue={formatDateForInput(updatedSemester.start_bidding_date)} 
                                         /> 
                                         <input className='edit-input'
                                             type="time"
-                                            id='start_bidding_time'
+                                            id='start_bidding_date_time'
                                             onChange={() => setHasEditedBiddingDates(true)}
                                             defaultValue={formatTimeForInput(updatedSemester.start_bidding_date)}
                                         /> 
                                         to
                                         <input className='edit-input'
                                             type="date"
-                                            id='end_bidding_date'
+                                            id='end_bidding_date_date'
                                             onChange={() => setHasEditedBiddingDates(true)}
                                             defaultValue={formatDateForInput(updatedSemester.end_bidding_date)}
                                         /> 
                                         <input className='edit-input'
                                             type="time"
-                                            id='end_bidding_time'
+                                            id='end_bidding_date_time'
                                             onChange={() => setHasEditedBiddingDates(true)}
                                             defaultValue={formatTimeForInput(updatedSemester.end_bidding_date)}
                                         /> 
@@ -551,12 +586,12 @@ const ManageSemester = () => {
                                 </div>
                                 ) : (
                                 <div className='content-section-text'>
-                                    <p>Students can access and submit the project preferences form from {formatDatetime(semester.start_bidding_date)} to {formatDatetime(semester.end_bidding_date)}</p>
+                                    <p>Students can access and submit the project preferences form from {formatDatetime(updatedSemester.start_bidding_date)} to {formatDatetime(updatedSemester.end_bidding_date)}</p>
                                 </div>
                                 )}
                             {isEditingBiddingDates? (
                                 <div className='content-button-container'>
-                                    <button onClick = {() => handleSaveChanges(['start_bidding_date','end_bidding_date'])}  className={`upload-button save ${hasEditedBiddingDates ? 'ready':'not-ready'}`}>
+                                    <button onClick = {() => handleSaveChanges(['start_bidding_date','end_bidding_date'], () => setIsEditingBiddingDates(false))} className={`upload-button save ${hasEditedBiddingDates ? 'ready':'not-ready'}`}>
                                         Save Changes 
                                     </button>
                                     <button onClick = {() => {setIsEditingBiddingDates(false); setHasEditedBiddingDates(false)}} className='upload-button'>

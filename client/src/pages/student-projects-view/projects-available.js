@@ -39,9 +39,12 @@ const ProjectsAvailable = () => {
     useEffect(() => {
         async function getProjects() {
             try {
+                console.log('getting projects');
+
                 const data = await fetchProjects();
                 console.log('data:',data);
                 const published = data.filter(project => project.published === 'true');
+                console.log('data:',published);
                 setProjects(published)
 
                 const initialExpandedProjects = {};
@@ -89,15 +92,15 @@ const ProjectsAvailable = () => {
                 <div className='page-heading'>
                     <h1>Available Projects</h1>
                 </div>
-                    {projects.filter(project => (project.status === 'accepted' && project.semester_id===semesterID)).length === 0 && 
-                    <div className='page-content text-page'> 
-                        <p>
-                            Available projects have not been published yet.
-                        </p>
-                        
-                    </div>
-                    }
-                    {projects.filter(project => (project.status === 'accepted' && project.semester_id===2)).length > 0 && 
+                    {projects.length === 0 && 
+                        <div className='page-content text-page'> 
+                            <p>
+                                Available projects have not been published yet.
+                            </p>
+                            
+                        </div>}
+                    
+                    {projects.length > 0 && 
                     <div className='page-content'> 
 
                     <div className='projects-buttons-wrapper'>

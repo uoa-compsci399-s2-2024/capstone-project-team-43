@@ -45,15 +45,30 @@ export async function getProjects() {
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows, fields] = await connection.query('SELECT * FROM PROJECT ORDER BY project_number');
+    const [projects,fields] = await connection.query('SELECT * FROM PROJECT ORDER BY project_number');
+
+    // Calculate the semesters' status using current date & start, end dates
+    const currentDate = new Date();
+    const projectsUpdated = projects.map(project => {
+      const { expiry } = project;
+
+      if (expiry && currentDate >= new Date(expiry)) {
+        project.published = 'false';
+      }
+      return project;
+    }
+    );
 
     // If there is a connection, release it
     if (connection) connection.release();
 
-    return rows;
+    return projectsUpdated;
+
+    // return projects;
 
   } catch (err) {
     console.error('Error executing query/s:', err.message);
+    throw err;
   }
 }
 

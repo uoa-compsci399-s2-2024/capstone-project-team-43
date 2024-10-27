@@ -206,70 +206,6 @@
     font-weight: 600 !important;
 }
 
-/* DROP DOWN MENU */
-/* 
-.semester-subheading{ 
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: baseline;
-    margin-top: auto;
-}
-
-.dropdown-button{
-    background-image: url('/../client/src/media/drop-icon.png');
-    background-size: 60% 60%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: inherit;
-    margin-top: 0.6vh !important;
-    width: 25px;
-    height: 25px;
-    border: none;
-    cursor: pointer;
-    box-sizing: content-box;
-    position: relative;
-    filter: invert(1);
-}
-
-.dropdown-button:hover{
-    background-color: transparent !important;
-    width: 30px;
-    height: 29px;
-}
-
-.dropdown-menu{
-    text-decoration: none;
-    list-style-type: none;
-    display: none;
-    position: absolute;
-    background-color: white;
-    z-index: 100;
-    width: 180px;
-    padding: 0px;
-    margin-top: 10px;
-    margin-left: -80px;
-    border-radius: 10px;
-    border: 0px solid white;
-}
-
-.dropdown-menu-button{
-    background-color: inherit;
-    font-size: 20px;
-    padding: 0px;
-    text-decoration: none;
-    transition: 0s !important;
-    font-weight: 600;
-
-}
-
-.dropdown-menu-button:hover{
-    background-color: inherit !important;
-    font-weight: 700;
-    transition: 0s !important;
-    color: var(--text-color-light) !important;
-}
- */
 
 /* UPLOADING/DOWNLOADING FILES  */
 
@@ -352,6 +288,9 @@
 
 }
 
+button.unavailable{
+    opacity: 0.4 !important;
+}
 
 .upload-button.process,
 .upload-button.save.ready{

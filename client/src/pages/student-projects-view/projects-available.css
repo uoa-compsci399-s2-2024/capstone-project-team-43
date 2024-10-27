@@ -7,8 +7,6 @@
     margin-top: 5vh;
     max-height: 100%;
     max-width: 100%;
-    /* min-width: 80vw;
-    max-width: 80vw; */
     width: fit-content;
     display: flex;
     flex-direction: row;
@@ -44,18 +42,12 @@
 
 .expand-collapse-button{
     display: flex;
-    /* width: auto; */
     flex-direction: row;
     height: auto;
-    /* align-self: end; */
     justify-content: end;
     gap: 1vh;
     width: calc(1250px + 24vh);
-    /* height: calc(250px + 5vh); */
-    /* width: 1650px; */
-    /* max-width: 1650px; */
-    /* margin-bottom: -5vh; */
-    /* padding: 5vh; */
+
 }
 
 
@@ -74,19 +66,6 @@
     color: white;
 
 }
-
-/* 
-.students-projects-view-page .project-header p{
-    color: var(--text-color-light) !important;
-    font-size: 18px !important;
-} */
-
-
-
-/* .Project{
-    width: 100%;
-    height: 100%;
-} */
 
 .redirect-to-proposal{
     padding:20px;

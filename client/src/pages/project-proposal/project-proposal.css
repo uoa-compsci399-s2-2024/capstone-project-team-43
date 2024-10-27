@@ -18,7 +18,7 @@
     align-items: center;
     text-align: center;
     justify-content: start;
-    overflow: wrap;
+    /* overflow: wrap; */
     gap: 0px;
 }
 
@@ -50,7 +50,7 @@
     font-size: 12px;
     display: flex;
     flex-direction: row;
-    justify-content: baseline;
+    /* justify-content: baseline; */
     gap: 5px;
     margin-bottom: 2vh;
 }
@@ -61,10 +61,7 @@
     justify-content: center;
     align-items: end;
 }
-/* .project-proposal-page .quit-button{
-    width: 4px;
-    margin-left: -2vh;
-} */
+
 
 .project-proposal-page .pop-up-text{
     padding: 1vh;
@@ -100,7 +97,7 @@
     font-size: 12px;
     display: flex;
     flex-direction: column;
-    justify-content: baseline;
+    /* justify-content: baseline; */
     gap: 5px;
     margin-bottom: 2vh;
     max-width: 80%;
@@ -131,7 +128,6 @@ input {
     color: var(--text-color-dark) !important;
 }
 
-/* .project-proposal-page textarea::placeholder, */
 .project-proposal-page input::placeholder{
     color: rgba(0, 0, 0, 0.495);
     font-weight: 600;

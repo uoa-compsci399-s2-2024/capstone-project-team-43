@@ -36,22 +36,17 @@
 
 .page-heading {
   margin-top: 4vh;
-  /* padding-bottom: 5vh; */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* align-items: center; */
 }
 
 .page-subheading {
   margin-top: auto;
   font-size: 25px;
-  /* display: flex;
-  flex-direction: column;
-  justify-content: center; */
+
 }
 
-/* success/confirmation window after form completion */
 
 
 .confirmation-content{
@@ -64,7 +59,6 @@
   gap: 1vh;
   flex-direction: column;
   min-width: 200px;
-  /* background-color: var(--transparent); */
 }
 
 .confirmation-header p{
@@ -75,7 +69,6 @@
 .confirmation-content a{
   padding: 2vh;
 }
-/* BUTTONS */
 
 button {
   border-radius: 10px;
@@ -174,7 +167,6 @@ button {
   min-width: 100%;
   padding: 0px !important;
   margin: 0px !important;
-  /* min-height: 100%; */
   border: none;
   cursor: pointer;
   box-sizing: border-box;
@@ -183,5 +175,5 @@ button {
 
 .quit-button:hover {
   background-color: transparent !important;
-  filter: opacity(0.5)
+  filter: opacity(0.5);
 }

@@ -342,7 +342,18 @@ button.unavailable{
     /* filter: invert(1); */
 }
 
-.manage-semester-page button:hover{
+.manage-semester-page .inactive .content-sections-container.students,
+.manage-semester-page .inactive .content-sections-container.projects{
+    opacity: 0.5;
+}
+
+.disclaimer{
+    font-weight: 500;
+    color: white;
+    font-size: 14px;
+    /* filter: brightness(0.7); */
+}
+.manage-semester-page .active button:hover{
     opacity: 0.6;
 }
 

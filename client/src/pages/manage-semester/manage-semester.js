@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { fetchSemester, fetchSemesters, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams, fetchProjectsBySemester } from '../../Api.js';
+import { fetchSemester, fetchSemesters, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams, fetchProjectsBySemester, fetchPreferences } from '../../Api.js';
 import downloadIcon from '../../media/download-icon.png';
 import SemesterCSVUpload from '../../components/semester-csv-upload/semester-csv-upload.js';
 import './manage-semester.css';
@@ -9,7 +9,8 @@ import uploadIcon from '../../media/upload-icon.png';
 
 import { formatDate, formatDatetime, formatDateForInput, formatTimeForInput } from '../../utils/format-date.js';
 
-import { downloadAllocation, downloadCSVClients, processAllocation } from '../../Api.js';
+import { downloadAllocation, downloadCSVClients, processAllocation, fetchAllocationData } from '../../Api.js';
+// import { getAllocations } from '../../../../src/data/preferences-dao.js';
 
 const ManageSemester = () => {
 
@@ -58,6 +59,19 @@ const ManageSemester = () => {
     const [hasEditedBiddingDates, setHasEditedBiddingDates] = useState(false);
 
     const [showProcess, setShowProcess] = useState(false);
+    
+    const [biddingStarted, setBiddingStarted] = useState(false);
+    const [biddingEnded, setBiddingEnded] = useState(false);
+    const [biddingOpen, setBiddingOpen] = useState(false); 
+
+    const [bidsSubmitted, setBidsSubmitted] = useState(null); 
+
+    const MINUTE_MS = 60000;
+
+    const [isCurrent, setIsCurrent] = useState(null);
+    const [isRetired, setIsRetired] = useState(null);
+    const [isUpcoming, setIsUpcoming] = useState(null);
+
 
     // Function calls backend API to create a CSV structure of all students in database and downloads in browser
     const studentDownload = () => {
@@ -75,6 +89,12 @@ const ManageSemester = () => {
         downloadAllocation();
     }
 
+    // const handleViewAllocation = async () => {
+    //     console.log("Displaying allocation results...");
+    //     const allocationData = await fetchAllocationData();
+    //     console.log(allocationData);
+    // }
+
     const handleProcessAllocation = (e) => {
         e.preventDefault();
         processAllocation(hours);
@@ -91,30 +111,62 @@ const ManageSemester = () => {
       };
       
 
-    // Helper function for date formatting the semester start/end dates, validDate is a true/false flag that returns a valid date that the mySQL database can read
-    // const formatSemesterDate = (dateString, validDate = false) => {
-    //     let date = new Date(dateString);
-    //     let dateData = null;
-    //     if (isNaN(date.getTime())) {
-    //         const data = dateString.split("/");
-    //         date = new Date(parseInt("20" + data[2]), parseInt(data[1]) - 1, parseInt(data[0]));
+    // ensure form only available if bidding is open
+    useEffect(() => {
+        // setLoading(true);
+            if (semester) {
+                async function checkFormAvailability () {
+                
+                console.log('checking if bidding open');
+                // recheck availability every minute
+                const interval = setInterval(() => {
+                    console.log('Logging every minute');
+                }, MINUTE_MS);
+        
+                const currentDatetime = formatDatetime(new Date()); 
+                console.log('current:',currentDatetime);
+                console.log('start',formatDatetime(semester.start_bidding_date));
+                console.log('end',formatDatetime(semester.end_bidding_date))
+                const hasStarted = currentDatetime >= formatDatetime(semester.start_bidding_date);
+                const hasEnded = !formatDatetime(semester.end_bidding_date) >= currentDatetime;
+                setBiddingStarted(hasStarted);
+                setBiddingEnded(hasEnded);
 
-    //         //Converts to a readable format for the mySQL database
-    //         dateData = `${"20" + data[2].padStart(2, '0')}-${data[1].padStart(2, '0')}-${data[0].padStart(2, '0')}`;
-    //     }
+                setBiddingOpen(hasStarted && !hasEnded);
+                console.log('BIDDING STARTED ? ',hasStarted);
+                console.log('BIDDING ENDED ? ',hasEnded);
+                console.log('BIDDING OPEN ? ',hasStarted && !hasEnded);
 
-    //     if (validDate) {
+                // clear interval on unmount
+                // setLoading(false);
+                return () => clearInterval(interval); 
+            }
+            checkFormAvailability();
+        }
+    }, [semester]);
 
-    //         // User wants readable format for database
-    //         return dateData;
+    // get number of teams that have submitted preferences
+    useEffect(() => {
+        // setLoading(true);
+            if (biddingOpen || biddingEnded) {
+                const getPreferences = async () => {
+                    try {
+                        console.log('getting preferences');
+                        const data = await fetchPreferences();
 
-    //     } else {
-    //         const day = date.getDate().toString().padStart(2, '0');
-    //         const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    //         const year = date.getFullYear().toString().slice(-2);
-    //         return `${day}/${month}/${year}`;
-    //     }
-    // };
+                        const teamIds = data.map(preference => preference.teamid);
+                        const uniqueTeamIds = new Set(teamIds);
+                        const uniqueCount = uniqueTeamIds.size;
+                        setBidsSubmitted(uniqueCount);
+                        
+
+                    } catch (error) {
+                        console.error('Failed to load projects:', error);
+                    }
+                }
+                getPreferences();
+        }
+    }, [biddingOpen, biddingEnded]);
 
     // Get semester data from server
     useEffect(() => {
@@ -155,6 +207,11 @@ const ManageSemester = () => {
                     setSemester(defaultSemester);
                     setUpdatedSemester(defaultSemester);
                     setSemesterID(defaultSemester.id);
+                    setIsCurrent(defaultSemester.status==='current');
+                    setIsRetired(defaultSemester.status==='retired');
+                    setIsUpcoming(defaultSemester.status==='upcoming');
+
+
                     console.log('Default semester set with ID:', defaultSemester.id);
                 }
     
@@ -170,6 +227,9 @@ const ManageSemester = () => {
                     const data = await fetchSemester(semesterID);
                     setUpdatedSemester(data);
                     setSemester(data);
+                    setIsCurrent(data.status==='current');
+                    setIsRetired(data.status==='retired');
+                    setIsUpcoming(data.status==='upcoming');
                     console.log('Fetched specific semester data:', data);
                 } catch (error) {
                     console.error('Failed to load specific semester:', error);
@@ -199,20 +259,18 @@ const ManageSemester = () => {
 
     // Get semester's students 
     useEffect(() => {
-        async function getStudents() {
-            try {
-                const data = await fetchUsersByRole('student');
-                // ignore demo user -- delete after demo
-                const demoData = data.filter(student => (student.email !== 'iwoo708@aucklanduni.ac.nz' && student.email !== 'student@gmail.com'))
-                setStudents(demoData);
-                console.log('Fetched students:', demoData);
-                setStudentsUploadSuccess(false);
-            } catch (error) {
-                console.error('Failed to load students:', error);
+            async function getStudents() {
+                try {
+                    const data = await fetchUsersByRole('student');
+                    setStudents(data);
+                    console.log('Fetched students:', data);
+                    setStudentsUploadSuccess(false);
+                } catch (error) {
+                    console.error('Failed to load students:', error);
+                }
             }
-        }
-        getStudents();
-    }, [semesterID, semester, studentsUploadSuccess]);
+            getStudents();
+    }, [studentsUploadSuccess]);
 
     // Get semester's teams
     useEffect(() => {
@@ -226,7 +284,7 @@ const ManageSemester = () => {
             }
         }
         getTeams();
-    }, [semesterID, semester, teamsUploadSuccess]);
+    }, [teamsUploadSuccess]);
 
     // handles semester selection in dropdown menu
     const handleSemesterSelect = (selectedSemesterID) => {
@@ -311,25 +369,184 @@ const ManageSemester = () => {
                         <SemesterDropdown onSelectSemester={handleSemesterSelect}/>
                     </div>
                 </div>
-                {semester.status !== 'retired' && <div className='page-content'>
+                <div className={`page-content ${isCurrent ? 'active':'inactive'}`}>
+                    {semester.status=== 'retired' && <div>
+                        <p className='disclaimer'>This semester has ended, so it has been retired and management options are limited.<br></br>You can still update the start and end dates if you wish to recover it.</p>
+                        {/* <Link to='/projects/archive'>
+                            <span>View in Project Archive</span>
+                        </Link> */}
+                    </div>}
+                    {semester.status=== 'upcoming' && <div>
+                        <p className='disclaimer'>This semester hasn't started yet, so management options are limited.</p>
+                        {/* <Link to='/projects/archive'>
+                            <span>View in Project Archive</span>
+                        </Link> */}
+                    </div>}
+                    <div className='content-sections-container dates'>
+                        <h3>Dates and Deadlines</h3>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Semester Dates</h4>
+                            </div>
+                                   
+                            {isEditingSemesterDates ? (
+                                <div className='content-section-text'>
+                                    <p> 
+                                        The semester {isRetired ? 'started' : 'starts'} on 
+                                        <input className={`edit-input ${hasEditedProposalDeadline ? 'edited':'not-edited'}`}
+                                            type="date"
+                                            id='start_date'
+                                            onChange={() => setHasEditedSemesterDates(true)}
+                                            // defaultValue={updatedSemester.start_date.substring(0, 10)}
+                                            defaultValue={formatDateForInput(updatedSemester.start_date)}
+                                        /> 
+                                        and {isRetired ? 'ended' : 'ends'} on
+                                        <input className={`edit-input ${hasEditedProposalDeadline ? 'edited':'not-edited'}`}
+                                            type="date"
+                                            id='end_date'
+                                            onChange={() => setHasEditedSemesterDates(true)}
+                                            defaultValue={formatDateForInput(updatedSemester.end_date)}
+                                        />.
+                                    </p>
+                                </div>
+                                ) : (
+                                <div className='content-section-text'>
+                                    <p>The semester  {isRetired ? 'started' : 'starts'} on {formatDate(updatedSemester.start_date)} and {isRetired ? 'ended' : 'ends'}  on {formatDate(updatedSemester.end_date)}.</p>
+                                </div>
+                                )}
+                            {isEditingSemesterDates ? (
+                                <div className='content-button-container'>
+                                    <button onClick = {() => handleSaveChanges(['start_date','end_date'], () => setIsEditingSemesterDates(false))} className={`upload-button save ${hasEditedSemesterDates ? 'ready':'not-ready'}`}>
+                                        Save Changes 
+                                    </button>
+                                    <button onClick = {() => {setIsEditingSemesterDates(false); setHasEditedSemesterDates(false)}} className='upload-button'>
+                                        Cancel
+                                    </button>
+                                </div>
+                                ) : (
+                                <div className='content-button-container'>
+                                    <button onClick = {() => setIsEditingSemesterDates(true)} className='upload-button'>
+                                    Edit Semester Dates
+                                    </button>
+                                </div>
+
+                                )}
+                        </div>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Project Proposal Deadline</h4>
+                            </div>
+                            {isEditingProposalDeadline ? (
+                                <div className='content-section-text'>
+                                    <p> 
+                                        The Project Proposal Form {isRetired ? 'notified clients': (!isUpcoming ? 'notifies clients' : 'will notify clients')} that any submissions after
+                                        <input className={`edit-input ${hasEditedProposalDeadline ? 'edited':'not-edited'}`}
+                                            type="date"
+                                            id='proposal_deadline'
+                                            onChange={() => setHasEditedProposalDeadline(true)}
+                                            defaultValue={formatDateForInput(updatedSemester.proposal_deadline)}
+                                        /> 
+                                        will only be considered for future semesters.
+                                    </p>
+                                </div>
+                                ) : (
+                                <div className='content-section-text'>
+                                    <p>The Project Proposal Form {isRetired ? 'notified clients': (!isUpcoming ? 'notifies clients' : 'will notify clients')} that any submissions after {formatDate(updatedSemester.proposal_deadline)} will only be considered for future semesters.</p>
+                                </div>
+                                )}
+                            {isEditingProposalDeadline ? (
+                                <div className='content-button-container'>
+                                    <button onClick = {() => handleSaveChanges(['proposal_deadline'], () => setIsEditingProposalDeadline(false))} className={`upload-button save ${hasEditedProposalDeadline ? 'ready':'not-ready'}`}>
+                                        Save Changes 
+                                    </button>
+                                    <button onClick = {() => {setIsEditingProposalDeadline(false); setHasEditedProposalDeadline(false)}} className='upload-button'>
+                                        Cancel
+                                    </button>
+                                </div>
+                                ) : (
+                                <div className='content-button-container'>
+                                    <button onClick = {() => setIsEditingProposalDeadline(true)} className='upload-button'>
+                                    Edit Project Proposal Deadline
+                                    </button>
+                                </div>
+
+                                )}
+                        </div>
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Project Bidding Timeframe</h4>
+                            </div>
+                            {isEditingBiddingDates ? (
+                                <div className='content-section-text'>
+                                    <p> 
+                                        Students can access and submit their project preferences from 
+                                        <input className='edit-input'
+                                            type="date"
+                                            id='start_bidding_date_date'
+                                            onChange={() => setHasEditedBiddingDates(true)}
+                                            defaultValue={formatDateForInput(updatedSemester.start_bidding_date)} 
+                                        /> 
+                                        <input className='edit-input'
+                                            type="time"
+                                            id='start_bidding_date_time'
+                                            onChange={() => setHasEditedBiddingDates(true)}
+                                            defaultValue={formatTimeForInput(updatedSemester.start_bidding_date)}
+                                        /> 
+                                        to
+                                        <input className='edit-input'
+                                            type="date"
+                                            id='end_bidding_date_date'
+                                            onChange={() => setHasEditedBiddingDates(true)}
+                                            defaultValue={formatDateForInput(updatedSemester.end_bidding_date)}
+                                        /> 
+                                        <input className='edit-input'
+                                            type="time"
+                                            id='end_bidding_date_time'
+                                            onChange={() => setHasEditedBiddingDates(true)}
+                                            defaultValue={formatTimeForInput(updatedSemester.end_bidding_date)}
+                                        />.
+                                    </p>
+                                </div>
+                                ) : (
+                                <div className='content-section-text'>
+                                    <p>Students can access and submit their project preferences from {formatDatetime(updatedSemester.start_bidding_date)} to {formatDatetime(updatedSemester.end_bidding_date)}.</p>
+                                </div>
+                                )}
+                            {isEditingBiddingDates? (
+                                <div className='content-button-container'>
+                                    <button onClick = {() => handleSaveChanges(['start_bidding_date','end_bidding_date'], () => setIsEditingBiddingDates(false))} className={`upload-button save ${hasEditedBiddingDates ? 'ready':'not-ready'}`}>
+                                        Save Changes 
+                                    </button>
+                                    <button onClick = {() => {setIsEditingBiddingDates(false); setHasEditedBiddingDates(false)}} className='upload-button'>
+                                        Cancel
+                                    </button>
+                                </div>
+                                ) : (
+                                <div className='content-button-container'>
+                                    <button onClick = {() => setIsEditingBiddingDates(true)} className='upload-button'>
+                                    Edit Project Bidding Timeframe
+                                    </button>
+                                </div>
+
+                                )}
+                        </div>
+                    </div>
                     <div className='content-sections-container students'>
                         <h3>Students and Teams</h3>
-                        {/* Semester Student/Team Data */}
                         <div className='content-section'>
                             <div className='content-section-heading'>
                                 <h4>Students</h4>
                             </div>
-                            {/* Displays student count & gives upload option */}
                             <div className='content-section-text'>
-                                        {students.length > 0 ? (
+                                        {(isCurrent && students.length > 0) ? (
                                             <p>Student data has been uploaded. <br></br>{students.length} student{students.length !== 1 ? 's are' : ' is'} registered for this semester.</p>)
                                         :(<p>Student data has not been uploaded.</p>)}
                             </div>
-                                {!showStudentUpload && <div className='button-container'>
-                                    <button className='upload-button' onClick={openStudentUpload}>
-                                        {students.length >= 1 ? 'Reupload' : 'Upload'} Student Data
-                                    </button>
-                                </div>}
+                            {!showStudentUpload && <div className='button-container'>
+                                <button className='upload-button' onClick={isCurrent ? openStudentUpload:null}>
+                                    {isCurrent && students.length >= 1 ? 'Reupload' : 'Upload'} Student Data
+                                </button>
+                            </div>}
                             {showStudentUpload && (
                                 <div className='pop-up'>
                                     <div className='pop-up-header'>
@@ -348,7 +565,7 @@ const ManageSemester = () => {
                                     <h4>Teams</h4>
                                 </div>
                                 <div className='content-section-text'>
-                                        {teams.length > 0 ? (
+                                        {(isCurrent && teams.length > 0) ? (
                                             <p>Team data has been uploaded. <br></br>{teams.length} team{teams.length !== 1 ? 's are' : ' is'} currently registered for this semester</p>
                                         ):(
                                             <p>Team data has not been uploaded.</p>
@@ -356,11 +573,11 @@ const ManageSemester = () => {
                                         
                                 </div>
                                 {!showTeamUpload && <div className='button-container'>
-                                    <button className='upload-button' onClick={openTeamUpload}>
-                                        {teams.length >= 1 ? 'Reupload' : 'Upload'} Team Data
+                                    <button className='upload-button' onClick={isCurrent ? openTeamUpload:null}>
+                                        {(isCurrent && teams.length >= 1) ? 'Reupload' : 'Upload'} Team Data
                                     </button>
 
-                                    {teams.length >= 1 && <button className='upload-button' onClick={teamDownload}>
+                                    {(isCurrent && teams.length >= 1) && <button className='upload-button' onClick={teamDownload}>
                                         Download Team Data
                                     </button>}
                                 </div>}
@@ -378,15 +595,14 @@ const ManageSemester = () => {
                                 </div>
                                 )}   
                         </div>
-                            
                     </div>
-                    <div className='content-sections-container'>
+                    <div className='content-sections-container projects'>
                         <h3>Projects</h3>
                         <div className='content-section'>
                             <div className='content-section-heading'>
                                 <h4>Proposals</h4>
                             </div>
-                            {projects.length > 0 ? (<div className='content-section-text'> 
+                            {(isCurrent && projects.length > 0) ? (<div className='content-section-text'> 
                                 {pendingProjects.length > 0 ? (
                                     <p>{pendingProjects.length} project proposal{pendingProjects.length > 1 ? 's' : ''} awaiting approval.</p>
                                 ) : (
@@ -416,30 +632,40 @@ const ManageSemester = () => {
                                 <p>No project proposals have been submitted for this semester yet.</p>
                             </div>)}
                             <div className='content-button-container'>
-                                <button className='upload-button' onClick={() => {navigate('/projects/manage')}}>
+                                <button className='upload-button' onClick={isCurrent ? () => navigate('/projects/manage'):null}>
                                     Go to Manage Projects 
                                 </button>
                             </div>
-                            
                         </div>
-
-                        <div className='content-section'>
+                        {/* <div className='content-section'>
                             <div className='content-section-heading'>
-                                <h4>Project Allocation</h4>
+                                <h4>Team Preferences</h4>
                             </div>
-                            {showProcess ? (
+                            {biddingOpen ? (
                                 <div className='content-section-text processing'>
-                                    <p>Enter maximum number of available hours per week:</p><input className='edit-input max' type="number" onChange={handleHoursChange} defaultValue={10}></input>
+                                    <p>{`Teams are not able to submit their project preferences yet.`}<br></br>
                                     
+                                        {`${bidsSubmitted === 0 
+                                            ? 'No teams have' 
+                                            : `${bidsSubmitted} ${bidsSubmitted === 1 ? 'team has' : 'teams have'}`} already submitted their preferences.`}
+                                    </p>
                                 </div>
                                 ) : (
-                                <div className='content-section-text'>
-                                    
+                                <div className='content-section-text processing'>
+                                    {biddingEnded ? (
+                                    <p>{`Teams are no longer able to submit their project preferences.`}<br></br>
+                                    {`${bidsSubmitted === 0 
+                                        ? 'No teams' 
+                                        : `${bidsSubmitted} ${bidsSubmitted === 1 ? 'team' : 'teams'}`} submitted their preferences.`}
+                                    </p>
+                                    ):(
+                                        <p>Teams are not able to submit their project preferences yet.</p>
+                                    )}
                                 </div>)}
                             {showProcess ? (
                                  <div className='content-button-container'>
-                                    <button className='upload-button process' onClick={handleProcessAllocation} >
-                                         Process Allocation
+                                    <button className={`upload-button process ${0 > 0 ? 'available' : 'unavailable'}}`} onClick={handleProcessAllocation} >
+                                        View Submitted Preferences
                                     </button>
                                     <button type="submit" onClick={()=>setShowProcess(false)} className='upload-button' >
                                          Cancel
@@ -452,169 +678,57 @@ const ManageSemester = () => {
                                 </div>
                                 ) : (
                                 <div className='content-button-container'>
-                                    <button className='upload-button' onClick={() => setShowProcess(true)}>
+                                    <button 
+                                        className={`upload-button ${bidsSubmitted > 0 ? 'available' : 'unavailable'}`} 
+                                        onClick={() => bidsSubmitted > 0 ? setShowProcess(true):null}>
+                                        View Submitted Preferences
+                                    </button>
+                                </div>
+                                )}
+                        </div> */}
+                        <div className='content-section'>
+                            <div className='content-section-heading'>
+                                <h4>Project Allocation</h4>
+                            </div>
+                            {showProcess ? (
+                                <div className='content-section-text processing'>
+                                    <p>Enter maximum number of available hours per week:</p><input className='edit-input max' type="number" onChange={handleHoursChange} defaultValue={10}></input>
+                                </div>
+                                ) : (
+                                <div className='content-section-text'>
+                                    
+                                </div>)}
+                            {(isCurrent && showProcess) ? (
+                                 <div className='content-button-container'>
+                                    <button className='upload-button process' onClick={handleProcessAllocation} >
+                                         Process Allocation
+                                    </button>
+                                    <button type="submit" onClick={()=>setShowProcess(false)} className='upload-button' >
+                                         Cancel
+                                    </button>
+                                    
+                                    {allocationComplete && 
+                                    <button className='upload-button' onClick={allocationDownload}>
+                                            Download Results
+                                    </button>}
+                                    {/* {allocationComplete && 
+                                    <button className='upload-button' onClick={handleViewAllocation}>
+                                            View Results
+                                    </button>} */}
+                                </div>
+                                ) : (
+                                <div className='content-button-container'>
+                                    <button className='upload-button' onClick={isCurrent ? () => setShowProcess(true):null}>
                                         Process Project Allocation
                                     </button>
+                                    
                                 </div>
                                 )}
                         </div>
                     </div>
-                    <div className='content-sections-container dates'>
-                        <h3>Dates and Deadlines</h3>
-                        <div className='content-section'>
-                            <div className='content-section-heading'>
-                                <h4>Semester Dates</h4>
-                            </div>
-                                   
-                            {isEditingSemesterDates ? (
-                                <div className='content-section-text'>
-                                    <p> 
-                                        The semester starts on 
-                                        <input className={`edit-input ${hasEditedProposalDeadline ? 'edited':'not-edited'}`}
-                                            type="date"
-                                            id='start_date'
-                                            onChange={() => setHasEditedSemesterDates(true)}
-                                            // defaultValue={updatedSemester.start_date.substring(0, 10)}
-                                            defaultValue={formatDateForInput(updatedSemester.start_date)}
-                                        /> 
-                                        and ends 
-                                        <input className={`edit-input ${hasEditedProposalDeadline ? 'edited':'not-edited'}`}
-                                            type="date"
-                                            id='end_date'
-                                            onChange={() => setHasEditedSemesterDates(true)}
-                                            defaultValue={formatDateForInput(updatedSemester.end_date)}
-                                        /> 
-                                    </p>
-                                </div>
-                                ) : (
-                                <div className='content-section-text'>
-                                    <p>The semester starts on {formatDate(updatedSemester.start_date)} and ends {formatDate(updatedSemester.end_date)}</p>
-                                </div>
-                                )}
-                            {isEditingSemesterDates ? (
-                                <div className='content-button-container'>
-                                    <button onClick = {() => handleSaveChanges(['start_date','end_date'], () => setIsEditingSemesterDates(false))} className={`upload-button save ${hasEditedSemesterDates ? 'ready':'not-ready'}`}>
-                                        Save Changes 
-                                    </button>
-                                    <button onClick = {() => {setIsEditingSemesterDates(false); setHasEditedSemesterDates(false)}} className='upload-button'>
-                                        Cancel
-                                    </button>
-                                </div>
-                                ) : (
-                                <div className='content-button-container'>
-                                    <button onClick = {() => setIsEditingSemesterDates(true)} className='upload-button'>
-                                    Edit Semester Dates
-                                    </button>
-                                </div>
-
-                                )}
-                        </div>
-                        <div className='content-section'>
-                            <div className='content-section-heading'>
-                                <h4>Project Proposal Deadline</h4>
-                            </div>
-                            {isEditingProposalDeadline ? (
-                                <div className='content-section-text'>
-                                    <p> 
-                                        The Project Proposal Form notifies clients that any submissions after
-                                        <input className={`edit-input ${hasEditedProposalDeadline ? 'edited':'not-edited'}`}
-                                            type="date"
-                                            id='proposal_deadline'
-                                            onChange={() => setHasEditedProposalDeadline(true)}
-                                            defaultValue={formatDateForInput(updatedSemester.proposal_deadline)}
-                                        /> 
-                                        will only be considered for future semesters.
-                                    </p>
-                                </div>
-                                ) : (
-                                <div className='content-section-text'>
-                                    <p>The Project Proposal Form currently notifies clients that any submissions after {formatDate(updatedSemester.proposal_deadline)} will only be considered for future semesters.</p>
-                                </div>
-                                )}
-                            {isEditingProposalDeadline ? (
-                                <div className='content-button-container'>
-                                    <button onClick = {() => handleSaveChanges(['proposal_deadline'], () => setIsEditingProposalDeadline(false))} className={`upload-button save ${hasEditedProposalDeadline ? 'ready':'not-ready'}`}>
-                                        Save Changes 
-                                    </button>
-                                    <button onClick = {() => {setIsEditingProposalDeadline(false); setHasEditedProposalDeadline(false)}} className='upload-button'>
-                                        Cancel
-                                    </button>
-                                </div>
-                                ) : (
-                                <div className='content-button-container'>
-                                    <button onClick = {() => setIsEditingProposalDeadline(true)} className='upload-button'>
-                                    Edit Project Proposal Deadline
-                                    </button>
-                                </div>
-
-                                )}
-                        </div>
-                        <div className='content-section'>
-                            <div className='content-section-heading'>
-                                <h4>Project Bidding Timeframe</h4>
-                            </div>
-                            {isEditingBiddingDates ? (
-                                <div className='content-section-text'>
-                                    <p> 
-                                        Students can access and submit the project preferences form from 
-                                        <input className='edit-input'
-                                            type="date"
-                                            id='start_bidding_date_date'
-                                            onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={formatDateForInput(updatedSemester.start_bidding_date)} 
-                                        /> 
-                                        <input className='edit-input'
-                                            type="time"
-                                            id='start_bidding_date_time'
-                                            onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={formatTimeForInput(updatedSemester.start_bidding_date)}
-                                        /> 
-                                        to
-                                        <input className='edit-input'
-                                            type="date"
-                                            id='end_bidding_date_date'
-                                            onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={formatDateForInput(updatedSemester.end_bidding_date)}
-                                        /> 
-                                        <input className='edit-input'
-                                            type="time"
-                                            id='end_bidding_date_time'
-                                            onChange={() => setHasEditedBiddingDates(true)}
-                                            defaultValue={formatTimeForInput(updatedSemester.end_bidding_date)}
-                                        /> 
-                                    </p>
-                                </div>
-                                ) : (
-                                <div className='content-section-text'>
-                                    <p>Students can access and submit the project preferences form from {formatDatetime(updatedSemester.start_bidding_date)} to {formatDatetime(updatedSemester.end_bidding_date)}</p>
-                                </div>
-                                )}
-                            {isEditingBiddingDates? (
-                                <div className='content-button-container'>
-                                    <button onClick = {() => handleSaveChanges(['start_bidding_date','end_bidding_date'], () => setIsEditingBiddingDates(false))} className={`upload-button save ${hasEditedBiddingDates ? 'ready':'not-ready'}`}>
-                                        Save Changes 
-                                    </button>
-                                    <button onClick = {() => {setIsEditingBiddingDates(false); setHasEditedBiddingDates(false)}} className='upload-button'>
-                                        Cancel
-                                    </button>
-                                </div>
-                                ) : (
-                                <div className='content-button-container'>
-                                    <button onClick = {() => setIsEditingBiddingDates(true)} className='upload-button'>
-                                    Edit Project Bidding Timeframe
-                                    </button>
-                                </div>
-
-                                )}
-                        </div>
-                    </div>
-                </div>}
-                {semester.status=== 'retired' && <div className='page-content'>
-                    <p>This semester has been retired.</p>
-                    <Link to='/projects/archive'>
-                        <span>View in Project Archive</span>
-                    </Link>
-                </div>}
+                    
+                </div>
+                
             </div>}
             {!semester && <div className='content'>
                 <div className='page-heading'>

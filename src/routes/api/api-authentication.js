@@ -260,7 +260,7 @@ router.get('/google/callback', async (req, res) => {
             }));
 
             if (role == "student") {
-                return res.status(200).redirect('/projects/available'); 
+                return res.status(200).redirect('/projects');
             } else if (role == "client") {
                 return res.status(200).redirect('/projects/view');
             } else if (role == "admin") {

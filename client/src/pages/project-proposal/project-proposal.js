@@ -118,6 +118,7 @@ const ProjectProposal = () => {
         if (document.getElementById("check1").checked 
             && document.getElementById("check2").checked) {
             setShowForm(true);
+            window.scrollTo(0, 0);
         }
         else {
             setShowAttendanceConfirmation(true);

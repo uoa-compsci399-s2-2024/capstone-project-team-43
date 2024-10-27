@@ -138,3 +138,15 @@ input {
 }
 
 
+#otherclientdetails, #projecttitle, #projectdescription, #desiredoutput, #specialequipment, #desiredskill, #availableresources{
+    min-width: 200px;
+    width: 65%;
+}
+
+#otherclientdetails, #specialequipment, #desiredskill, #availableresources{
+    height: 70px;
+}
+
+#projectdescription, #desiredoutput{
+    height: 90px;
+}

@@ -388,9 +388,9 @@ input[type="checkbox"]{
   width: 15px !important;
   height: 15px !important;
   background-color: transparent;  
-  border: 3px solid var(--theme-highlight); 
+  border: 2px solid var(--theme-highlight); 
   display: inline-block;
-  border-radius: 5px;
+  border-radius: 2px;
   padding: 0;
   position: relative;
   margin-top: -1px;

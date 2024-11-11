@@ -50,10 +50,11 @@
 }
 .semester-dropdown li{
     margin-top: -4px;
+    width: auto;
 }
 .dropdown-menu-button {
     background-color: inherit;
-    font-size: 18px;
+    font-size: 16px !important;
     font-weight: 600;
     padding: 5px;
     text-decoration: none;

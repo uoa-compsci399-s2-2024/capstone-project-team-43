@@ -57,14 +57,14 @@ const Sidebar = ({ userRole, showSidebar }) => {
 
         
         admin: [
-            { name: "Dashboard", path: "/dashboard" },
+            { name: "Semesters", path: "" },
+            { name: "Your Semesters", path: "/dashboard" },
+            { name: "Manage Semesters", path: `/manage/semester/`},
+            { name: "Create Semester", path: "/create/semester "},
             { name: "Projects", path: "" },
             { name: "Manage Projects", path: "/projects/manage" },
             { name: "View as Student", path: "/projects" },
             { name: "Project Archive", path: `/projects/archive/`}, 
-            { name: "Semesters", path: "" },
-            { name: "Manage Semesters", path: `/manage/semester/`},
-            { name: "Create Semester", path: "/create/semester "},
             { name: "Your Projects", path: "" },
             { name: "View All", path: "/projects/view" },
             { name: "Propose a Project", path: "/projects/submit" },

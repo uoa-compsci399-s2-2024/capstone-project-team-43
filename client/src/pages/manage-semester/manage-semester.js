@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { fetchSemester, fetchSemesters, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams, fetchProjectsBySemester, fetchPreferences } from '../../Api.js';
-import downloadIcon from '../../media/download-icon.png';
+import { fetchSemester, deleteSemester, fetchSemesters, fetchUsersByRole, updateSemesterDetails, fetchTeamsBySemester, downloadCSV, downloadCSVTeams, fetchProjectsBySemester, fetchPreferences } from '../../Api.js';
 import SemesterCSVUpload from '../../components/semester-csv-upload/semester-csv-upload.js';
 import './manage-semester.css';
 import SemesterDropdown from '../../components/semester-dropdown/semester-dropdown.js';
-import uploadIcon from '../../media/upload-icon.png';
 
 import { formatDate, formatDatetime, formatDateForInput, formatTimeForInput } from '../../utils/format-date.js';
-
 import { downloadAllocation, downloadCSVClients, processAllocation, fetchAllocationData } from '../../Api.js';
-// import { getAllocations } from '../../../../src/data/preferences-dao.js';
 
 const ManageSemester = () => {
 
@@ -25,7 +21,6 @@ const ManageSemester = () => {
     const [projects, setProjects] = useState([]);
     const [semester, setSemester] = useState(null);
     const [updatedSemester, setUpdatedSemester] = useState(null);
-    // const [editingField, setEditingField] = useState(null);
 
     // Control visibility of student/teams upload functionality
     const [showStudentUpload, setShowStudentUpload] = useState(false);
@@ -33,11 +28,7 @@ const ManageSemester = () => {
     const openStudentUpload = () => setShowStudentUpload(true);
     const openTeamUpload = () => setShowTeamUpload(true);
     const closeStudentUpload = () => setShowStudentUpload(false);
-    const closeTeamUpload = () => setShowTeamUpload(false);
-
-    const dateFields = ['start_date', 'end_date', 'proposal_deadline'];
-    const datetimeFileds = ['start_bidding_date', 'end_bidding_date'];
-    
+    const closeTeamUpload = () => setShowTeamUpload(false); 
 
     const [allocationComplete, setAllocationComplete] = useState(false);
     const [hours, setHours] = useState('');
@@ -72,6 +63,17 @@ const ManageSemester = () => {
     const [isRetired, setIsRetired] = useState(null);
     const [isUpcoming, setIsUpcoming] = useState(null);
 
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+
+    const deletePopupRef = useRef(null);
+
+    // if needed, scroll delete confirmation window into view
+    useEffect(() => {
+        if (showDeleteConfirmation && deletePopupRef.current) {
+            deletePopupRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [showDeleteConfirmation]);
 
     // Function calls backend API to create a CSV structure of all students in database and downloads in browser
     const studentDownload = () => {
@@ -88,12 +90,6 @@ const ManageSemester = () => {
         console.log("Fetching allocation results");
         downloadAllocation();
     }
-
-    // const handleViewAllocation = async () => {
-    //     console.log("Displaying allocation results...");
-    //     const allocationData = await fetchAllocationData();
-    //     console.log(allocationData);
-    // }
 
     const handleProcessAllocation = (e) => {
         e.preventDefault();
@@ -113,32 +109,20 @@ const ManageSemester = () => {
 
     // ensure form only available if bidding is open
     useEffect(() => {
-        // setLoading(true);
             if (semester) {
                 async function checkFormAvailability () {
                 
-                console.log('checking if bidding open');
-                // recheck availability every minute
                 const interval = setInterval(() => {
-                    console.log('Logging every minute');
                 }, MINUTE_MS);
         
                 const currentDatetime = formatDatetime(new Date()); 
-                console.log('current:',currentDatetime);
-                console.log('start',formatDatetime(semester.start_bidding_date));
-                console.log('end',formatDatetime(semester.end_bidding_date))
                 const hasStarted = currentDatetime >= formatDatetime(semester.start_bidding_date);
                 const hasEnded = !formatDatetime(semester.end_bidding_date) >= currentDatetime;
+
                 setBiddingStarted(hasStarted);
                 setBiddingEnded(hasEnded);
 
                 setBiddingOpen(hasStarted && !hasEnded);
-                console.log('BIDDING STARTED ? ',hasStarted);
-                console.log('BIDDING ENDED ? ',hasEnded);
-                console.log('BIDDING OPEN ? ',hasStarted && !hasEnded);
-
-                // clear interval on unmount
-                // setLoading(false);
                 return () => clearInterval(interval); 
             }
             checkFormAvailability();
@@ -210,8 +194,6 @@ const ManageSemester = () => {
                     setIsCurrent(defaultSemester.status==='current');
                     setIsRetired(defaultSemester.status==='retired');
                     setIsUpcoming(defaultSemester.status==='upcoming');
-
-
                     console.log('Default semester set with ID:', defaultSemester.id);
                 }
     
@@ -244,10 +226,8 @@ const ManageSemester = () => {
     useEffect(() => {
         const getProjects = async () => {
             try {
-                console.log('getting semesters projects');
                 const data = await fetchProjectsBySemester(semesterID);
                 setProjects(data);
-
                 console.log('fetched projects:',data);
             } catch (error) {
                 console.error('Failed to load projects:', error);
@@ -294,33 +274,33 @@ const ManageSemester = () => {
         navigate(`/manage/semester/${selectedSemesterID}`, { replace: true });
     };
 
-
-    // Handle saving edit changes
-    const handleSaveChanges = async (editingFields, setIsEditingFalse) => {
-        console.log(`Saving ${editingFields} changes`);
+    // handle semester deletion
+const handleDeleteSemester = async () => {
+    try {
+        const response = await deleteSemester(semesterID);
+        setShowDeleteSuccess(true);
+        setSemesterID(null);
+    } catch (error) {
+        console.error('Failed to delete semester:', error);
+    } finally {
+        setShowDeleteConfirmation(false);
+    }
+};
     
+    // Handle saving edit changes
+    const handleSaveChanges = async (editingFields, setIsEditingFalse) => {    
         for (let i = 0; i < editingFields.length; i++) {
             let field = editingFields[i];
-            console.log('editing field:',field);
-
             let newValue = null; 
 
             // concatenate date and time inputs if editing bidding timeframe
             if (field === 'start_bidding_date' ||  field === 'end_bidding_date') {
-                console.log('editing bidding timeframe')
-
-
                 let newDate = document.getElementById(`${field}_date`).value;
-                console.log('new date:',newDate);
-
                 let newTime = document.getElementById(`${field}_time`).value;
-                console.log('new time:',newTime);
 
                 newValue = `${newDate}T${newTime}`;
-                console.log('new value:', newValue);
 
                 if (newValue !== (semester[field])) {
-                    console.log('value has been changed, updating to be', newValue);
                     await updateSemesterDetails(semesterID, field, newValue);
 
                     // update details on page immediately
@@ -334,9 +314,7 @@ const ManageSemester = () => {
             }
             // otherwise update using single input value
             else {
-                console.log('not editing bidding timeframe')
                 newValue = document.getElementById(field).value;
-                console.log('new value:', newValue);
                 if (newValue !== semester[field]) {
                     await updateSemesterDetails(semesterID, field, newValue);
 
@@ -350,10 +328,8 @@ const ManageSemester = () => {
                 
             }
         }
-        console.log('done looping through fields')
         setIsEditingFalse();
     } 
-
     const pendingProjects = projects.filter(project => project.status === 'pending');
     const acceptedProjects = projects.filter(project => project.status === 'accepted');
     const rejectedProjects = projects.filter(project => project.status === 'rejected');
@@ -361,7 +337,8 @@ const ManageSemester = () => {
 
     return (
         <main className='manage-semester-page'>
-            {semester && <div className='content'>
+            {/* display semester page content */}
+            {(semester && !showDeleteSuccess) && <div className='content'>
                 <div className='page-heading'>
                         <h1>Manage Semesters</h1>
                     <div className='page-subheading semester-subheading'>
@@ -370,17 +347,11 @@ const ManageSemester = () => {
                     </div>
                 </div>
                 <div className={`page-content ${isCurrent ? 'active':'inactive'}`}>
-                    {semester.status=== 'retired' && <div>
-                        <p className='disclaimer'>This semester has ended, so it has been retired and management options are limited.<br></br>You can still update the start and end dates if you wish to recover it.</p>
-                        {/* <Link to='/projects/archive'>
-                            <span>View in Project Archive</span>
-                        </Link> */}
+                    {semester.status=== 'retired' && <div className='disclaimer-wrapper'>
+                        <p className='disclaimer'>This semester has ended, so it has been retired and management options are limited.<br></br>You can still update the semester's end date if you wish to recover it.</p>
                     </div>}
-                    {semester.status=== 'upcoming' && <div>
+                    {semester.status=== 'upcoming' && <div className='disclaimer-wrapper'>
                         <p className='disclaimer'>This semester hasn't started yet, so management options are limited.</p>
-                        {/* <Link to='/projects/archive'>
-                            <span>View in Project Archive</span>
-                        </Link> */}
                     </div>}
                     <div className='content-sections-container dates'>
                         <h3>Dates and Deadlines</h3>
@@ -726,10 +697,38 @@ const ManageSemester = () => {
                                 )}
                         </div>
                     </div>
-                    
+                    {/* display option to delete semester */}
+                    <div className='delete-wrapper'>
+                        {showDeleteConfirmation && 
+                            <div className='delete-warning-popup' ref={deletePopupRef}>
+                                <p className='warning-heading'>
+                                    Are you sure you want to delete this semester?
+                                </p>
+                                <p className='warning-text'>
+                                    Deleting this semester means you will no longer be able to view it through the Your Semesters, Project Archive, or Manage Semester pages. This cannot be undone.
+                                    <br></br><br></br>
+                                    Any projects associated with this semester will remain visible through the project archive.
+                                </p>
+                                <div className='delete-button-wrapper'>
+                                    <button className='confirm-delete' onClick={handleDeleteSemester}>
+                                        Confirm Delete Semester
+                                    </button>
+                                    <button className='cancel-delete' onClick={() => setShowDeleteConfirmation(false)}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>}
+                        {!showDeleteConfirmation &&
+                        <div className='delete-button-wrapper'>
+                            <button onClick={() => setShowDeleteConfirmation(true)}>
+                                Delete Semester
+                            </button>
+                        </div>}
+                    </div>
                 </div>
-                
             </div>}
+
+            {/* display link to create a semester if none in database */}
             {!semester && <div className='content'>
                 <div className='page-heading'>
                         <h1>Manage Semesters</h1>
@@ -738,6 +737,19 @@ const ManageSemester = () => {
                     <p>No current or upcoming semesters.</p>
                     <Link to='/create/semester'>
                         <span className='create-link'>Create New Semester</span>
+                    </Link>
+                </div>
+            </div>}
+
+            {/* display link to semester menu if the semester has just been deleted */}
+            {(semester && showDeleteSuccess) && <div className='content'>
+                <div className='page-heading'>
+                        <h1>Manage Semesters</h1>
+                </div>
+                <div className='page-content'>
+                    <p>Semester Deleted</p>
+                    <Link to='/dashboard'>
+                        <span className='create-link'>Go to Your Semesters</span>
                     </Link>
                 </div>
             </div>}

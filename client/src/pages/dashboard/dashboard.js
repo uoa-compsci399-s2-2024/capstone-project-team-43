@@ -12,8 +12,6 @@ const Dashboard = () => {
     let userId;
     let userRole;
     const loggedin = isLoggedIn();
-    console.log('user id:',userId);
-    console.log('logged in', loggedin);
 
     // if user is client 
     // redirect to  project proposal form
@@ -22,7 +20,6 @@ const Dashboard = () => {
             userId = await getUserID();
             userRole = await getUserRole();
             if(await isLoggedIn() && userRole === 'client') {
-                console.log('client user!')
                 navigate("/projects/submit");
             }
         }
@@ -38,7 +35,6 @@ const Dashboard = () => {
                 try {
                     const data = await fetchSemesters();
                     setSemesters(data);
-                    console.log('Fetched semester data:', data);
                 } catch (error) {
                     console.error('Failed to load semester:', error);
                 }
@@ -55,10 +51,10 @@ const Dashboard = () => {
 
     return(
         <main className="dashboard-page">
-            {semesters && <div className='content'>
+            {semesters.filter(semester => (semester.status !== 'retired')).length > 0 && <div className='content'>
                 <div className='page-heading'>
-                    <h1>Dashboard</h1>
-                    <h2 className="page-subheading">Your Semesters</h2>
+                    <h1>Your Semesters</h1>
+                    <h2 className="page-subheading"></h2>
                 </div>
                 <div className="dashboard-semesters-container">
                         {upcomingSemesters.length > 0 && upcomingSemesters
@@ -113,8 +109,12 @@ const Dashboard = () => {
             </div>}
             {/* if user has no upcoming or current semesters */}
             {semesters.filter(semester => (semester.status !== 'retired')).length === 0 && <div className='content'>
+                <div className='page-heading'>
+                    <h1>Your Semesters</h1>
+                    {/* <h2 className="page-subheading">Your Semesters</h2> */}
+                </div>
                 <div className='page-content'>
-                    <p>No current or upcoming semesters.</p>
+                    <p>No current, upcoming, or retired semesters.</p>
                     <Link to='/create/semester'>
                         <span className="create-link">Create New Semester</span>
                     </Link>

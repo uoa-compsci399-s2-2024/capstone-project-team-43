@@ -130,7 +130,8 @@ router.post("/", async (req, res) => {
 // Deletes the semester with the given ID
 router.delete("/:id", async (req, res) => {
     const id = req.params.id;
-    const success = deleteSemester(id);
+    console.log('deleting semester in api- js with id',id);
+    const success = await deleteSemester(id);
     res.sendStatus(success ? 204 : 404);
 });
 

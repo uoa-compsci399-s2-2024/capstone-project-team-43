@@ -12,16 +12,12 @@
     justify-content: start;
     width: 100%;
     gap: 2vh;
-    /* height: 60vh; */
     flex-wrap: wrap;
 }
 
 .manage-semester-page .page-content{
     gap: 3vh;
-    /* min-width: 90vw; 
-    flex-direction: row;
-    justify-content: start;
-    align-items: start; */
+    margin-bottom: 2vh !important;
 }
 
 .manage-semester-page .container-text{
@@ -30,24 +26,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /* margin-top: -0.7ch; */
-    /* align-items: inherit; */
-    /* line-height: 2ch; */
 }
 
 .manage-semester-page .container-text p{
-    /* padding-top: 0.1ch; */
-    /* padding-bottom: 0.1ch; */
     margin: 0;
     min-height: 23px;
 }
-
-/* .manage-semester-page .content{
-    max-width: 60%;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-} */
 
 .manage-semester-page .content-section{
     display: flex;
@@ -81,16 +65,6 @@
     padding: 0;
 }
 
-
-
-/* .manage-semester-page .content-section-data{
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-    gap: 0.3vh;
-    
-} */
-
 .manage-semester-page .content-section-text p{
     margin: 0;
 }
@@ -113,36 +87,22 @@
 .content-button-container button{
     color: var(--text-color-light);
 }
-/* p input{
-    max-height: inherit;
-} */
-
 .manage-semester-page .edit-input{
     background-color: var(--theme-light);
     font-weight: 600;
     display: inline-block; 
     width: auto;
     height: auto; 
-    /* font-size: 12px;  */
-    /* line-height: 2ch;  */
     vertical-align: baseline; 
     padding: 0px 3px 0px 3px;
     margin: 0 0.5ch 0 0.5ch;
-    /* padding: 0; */
-    /* margin: 0; */
-
 }
-
-/* .edit-input.not-edited{
-    background-color: var(--theme-light);
-    border: inherit;
-} */
 
 .edit-input:focus{
     border: none;
     outline: none;
 }
-/* small subeadings */
+
 .text-detail {
     font-size: 15px;
     margin-top: -1vh;
@@ -156,7 +116,6 @@
 .manage-semester-page .pop-up-text p{
     margin: 0;
 }
-
 
 .manage-semester-page .pop-up-header {
     display: flex;
@@ -182,10 +141,6 @@
     font-size: 12px;
 }
 
-/* .manage-semester-page .pop-up-button:hover{
-    opacity: 0.7;
-} */
-
 .date-container{
     position: relative;
 }
@@ -195,12 +150,14 @@
     margin-right: 1vh;
     background-color: var(--theme-light);
     border: none;
-    /* border: 3px solid var(--text-color-dark); */
 }
+
 .manage-semester-page .confirm-upload-button{
     background-color: var(--theme-highlight);
     opacity: 1;
 }
+
+.manage-semester-page
 
 .upload-success-message{
     font-weight: 600 !important;
@@ -209,13 +166,11 @@
 
 /* UPLOADING/DOWNLOADING FILES  */
 
-
 .upload-button{
     width: auto;
 }
 
 .upload-icon{
-    /* background-image: ; */
     max-width: 20px;
     margin: -5px 3px -5px 0px;
 }
@@ -268,7 +223,6 @@
 }
 
 .button-container{
-    /* margin-left: 10px; */
     margin-top: -0.5ch !important;
 }
 
@@ -296,10 +250,6 @@ button.unavailable{
 .upload-button.save.ready{
     color: var(--theme-highlight) !important;
 }
-/* 
-.upload-button.save.not-ready{
-    color
-} */
 
 .manage-semester-page .button-container {
     display: flex;
@@ -309,8 +259,6 @@ button.unavailable{
     gap: 1ch;
     margin-top: 2px;
     padding: 0;
-    /* font-size: 10px !important; */
-    /* position: absolute; */
 }
 
 .manage-semester-page .button-container button{
@@ -339,7 +287,54 @@ button.unavailable{
     padding: 0;
     margin: 0;
     font-size: 14px;
-    /* filter: invert(1); */
+}
+
+.delete-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.delete-warning-popup{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    padding: 2vh;
+    height: auto;
+    width: 100%;
+    gap: 1vh;
+}
+
+.delete-warning-popup .warning-text{
+    font-size: 13px;
+    margin: 0;
+}
+
+.delete-warning-popup .warning-heading{
+    margin: 0;
+}
+
+button.confirm-delete{
+    color: var(--theme-highlight) !important;
+}
+
+button.cancel-delete{
+    color: var(--text-color-light) !important;
+}
+
+
+.delete-button-wrapper{
+    display: flex;
+    justify-content: center;
+    gap: 4vh;
+}
+
+.delete-wrapper button:hover{
+    opacity: 0.7;
 }
 
 .manage-semester-page .inactive .content-sections-container.students,
@@ -348,12 +343,24 @@ button.unavailable{
 }
 
 .disclaimer{
-    font-weight: 500;
-    color: white;
+    font-weight: 600;
+    color: var(--text-color-dark);
     font-size: 14px;
-    /* filter: brightness(0.7); */
+    width: 100%;
 }
+
+.disclaimer-wrapper{
+    width: 100%;
+    padding: 0 2vh 0 2vh;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+
 .manage-semester-page .active button:hover{
+    opacity: 0.6;
+}
+
+.inactive .dates button:hover{
     opacity: 0.6;
 }
 

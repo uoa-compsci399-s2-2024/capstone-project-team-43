@@ -166,6 +166,17 @@ export async function processAllocation(hours) {
     }
 };
 
+// export async function fetchAllocationData() {
+//     try {
+//         const response = await fetch(`/api/project-allocation`)
+//         console.log('response in Api.js',response);
+//         return await response.text();
+//     } catch (error) {
+//         console.error('Error fetching allocation:', error);
+//         throw error;
+//     }
+
+// }
 
 export async function downloadAllocation() {
     try {
@@ -504,6 +515,24 @@ export async function deleteUser(userID) {
         return response.status;
     } catch (error) {
         console.error('Error deleting user:', error);
+        throw error;
+    }
+};
+/**
+ * Deletes a Semester
+ * 
+ * @async
+ * @function deleteSemester
+ * @param {number} [semesterID] 
+ * @returns {Promise<response>} 
+ *  
+ */
+export async function deleteSemester(semesterID) {
+    try {
+        const response = await axios.delete(`/api/semesters/${semesterID}`);
+        return response.status;
+    } catch (error) {
+        console.error('Error deleting semester:', error);
         throw error;
     }
 };

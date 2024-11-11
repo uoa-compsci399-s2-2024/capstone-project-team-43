@@ -313,17 +313,19 @@ export async function updateSemester(id, attribute, newValue) {
  *
  * @param {number} id the id of the semester to delete
  * 
- * @returns {Promise<Semester[]>} Returns remaining semester
+ * @returns {Promise<Semester[]>} Returns remaining semesters
  */
 export async function deleteSemester(id) {
   let connection;
 
+  console.log('deleting semester in dao js with id',id);
   try {
 
     // Get connection from pool
     connection = await pool.getConnection();
     await connection.query(`USE ${DB_NAME};`);
     await connection.query("DELETE FROM SEMESTER WHERE id = ?", [id]);
+    console.log('done, now returning remaining sems');
 
     /** @type {Semester} */
     const [semesters] = await connection.query("SELECT * FROM SEMESTER");

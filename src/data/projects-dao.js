@@ -192,12 +192,13 @@ export async function createProject(title, description, owner_id, special_requir
 
     const current_semester = semesters.find(semester => semester.status === "current");
 
-
     // Insert project into db
     const response = await connection.query(
       "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, available_from, published) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \'false\')",
       [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, current_semester.id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, available_from]
     );
+
+    console.log(response);
 
     /** @type {Project} */
     const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
@@ -412,12 +413,12 @@ export async function allocateNumbers(approved_projects) {
 export async function getProjectsByUser(user_id) {
   let connection;
   try {
-
     // Get connection from pool
     connection = await pool.getConnection();
 
     await connection.query(`USE ${DB_NAME};`);
-    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE owner_id = ?', [semester_id]);
+
+    const [rows] = await connection.query('SELECT * FROM PROJECT WHERE owner_id = ?', [user_id]);
 
     return rows;
 

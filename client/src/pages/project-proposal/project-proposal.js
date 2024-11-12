@@ -199,23 +199,33 @@ const ProjectProposal = () => {
             if (document.getElementById("email").value !== client.email){
                 await updateUserDetails(client.id, 'email', document.getElementById("email").value);
             }
-            // }
-            // if (document.getElementById("company").value !== client.company){
-            //     await updateUserDetails(client.id, 'company', document.getElementById("company").value);
-            // }
+
+             if (document.getElementById("company").value !== client.company){
+                    await updateUserDetails(client.id, 'company', document.getElementById("company").value);
+             }
     
-            let other_client_details = null; //document.getElementById("otherclientdetails").value;
+            let other_client_details = document.getElementById("otherclientdetails").value;
             let title = document.getElementById("projecttitle").value;
             let description = document.getElementById("projectdescription").value;
             let project_deliverable = document.getElementById("desiredoutput").value;
     
-            let special_equipment_requirement = null;
-    
-            let expiry = '0000-00-00';
+            let special_equipment_requirement;
+
+            if(showEquipmentReqWindow) {
+                special_equipment_requirement = document.getElementById("specialequipment").value;
+            } else {
+                special_equipment_requirement = null;
+            }
+            let expiry;
+            if (showExpiryWindow) {
+                expiry = document.getElementById("expiry").value;
+            } else {
+                expiry = upcomingSemester.start_date;
+            }
     
             let max_teams = document.getElementById("teams").value;
-            let preferred_skills = null;
-            let available_resources = null;
+            let preferred_skills = document.getElementById("desiredskill").value;
+            let available_resources = document.getElementById("availableresources").value;
             let owner_id = userID;
             let currentDate = new Date();
             let created = currentDate.toISOString().split('T')[0];

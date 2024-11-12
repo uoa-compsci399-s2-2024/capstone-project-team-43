@@ -34,10 +34,9 @@ const ClientProjectsView = () => {
         async function getProjects() {
             try {
                 const data = await fetchProjects();
-                console.log('projects:'+data);
-                const userProjects = data.filter(project => project.owner_id === userID);
+                const id = getUserID();
+                const userProjects = data.filter(project => project.owner_id == id);
                 setProjects(userProjects);
-                console.log('User projects:'+data);
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }

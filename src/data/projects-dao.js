@@ -184,21 +184,27 @@ export async function createProject(title, description, owner_id, special_requir
     /** @type {User} */
     const user = await getUser(owner_id);
 
+    console.log(owner_id);
+
     const client_name = user.first_name + " " + user.last_name;
     const client_email = user.email;
 
 
     const semesters = await getSemesters();
 
-    const current_semester = semesters.find(semester => semester.status === "current");
+    
+    let current_semester = semesters.find(semester => semester.status === "current");
+
+    if(!current_semester) {
+      console.log("No Active Semester, setting project semester id = 1");
+      current_semester = 1;
+    }
 
     // Insert project into db
     const response = await connection.query(
       "INSERT INTO PROJECT (title, description, owner_id, special_requirements, available_resources, preferred_skills, deliverable, created, semester_id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, available_from, published) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, \'false\')",
-      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, current_semester.id, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, available_from]
+      [title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, 1, status, max_teams, project_number, expiry, other_client_details, client_name, client_email, available_from]
     );
-
-    console.log(response);
 
     /** @type {Project} */
     const project = await connection.query("SELECT * FROM PROJECT WHERE id = ?", [response.insertId]); // insertId is the auto-generated PK value.
@@ -209,7 +215,7 @@ export async function createProject(title, description, owner_id, special_requir
     return project;
 
   } catch (err) {
-    console.error('Error executing query/s:', err);
+    console.error('Error executing query/s Test:', err);
   }
 }
 

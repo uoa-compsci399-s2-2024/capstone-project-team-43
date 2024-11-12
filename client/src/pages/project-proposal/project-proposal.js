@@ -241,7 +241,6 @@ const ProjectProposal = () => {
                 available_resources, preferred_skills, project_deliverable, 
                 created, created, expiry, "pending", max_teams, -1, 2, other_client_details
             );
-    
             handleSuccess();
         } catch (err) {
             console.log("Error", err);

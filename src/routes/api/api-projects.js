@@ -120,7 +120,7 @@ router.post("/", async (req, res) => {
 
     // Details are valid and now passed to createProject function to query into database
     const project = await createProject(title, description, owner_id, special_requirements, available_resources, preferred_skills, project_deliverable, created, available_from, expiry, status, max_teams, project_number, semester_id, other_client_details);
-    return res.location(`/api/projects/${project.id}`).status(201).json(project);
+    return res.status(201).json(project);
 });
 
 

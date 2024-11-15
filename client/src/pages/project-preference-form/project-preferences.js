@@ -292,10 +292,7 @@ const ProjectPreferences = ()=>{
                     </div>}
                 {(showForm && biddingEnded) && 
                 <div className="page-content text-page">
-                    <p>The Project Preferences form is no longer open.<br></br>You can view your team's submission on your dashboard.</p>
-                    <Link to='/dashboard'>
-                        <span className="create-link">Go to Dashboard</span>
-                    </Link>
+                    <p>The Project Preferences form is no longer open.</p>
                 </div>}
                 {/* display form if bidding open */}
                 {(showForm && biddingOpen) && <div className="page-content">

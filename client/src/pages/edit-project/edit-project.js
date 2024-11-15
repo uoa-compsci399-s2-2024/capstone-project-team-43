@@ -96,7 +96,7 @@ const EditProject = () => {
             
             let available_resources = document.getElementById("availableresources").value;
             
-            let expiry = document.getElementById("date").value;
+            let expiry = document.getElementById("expiry").value;
             
             let owner_id = project.owner_id;
             

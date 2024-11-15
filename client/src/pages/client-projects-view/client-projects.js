@@ -68,24 +68,21 @@ const ClientProjectsView = () => {
                 </div>
                 {projects.length > 0 && <div className='page-content'>
                 <div className='projects-container'>
-                    {projects.map(project => (
-                            <div key={project.id} >
-                            <Project className = 'project'
-                                view='client'
-                                projectId={project.id}
-                                expanded={expandedProjects[project.id]}
-                                expandProject = {expandProject}
-                            />
-                            {/* // <div className="project-wrapper-buttons">
-                            //     <button onClick={() => expandProject(project.id)} className="admin-expand-button">
-                            //         {!expandedProjects[project.id] ? 'Expand Project Details' : 'Collapse Project Details'}
-                            //     </button> 
-                            // {expandedProjects[project.id] && <button onClick={() => navigate(`/projects/edit/${project.id}`)} className="admin-expand-button">
-                            //         Edit Project
-                            //     </button>} 
-                            // </div> */}
-                        </div>
-                    ))}                       
+                {projects.map(project => (
+                            // expand project when user clicks
+                            <div key={project.id} onClick={() => expandProject(project.id)}>
+                    
+                                <Project className = 'project'
+                                    view='client'
+                                    projectId={project.id}
+                                    expanded={expandedProjects[project.id]}
+                                    expandProject = {expandProject}
+                                />
+                                {/* {false &&<PopUp project = {project}/>} */}
+                                {expandedProjects[project.id] && <button onClick={() => navigate(`/projects/edit/${project.id}`)} className="admin-expand-button">
+                                     Edit Project
+                                 </button>} 
+                            </div>))}                  
                 </div>
                 </div>}
                 {projects.length === 0 && (<div className='page-content text-page'>

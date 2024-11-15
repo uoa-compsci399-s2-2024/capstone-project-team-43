@@ -47,6 +47,10 @@
 
 }
 
+button {
+  cursor: pointer;
+}
+
 
 
 .confirmation-content{

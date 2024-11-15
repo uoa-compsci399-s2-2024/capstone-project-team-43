@@ -75,6 +75,7 @@ router.post("/publish/:status", async (req, res) => {
             const { approved_projects } = req.body;
 
             allocateNumbers(approved_projects);
+            publishProjects(true);
         }
         return res.json(await publishProjects(status))
     } catch (err) {

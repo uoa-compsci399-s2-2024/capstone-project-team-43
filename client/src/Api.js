@@ -30,6 +30,8 @@ export async function fetchProjects(status) {
         throw error;
     }
 };
+
+
 /**
  * Fetches projects from the server, optionally filtered by status.
  * 

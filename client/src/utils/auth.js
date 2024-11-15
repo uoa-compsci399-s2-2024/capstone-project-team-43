@@ -118,8 +118,11 @@ export const checkPath = async () => {
 
             } else if (role === "client") {
 
-                const authorizedPaths = ["/projects/view", "/projects/submit"];
-                if (!authorizedPaths.includes(window.location.pathname) && !defaultPaths.includes(window.location.pathname)) {
+                const authorizedPaths = ["/projects/view", "/projects/submit", "/projects/edit"];
+
+                // Ensures that clients are only accessing /projects/edit/[project.id]
+                const editProjectsLink = /^\/projects\/edit\/\d+$/;
+                if (!authorizedPaths.includes(window.location.pathname) && !defaultPaths.includes(window.location.pathname) && !editProjectsLink.test(window.location.pathname)) {
                     window.location.pathname = '/projects/view';
                 }
             } else if (role === "admin") {

@@ -264,7 +264,7 @@ const AdminProjectsView = () => {
 
   </main>);
 
-                //THE FOLLOWING FUNCTION HANDLE THE DRAG AND DROP FUNCTIONALITY
+    //THE FOLLOWING FUNCTION HANDLES THE DRAG AND DROP FUNCTIONALITY
 
     //Helper function to find container active id is over
     function findContainer(id) {
@@ -320,7 +320,7 @@ const AdminProjectsView = () => {
             newStatus = "pending"
           }
           const projectId = id[0].id;
-          console.log('updatting status. proj id:',projectId);
+          console.log('updating status. proj id:',projectId);
           console.log('new status',newStatus);
         updateStatus(projectId, newStatus);
   

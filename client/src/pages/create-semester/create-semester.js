@@ -35,8 +35,6 @@ const CreateSemester = () =>{
         console.log(is_semester_one);
         console.log(proposal_deadline);
 
-
-
         const createdSemester = createSemester(start_date, end_date, start_bidding_datetime, end_bidding_datetime, is_semester_one, proposal_deadline);
         setShowSuccessMessage(true)
 

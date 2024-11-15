@@ -195,6 +195,7 @@ const ManageSemester = () => {
                     setIsRetired(defaultSemester.status==='retired');
                     setIsUpcoming(defaultSemester.status==='upcoming');
                     console.log('Default semester set with ID:', defaultSemester.id);
+                    window.history.pushState({}, "", `/manage/semester/${defaultSemester.id}`);
                 }
     
             } catch (error) {
@@ -228,7 +229,6 @@ const ManageSemester = () => {
             try {
                 const data = await fetchProjectsBySemester(semesterID);
                 setProjects(data);
-                console.log('fetched projects:',data);
             } catch (error) {
                 console.error('Failed to load projects:', error);
             }
@@ -517,6 +517,9 @@ const handleDeleteSemester = async () => {
                                 <button className='upload-button' onClick={isCurrent ? openStudentUpload:null}>
                                     {isCurrent && students.length >= 1 ? 'Reupload' : 'Upload'} Student Data
                                 </button>
+                                {(isCurrent && students.length >= 1) && <button className='upload-button' onClick={studentDownload}>
+                                        Download Student Data
+                                    </button>}
                             </div>}
                             {showStudentUpload && (
                                 <div className='pop-up'>

@@ -5,9 +5,6 @@ import { ReactComponent as CapitaliseLogo } from '../../media/visit-capitalise.s
 import { fetchSemesters, getStatusSemesters } from '../../Api';
 
 const Sidebar = ({ userRole, showSidebar }) => {
-
-    console.log('user role for sidebar:',userRole);
-
     
     // const [currentSemester, setCurrentSemester] = useState(null);
     // const [upcomingSemesters, setUpcomingSemesters] = useState([]);
